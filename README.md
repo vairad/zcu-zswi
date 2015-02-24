@@ -1,2 +1,2 @@
 # zcu-zswi
-Týmový projek předmetu KIV/ZSWI
+Týmový projekt předmětu KIV/ZSWI
