@@ -104,11 +104,11 @@ zdroj dat</panel_attributes>
     <coordinates>
       <x>590</x>
       <y>240</y>
-      <w>160</w>
+      <w>120</w>
       <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;-&gt;
-ukládá a zapisuje</panel_attributes>
+ukládá a čte</panel_attributes>
     <additional_attributes>10.0;70.0;50.0;10.0</additional_attributes>
   </element>
 </diagram>
