@@ -57,22 +57,24 @@ void loop()
 {
 
       //1. Read from eHealth.
-       int airFlow = eHealth.getAirFlow();
+       //int airFlow = eHealth.getAirFlow();
        float temperature = eHealth.getTemperature();
        float conductance = eHealth.getSkinConductance();
        float resistance = eHealth.getSkinResistance();
+       float EKG = eHealth.getECG();
        int BPM = eHealth.getBPM();
        int SPO2 = eHealth.getOxygenSaturation();
        uint8_t pos = eHealth.getBodyPosition();
 
 
-      Serial.print(int(airFlow));     Serial.print("#");
-      Serial.print(temperature);      Serial.print("#");
-      Serial.print(int(BPM));         Serial.print("#");
-      Serial.print(int(SPO2));        Serial.print("#");
-      Serial.print(conductance);      Serial.print("#");
-      Serial.print(int(resistance));  Serial.print("#");
-      Serial.print(int(pos));         Serial.print("#");
+      //Serial.print(int(airFlow));     Serial.print("#");
+      Serial.print(temperature);      Serial.print("#"); // teplota
+      Serial.print(int(BPM));         Serial.print("#"); // puls
+      Serial.print(int(SPO2));        Serial.print("#"); // okysliceni
+      Serial.print(conductance);      Serial.print("#"); // GSR
+      Serial.print(int(resistance));  Serial.print("#"); // GSR
+      Serial.print(EKG);              Serial.print("#"); // EKG
+      Serial.print(int(pos));         Serial.print("#"); // akcelerometr
       Serial.print("\n");
 
       // Reduce this delay for more data rate
