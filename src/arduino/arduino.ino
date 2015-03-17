@@ -68,13 +68,13 @@ void loop()
 
 
       //Serial.print(int(airFlow));     Serial.print("#");
-      Serial.print(temperature);      Serial.print("#"); // teplota
-      Serial.print(int(BPM));         Serial.print("#"); // puls
-      Serial.print(int(SPO2));        Serial.print("#"); // okysliceni
-      Serial.print(conductance);      Serial.print("#"); // GSR
-      Serial.print(int(resistance));  Serial.print("#"); // GSR
-      Serial.print(EKG);              Serial.print("#"); // EKG
-      Serial.print(int(pos));         Serial.print("#"); // akcelerometr
+      Serial.print("T&");  Serial.print(temperature);      Serial.print("#"); // teplota
+      Serial.print("P&");  Serial.print(int(BPM));         Serial.print("#"); // puls
+      Serial.print("O&");  Serial.print(int(SPO2));        Serial.print("#"); // okysliceni
+      Serial.print("V&");  Serial.print(conductance);      Serial.print("#"); // GSR
+      Serial.print("R&");  Serial.print(int(resistance));  Serial.print("#"); // GSR
+      Serial.print("H&");  Serial.print(EKG);              Serial.print("#"); // EKG
+      Serial.print("A&");  Serial.print(int(pos));         Serial.print("#"); // akcelerometr
       Serial.print("\n");
 
       // Reduce this delay for more data rate
