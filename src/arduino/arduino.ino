@@ -1,4 +1,3 @@
-
 /*
  *  eHealth sensor platform for Arduino and Raspberry from Cooking-hacks.
  *
@@ -10,7 +9,7 @@
  *  Patient Position (Accelerometer)."
  *
  *  Explanation: This example shows the way to communicate with
- *  the Arduino Wifi Demo Android app.
+ *  the Arduino using ZigBee protocol.
  *
  *  Copyright (C) 2012 Libelium Comunicaciones Distribuidas S.L.
  *  http://www.libelium.com
@@ -27,20 +26,19 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *  Version 0.1
+ *
+ *  Version 2.0
  *  Author: Luis Martin & Ahmad Saad
  */
-
+ 
 #include <PinChangeInt.h>
-#include <PinChangeIntConfig.h>
 #include <eHealth.h>
-#include <eHealthDisplay.h>
-
-
 
 char recv[128];
 uint8_t cont = 0;
 
+//  Note :  The Xbee modules must be configured previously.
+//  See the next link http://www.cooking-hacks.com/index.php/documentation/tutorials/arduino-xbee-shield
 
 void setup()
 {
@@ -48,7 +46,6 @@ void setup()
 
   eHealth.initPulsioximeter();
   eHealth.initPositionSensor();
-
 
   //Attach the inttruptions for using the pulsioximeter.
   PCintPort::attachInterrupt(6, readPulsioximeter, RISING);
@@ -58,69 +55,38 @@ void setup()
 
 void loop()
 {
-  //while (Serial.available()>0) {}
-  // Enters in command mode
-  Serial.print("$$$"); check();
-  // Sets DHCP and TCP protocol
-  Serial.print("set ip dhcp 1\r"); check();
-  Serial.print("set ip protocol 1\r"); check();
-  // Configures the way to join the network AP
-  Serial.print("set wlan join 0\r"); check();
-  Serial.print("join ANDROID\r"); check();
 
-  Serial.print("set i h 255.255.255.255\r"); delay(1000);
+      //1. Read from eHealth.
+       int airFlow = eHealth.getAirFlow();
+       float temperature = eHealth.getTemperature();
+       float conductance = eHealth.getSkinConductance();
+       float resistance = eHealth.getSkinResistance();
+       int BPM = eHealth.getBPM();
+       int SPO2 = eHealth.getOxygenSaturation();
+       uint8_t pos = eHealth.getBodyPosition();
 
-  Serial.print("set i r 12345\r"); check();
-  Serial.print("set i l 2000\r"); check();
-  Serial.print("exit\r"); check();
 
-  while (1) {
+      Serial.print(int(airFlow));     Serial.print("#");
+      Serial.print(temperature);      Serial.print("#");
+      Serial.print(int(BPM));         Serial.print("#");
+      Serial.print(int(SPO2));        Serial.print("#");
+      Serial.print(conductance);      Serial.print("#");
+      Serial.print(int(resistance));  Serial.print("#");
+      Serial.print(int(pos));         Serial.print("#");
+      Serial.print("\n");
 
-    //1. Read from eHealth.
-    int airFlow = eHealth.getAirFlow();
-    float temperature = eHealth.getTemperature();
-    float conductance = eHealth.getSkinConductance();
-    float resistance = eHealth.getSkinResistance();
-    float conductanceVol = eHealth.getSkinConductanceVoltage();
-    int BPM = eHealth.getBPM();
-    int SPO2 = eHealth.getOxygenSaturation();
-    uint8_t pos = eHealth.getBodyPosition();
-    //int syst = eHealth.getSystolicPressure(1);
-    //int diast = eHealth.getDiastolicPressure(1);
-    float ECG = eHealth.getECG();
-    int EMG = eHealth.getEMG();
-    EMG = map (EMG, 200, 300, 0, 100); // Use this function to adapt your muscle level to 0-100%
-    //uint8_t glucose = eHealth.glucoseDataVector[0].glucose;
-
-    //Data sensor must be sent in this order to mobile android application
-    Serial.print(int(airFlow));     Serial.print("#");
-    Serial.print(ECG);         	  Serial.print("#");
-    Serial.print(int(0));           Serial.print("#"); //Systolic is not implemented
-    Serial.print(int(0));           Serial.print("#"); //Diastolic is not implemented
-    Serial.print(int(0));           Serial.print("#"); //Glucose is not implemented
-    Serial.print(temperature);      Serial.print("#");
-    Serial.print(int(BPM));         Serial.print("#");
-    Serial.print(int(SPO2));        Serial.print("#");
-    Serial.print(conductance);      Serial.print("#");
-    Serial.print(int(resistance));  Serial.print("#");
-    Serial.print(int(airFlow));     Serial.print("#");
-    Serial.print(int(pos));         Serial.print("#");
-    Serial.print(int(EMG));         Serial.print("#");
-    Serial.print("\n");
-
-    // Reduce this delay for more data rate
-    delay(250);
-  }
+      // Reduce this delay for more data rate
+      delay(250);
 }
 
-void check() {
-  cont = 0; delay(500);
-  while (Serial.available() > 0)
+void check(){
+  cont=0; delay(500);
+  while (Serial.available()>0)
   {
-    recv[cont] = Serial.read(); delay(10);
-    cont++;
+     recv[cont]=Serial.read(); delay(10);
+     cont++;
   }
-  recv[cont] = '\0';
+  recv[cont]='\0';
   Serial.println(recv);
   Serial.flush(); delay(100);
 }
@@ -129,7 +95,7 @@ void check() {
 
 //Include always this code when using the pulsioximeter sensor
 //=========================================================================
-void readPulsioximeter() {
+void readPulsioximeter(){
 
   cont ++;
 
