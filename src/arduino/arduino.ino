@@ -34,8 +34,21 @@
 #include <PinChangeInt.h>
 #include <eHealth.h>
 
+#define S_TEMP 1
+#define S_COND 2
+#define S_RESI 4
+#define S_EKG 8
+#define S_BPM 16
+#define S_SPO2 32
+#define S_ACCE 64
+
+#define CHECK_DELAY 4
+
 char recv[128];
 uint8_t cont = 0;
+
+char sensor_usage = 0xFF;
+short check_delayer = 0;
 
 //  Note :  The Xbee modules must be configured previously.
 //  See the next link http://www.cooking-hacks.com/index.php/documentation/tutorials/arduino-xbee-shield
@@ -55,30 +68,72 @@ void setup()
 
 void loop()
 {
-
+      float temperature, conductance, resistance, EKG;
+      int BPM, SPO2;
+      uint8_t pos;
+      
+      input_check();
+      
       //1. Read from eHealth.
        //int airFlow = eHealth.getAirFlow();
-       float temperature = eHealth.getTemperature();
-       float conductance = eHealth.getSkinConductance();
-       float resistance = eHealth.getSkinResistance();
-       float EKG = eHealth.getECG();
-       int BPM = eHealth.getBPM();
-       int SPO2 = eHealth.getOxygenSaturation();
-       uint8_t pos = eHealth.getBodyPosition();
+       if(sensor_usage & S_TEMP > 0){
+         temperature = eHealth.getTemperature();
+       }
+       if(sensor_usage & S_COND > 0){
+         conductance = eHealth.getSkinConductance();
+       }
+       if(sensor_usage & S_RESI > 0){
+         resistance = eHealth.getSkinResistance();
+       }
+       if(sensor_usage & S_EKG > 0){
+         EKG = eHealth.getECG();
+       }
+       if(sensor_usage & S_BPM > 0){
+         BPM = eHealth.getBPM();
+       }
+       if(sensor_usage & S_SPO2 > 0){
+         SPO2 = eHealth.getOxygenSaturation();
+       }
+       if(sensor_usage & S_ACCE> 0){
+         pos = eHealth.getBodyPosition();
+       }
 
-
+      Serial.print("Check cycle: "); Serial.print(check_delayer); Serial.print("\t");
+      
       //Serial.print(int(airFlow));     Serial.print("#");
-      Serial.print("T&");  Serial.print(temperature);      Serial.print("#"); // teplota
-      Serial.print("P&");  Serial.print(int(BPM));         Serial.print("#"); // puls
-      Serial.print("O&");  Serial.print(int(SPO2));        Serial.print("#"); // okysliceni
-      Serial.print("V&");  Serial.print(conductance);      Serial.print("#"); // GSR
-      Serial.print("R&");  Serial.print(int(resistance));  Serial.print("#"); // GSR
-      Serial.print("H&");  Serial.print(EKG);              Serial.print("#"); // EKG
-      Serial.print("A&");  Serial.print(int(pos));         Serial.print("#"); // akcelerometr
+      if(sensor_usage & S_TEMP > 0){
+        Serial.print("T&");  Serial.print(temperature);      Serial.print("#"); // teplota
+      }
+      if(sensor_usage & S_BPM > 0){
+        Serial.print("P&");  Serial.print(int(BPM));         Serial.print("#"); // puls
+      }
+      if(sensor_usage & S_SPO2 > 0){
+        Serial.print("O&");  Serial.print(int(SPO2));        Serial.print("#"); // okysliceni
+      }
+      if(sensor_usage & S_COND > 0){
+        Serial.print("V&");  Serial.print(conductance);      Serial.print("#"); // GSR
+      }
+      if(sensor_usage & S_RESI > 0){
+        Serial.print("R&");  Serial.print(int(resistance));  Serial.print("#"); // GSR
+      }
+      if(sensor_usage & S_EKG > 0){
+        Serial.print("H&");  Serial.print(EKG);              Serial.print("#"); // EKG
+      }
+      if(sensor_usage & S_ACCE > 0){
+        Serial.print("A&");  Serial.print(int(pos));         Serial.print("#"); // akcelerometr
+      }
       Serial.print("\n");
 
       // Reduce this delay for more data rate
       delay(250);
+}
+
+void input_check(){
+  if(++check_delayer >= CHECK_DELAY){
+        check_delayer = 0;
+        check();
+        Serial.print("Got: "); Serial.print(recv); Serial.print("\n");
+   }
 }
 
 void check(){
