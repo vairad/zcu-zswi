@@ -47,7 +47,7 @@
 char recv[128];
 uint8_t cont = 0;
 
-short sensor_usage = 255;
+unsigned short sensor_usage = 255;
 short check_delayer = 0;
 
 //  Note :  The Xbee modules must be configured previously.
@@ -104,25 +104,25 @@ void loop()
       //Serial.print(int(airFlow));     Serial.print("#");
       if(sensor_usage > 0){
         Serial.print("[");
-        if(sensor_usage & S_TEMP > 0){
+        if((unsigned short)(sensor_usage & S_TEMP) > 0){
           first_sent = print_if_not_first("T&", temperature, first_sent);    // teplota
         }
-        if(sensor_usage & S_BPM > 0){
+        if((unsigned short)(sensor_usage & S_BPM) > 0){
           first_sent = print_if_not_first("P&", int(BPM), first_sent);       // puls
         }
-        if(sensor_usage & S_SPO2 > 0){
+        if((unsigned short)(sensor_usage & S_SPO2) > 0){
           first_sent = print_if_not_first("O&", int(SPO2), first_sent);      // okysliceni
         }
-        if(sensor_usage & S_COND > 0){
+        if((unsigned short)(sensor_usage & S_COND) > 0){
           first_sent = print_if_not_first("V&", conductance, first_sent);    // GSR - napětí
         }
-        if(sensor_usage & S_RESI > 0){
+        if((unsigned short)(sensor_usage & S_RESI) > 0){
           first_sent = print_if_not_first("R&", int(resistance), first_sent);// GSR - odpor
         }
-        if(sensor_usage & S_EKG > 0){
+        if((unsigned short)(sensor_usage & S_EKG) > 0){
           first_sent = print_if_not_first("H&", EKG, first_sent);            // EKG
         }
-        if(sensor_usage & S_ACCE > 0){
+        if((unsigned short)(sensor_usage & S_ACCE) > 0){
           first_sent = print_if_not_first("A&", int(pos), first_sent);      // akcelerometr
         }
         Serial.print("]\n");
@@ -158,8 +158,44 @@ void input_check(){
 }
 
 void process_command(char *command, char *argument){
-  Serial.print("cmd: "); Serial.print(command); Serial.print("\t");
-  Serial.print("arg: "); Serial.print(argument);Serial.print("\n");
+  unsigned short differ;
+  if(strcmp(command, "SET") == 0){
+    if(strlen(argument) != 8){
+      Serial.print("Can't set "); Serial.print(argument); Serial.print(" size not 8, was ");
+      Serial.print(strlen(argument)); Serial.print("\n");
+      return;
+    }
+    Serial.print("SETTING "); Serial.print(argument); Serial.print("\n");
+    return;
+  }
+  switch(argument[0]){
+    case 'T': differ = S_TEMP; break;
+    case 'V': differ = S_COND; break;
+    case 'R': differ = S_RESI; break;
+    case 'H': differ = S_EKG;  break;
+    case 'P': differ = S_BPM;  break;
+    case 'O': differ = S_SPO2; break;
+    case 'A': differ = S_ACCE; break;
+    default:
+      Serial.print("Invalid argument: "); Serial.print(argument); Serial.print(" value not in [A H O P R T V]!\n");
+      return;
+  }
+  switch(command[0]){
+    case 'E':
+      Serial.print("Sensor usage: "); Serial.print(sensor_usage); Serial.print("\n");
+      Serial.print("Enabling "); Serial.print(differ); Serial.print("\n");
+      sensor_usage = sensor_usage | differ;
+      Serial.print("Sensor usage: "); Serial.print(sensor_usage); Serial.print("\n");
+      break;
+    case 'D':
+      Serial.print("Sensor usage: "); Serial.print(sensor_usage); Serial.print("\n");
+      Serial.print("Disabling "); Serial.print(differ); Serial.print("\n");
+      differ = ~differ;
+      Serial.print("Disabler: "); Serial.print(differ); Serial.print("\n");
+      sensor_usage = sensor_usage & differ;
+      Serial.print("Sensor usage: "); Serial.print(sensor_usage); Serial.print("\n");
+      break;
+    }
 }
 
 void check(){
