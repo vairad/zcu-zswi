@@ -140,20 +140,33 @@ boolean print_if_not_first(char* stamp, int val, boolean first_sent){
 }
 
 void input_check(){
+  char *temp, *command, *argument;
+  
   if(++check_delayer >= CHECK_DELAY){
-        check_delayer = 0;
-        check();
-        if(cont != 0){
-          Serial.print("Juu: "); Serial.print(recv); Serial.print("\n");
-        }
-   }
+    check_delayer = 0;
+    check();
+    if(cont != 0){
+      command = strtok_r(recv, " ", &temp);
+      argument= strtok_r(NULL, " ", &temp);
+      if(command != NULL && argument != NULL){
+        process_command(command, argument);
+      } else {
+        Serial.print("Neplatny prikaz-argument!\n");
+      }
+    }
+  }
+}
+
+void process_command(char *command, char *argument){
+  Serial.print("cmd: "); Serial.print(command); Serial.print("\t");
+  Serial.print("arg: "); Serial.print(argument);Serial.print("\n");
 }
 
 void check(){
   cont=0; delay(500);
   while (Serial.available()>0)
   {
-     recv[cont]=Serial.read(); delay(10);
+     recv[cont]=toupper(Serial.read()); delay(10);
      cont++;
   }
   recv[cont]='\0';
