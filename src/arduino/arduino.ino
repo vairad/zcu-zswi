@@ -47,7 +47,7 @@
 char recv[128];
 uint8_t cont = 0;
 
-char sensor_usage = 0xFF;
+short sensor_usage = 255;
 short check_delayer = 0;
 
 //  Note :  The Xbee modules must be configured previously.
@@ -71,6 +71,7 @@ void loop()
       float temperature, conductance, resistance, EKG;
       int BPM, SPO2;
       uint8_t pos;
+      boolean first_sent = false;
       
       input_check();
       
@@ -98,41 +99,53 @@ void loop()
          pos = eHealth.getBodyPosition();
        }
 
-      Serial.print("Check cycle: "); Serial.print(check_delayer); Serial.print("\t");
+      Serial.print("Check cycle: "); Serial.print(check_delayer); Serial.print("\t\t");
       
       //Serial.print(int(airFlow));     Serial.print("#");
-      if(sensor_usage & S_TEMP > 0){
-        Serial.print("T&");  Serial.print(temperature);      Serial.print("#"); // teplota
+      if(sensor_usage > 0){
+        Serial.print("[");
+        if(sensor_usage & S_TEMP > 0){
+          first_sent = print_if_not_first("T&", temperature, first_sent);    // teplota
+        }
+        if(sensor_usage & S_BPM > 0){
+          first_sent = print_if_not_first("P&", int(BPM), first_sent);       // puls
+        }
+        if(sensor_usage & S_SPO2 > 0){
+          first_sent = print_if_not_first("O&", int(SPO2), first_sent);      // okysliceni
+        }
+        if(sensor_usage & S_COND > 0){
+          first_sent = print_if_not_first("V&", conductance, first_sent);    // GSR - napětí
+        }
+        if(sensor_usage & S_RESI > 0){
+          first_sent = print_if_not_first("R&", int(resistance), first_sent);// GSR - odpor
+        }
+        if(sensor_usage & S_EKG > 0){
+          first_sent = print_if_not_first("H&", EKG, first_sent);            // EKG
+        }
+        if(sensor_usage & S_ACCE > 0){
+          first_sent = print_if_not_first("A&", int(pos), first_sent);      // akcelerometr
+        }
+        Serial.print("]\n");
       }
-      if(sensor_usage & S_BPM > 0){
-        Serial.print("P&");  Serial.print(int(BPM));         Serial.print("#"); // puls
-      }
-      if(sensor_usage & S_SPO2 > 0){
-        Serial.print("O&");  Serial.print(int(SPO2));        Serial.print("#"); // okysliceni
-      }
-      if(sensor_usage & S_COND > 0){
-        Serial.print("V&");  Serial.print(conductance);      Serial.print("#"); // GSR
-      }
-      if(sensor_usage & S_RESI > 0){
-        Serial.print("R&");  Serial.print(int(resistance));  Serial.print("#"); // GSR
-      }
-      if(sensor_usage & S_EKG > 0){
-        Serial.print("H&");  Serial.print(EKG);              Serial.print("#"); // EKG
-      }
-      if(sensor_usage & S_ACCE > 0){
-        Serial.print("A&");  Serial.print(int(pos));         Serial.print("#"); // akcelerometr
-      }
-      Serial.print("\n");
-
       // Reduce this delay for more data rate
       delay(250);
+}
+
+boolean print_if_not_first(char* stamp, int val, boolean first_sent){
+  if(first_sent){
+    Serial.print("\t");
+  }
+  Serial.print(stamp); Serial.print(val);
+  return true;
 }
 
 void input_check(){
   if(++check_delayer >= CHECK_DELAY){
         check_delayer = 0;
         check();
-        Serial.print("Got: "); Serial.print(recv); Serial.print("\n");
+        if(cont != 0){
+          Serial.print("Juu: "); Serial.print(recv); Serial.print("\n");
+        }
    }
 }
 
