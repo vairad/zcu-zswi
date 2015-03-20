@@ -42,6 +42,9 @@
 #define S_SPO2 32
 #define S_ACCE 64
 
+#define S_MAX 64
+#define USAGE_BITS 7
+
 #define CHECK_DELAY 4
 
 char recv[128];
@@ -63,7 +66,6 @@ void setup()
   //Attach the inttruptions for using the pulsioximeter.
   PCintPort::attachInterrupt(6, readPulsioximeter, RISING);
   delay(1000);
-  print_sensor_usage();
 
 }
 
@@ -163,12 +165,7 @@ void input_check(){
 void process_command(char *command, char *argument){
   unsigned short differ;
   if(strcmp(command, "SET") == 0){
-    if(strlen(argument) != 7){
-      Serial.print("Can't set "); Serial.print(argument); Serial.print(" size not 7, was ");
-      Serial.print(strlen(argument)); Serial.print("\n");
-      return;
-    }
-    Serial.print("SETTING "); Serial.print(argument); Serial.print("\n");
+    set_usage_bits(argument);
     return;
   }
   switch(argument[0]){
@@ -199,6 +196,25 @@ void process_command(char *command, char *argument){
       print_sensor_usage();
       break;
     }
+}
+
+void set_usage_bits(char *argument){
+  int len = strlen(argument);
+    if(len != USAGE_BITS){
+      Serial.print("Can't set "); Serial.print(argument); Serial.print(" size not USAGE__BITS was ");
+      Serial.print(len); Serial.print("\n");
+      return;
+    }
+    short new_usage = 0;
+    short i, adder = S_MAX;
+    for(i = 0; i < USAGE_BITS; i++){
+      if(argument[i] == '1'){
+        new_usage += adder;
+      }
+    }
+    sensor_usage = new_usage;
+    Serial.print("Setting "); Serial.print(argument); 
+    Serial.print(" result: "); print_sensor_usage();
 }
 
 void print_sensor_usage(){
