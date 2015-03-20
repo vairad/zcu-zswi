@@ -211,6 +211,7 @@ void set_usage_bits(char *argument){
       if(argument[i] == '1'){
         new_usage += adder;
       }
+      adder /= 2;
     }
     sensor_usage = new_usage;
     Serial.print("Setting "); Serial.print(argument); 
