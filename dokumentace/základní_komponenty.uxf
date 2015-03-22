@@ -4,8 +4,8 @@
   <element>
     <id>UMLActor</id>
     <coordinates>
-      <x>190</x>
-      <y>200</y>
+      <x>120</x>
+      <y>310</y>
       <w>60</w>
       <h>100</h>
     </coordinates>
@@ -15,45 +15,47 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>340</x>
-      <y>210</y>
+      <x>330</x>
+      <y>320</y>
       <w>100</w>
-      <h>40</h>
+      <h>60</h>
     </coordinates>
     <panel_attributes>Arduino
-+ E-health
-</panel_attributes>
+aplikace pro
+snímání dat</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>600</x>
-      <y>210</y>
-      <w>100</w>
-      <h>40</h>
+      <x>560</x>
+      <y>320</y>
+      <w>120</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>PC
-GUI aplikace</panel_attributes>
+GUI aplikace
+ovládání arduina</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>430</x>
-      <y>210</y>
-      <w>190</w>
-      <h>40</h>
+      <x>420</x>
+      <y>320</y>
+      <w>160</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes>lt=&lt;.&gt;
-BT komunikace</panel_attributes>
-    <additional_attributes>10.0;20.0;170.0;20.0</additional_attributes>
+BT komunikace
+</panel_attributes>
+    <additional_attributes>10.0;20.0;140.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLActor</id>
     <coordinates>
-      <x>750</x>
-      <y>190</y>
+      <x>770</x>
+      <y>300</y>
       <w>160</w>
       <h>130</h>
     </coordinates>
@@ -65,50 +67,39 @@ Promotér</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>690</x>
-      <y>210</y>
-      <w>130</w>
+      <x>670</x>
+      <y>320</y>
+      <w>170</w>
       <h>50</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 ovládá 
 aplikaci</panel_attributes>
-    <additional_attributes>10.0;20.0;110.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>560</x>
-      <y>310</y>
-      <w>110</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>Datové úložiště
-(HDD)</panel_attributes>
-    <additional_attributes/>
+    <additional_attributes>10.0;20.0;150.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>240</x>
-      <y>210</y>
-      <w>120</w>
+      <x>170</x>
+      <y>320</y>
+      <w>180</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 zdroj dat</panel_attributes>
-    <additional_attributes>100.0;20.0;10.0;20.0</additional_attributes>
+    <additional_attributes>160.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
-    <id>Relation</id>
+    <id>UMLPackage</id>
     <coordinates>
-      <x>590</x>
-      <y>240</y>
-      <w>120</w>
-      <h>90</h>
+      <x>290</x>
+      <y>220</y>
+      <w>420</w>
+      <h>210</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-&gt;
-ukládá a čte</panel_attributes>
-    <additional_attributes>10.0;70.0;50.0;10.0</additional_attributes>
+    <panel_attributes>Systém pro sledování bio dat
+--
+bg=orange</panel_attributes>
+    <additional_attributes/>
   </element>
 </diagram>
