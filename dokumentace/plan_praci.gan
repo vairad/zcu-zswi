@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Šejdrem" company="ZČU" webLink="https://github.com/vairad/zcu-zswi" view-date="2014-12-01" view-index="1" gantt-divider-location="353" resource-divider-location="300" version="2.7" locale="cs">
+<?xml version="1.0" encoding="UTF-8"?><project name="Šejdrem" company="ZČU" webLink="https://github.com/vairad/zcu-zswi" view-date="2015-01-01" view-index="0" gantt-divider-location="459" resource-divider-location="300" version="2.7" locale="cs">
     <description/>
-    <view zooming-state="default:6" id="gantt-chart">
-        <field id="tpd3" name="Jméno" width="68" order="0"/>
-        <field id="tpd4" name="Datum zahájení" width="16" order="1"/>
-        <field id="tpd5" name="Datum ukončení" width="14" order="2"/>
-        <timeline><![CDATA[17,64,90,0]]></timeline>
-        <option id="color.recent"><![CDATA[#ff3333 #ff3333 #66ffff #33ff33 #33ff33 #ff3333 #000000 #000000 #ff3333 #ff3333]]></option>
+    <view zooming-state="default:10" id="gantt-chart">
+        <field id="tpd3" name="Jméno" width="60" order="0"/>
+        <field id="tpd4" name="Datum zahájení" width="20" order="1"/>
+        <field id="tpd5" name="Datum ukončení" width="19" order="2"/>
+        <timeline><![CDATA[0,64,17,90]]></timeline>
+        <option id="color.recent"><![CDATA[#cc0000 #cc0000 #ff3333 #ff3333 #66ffff #33ff33 #33ff33 #ff3333 #000000 #000000]]></option>
     </view>
     <view id="resource-table">
         <field id="0" name="Jméno" width="50" order="0"/>
@@ -35,7 +35,7 @@
             <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
             <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
         </taskproperties>
-        <task id="38" name="Projekt Šejdrem Arduino" meeting="false" start="2015-02-17" duration="64" complete="17" expand="true">
+        <task id="38" name="Projekt Šejdrem Arduino" meeting="false" start="2015-02-17" duration="64" complete="32" expand="true">
             <task id="56" name="Zahájení projektu" color="#000000" meeting="false" start="2015-02-17" duration="15" complete="94" expand="true">
                 <task id="52" name="Přidělení projektu" color="#33ffff" meeting="false" start="2015-02-17" duration="1" complete="100" expand="true">
                     <depend id="55" type="2" difference="0" hardness="Strong"/>
@@ -58,7 +58,7 @@
                 </task>
                 <task id="64" name="Podepsání DSP" color="#33ffff" meeting="true" start="2015-03-10" duration="0" complete="0" expand="true"/>
             </task>
-            <task id="71" name="Plánování" color="#000000" meeting="false" start="2015-03-02" duration="27" complete="21" expand="true">
+            <task id="71" name="Plánování" color="#000000" meeting="false" start="2015-03-02" duration="27" complete="53" expand="true">
                 <task id="73" name="Konkretizace potřebných prací" color="#ff3333" meeting="false" start="2015-03-02" duration="3" complete="100" expand="true">
                     <depend id="78" type="2" difference="0" hardness="Strong"/>
                 </task>
@@ -67,73 +67,78 @@
                     <depend id="86" type="2" difference="0" hardness="Strong"/>
                     <depend id="90" type="2" difference="0" hardness="Strong"/>
                 </task>
-                <task id="86" name="Revize plánu a jeho konkretizace" color="#ff3333" meeting="false" start="2015-03-10" duration="21" complete="0" expand="true"/>
+                <task id="86" name="Revize plánu a jeho konkretizace" color="#ff3333" meeting="false" start="2015-03-10" duration="21" complete="43" expand="true"/>
                 <task id="90" name="Schválení plánu práce" color="#ff3333" meeting="true" start="2015-03-10" duration="0" complete="0" expand="true"/>
             </task>
-            <task id="121" name="Aplikace" meeting="false" start="2015-02-27" duration="50" complete="9" expand="true">
+            <task id="121" name="Aplikace" meeting="false" start="2015-02-27" duration="52" complete="35" expand="true">
                 <depend id="0" type="2" difference="0" hardness="Strong"/>
                 <task id="129" name="Prvotní návrh vzhledu GUI" color="#ff3333" meeting="false" start="2015-02-27" duration="1" complete="100" expand="true"/>
                 <task id="180" name="Příprava vývojového prostředí" color="#ff3333" meeting="false" start="2015-02-27" duration="7" complete="100" expand="true"/>
-                <task id="37" name="Analýza struktury programu" color="#ff3333" meeting="false" start="2015-03-10" duration="4" complete="0" priority="2" expand="true">
+                <task id="37" name="Analýza struktury programu" color="#ff3333" meeting="false" start="2015-03-10" duration="6" complete="100" priority="2" expand="true">
                     <depend id="3" type="2" difference="0" hardness="Strong"/>
                     <depend id="20" type="2" difference="0" hardness="Strong"/>
                     <depend id="130" type="2" difference="0" hardness="Strong"/>
                 </task>
-                <task id="130" name="Definice rozhraní" color="#ff3333" meeting="false" start="2015-03-16" duration="4" complete="0" expand="true">
+                <task id="130" name="Definice rozhraní" color="#ff3333" meeting="false" start="2015-03-18" duration="4" complete="100" expand="true">
                     <depend id="6" type="2" difference="0" hardness="Strong"/>
                     <depend id="13" type="2" difference="0" hardness="Strong"/>
                     <depend id="25" type="2" difference="0" hardness="Strong"/>
                 </task>
-                <task id="123" name="Část GUI" meeting="false" start="2015-03-16" duration="32" complete="0" expand="true">
-                    <task id="20" name="Základní GUI" color="#33ff33" meeting="false" start="2015-03-16" duration="4" complete="0" priority="4" expand="true">
+                <task id="123" name="Část GUI" meeting="false" start="2015-03-18" duration="32" complete="15" expand="true">
+                    <task id="20" name="Základní GUI" color="#33ff33" meeting="false" start="2015-03-18" duration="4" complete="100" priority="4" expand="true">
                         <depend id="13" type="2" difference="0" hardness="Strong"/>
                         <depend id="25" type="2" difference="0" hardness="Strong"/>
                     </task>
-                    <task id="25" name="Modul PROMOTION" color="#33ff33" meeting="false" start="2015-03-20" duration="7" complete="0" expand="true">
+                    <task id="25" name="Modul PROMOTION" color="#33ff33" meeting="false" start="2015-03-24" duration="7" complete="42" expand="true">
                         <depend id="28" type="2" difference="0" hardness="Strong"/>
                         <depend id="137" type="2" difference="0" hardness="Strong"/>
                     </task>
-                    <task id="137" name="Robustnění PROMOTION" color="#33ff33" meeting="false" start="2015-03-31" duration="14" complete="0" expand="true"/>
-                    <task id="28" name="Modul SCIENCE" color="#33ff33" meeting="false" start="2015-03-31" duration="7" complete="0" expand="true">
+                    <task id="137" name="Robustnění PROMOTION" color="#33ff33" meeting="false" start="2015-04-02" duration="14" complete="0" expand="true"/>
+                    <task id="28" name="Modul SCIENCE" color="#33ff33" meeting="false" start="2015-04-02" duration="7" complete="0" expand="true">
                         <depend id="17" type="2" difference="0" hardness="Rubber"/>
                         <depend id="141" type="2" difference="0" hardness="Strong"/>
                     </task>
-                    <task id="141" name="Robustnění SCIENCE" color="#33ff33" meeting="false" start="2015-04-09" duration="14" complete="0" expand="true"/>
+                    <task id="141" name="Robustnění SCIENCE" color="#33ff33" meeting="false" start="2015-04-13" duration="14" complete="0" expand="true"/>
                 </task>
-                <task id="124" name="Část Arduino" meeting="false" start="2015-03-16" duration="10" complete="0" expand="true">
-                    <task id="3" name="Základní smyčka Arduino" color="#6666ff" meeting="false" start="2015-03-16" duration="3" complete="0" priority="2" expand="true">
+                <task id="124" name="Část Arduino" meeting="false" start="2015-03-18" duration="10" complete="100" expand="true">
+                    <task id="3" name="Základní smyčka Arduino" color="#6666ff" meeting="false" start="2015-03-18" duration="3" complete="100" priority="2" expand="true">
                         <notes><![CDATA[Cílem je vytvořit smyčku, která nepřetžitě odesílá data z Arduina, abychom mohli pracovat na jejich vizualizaci.]]></notes>
                         <depend id="6" type="2" difference="0" hardness="Strong"/>
                         <depend id="13" type="2" difference="0" hardness="Strong"/>
                     </task>
-                    <task id="6" name="Smyčka všech senzorů" color="#3333ff" meeting="false" start="2015-03-20" duration="4" complete="0" expand="true">
+                    <task id="6" name="Smyčka všech senzorů" color="#3333ff" meeting="false" start="2015-03-24" duration="4" complete="100" expand="true">
                         <depend id="10" type="2" difference="0" hardness="Strong"/>
                     </task>
-                    <task id="10" name="Nastavení zvolených senzorů" color="#3333ff" meeting="false" start="2015-03-26" duration="2" complete="0" expand="true">
+                    <task id="10" name="Nastavení zvolených senzorů" color="#3333ff" meeting="false" start="2015-03-30" duration="2" complete="100" expand="true">
                         <depend id="35" type="2" difference="0" hardness="Strong"/>
                     </task>
                 </task>
-                <task id="156" name="Část Desktop" meeting="false" start="2015-03-20" duration="15" complete="0" expand="true">
+                <task id="156" name="Část Desktop" meeting="false" start="2015-03-24" duration="21" complete="5" expand="true">
                     <depend id="17" type="2" difference="0" hardness="Rubber"/>
-                    <task id="13" name="Základní komunikace BT" color="#66ffff" shape="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" meeting="false" start="2015-03-20" duration="7" complete="0" expand="true">
+                    <task id="13" name="Základní komunikace BT" color="#66ffff" shape="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" meeting="false" start="2015-03-24" duration="7" complete="21" expand="true">
                         <depend id="35" type="2" difference="0" hardness="Strong"/>
                         <depend id="157" type="2" difference="0" hardness="Strong"/>
                     </task>
-                    <task id="157" name="Klasifikace EKG" color="#66ffff" meeting="false" start="2015-03-31" duration="7" complete="0" thirdDate="2015-03-12" thirdDate-constraint="0" expand="true"/>
-                    <task id="35" name="Rozšířená komunikace BT Arduino" color="#66ffff" shape="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" meeting="false" start="2015-03-31" duration="4" complete="0" expand="true">
+                    <task id="35" name="Rozšířená komunikace BT Arduino" color="#66ffff" shape="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" meeting="false" start="2015-04-02" duration="4" complete="0" expand="true">
                         <depend id="30" type="2" difference="0" hardness="Strong"/>
                     </task>
-                    <task id="30" name="Spojení GUI  a Aplikace pro komunikaci" color="#66ffff" shape="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" meeting="false" start="2015-04-06" duration="4" complete="0" expand="true"/>
+                    <task id="30" name="Spojení GUI  a Aplikace pro komunikaci" color="#66ffff" shape="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" meeting="false" start="2015-04-08" duration="4" complete="0" expand="true"/>
+                    <task id="157" name="Klasifikace EKG" color="#66ffff" meeting="false" start="2015-04-02" duration="14" complete="0" thirdDate="2015-03-12" thirdDate-constraint="0" expand="true">
+                        <task id="190" name="Přepisovač na řetězec" color="#cc0000" meeting="false" start="2015-04-02" duration="7" complete="0" expand="true">
+                            <depend id="194" type="2" difference="0" hardness="Strong"/>
+                        </task>
+                        <task id="194" name="Hledání podřetězců" color="#cc0000" meeting="false" start="2015-04-13" duration="7" complete="0" expand="true"/>
+                    </task>
                 </task>
-                <task id="17" name="Testování" color="#ff9933" meeting="false" start="2015-04-20" duration="14" complete="0" priority="0" expand="true">
+                <task id="17" name="Testování" color="#ff9933" meeting="false" start="2015-04-22" duration="14" complete="0" priority="0" expand="true">
                     <depend id="0" type="2" difference="0" hardness="Rubber"/>
                 </task>
             </task>
             <task id="158" name="Kontrola" meeting="false" start="2015-03-11" duration="40" complete="0" expand="true">
                 <task id="159" name="1. iterace" color="#8cb6ce" meeting="true" start="2015-03-11" duration="0" complete="0" expand="true"/>
                 <task id="160" name="2. iterace" color="#8cb6ce" meeting="true" start="2015-03-25" duration="0" complete="0" expand="true"/>
-                <task id="161" name="3. iterace" color="#8cb6ce" meeting="true" start="2015-04-08" duration="0" complete="0" expand="true"/>
-                <task id="169" name="4. iterace" color="#8cb6ce" meeting="true" start="2015-04-22" duration="0" complete="0" expand="true"/>
+                <task id="161" name="3. iterace" color="#8cb6ce" meeting="true" start="2015-04-15" duration="0" complete="0" expand="true"/>
+                <task id="169" name="4. iterace" color="#8cb6ce" meeting="true" start="2015-04-29" duration="0" complete="0" expand="true"/>
                 <task id="171" name="5. iterace" color="#8cb6ce" meeting="true" start="2015-05-06" duration="0" complete="0" expand="true"/>
             </task>
             <task id="177" name="Prezentace projektu" meeting="false" start="2015-05-06" duration="8" complete="0" expand="true">
@@ -143,7 +148,7 @@
                 <task id="179" name="Prezentace kolegům" color="#8cb6ce" meeting="false" start="2015-05-15" duration="1" complete="0" expand="true"/>
             </task>
         </task>
-        <task id="0" name="Předání aplikace" color="#8cb6ce" meeting="true" start="2015-05-08" duration="0" complete="0" expand="true"/>
+        <task id="0" name="Předání aplikace" color="#8cb6ce" meeting="true" start="2015-05-12" duration="0" complete="0" expand="true"/>
     </tasks>
     <resources>
         <resource id="0" name="Jakub" function="SoftwareDevelopment:2" contacts="" phone=""/>
@@ -171,9 +176,9 @@
         <displaycolumn property-id="tpd6" order="-1" width="75" visible="false"/>
         <displaycolumn property-id="tpd0" order="-1" width="75" visible="false"/>
         <displaycolumn property-id="tpd11" order="-1" width="75" visible="false"/>
-        <displaycolumn property-id="tpd3" order="0" width="229" visible="true"/>
-        <displaycolumn property-id="tpd4" order="1" width="55" visible="true"/>
-        <displaycolumn property-id="tpd5" order="2" width="50" visible="true"/>
+        <displaycolumn property-id="tpd3" order="0" width="264" visible="true"/>
+        <displaycolumn property-id="tpd4" order="1" width="90" visible="true"/>
+        <displaycolumn property-id="tpd5" order="2" width="86" visible="true"/>
     </taskdisplaycolumns>
     <previous/>
     <roles roleset-name="Default"/>
