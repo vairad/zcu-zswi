@@ -34,23 +34,21 @@
 #include <PinChangeInt.h>
 #include <eHealth.h>
 
-#define S_TEMP 1
-#define S_COND 2
-#define S_RESI 4
-#define S_EKG 8
-#define S_BPM 16
-#define S_SPO2 32
-#define S_ACCE 64
-
-#define S_MAX 64
-#define USAGE_BITS 7
+#define S_TEMP 0
+#define S_COND 1
+#define S_RESI 2
+#define S_EKG 3
+#define S_BPM 4
+#define S_SPO2 5
+#define S_ACCE 6
+#define SENSOR_COUNT 7
 
 #define CHECK_DELAY 4
 
 char recv[128];
 uint8_t cont = 0;
 
-unsigned short sensor_usage = 127;
+boolean sensor_usage[SENSOR_COUNT];
 short check_delayer = 0;
 
 //  Note :  The Xbee modules must be configured previously.
@@ -59,7 +57,10 @@ short check_delayer = 0;
 void setup()
 {
   Serial.begin(9600);
-
+  
+  for(short i = 0; i < SENSOR_COUNT; i++){
+    sensor_usage[i] = true;
+  }
   eHealth.initPulsioximeter();
   eHealth.initPositionSensor();
 
@@ -81,49 +82,49 @@ void loop()
         Serial.print("Check cycle: "); Serial.print(check_delayer); Serial.print("\t\t");
         //1. Read from eHealth.
          //int airFlow = eHealth.getAirFlow();
-         if(sensor_usage & S_TEMP > 0){
+         if(is_enabled(S_TEMP)){
            temperature = eHealth.getTemperature();
          }
-         if(sensor_usage & S_COND > 0){
+         if(is_enabled(S_COND)){
            conductance = eHealth.getSkinConductance();
          }
-         if(sensor_usage & S_RESI > 0){
+         if(is_enabled(S_RESI)){
            resistance = eHealth.getSkinResistance();
          }
-         if(sensor_usage & S_EKG > 0){
+         if(is_enabled(S_EKG)){
            EKG = eHealth.getECG();
          }
-         if(sensor_usage & S_BPM > 0){
+         if(is_enabled(S_BPM)){
            BPM = eHealth.getBPM();
          }
-         if(sensor_usage & S_SPO2 > 0){
+         if(is_enabled(S_SPO2)){
            SPO2 = eHealth.getOxygenSaturation();
          }
-         if(sensor_usage & S_ACCE> 0){
+         if(is_enabled(S_ACCE)){
            pos = eHealth.getBodyPosition();
          }
         //Serial.print(int(airFlow));     Serial.print("#");
       
         Serial.print("[");
-        if((unsigned short)(sensor_usage & S_TEMP) > 0){
+        if(is_enabled(S_TEMP)){
           first_sent = print_if_not_first("T&", temperature, first_sent);    // teplota
         }
-        if((unsigned short)(sensor_usage & S_BPM) > 0){
+        if(is_enabled(S_BPM)){
           first_sent = print_if_not_first("P&", int(BPM), first_sent);       // puls
         }
-        if((unsigned short)(sensor_usage & S_SPO2) > 0){
+        if(is_enabled(S_SPO2)){
           first_sent = print_if_not_first("O&", int(SPO2), first_sent);      // okysliceni
         }
-        if((unsigned short)(sensor_usage & S_COND) > 0){
+        if(is_enabled(S_COND)){
           first_sent = print_if_not_first("V&", conductance, first_sent);    // GSR - napětí
         }
-        if((unsigned short)(sensor_usage & S_RESI) > 0){
+        if(is_enabled(S_RESI)){
           first_sent = print_if_not_first("R&", int(resistance), first_sent);// GSR - odpor
         }
-        if((unsigned short)(sensor_usage & S_EKG) > 0){
+        if(is_enabled(S_EKG)){
           first_sent = print_if_not_first("H&", EKG, first_sent);            // EKG
         }
-        if((unsigned short)(sensor_usage & S_ACCE) > 0){
+        if(is_enabled(S_ACCE)){
           first_sent = print_if_not_first("A&", int(pos), first_sent);      // akcelerometr
         }
         Serial.print("]\n");
@@ -134,6 +135,14 @@ void loop()
         delay(500);
       }
       
+}
+
+boolean is_enabled(int sensor_number){
+  if(sensor_number < 0 || sensor_number > SENSOR_COUNT){
+    Serial.print("Bad sensor number: "); Serial.print(sensor_number);
+    return false;
+  }
+  return sensor_usage[sensor_number];
 }
 
 boolean print_if_not_first(char* stamp, int val, boolean first_sent){
@@ -162,6 +171,13 @@ void input_check(){
   }
 }
 
+void set_enabled(boolean value, short sensor){
+  if(sensor < 0 || sensor >= SENSOR_COUNT){
+    Serial.print("Invalid bit index: "); Serial.print(sensor);
+  }
+  sensor_usage[sensor] = value;
+}
+
 void process_command(char *command, char *argument){
   unsigned short differ;
   if(strcmp(command, "SET") == 0){
@@ -182,44 +198,28 @@ void process_command(char *command, char *argument){
   }
   switch(command[0]){
     case 'E':
-      print_sensor_usage();
       Serial.print("Enabling "); Serial.print(differ); Serial.print("\n");
-      sensor_usage = sensor_usage | differ;
-      print_sensor_usage();
+      set_enabled(true, differ);
       break;
     case 'D':
-      print_sensor_usage();
       Serial.print("Disabling "); Serial.print(differ); Serial.print("\n");
-      differ = ~differ;
-      Serial.print("Disabler: "); Serial.print(differ); Serial.print("\n");
-      sensor_usage = sensor_usage & differ;
-      print_sensor_usage();
+      set_enabled(false, differ);
       break;
     }
 }
 
 void set_usage_bits(char *argument){
   int len = strlen(argument);
-    if(len != USAGE_BITS){
-      Serial.print("Can't set "); Serial.print(argument); Serial.print(" size not USAGE__BITS was ");
-      Serial.print(len); Serial.print("\n");
-      return;
-    }
-    short new_usage = 0;
-    short i, adder = S_MAX;
-    for(i = 0; i < USAGE_BITS; i++){
-      if(argument[i] == '1'){
-        new_usage += adder;
-      }
-      adder /= 2;
-    }
-    sensor_usage = new_usage;
-    Serial.print("Setting "); Serial.print(argument); 
-    Serial.print(" result: "); print_sensor_usage();
-}
-
-void print_sensor_usage(){
-  Serial.print("Sensor usage: "); Serial.print(sensor_usage); Serial.print("\n");
+  if(len != SENSOR_COUNT){
+    Serial.print("Can't set "); Serial.print(argument); Serial.print(" size not SENSOR_COUNT was ");
+    Serial.print(len); Serial.print("\n");
+    return;
+  }
+  short i;
+  for(i = 0; i < SENSOR_COUNT; i++){
+    set_enabled((argument[i] == '1'), i);
+  }
+  Serial.print("Setting "); Serial.print(argument); 
 }
 
 void check(){
