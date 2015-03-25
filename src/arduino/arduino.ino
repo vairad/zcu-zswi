@@ -44,9 +44,11 @@
 #define SENSOR_COUNT 7
 
 #define CHECK_DELAY 4
+#define LED 13
 
 char recv[128];
 uint8_t cont = 0;
+
 
 boolean sensor_usage[SENSOR_COUNT];
 short check_delayer = 0;
@@ -54,9 +56,32 @@ short check_delayer = 0;
 //  Note :  The Xbee modules must be configured previously.
 //  See the next link http://www.cooking-hacks.com/index.php/documentation/tutorials/arduino-xbee-shield
 
+void bt_setup(){
+  
+  Serial.print("AT+JSEC=1,1,1,04,1111\r\n"); // Enable security command
+  delay(2000);
+  Serial.print("AT+JDIS=3\r\n"); // Discorable command
+  delay(2000);
+  Serial.print("AT+JRLS=1101,11,Serial Port,01,000000\r\n"); // Register local sevice command
+  delay(2000);
+  Serial.print("AT+JAAC=1\r\n");// Auto accept connection requests command
+  delay(2000);
+  pinMode(LED, OUTPUT);
+  digitalWrite(LED, LOW);
+  Serial.flush();
+  /*val = Serial.read();
+  while (val != 'R'){
+    val = Serial.read();
+  }*/
+  delay(1000);
+  Serial.print("AT+JSCR\r\n"); // Stream Connection Request command
+}
+
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(115200);
+  delay(2000);
+  bt_setup();
   
   for(short i = 0; i < SENSOR_COUNT; i++){
     sensor_usage[i] = true;
@@ -134,7 +159,7 @@ void loop()
         Serial.print("Sleep cycle: "); Serial.print(check_delayer); Serial.print("\n");
         delay(500);
       }
-      
+
 }
 
 boolean is_enabled(int sensor_number){
@@ -153,24 +178,6 @@ boolean print_if_not_first(char* stamp, int val, boolean first_sent){
   return true;
 }
 
-void input_check(){
-  char *temp, *command, *argument;
-  
-  if(++check_delayer >= CHECK_DELAY){
-    check_delayer = 0;
-    check();
-    if(cont != 0){
-      command = strtok_r(recv, " ", &temp);
-      argument= strtok_r(NULL, " ", &temp);
-      if(command != NULL && argument != NULL){
-        process_command(command, argument);
-      } else {
-        Serial.print("Neplatny prikaz-argument!\n");
-      }
-    }
-  }
-}
-
 void set_enabled(boolean value, short sensor){
   if(sensor < 0 || sensor >= SENSOR_COUNT){
     Serial.print("Invalid bit index: "); Serial.print(sensor);
@@ -178,11 +185,10 @@ void set_enabled(boolean value, short sensor){
   sensor_usage[sensor] = value;
 }
 
-void process_command(char *command, char *argument){
+int process_command(char *command, char *argument){
   unsigned short differ;
   if(strcmp(command, "SET") == 0){
-    set_usage_bits(argument);
-    return;
+    return set_usage_bits(argument);
   }
   switch(argument[0]){
     case 'T': differ = S_TEMP; break;
@@ -194,7 +200,7 @@ void process_command(char *command, char *argument){
     case 'A': differ = S_ACCE; break;
     default:
       Serial.print("Invalid argument: "); Serial.print(argument); Serial.print(" value not in [A H O P R T V]!\n");
-      return;
+      return 2;
   }
   switch(command[0]){
     case 'E':
@@ -205,25 +211,52 @@ void process_command(char *command, char *argument){
       Serial.print("Disabling "); Serial.print(differ); Serial.print("\n");
       set_enabled(false, differ);
       break;
-    }
+    default: 
+      return 3;
+  }
+    return 0;
 }
 
-void set_usage_bits(char *argument){
+int set_usage_bits(char *argument){
   int len = strlen(argument);
   if(len != SENSOR_COUNT){
     Serial.print("Can't set "); Serial.print(argument); Serial.print(" size not SENSOR_COUNT was ");
     Serial.print(len); Serial.print("\n");
-    return;
+    return 1;
   }
   short i;
   for(i = 0; i < SENSOR_COUNT; i++){
     set_enabled((argument[i] == '1'), i);
   }
   Serial.print("Setting "); Serial.print(argument); 
+  return 0;
+}
+
+void input_check(){
+  char *temp, *command, *argument;
+  
+  if(++check_delayer >= CHECK_DELAY){
+    check_delayer = 0;
+    check();
+    if(cont != 0){
+      command = strtok_r(recv, " ", &temp);
+      argument= strtok_r(NULL, " ", &temp);
+      if(command != NULL && argument != NULL){
+        switch(process_command(command, argument)){
+          default: case 0:
+            break;
+          case 1: case 2: case 3:
+            blik(3, 150);
+        }
+      } else {
+        Serial.print("Neplatny prikaz-argument!\n");
+      }
+    }
+  }
 }
 
 void check(){
-  cont=0; delay(500);
+  cont=0; delay(350);
   while (Serial.available()>0)
   {
      recv[cont]=toupper(Serial.read()); delay(10);
@@ -234,7 +267,15 @@ void check(){
   Serial.flush(); delay(100);
 }
 
-
+void blik(int n, int t){
+  while(n > 0){
+    digitalWrite(LED, HIGH);
+    delay(t);
+    digitalWrite(LED, LOW);
+    delay(t);
+    n--;
+  }
+}
 
 //Include always this code when using the pulsioximeter sensor
 //=========================================================================
