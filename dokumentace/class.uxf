@@ -1,0 +1,947 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="13.2">
+  <zoom_level>4</zoom_level>
+  <element>
+    <type>com.baselet.element.old.element.Class</type>
+    <coordinates>
+      <x>392</x>
+      <y>244</y>
+      <w>108</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>DataManager
+--
+IMiner miner
+IUlozitelny saver
+-list&lt;IPracujici&gt; dataSenzorT
+-list&lt;IPracujici&gt; dataSenzorP
+-list&lt;IPracujici&gt; dataSenzorO
+-list&lt;IPracujici&gt; dataSenzorVR
+-list&lt;IPracujici&gt; dataSenzorH
+-list&lt;IPracujici&gt; dataSenzorA
+--
+DataManager(IMiner, IUlozitelny)
+předejData();
+zaregistrujSenzor(IPracujici senzor,
+                                   char typSenzoru)
+odeberSenzor(IPracujici);
+uložData();
+--
+Zodpovědnost
+-- zpracovat vydolovaná data
+-- předat data konkrétním senzorů
+-- udržovat odkazy na senzory</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Class</type>
+    <coordinates>
+      <x>488</x>
+      <y>424</y>
+      <w>100</w>
+      <h>76</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+IZobrazitelny
+--
+boolean validujData();
+QScene getSceneGraf();
+QScene getSceneAnalyza();
+--
+Zodpovědnost
+-- připravení scény
+-- validace dat
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Class</type>
+    <coordinates>
+      <x>260</x>
+      <y>644</y>
+      <w>40</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>EKGSenzor</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>268</x>
+      <y>488</y>
+      <w>248</w>
+      <h>164</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>240;12;12;156</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Class</type>
+    <coordinates>
+      <x>316</x>
+      <y>644</y>
+      <w>40</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>TempSenzor</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>328</x>
+      <y>488</y>
+      <w>196</w>
+      <h>164</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>188;12;12;156</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>420</x>
+      <y>376</y>
+      <w>20</w>
+      <h>52</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+m1=   n
+m2=   n </panel_attributes>
+    <additional_attributes>12;12;12;44</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Class</type>
+    <coordinates>
+      <x>364</x>
+      <y>644</y>
+      <w>40</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>PolohaSenzor</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>372</x>
+      <y>488</y>
+      <w>160</w>
+      <h>164</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>152;12;12;156</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Class</type>
+    <coordinates>
+      <x>184</x>
+      <y>324</y>
+      <w>100</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+IMiner
+--
+void sendMessage(char* s);
+char* getLastIncoming();
+--
+Zodpovědnosti
+-- Odesílání dat zezdroje
+-- Přijímání dat ze zdroje</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Class</type>
+    <coordinates>
+      <x>196</x>
+      <y>408</y>
+      <w>72</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>ArduinoMiner
+--
+Zodpovědnost
+-- odeslání korektních 
+  informací pomocí BT
+-- přijímání informací z BT</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>212</x>
+      <y>368</y>
+      <w>40</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>12;12;32;40</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>272</x>
+      <y>348</y>
+      <w>128</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1  .
+m2=1</panel_attributes>
+    <additional_attributes>120;12;12;12</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Class</type>
+    <coordinates>
+      <x>276</x>
+      <y>432</y>
+      <w>88</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+IAnalyzovatelny
+--
+int getVysledekAnalyzy();
+void analyzuj(Data);
+char* getZprava();
+--
+Zodpovědnost
+-- mapovat analýzu do semaforu
+-- textový výstup analýzy</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>264</x>
+      <y>484</y>
+      <w>56</w>
+      <h>168</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>48;12;12;160</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Class</type>
+    <coordinates>
+      <x>408</x>
+      <y>644</y>
+      <w>40</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>OxySenzor</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Class</type>
+    <coordinates>
+      <x>452</x>
+      <y>644</y>
+      <w>40</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>GSRSenzor</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>420</x>
+      <y>488</y>
+      <w>120</w>
+      <h>164</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>112;12;12;156</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>464</x>
+      <y>488</y>
+      <w>88</w>
+      <h>164</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>80;12;12;156</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Class</type>
+    <coordinates>
+      <x>496</x>
+      <y>644</y>
+      <w>40</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>KapilarSenzor</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>504</x>
+      <y>488</y>
+      <w>60</w>
+      <h>164</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>52;12;12;156</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Class</type>
+    <coordinates>
+      <x>384</x>
+      <y>420</y>
+      <w>88</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+IPracujici
+--
+void predejData(float ...);
+--
+Zodpovědnost
+-- předat data senzoru</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Class</type>
+    <coordinates>
+      <x>768</x>
+      <y>308</y>
+      <w>76</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>SenzorWidget
+--
+list&lt;QComponent&gt; zobrazované komponenty
+--
+zobrazit()
+skrýt()
+--
+Zodpovědnost
+-- obsluhovat akce uživatele
+
+group=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>572</x>
+      <y>340</y>
+      <w>204</w>
+      <h>92</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1= 1
+m2= 1</panel_attributes>
+    <additional_attributes>196;12;12;84</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Class</type>
+    <coordinates>
+      <x>804</x>
+      <y>100</y>
+      <w>92</w>
+      <h>76</h>
+    </coordinates>
+    <panel_attributes>MainWindow
+--
+otevřiDetailníOkno(char senzor)
+--
+Zodpovědnost
+-- zobrazovat widgety senzorů
+-- obsluhovat akce uživatele
+-- zprostředkovat otevření speciálních
+   oken
+group=4</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>792</x>
+      <y>164</y>
+      <w>40</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+m1=   1
+m2=   n</panel_attributes>
+    <additional_attributes>32;12;12;144</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>268</x>
+      <y>456</y>
+      <w>144</w>
+      <h>196</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>136;12;12;188</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>328</x>
+      <y>456</y>
+      <w>96</w>
+      <h>196</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>88;12;12;188</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>372</x>
+      <y>456</y>
+      <w>64</w>
+      <h>196</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>56;12;12;188</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>420</x>
+      <y>456</y>
+      <w>24</w>
+      <h>196</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>16;12;12;188</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>432</x>
+      <y>456</y>
+      <w>48</w>
+      <h>196</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>12;12;40;188</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>440</x>
+      <y>456</y>
+      <w>84</w>
+      <h>196</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>12;12;76;188</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Class</type>
+    <coordinates>
+      <x>752</x>
+      <y>284</y>
+      <w>40</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>fg=gray
+QWidget
+group=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>760</x>
+      <y>284</y>
+      <w>20</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>fg=gray
+lt=&lt;&lt;-
+
+group=1</panel_attributes>
+    <additional_attributes>12;12;12;24</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Class</type>
+    <coordinates>
+      <x>124</x>
+      <y>544</y>
+      <w>76</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>PrepisovacEKG
+--
+float[] data
+char[] prepsanaData
+--
+nastavData(float[]);
+prepišData();
+getRetezec();
+--
+Zodpovědnost
+-- přepsat naměřená data
+na řetězec příznků
+-- zde probíhá nastavení 
+citlivosti a počtu příznačných
+znaků</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Class</type>
+    <coordinates>
+      <x>108</x>
+      <y>640</y>
+      <w>96</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>AnalyzátorEKG
+--
+nastavPriznak(char[])
+sledujCetnost()
+urciOdchylkuOdPriznaku()
+--
+Zodpovědnosti
+--práce s předzpracovaným EKG
+-- hledání podřetězců
+-- určování odchylek
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>188</x>
+      <y>604</y>
+      <w>80</w>
+      <h>52</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>12;12;72;44</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>192</x>
+      <y>640</y>
+      <w>76</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>12;36;68;12</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Class</type>
+    <coordinates>
+      <x>660</x>
+      <y>284</y>
+      <w>64</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>DetailedWindow
+--
+nahrávej()
+--
+Zodpovědnost
+-- detailně zobrazit
+	senzor
+-- ovládání nahrávání</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>544</x>
+      <y>344</y>
+      <w>152</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=  1
+m2=  1</panel_attributes>
+    <additional_attributes>144;12;12;80</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>712</x>
+      <y>160</y>
+      <w>100</w>
+      <h>148</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+m1=0   .
+m2=m</panel_attributes>
+    <additional_attributes>92;12;12;140</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Class</type>
+    <coordinates>
+      <x>812</x>
+      <y>76</y>
+      <w>40</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>fg=gray
+QMainWindow
+group=4</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>556</x>
+      <y>96</y>
+      <w>20</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>fg=gray
+lt=&lt;&lt;-
+
+group=2</panel_attributes>
+    <additional_attributes>12;12;12;28</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Note</type>
+    <coordinates>
+      <x>228</x>
+      <y>676</y>
+      <w>100</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>bg=yellow
+Tyto vazby značí využití statických
+tříd, aby bylo možné případně 
+jednoduše nahradit algoritmy
+analýzy</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>212</x>
+      <y>656</y>
+      <w>44</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>12;12;36;20</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>216</x>
+      <y>620</y>
+      <w>40</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>12;12;32;56</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Class</type>
+    <coordinates>
+      <x>556</x>
+      <y>124</y>
+      <w>100</w>
+      <h>76</h>
+    </coordinates>
+    <panel_attributes>MetaDialog
+--
+nastavMetadata()
+--
+Zodpovědnost
+-- kominikace s uživatelem
+   o metadatech
+-- voláníPatřičné metody
+   DataManageru
+group=2</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Class</type>
+    <coordinates>
+      <x>552</x>
+      <y>96</y>
+      <w>40</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>fg=gray
+QDialog
+group=2</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>812</x>
+      <y>76</y>
+      <w>20</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>fg=gray
+lt=&lt;&lt;-
+
+group=4</panel_attributes>
+    <additional_attributes>12;12;12;24</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>472</x>
+      <y>188</y>
+      <w>144</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>12;56;136;12</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Class</type>
+    <coordinates>
+      <x>92</x>
+      <y>408</y>
+      <w>76</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>FileMiner
+--
+FileMiner(char* filename)
+--
+Zodpovědnost
+-- načítání informací
+  ze zvoleného souboru</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>124</x>
+      <y>368</y>
+      <w>88</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>80;12;12;40</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Class</type>
+    <coordinates>
+      <x>184</x>
+      <y>248</y>
+      <w>100</w>
+      <h>68</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+IUlozitelny
+--
+ulozMetadata(list&lt;Data&gt;);
+ulozZaznam();
+pridejRadekZaznamu(char*
+                           radekZaznamu);
+--
+Zodpovědnost
+-- export dat z aplikace</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>272</x>
+      <y>264</y>
+      <w>128</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1  .
+m2=1</panel_attributes>
+    <additional_attributes>120;12;12;12</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Class</type>
+    <coordinates>
+      <x>672</x>
+      <y>128</y>
+      <w>100</w>
+      <h>76</h>
+    </coordinates>
+    <panel_attributes>SenzorDialog
+--
+nastavSenzory()
+--
+Zodpovědnost
+-- předání zprávy o senzorech
+-- vizualizace možných senzorů
+group=3</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>488</x>
+      <y>192</y>
+      <w>224</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>12;64;216;12</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Class</type>
+    <coordinates>
+      <x>672</x>
+      <y>100</y>
+      <w>40</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>fg=gray
+QDialog
+group=3</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>676</x>
+      <y>100</y>
+      <w>20</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>fg=gray
+lt=&lt;&lt;-
+
+group=3</panel_attributes>
+    <additional_attributes>12;12;12;28</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>724</x>
+      <y>88</y>
+      <w>88</w>
+      <h>52</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>12;40;12;12;80;44</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>628</x>
+      <y>68</y>
+      <w>184</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>12;56;12;12;108;12;176;64</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Class</type>
+    <coordinates>
+      <x>76</x>
+      <y>348</y>
+      <w>80</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>FileSaver
+--
+Zodpovědnost
+-- ukládání dat do souborů
+   v datové složce programu</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>112</x>
+      <y>300</y>
+      <w>80</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>72;12;12;48</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Class</type>
+    <coordinates>
+      <x>156</x>
+      <y>460</y>
+      <w>76</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>TestMiner
+--
+Zodpovědnost
+-- generuje informace
+   ve formátu jako Arduino
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>172</x>
+      <y>368</y>
+      <w>52</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>44;12;12;36;12;92</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Note</type>
+    <coordinates>
+      <x>444</x>
+      <y>200</y>
+      <w>92</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>bg=yellow
+Tyto vazby značí komunikaci
+mezi třídami</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Note</type>
+    <coordinates>
+      <x>640</x>
+      <y>56</y>
+      <w>92</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>bg=yellow
+Tyto vazby značí komunikaci
+mezi třídami</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>540</x>
+      <y>0</y>
+      <w>400</w>
+      <h>380</h>
+    </coordinates>
+    <panel_attributes>GUI
+--
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>84</x>
+      <y>512</y>
+      <w>140</w>
+      <h>204</h>
+    </coordinates>
+    <panel_attributes>Analýza EKG
+--
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
