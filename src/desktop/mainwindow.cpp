@@ -1,6 +1,11 @@
 #include <QtWidgets>
 #include "mainwindow.h"
-#include "graph.h"
+#include "sensorekg.h"
+#include "sensortemp.h"
+#include "sensorposition.h"
+#include "sensoroxy.h"
+#include "sensorgsr.h"
+#include "sensorheartrate.h"
 
 /**
   Vytvori okno
@@ -9,51 +14,33 @@
  */
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
+    QSizePolicy sizePolicy = ui->scrollAreaWidgetContents_2->sizePolicy();
 
-    scene = new QGraphicsScene(this);
-    //scene->setSceneRect(QRectF(QPointF(0,0),QPointF(500,500)));
-    ui->graphicsView->setScene(scene);
-    //t = new LoadFile(g);
+    /* vytvoreni vsech senzoru a jejich pridani do okna */
+    sensors[0] = new SensorWidget(sizePolicy, ui->menuZobrazit, new SensorEKG(), ui->scrollAreaWidgetContents_2);
+    ui->verticalLayout_3->addWidget(sensors[0], 0, Qt::AlignTop);
+    sensors[1] = new SensorWidget(sizePolicy, ui->menuZobrazit, new SensorTemp(), ui->scrollAreaWidgetContents_2);
+    ui->verticalLayout_3->addWidget(sensors[1], 0, Qt::AlignTop);
+    sensors[2] = new SensorWidget(sizePolicy, ui->menuZobrazit, new SensorPosition(), ui->scrollAreaWidgetContents_2);
+    ui->verticalLayout_3->addWidget(sensors[2], 0, Qt::AlignTop);
+    sensors[3] = new SensorWidget(sizePolicy, ui->menuZobrazit, new SensorOxy(), ui->scrollAreaWidgetContents_2);
+    ui->verticalLayout_3->addWidget(sensors[3], 0, Qt::AlignTop);
+    sensors[4] = new SensorWidget(sizePolicy, ui->menuZobrazit, new SensorGSR(), ui->scrollAreaWidgetContents_2);
+    ui->verticalLayout_3->addWidget(sensors[4], 0, Qt::AlignTop);
+    sensors[5] = new SensorWidget(sizePolicy, ui->menuZobrazit, new SensorHeartRate(), ui->scrollAreaWidgetContents_2);
+    ui->verticalLayout_3->addWidget(sensors[5], 0, Qt::AlignTop);
 }
 
 /**
- * Vytvoreni zkusebniho grafu
+ * Pocatecni nastaveni senzoru
  * @brief MainWindow::draw
  */
 void MainWindow::draw() {
-    g = new Graph(ui->graphicsView);
+    sensors[0]->setUp();
 }
 
 MainWindow::~MainWindow() {
     delete ui;
-}
-
-/**
- * Zobrazeni nebo skryti grafu pro senzor
- * @brief MainWindow::on_actionEKG_toggled
- * @param arg1
- */
-void MainWindow::on_actionEKG_toggled(bool arg1) {
-    if (arg1) {
-       ui->widget_1->show();
-    }
-    else {
-       ui->widget_1->hide();
-    }
-}
-
-/**
- * Zobrazeni nebo skryti grafu pro senzor
- * @brief MainWindow::on_actionTeplota_toggled
- * @param arg1
- */
-void MainWindow::on_actionTeplota_toggled(bool arg1) {
-    if (arg1) {
-       ui->widget_2->show();
-    }
-    else {
-       ui->widget_2->hide();
-    }
 }
 
 /**
@@ -71,20 +58,4 @@ void MainWindow::on_actionZav_t_triggered() {
 void MainWindow::on_actionO_aplikaci_triggered() {
     QMessageBox::about(this, tr("O aplikaci"),
              tr("Aplikace pro vizualizaci signálů z E-health. <br> Projekt Šejdrem Arduino"));
-}
-
-/**
- * Stara se o spravnou velikost scene pri zmene velikosti okna
- * @brief MainWindow::resizeEvent
- * @param e
- */
-void MainWindow::resizeEvent(QResizeEvent *e) {
-    ui->graphicsView->scene()->setSceneRect(QRectF(QPointF(0, 0), QPointF(ui->graphicsView->viewport()->width(), ui->graphicsView->viewport()->height())));
-}
-
-/**
- * @brief MainWindow::on_pushButton_clicked
- */
-void MainWindow::on_pushButton_clicked() {
-    new LoadFile(g);
 }

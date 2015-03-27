@@ -2,16 +2,23 @@
 #define LOADFILE_H
 
 #include <QtCore>
-#include "graph.h"
+#include "sensorekg.h"
 
-class LoadFile {
+/**
+ * Simuluje ziskavani dat z e-health
+ * @brief The LoadFile class
+ */
+class LoadFile : public QThread {
 public:
-    LoadFile(Graph *g);
+    LoadFile(SensorWidget *g);
     ~LoadFile();
     void run();
+    void setGraph(SensorWidget *g);
+    void setScene(QGraphicsScene *s);
 
 private:
-    Graph *g;
+    SensorWidget *g;
+    QGraphicsScene *s;
 };
 
 #endif // LOADFILE_H

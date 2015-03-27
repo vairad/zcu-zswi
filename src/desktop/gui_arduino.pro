@@ -14,11 +14,25 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    graph.cpp \
-    loadfile.cpp
+    loadfile.cpp \
+    sensorwidget.cpp \
+    sensorekg.cpp \
+    sensorposition.cpp \
+    sensoroxy.cpp \
+    sensorgsr.cpp \
+    sensorheartrate.cpp \
+    sensortemp.cpp \
+    idisplayable.cpp
 
 HEADERS  += mainwindow.h \
-    graph.h \
-    loadfile.h
+    loadfile.h \
+    sensorwidget.h \
+    idisplayable.h \
+    sensorekg.h \
+    sensorposition.h \
+    sensoroxy.h \
+    sensorgsr.h \
+    sensorheartrate.h \
+    sensortemp.h
 
 FORMS    += mainwindow.ui

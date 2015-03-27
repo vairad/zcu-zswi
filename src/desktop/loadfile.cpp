@@ -1,12 +1,7 @@
 #include "loadfile.h"
-#include "graph.h"
+#include "mainwindow.h"
 
-/**
- * Simuluje ziskavani dat z e-health
- * @brief LoadFile::LoadFile
- * @param g
- */
-LoadFile::LoadFile(Graph *g) : g(g) {
+LoadFile::LoadFile(SensorWidget *g) : g(g) {
     run();
 }
 
@@ -18,7 +13,6 @@ void LoadFile::run() {
     FILE *f;
     float value = 0;
 
-
     f = fopen("ekg.dat", "r");
     if (f == NULL) printf("chyba pri nacitani souboru\n");
 
@@ -27,10 +21,19 @@ void LoadFile::run() {
 
     while (fscanf(f, "%f", &value) == 1 && i<500) {
         g->update(value);
+        //printf("%d\n", i);
         i++;
     }
 
     fclose(f);
+}
+
+void LoadFile::setGraph(SensorWidget *g) {
+    this->g = g;
+}
+
+void LoadFile::setScene(QGraphicsScene *s) {
+    this->s = s;
 }
 
 LoadFile::~LoadFile() {
