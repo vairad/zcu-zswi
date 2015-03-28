@@ -24,6 +24,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     sensors[5] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorHeartRate(), ui->scrollAreaWidgetContents_2);
 
     metaDialog = new MetaDialog(sensors);
+    setMetadata();
+    // propojeni zmeny udaju v metaDialogu s pravym sloupcem
+    QObject::connect(metaDialog, SIGNAL(accepted()), this, SLOT(setMetadata()));
 }
 
 /**
@@ -61,4 +64,13 @@ void MainWindow::on_actionO_aplikaci_triggered() {
  */
 void MainWindow::on_actionU_ivatelsk_nastaven_triggered() {
     metaDialog->show();
+}
+
+/**
+ * Zmeni data v pravem sloupci na aktualni metadata
+ * @brief MainWindow::setMetaData
+ */
+void MainWindow::setMetadata() {
+    ui->label->setText(metaDialog->mainTab->nameE->text());
+    ui->label_2->setText(metaDialog->mainTab->surnameE->text());
 }

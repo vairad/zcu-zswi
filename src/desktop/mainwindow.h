@@ -22,6 +22,9 @@ public:
     void draw();
     ~MainWindow();
 
+public slots:
+    void setMetadata();
+
 private slots:
     void on_actionZav_t_triggered();
     void on_actionO_aplikaci_triggered();

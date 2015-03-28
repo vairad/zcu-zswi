@@ -188,6 +188,11 @@ void SensorWidget::drawNumbers() {
     itemsExist = true;
 }
 
+/**
+ * Vrati IDisplayable senzor
+ * @brief SensorWidget::getSensor
+ * @return
+ */
 IDisplayable *SensorWidget::getSensor() {
     return sensor;
 }

@@ -1,6 +1,7 @@
 #ifndef TABDIALOG_H
 #define TABDIALOG_H
 
+#include <QtWidgets>
 #include <QDialog>
 #include "sensorwidget.h"
 
@@ -16,7 +17,9 @@ class MainTab : public QWidget {
     Q_OBJECT
 
 public:
-    explicit MainTab(const QFileInfo &fileInfo, QWidget *parent = 0);
+    explicit MainTab(QWidget *parent = 0);
+    QLineEdit *nameE;
+    QLineEdit *surnameE;
 };
 
 /**
@@ -39,6 +42,8 @@ class MetaDialog : public QDialog {
 
 public:
     explicit MetaDialog(SensorWidget *sensors[], QWidget *parent = 0);
+    /** hlavni list */
+    MainTab *mainTab;
 
 private:
     /** widget s listy */

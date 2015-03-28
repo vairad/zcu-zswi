@@ -1,4 +1,3 @@
-#include <QtWidgets>
 #include "metadialog.h"
 
 /**
@@ -8,16 +7,16 @@
  * @param parent
  */
 MetaDialog::MetaDialog(SensorWidget *sensors[], QWidget *parent) : QDialog(parent) {
-    QFileInfo fileInfo("metadata.txt");
-
     tabWidget = new QTabWidget;
-    tabWidget->addTab(new MainTab(fileInfo), tr("Hlavní"));
+    mainTab = new MainTab();
+    tabWidget->addTab(mainTab, tr("Hlavní"));
     tabWidget->addTab(new SensorsTab(sensors), tr("Senzory"));
 
     buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
 
     connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
     connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+    //connect(this, SIGNAL(accepted()), mainWindow, SLOT(setMetaData()));
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addWidget(tabWidget);
@@ -33,12 +32,14 @@ MetaDialog::MetaDialog(SensorWidget *sensors[], QWidget *parent) : QDialog(paren
  * @param fileInfo
  * @param parent
  */
-MainTab::MainTab(const QFileInfo &fileInfo, QWidget *parent) : QWidget(parent) {
+MainTab::MainTab(QWidget *parent) : QWidget(parent) {
+    QFileInfo fileInfo("metadata.txt");
+
     QLabel *nameL = new QLabel(tr("Jméno:"));
-    QLineEdit *nameE = new QLineEdit("Jan");
+    nameE = new QLineEdit("Jan");
 
     QLabel *surnameL = new QLabel(tr("Příjmení:"));
-    QLineEdit *surnameE = new QLineEdit("Novák");
+    surnameE = new QLineEdit("Novák");
 
     QLabel *pathL = new QLabel(tr("Cesta k úložišti dat:"));
     QLabel *pathVL = new QLabel(fileInfo.absoluteFilePath());
