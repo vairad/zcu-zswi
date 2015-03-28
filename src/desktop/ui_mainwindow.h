@@ -77,7 +77,7 @@ public:
         scrollAreaWidgetContents_2 = new QWidget();
         scrollAreaWidgetContents_2->setObjectName(QStringLiteral("scrollAreaWidgetContents_2"));
         scrollAreaWidgetContents_2->setEnabled(true);
-        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 532, 69));
+        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 532, 349));
         QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Preferred);
         sizePolicy1.setHorizontalStretch(0);
         sizePolicy1.setVerticalStretch(0);
@@ -90,7 +90,7 @@ public:
         verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
         scrollArea->setWidget(scrollAreaWidgetContents_2);
 
-        horizontalLayout->addWidget(scrollArea, 0, Qt::AlignTop);
+        horizontalLayout->addWidget(scrollArea);
 
         widget_nast = new QWidget(centralWidget);
         widget_nast->setObjectName(QStringLiteral("widget_nast"));

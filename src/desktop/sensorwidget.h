@@ -18,7 +18,7 @@
 class SensorWidget : public QWidget {
     Q_OBJECT
 public:
-    explicit SensorWidget(QSizePolicy sizePolicy, QMenu *menuZobrazit, IDisplayable *sensor, QWidget *parent = 0);
+    explicit SensorWidget(QVBoxLayout *vLayout, QMenu *menuZobrazit, IDisplayable *sensor, QWidget *parent = 0);
     void createLayout();
     void createLeftBox();
     void createGraphicsView();
@@ -56,6 +56,8 @@ private:
     QHBoxLayout *layout;
     /** senzor, ktery widget zobrazuje */
     IDisplayable *sensor;
+
+
 
 };
 

@@ -2,22 +2,20 @@
 #include <QApplication>
 #include "loadfile.h"
 #include "ui_mainwindow.h"
+#include <QGraphicsTextItem>
 
-SensorWidget::SensorWidget(QSizePolicy sizePolicy, QMenu *menuZobrazit, IDisplayable *sensor, QWidget *parent) : menuZobrazit(menuZobrazit), sensor(sensor), QWidget(parent) {
+SensorWidget::SensorWidget(QVBoxLayout *vLayout, QMenu *menuZobrazit, IDisplayable *sensor, QWidget *parent) : menuZobrazit(menuZobrazit), sensor(sensor), QWidget(parent) {
     this->setObjectName(QStringLiteral("widget"));
     this->setEnabled(true);
     this->setMinimumSize(QSize(0, 100));
     this->setMaximumSize(QSize(16777215, 100));
     this->setCursor(QCursor(Qt::ArrowCursor));
     this->setAutoFillBackground(false);
+    vLayout->addWidget(this, 0, Qt::AlignTop);
 
     createLayout();
     createLeftBox();
     createGraphicsView();
-
-    sizePolicy.setHeightForWidth(this->sizePolicy().hasHeightForWidth());
-    this->setSizePolicy(sizePolicy);
-
     createAction();
 }
 
@@ -109,6 +107,7 @@ void SensorWidget::zobrazit() {
  */
 void SensorWidget::resizeEvent(QResizeEvent *e) {
     graphicsView->scene()->setSceneRect(QRectF(QPointF(0, 0), QPointF(graphicsView->viewport()->width(), graphicsView->viewport()->height())));
+    //drawNumbers();
 }
 
 /**
@@ -116,7 +115,8 @@ void SensorWidget::resizeEvent(QResizeEvent *e) {
  * @brief SensorWidget::setUp
  */
 void SensorWidget::setUp() {
-     scene->setSceneRect(QRectF(QPointF(0, 0), QPointF(this->graphicsView->viewport()->width(), this->graphicsView->viewport()->height())));
+    scene->setSceneRect(QRectF(QPointF(0, 0), QPointF(this->graphicsView->viewport()->width(), this->graphicsView->viewport()->height())));
+    //drawNumbers();
 }
 
 /**
@@ -156,7 +156,6 @@ void SensorWidget::update(double value) {
 void SensorWidget::on_button_clicked() {
     new LoadFile(this);
 }
-
 
 SensorWidget::~SensorWidget() {
 
