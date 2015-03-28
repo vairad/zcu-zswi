@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     sensorgsr.cpp \
     sensorheartrate.cpp \
     sensortemp.cpp \
-    idisplayable.cpp
+    idisplayable.cpp \
+    metadialog.cpp
 
 HEADERS  += mainwindow.h \
     loadfile.h \
@@ -33,6 +34,7 @@ HEADERS  += mainwindow.h \
     sensoroxy.h \
     sensorgsr.h \
     sensorheartrate.h \
-    sensortemp.h
+    sensortemp.h \
+    metadialog.h
 
 FORMS    += mainwindow.ui

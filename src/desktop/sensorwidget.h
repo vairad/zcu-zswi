@@ -27,6 +27,7 @@ public:
     void setUp();
     void update(double value);
     void drawNumbers();
+    IDisplayable *getSensor();
     ~SensorWidget();
     QGraphicsView *graphicsView;
     QAction *action1;
@@ -36,7 +37,7 @@ signals:
 public slots:
     void on_button_clicked();
 
-private slots:
+//private slots:
     void on_action_toggled(bool arg1);
 
 protected:

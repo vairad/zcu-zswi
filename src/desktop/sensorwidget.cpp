@@ -1,7 +1,7 @@
 #include "sensorwidget.h"
 #include <QApplication>
 #include "loadfile.h"
-#include "ui_mainwindow.h"
+//#include "ui_mainwindow.h"
 #include <QGraphicsTextItem>
 
 SensorWidget::SensorWidget(QVBoxLayout *vLayout, QMenu *menuZobrazit, IDisplayable *sensor, QWidget *parent) : menuZobrazit(menuZobrazit), sensor(sensor), QWidget(parent) {
@@ -186,6 +186,10 @@ void SensorWidget::drawNumbers() {
     textMaxX->setPos(graphicsView->viewport()->width() - fm->width(QString::number(graphicsView->viewport()->width()))*2, graphicsView->viewport()->height() - fm->height()*2);
     textMaxX->setDefaultTextColor(Qt::white);
     itemsExist = true;
+}
+
+IDisplayable *SensorWidget::getSensor() {
+    return sensor;
 }
 
 SensorWidget::~SensorWidget() {

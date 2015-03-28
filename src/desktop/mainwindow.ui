@@ -131,8 +131,15 @@
      <string>Zobrazit</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menuNastaven">
+    <property name="title">
+     <string>Nastavení</string>
+    </property>
+    <addaction name="actionU_ivatelsk_nastaven"/>
+   </widget>
    <addaction name="menuSoubor"/>
    <addaction name="menuZobrazit"/>
+   <addaction name="menuNastaven"/>
    <addaction name="menuN_pov_da"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
@@ -147,6 +154,11 @@
    </property>
    <property name="text">
     <string>Zavřít</string>
+   </property>
+  </action>
+  <action name="actionU_ivatelsk_nastaven">
+   <property name="text">
+    <string>Uživatelské nastavení</string>
    </property>
   </action>
  </widget>

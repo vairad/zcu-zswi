@@ -31,6 +31,7 @@ class Ui_MainWindow
 public:
     QAction *actionO_aplikaci;
     QAction *actionZav_t;
+    QAction *actionU_ivatelsk_nastaven;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout;
     QScrollArea *scrollArea;
@@ -43,6 +44,7 @@ public:
     QMenu *menuSoubor;
     QMenu *menuN_pov_da;
     QMenu *menuZobrazit;
+    QMenu *menuNastaven;
     QStatusBar *statusBar;
 
     void setupUi(QMainWindow *MainWindow)
@@ -55,6 +57,8 @@ public:
         actionZav_t = new QAction(MainWindow);
         actionZav_t->setObjectName(QStringLiteral("actionZav_t"));
         actionZav_t->setEnabled(true);
+        actionU_ivatelsk_nastaven = new QAction(MainWindow);
+        actionU_ivatelsk_nastaven->setObjectName(QStringLiteral("actionU_ivatelsk_nastaven"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         horizontalLayout = new QHBoxLayout(centralWidget);
@@ -120,6 +124,8 @@ public:
         menuN_pov_da->setObjectName(QStringLiteral("menuN_pov_da"));
         menuZobrazit = new QMenu(menuBar);
         menuZobrazit->setObjectName(QStringLiteral("menuZobrazit"));
+        menuNastaven = new QMenu(menuBar);
+        menuNastaven->setObjectName(QStringLiteral("menuNastaven"));
         MainWindow->setMenuBar(menuBar);
         statusBar = new QStatusBar(MainWindow);
         statusBar->setObjectName(QStringLiteral("statusBar"));
@@ -127,9 +133,11 @@ public:
 
         menuBar->addAction(menuSoubor->menuAction());
         menuBar->addAction(menuZobrazit->menuAction());
+        menuBar->addAction(menuNastaven->menuAction());
         menuBar->addAction(menuN_pov_da->menuAction());
         menuSoubor->addAction(actionZav_t);
         menuN_pov_da->addAction(actionO_aplikaci);
+        menuNastaven->addAction(actionU_ivatelsk_nastaven);
 
         retranslateUi(MainWindow);
 
@@ -141,10 +149,12 @@ public:
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "E-health", 0));
         actionO_aplikaci->setText(QApplication::translate("MainWindow", "O aplikaci", 0));
         actionZav_t->setText(QApplication::translate("MainWindow", "Zav\305\231\303\255t", 0));
+        actionU_ivatelsk_nastaven->setText(QApplication::translate("MainWindow", "U\305\276ivatelsk\303\251 nastaven\303\255", 0));
         groupBox->setTitle(QApplication::translate("MainWindow", "Nastaven\303\255", 0));
         menuSoubor->setTitle(QApplication::translate("MainWindow", "Soubor", 0));
         menuN_pov_da->setTitle(QApplication::translate("MainWindow", "N\303\241pov\304\233da", 0));
         menuZobrazit->setTitle(QApplication::translate("MainWindow", "Zobrazit", 0));
+        menuNastaven->setTitle(QApplication::translate("MainWindow", "Nastaven\303\255", 0));
     } // retranslateUi
 
 };

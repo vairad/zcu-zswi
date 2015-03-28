@@ -22,6 +22,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     sensors[3] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorOxy(), ui->scrollAreaWidgetContents_2);
     sensors[4] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorGSR(), ui->scrollAreaWidgetContents_2);
     sensors[5] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorHeartRate(), ui->scrollAreaWidgetContents_2);
+
+    metaDialog = new MetaDialog(sensors);
 }
 
 /**
@@ -51,4 +53,12 @@ void MainWindow::on_actionZav_t_triggered() {
 void MainWindow::on_actionO_aplikaci_triggered() {
     QMessageBox::about(this, tr("O aplikaci"),
              tr("Aplikace pro vizualizaci signálů z E-health. <br> Projekt Šejdrem Arduino"));
+}
+
+/**
+ * Zobrazi dialog nastaveni metadat
+ * @brief MainWindow::on_actionU_ivatelsk_nastaven_triggered
+ */
+void MainWindow::on_actionU_ivatelsk_nastaven_triggered() {
+    metaDialog->show();
 }
