@@ -17,6 +17,7 @@ SensorWidget::SensorWidget(QVBoxLayout *vLayout, QMenu *menuZobrazit, IDisplayab
     createLeftBox();
     createGraphicsView();
     createAction();
+    itemsExist = false;
 }
 
 /**
@@ -107,7 +108,7 @@ void SensorWidget::zobrazit() {
  */
 void SensorWidget::resizeEvent(QResizeEvent *e) {
     graphicsView->scene()->setSceneRect(QRectF(QPointF(0, 0), QPointF(graphicsView->viewport()->width(), graphicsView->viewport()->height())));
-    //drawNumbers();
+    drawNumbers();
 }
 
 /**
@@ -116,7 +117,7 @@ void SensorWidget::resizeEvent(QResizeEvent *e) {
  */
 void SensorWidget::setUp() {
     scene->setSceneRect(QRectF(QPointF(0, 0), QPointF(this->graphicsView->viewport()->width(), this->graphicsView->viewport()->height())));
-    //drawNumbers();
+    drawNumbers();
 }
 
 /**
@@ -155,6 +156,36 @@ void SensorWidget::update(double value) {
  */
 void SensorWidget::on_button_clicked() {
     new LoadFile(this);
+}
+
+/**
+ * @brief SensorWidget::drawNumbers
+ */
+void SensorWidget::drawNumbers() {
+    if (itemsExist) {
+        // odebrani starych hodnot
+        scene->removeItem(textMaxY);
+        scene->removeItem(textMinY);
+        scene->removeItem(textMaxX);
+    }
+
+    QFont font = QFont("Arial", 6);
+    // popis nejvyssi hodnoty Y
+    textMaxY = scene->addText(QString::number(sensor->maxY), font);
+    textMaxY->setPos(0,0);
+    textMaxY->setDefaultTextColor(Qt::white);
+
+    // popis nejmensi hodnoty Y
+    textMinY = scene->addText(QString::number(sensor->minY), font);
+    QFontMetrics *fm = new QFontMetrics(font);
+    textMinY->setPos(0, graphicsView->viewport()->height() - fm->height()*2);
+    textMinY->setDefaultTextColor(Qt::white);
+
+    // popis nejvyssi hodnoty X
+    textMaxX = scene->addText(QString::number(graphicsView->viewport()->width()), font);
+    textMaxX->setPos(graphicsView->viewport()->width() - fm->width(QString::number(graphicsView->viewport()->width()))*2, graphicsView->viewport()->height() - fm->height()*2);
+    textMaxX->setDefaultTextColor(Qt::white);
+    itemsExist = true;
 }
 
 SensorWidget::~SensorWidget() {

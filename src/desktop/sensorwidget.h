@@ -26,6 +26,7 @@ public:
     void zobrazit();
     void setUp();
     void update(double value);
+    void drawNumbers();
     ~SensorWidget();
     QGraphicsView *graphicsView;
     QAction *action1;
@@ -57,8 +58,14 @@ private:
     /** senzor, ktery widget zobrazuje */
     IDisplayable *sensor;
 
-
-
+    /** existence popisu */
+    bool itemsExist;
+    /** popis nejvyssi hodnoty Y */
+    QGraphicsTextItem *textMaxY;
+    /** popis nejmensi hodnoty Y */
+    QGraphicsTextItem *textMinY;
+    /** popis nejvyssi hodnoty X */
+    QGraphicsTextItem *textMaxX;
 };
 
 #endif // SENSORWIDGET_H
