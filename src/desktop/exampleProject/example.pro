@@ -13,8 +13,11 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        hlavni.cpp
+        hlavni.cpp \
+    bluetooth.cpp \
+    bt/bluetooth.cpp
 
-HEADERS  += hlavni.h
+HEADERS  += hlavni.h \
+    bt/bluetooth.h
 
 FORMS    += hlavni.ui
