@@ -38,7 +38,6 @@ short check_delayer = 0;
 //  See the next link http://www.cooking-hacks.com/index.php/documentation/tutorials/arduino-xbee-shield
 
 void bt_setup(){
-  
   Serial.print("AT+JSEC=1,1,1,04,1111\r\n"); // Enable security command
   delay(2000);
   Serial.print("AT+JDIS=3\r\n"); // Discorable command
@@ -50,12 +49,18 @@ void bt_setup(){
   pinMode(LED, OUTPUT);
   digitalWrite(LED, LOW);
   Serial.flush();
-  /*val = Serial.read();
-  while (val != 'R'){
-    val = Serial.read();
-  }*/
+  
   delay(1000);
   Serial.print("AT+JSCR\r\n"); // Stream Connection Request command
+}
+
+void bt_sync(){
+  char val = Serial.read();
+  while (val != 'P'){
+    Serial.print("Ja jsem Jauvajs Ino.\n Potrebuji >P< abych mohlo zacit pracovat.");
+    delay(333);
+    val = Serial.read();
+  }
 }
 
 void setup()
@@ -63,7 +68,7 @@ void setup()
   Serial.begin(115200);
   delay(2000);
   bt_setup();
-  
+  bt_sync();
   for(short i = 0; i < SENSOR_COUNT; i++){
     sensor_usage[i] = true;
   }
