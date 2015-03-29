@@ -1,7 +1,7 @@
 #ifndef SENSOROXY_H
 #define SENSOROXY_H
 
-#include "idisplayable.h"
+#include "core/idisplayable.h"
 
 class SensorOxy : public IDisplayable {
 public:

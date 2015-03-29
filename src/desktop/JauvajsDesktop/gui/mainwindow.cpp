@@ -1,11 +1,11 @@
 #include <QtWidgets>
-#include "mainwindow.h"
-#include "sensorekg.h"
-#include "sensortemp.h"
-#include "sensorposition.h"
-#include "sensoroxy.h"
-#include "sensorgsr.h"
-#include "sensorheartrate.h"
+#include "gui/mainwindow.h"
+#include "core/sensorekg.h"
+#include "core/sensortemp.h"
+#include "core/sensorposition.h"
+#include "core/sensoroxy.h"
+#include "core/sensorgsr.h"
+#include "core/sensorheartrate.h"
 
 /**
   Vytvori okno

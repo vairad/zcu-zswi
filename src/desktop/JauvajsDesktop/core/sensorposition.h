@@ -1,7 +1,7 @@
 #ifndef POSITIONSENSOR_H
 #define POSITIONSENSOR_H
 
-#include "idisplayable.h"
+#include "core/idisplayable.h"
 
 class SensorPosition : public IDisplayable {
 public:

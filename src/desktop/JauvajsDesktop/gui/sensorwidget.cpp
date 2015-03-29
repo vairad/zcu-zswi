@@ -1,7 +1,7 @@
-#include "sensorwidget.h"
+#include "gui/sensorwidget.h"
 #include <QApplication>
 #include "loadfile.h"
-//#include "ui_mainwindow.h"
+//#include "gui/ui_mainwindow.h"
 #include <QGraphicsTextItem>
 
 SensorWidget::SensorWidget(QVBoxLayout *vLayout, QMenu *menuZobrazit, IDisplayable *sensor, QWidget *parent) : menuZobrazit(menuZobrazit), sensor(sensor), QWidget(parent) {

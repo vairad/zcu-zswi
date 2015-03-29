@@ -1,4 +1,6 @@
-#include "sensorekg.h"
+#include "core/sensorekg.h"
+
+/*** NEZAPOMENOUT ODEBRAT ***/
 #include "loadfile.h"
 
 SensorEKG::SensorEKG() {

@@ -1,4 +1,4 @@
-#include "sensorposition.h"
+#include "core/sensorposition.h"
 
 SensorPosition::SensorPosition() {
     minY = -1;

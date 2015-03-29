@@ -13,28 +13,30 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
     loadfile.cpp \
-    sensorwidget.cpp \
-    sensorekg.cpp \
-    sensorposition.cpp \
-    sensoroxy.cpp \
-    sensorgsr.cpp \
-    sensorheartrate.cpp \
-    sensortemp.cpp \
-    idisplayable.cpp \
-    metadialog.cpp
+    core/idisplayable.cpp \
+    core/sensorekg.cpp \
+    core/sensorgsr.cpp \
+    core/sensorheartrate.cpp \
+    core/sensoroxy.cpp \
+    core/sensorposition.cpp \
+    core/sensortemp.cpp \
+    gui/mainwindow.cpp \
+    gui/metadialog.cpp \
+    gui/sensorwidget.cpp
 
-HEADERS  += mainwindow.h \
+HEADERS  += main.h\
     loadfile.h \
-    sensorwidget.h \
-    idisplayable.h \
-    sensorekg.h \
-    sensorposition.h \
-    sensoroxy.h \
-    sensorgsr.h \
-    sensorheartrate.h \
-    sensortemp.h \
-    metadialog.h
+    core/idisplayable.h \
+    core/sensorekg.h \
+    core/sensorgsr.h \
+    core/sensorheartrate.h \
+    core/sensoroxy.h \
+    core/sensorposition.h \
+    core/sensortemp.h \
+    gui/mainwindow.h \
+    gui/metadialog.h \
+    gui/sensorwidget.h \
+    gui/ui_mainwindow.h
 
-FORMS    += mainwindow.ui
+FORMS    += gui/mainwindow.ui

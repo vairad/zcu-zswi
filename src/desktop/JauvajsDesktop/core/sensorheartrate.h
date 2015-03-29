@@ -1,7 +1,7 @@
 #ifndef SENSORHEARTRATE_H
 #define SENSORHEARTRATE_H
 
-#include "idisplayable.h"
+#include "core/idisplayable.h"
 
 class SensorHeartRate : public IDisplayable {
 public:

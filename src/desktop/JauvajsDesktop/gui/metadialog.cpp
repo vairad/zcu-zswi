@@ -1,4 +1,4 @@
-#include "metadialog.h"
+#include "gui/metadialog.h"
 
 /**
  * Vytvori dialog umoznujici nastaveni meta dat

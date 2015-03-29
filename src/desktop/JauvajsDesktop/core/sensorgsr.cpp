@@ -1,4 +1,4 @@
-#include "sensorgsr.h"
+#include "core/sensorgsr.h"
 
 SensorGSR::SensorGSR() {
     minY = -1;

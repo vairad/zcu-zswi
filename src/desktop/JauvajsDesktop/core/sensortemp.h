@@ -1,7 +1,7 @@
 #ifndef TEMPSENSOR_H
 #define TEMPSENSOR_H
 
-#include "idisplayable.h"
+#include "core/idisplayable.h"
 
 class SensorTemp : public IDisplayable {
 public:

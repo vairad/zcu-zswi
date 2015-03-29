@@ -1,5 +1,5 @@
 #include "loadfile.h"
-#include "mainwindow.h"
+#include "gui/mainwindow.h"
 
 LoadFile::LoadFile(SensorWidget *g) : g(g) {
     run();

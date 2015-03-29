@@ -1,4 +1,4 @@
-#include "sensorheartrate.h"
+#include "core/sensorheartrate.h"
 
 SensorHeartRate::SensorHeartRate() {
     minY = -1;

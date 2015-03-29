@@ -1,4 +1,4 @@
-#include "sensoroxy.h"
+#include "core/sensoroxy.h"
 
 SensorOxy::SensorOxy() {
     minY = -1;

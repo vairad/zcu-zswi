@@ -2,9 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "ui_mainwindow.h"
-#include "sensorwidget.h"
-#include "metadialog.h"
+#include "gui/ui_mainwindow.h"
+#include "gui/sensorwidget.h"
+#include "gui/metadialog.h"
 
 namespace Ui {
 class MainWindow;

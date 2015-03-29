@@ -3,7 +3,7 @@
 
 #include <QtWidgets>
 #include <QDialog>
-#include "sensorwidget.h"
+#include "gui/sensorwidget.h"
 
 class QDialogButtonBox;
 class QFileInfo;

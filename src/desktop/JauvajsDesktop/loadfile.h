@@ -2,7 +2,7 @@
 #define LOADFILE_H
 
 #include <QtCore>
-#include "sensorekg.h"
+#include "core/sensorekg.h"
 
 /**
  * Simuluje ziskavani dat z e-health

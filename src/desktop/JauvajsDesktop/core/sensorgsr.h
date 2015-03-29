@@ -1,7 +1,7 @@
 #ifndef SENSORGSR_H
 #define SENSORGSR_H
 
-#include "idisplayable.h"
+#include "core/idisplayable.h"
 
 class SensorGSR : public IDisplayable {
 public:

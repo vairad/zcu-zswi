@@ -1,4 +1,4 @@
-#include "idisplayable.h"
+#include "core/idisplayable.h"
 
 IDisplayable::IDisplayable() {
 

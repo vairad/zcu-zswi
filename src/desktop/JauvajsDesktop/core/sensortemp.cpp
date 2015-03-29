@@ -1,4 +1,4 @@
-#include "sensortemp.h"
+#include "core/sensortemp.h"
 
 SensorTemp::SensorTemp() {
     minY = -1;

@@ -9,7 +9,7 @@
 #include <QSizePolicy>
 #include <QAction>
 #include <QMenu>
-#include "idisplayable.h"
+#include "core/idisplayable.h"
 
 /**
  * Reprezentace widgetu - podokno zobrazene ve ScrollArea, obsluhuje akce uzivatele
