@@ -11,6 +11,16 @@ SensorPosition::SensorPosition() {
     name = "Poloha";
 }
 
+/**
+ * Vrati scenu s grafem
+ * @brief SensorPosition::getSceneGraph
+ * @return
+ */
+QGraphicsScene* SensorPosition::getSceneGraph() {
+    return NULL;
+    //return this->scene;
+}
+
 SensorPosition::~SensorPosition() {
 
 }

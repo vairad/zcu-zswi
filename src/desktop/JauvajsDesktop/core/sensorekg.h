@@ -7,6 +7,7 @@
 class SensorEKG : public IDisplayable {
 public:
     SensorEKG();
+    QGraphicsScene* getSceneGraph();
     ~SensorEKG();
 
 };

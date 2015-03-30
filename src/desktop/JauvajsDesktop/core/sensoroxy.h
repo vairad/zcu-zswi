@@ -6,6 +6,7 @@
 class SensorOxy : public IDisplayable {
 public:
     SensorOxy();
+    QGraphicsScene* getSceneGraph();
     ~SensorOxy();
 };
 

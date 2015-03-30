@@ -11,6 +11,16 @@ SensorOxy::SensorOxy() {
     name = "Okysličení";
 }
 
+/**
+ * Vrati scenu s grafem
+ * @brief SensorOxy::getSceneGraph
+ * @return
+ */
+QGraphicsScene* SensorOxy::getSceneGraph() {
+    return NULL;
+    //return this->scene;
+}
+
 SensorOxy::~SensorOxy() {
 
 }

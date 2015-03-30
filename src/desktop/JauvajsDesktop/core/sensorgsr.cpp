@@ -11,6 +11,16 @@ SensorGSR::SensorGSR() {
     name = "GSR";
 }
 
+/**
+ * Vrati scenu s grafem
+ * @brief SensorGSR::getSceneGraph
+ * @return
+ */
+QGraphicsScene* SensorGSR::getSceneGraph() {
+    return NULL;
+    //return this->scene;
+}
+
 SensorGSR::~SensorGSR() {
 
 }

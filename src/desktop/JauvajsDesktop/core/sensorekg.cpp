@@ -19,7 +19,7 @@ SensorEKG::SensorEKG() {
  * @brief EKGSensor::getSceneGraph
  * @return
  */
-QGraphicsScene IDisplayable::getSceneGraph() {
+QGraphicsScene* SensorEKG::getSceneGraph() {
     return NULL;
     //return this->scene;
 }

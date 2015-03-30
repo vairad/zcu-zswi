@@ -6,6 +6,7 @@
 class SensorPosition : public IDisplayable {
 public:
     SensorPosition();
+    QGraphicsScene* getSceneGraph();
     ~SensorPosition();
 };
 

@@ -6,6 +6,7 @@
 class SensorGSR : public IDisplayable {
 public:
     SensorGSR();
+    QGraphicsScene* getSceneGraph();
     ~SensorGSR();
 };
 

@@ -6,6 +6,7 @@
 class SensorTemp : public IDisplayable {
 public:
     SensorTemp();
+    QGraphicsScene* getSceneGraph();
     ~SensorTemp();
 };
 

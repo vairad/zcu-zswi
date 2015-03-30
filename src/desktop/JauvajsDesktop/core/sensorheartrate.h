@@ -6,6 +6,7 @@
 class SensorHeartRate : public IDisplayable {
 public:
     SensorHeartRate();
+    QGraphicsScene* getSceneGraph();
     ~SensorHeartRate();
 };
 

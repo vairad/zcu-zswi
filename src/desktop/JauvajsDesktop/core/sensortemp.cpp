@@ -11,6 +11,16 @@ SensorTemp::SensorTemp() {
     name = "Teplota";
 }
 
+/**
+ * Vrati scenu s grafem
+ * @brief SensorTemp::getSceneGraph
+ * @return
+ */
+QGraphicsScene* SensorTemp::getSceneGraph() {
+    return NULL;
+    //return this->scene;
+}
+
 SensorTemp::~SensorTemp() {
 
 }

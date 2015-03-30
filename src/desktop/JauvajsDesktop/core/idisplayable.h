@@ -11,8 +11,10 @@ class IDisplayable {
 public:
     IDisplayable();
     ~IDisplayable();
+
     /** vrati vytvoreny graf */
-    virtual QGraphicsScene getSceneGraph();
+    virtual QGraphicsScene* getSceneGraph() = 0;
+
     QString getName();
 
     /** minimum na ose X */

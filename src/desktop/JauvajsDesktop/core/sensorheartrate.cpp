@@ -11,6 +11,16 @@ SensorHeartRate::SensorHeartRate() {
     name = "Puls";
 }
 
+/**
+ * Vrati scenu s grafem
+ * @brief SensorHeartRate::getSceneGraph
+ * @return
+ */
+QGraphicsScene* SensorHeartRate::getSceneGraph() {
+    return NULL;
+    //return this->scene;
+}
+
 SensorHeartRate::~SensorHeartRate() {
 
 }
