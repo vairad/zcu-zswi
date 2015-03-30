@@ -37,6 +37,7 @@ HEADERS  += main.h\
     gui/mainwindow.h \
     gui/metadialog.h \
     gui/sensorwidget.h \
-    gui/ui_mainwindow.h
+    gui/ui_mainwindow.h \
+    core/idatalistener.h
 
 FORMS    += gui/mainwindow.ui
