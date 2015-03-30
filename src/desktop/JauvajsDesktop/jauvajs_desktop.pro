@@ -38,6 +38,7 @@ HEADERS  += main.h\
     gui/metadialog.h \
     gui/sensorwidget.h \
     gui/ui_mainwindow.h \
-    core/idatalistener.h
+    core/idatalistener.h \
+    core/ianalyseable.h
 
 FORMS    += gui/mainwindow.ui
