@@ -22,7 +22,8 @@
 #define S_BPM 4
 #define S_SPO2 5
 #define S_ACCE 6
-#define SENSOR_COUNT 7
+#define S_AIRF 7
+#define SENSOR_COUNT 8
 
 #define CHECK_DELAY 4
 #define LED 13
@@ -84,7 +85,7 @@ void setup()
 void loop()
 {
       float temperature, conductance, resistance, EKG;
-      int BPM, SPO2;
+      int BPM, SPO2, airflow;
       uint8_t pos;
       boolean first_sent = false;
       
@@ -92,7 +93,10 @@ void loop()
       if(sensor_usage > 0){
         Serial.print("Check cycle: "); Serial.print(check_delayer); Serial.print("\t\t");
         //1. Read from eHealth.
-         //int airFlow = eHealth.getAirFlow();
+        if(is_enabled(S_AIRF)){
+          airflow = eHealth.getAirFlow();
+        }
+         
          if(is_enabled(S_TEMP)){
            temperature = eHealth.getTemperature();
          }
@@ -114,9 +118,14 @@ void loop()
          if(is_enabled(S_ACCE)){
            pos = eHealth.getBodyPosition();
          }
-        //Serial.print(int(airFlow));     Serial.print("#");
+         
+         
+        
       
         Serial.print("[");
+        if(is_enabled(S_AIRF)){
+          first_sent = print_if_not_first("F&", airflow, first_sent);
+        }
         if(is_enabled(S_TEMP)){
           first_sent = print_if_not_first("T&", temperature, first_sent);    // teplota
         }
