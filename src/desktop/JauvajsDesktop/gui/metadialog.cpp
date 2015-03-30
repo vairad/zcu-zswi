@@ -75,7 +75,10 @@ SensorsTab::SensorsTab(SensorWidget *sensors[], QWidget *parent) : QWidget(paren
 
         if (!sensors[i]->isHidden()) sensorCB->setChecked(true);
         permissionsLayout->addWidget(sensorCB);
+        // propojeni checkboxu s akci v SensorWidget
         QObject::connect(sensorCB, SIGNAL(toggled(bool)), sensors[i], SLOT(on_action_toggled(bool)));
+        // propojeni zmeny v akci v SensorWidget s checkboxem
+        QObject::connect(sensors[i], SIGNAL(visible(bool)), sensorCB, SLOT(setChecked(bool)));
 
     }
     sensorsGroup->setLayout(permissionsLayout);

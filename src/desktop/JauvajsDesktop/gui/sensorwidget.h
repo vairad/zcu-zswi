@@ -40,6 +40,9 @@ public slots:
 //private slots:
     void on_action_toggled(bool arg1);
 
+signals:
+    void visible(bool arg1);
+
 protected:
     void resizeEvent(QResizeEvent *event);
     /** scena pro vykresleni grafu */

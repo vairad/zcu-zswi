@@ -127,10 +127,14 @@ void SensorWidget::setUp() {
  */
 void SensorWidget::on_action_toggled(bool arg1) {
     if (arg1) {
-       this->show();
+        this->show();
+        action1->setChecked(true);
+        visible(true);
     }
     else {
-       this->hide();
+        this->hide();
+        action1->setChecked(false);
+        visible(false);
     }
 }
 

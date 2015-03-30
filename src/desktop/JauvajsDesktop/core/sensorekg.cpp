@@ -1,8 +1,5 @@
 #include "core/sensorekg.h"
 
-/*** NEZAPOMENOUT ODEBRAT ***/
-#include "loadfile.h"
-
 SensorEKG::SensorEKG() {
     minY = -1;
     maxY = 1;
