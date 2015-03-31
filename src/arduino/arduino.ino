@@ -15,6 +15,8 @@
 #include <PinChangeInt.h>
 #include <eHealth.h>
 
+#define DEBUG
+
 #define S_TEMP 0
 #define S_COND 1
 #define S_RESI 2
@@ -26,6 +28,7 @@
 #define SENSOR_COUNT 8
 
 #define CHECK_DELAY 4
+#define CYCLE_DELAY 500
 #define LED 13
 
 char recv[128];
@@ -66,9 +69,10 @@ void setup()
 {
   Serial.begin(115200);
   delay(2000);
+#ifndef DEBUG
   bt_setup();
   bt_sync();
-  
+#endif  
   delay(1000);
   Serial.print("AT+JSCR\r\n"); // Stream Connection Request command
   
@@ -86,76 +90,72 @@ void setup()
 
 void loop()
 {
-      float temperature, conductance, resistance, EKG;
-      int BPM, SPO2, airflow;
-      uint8_t pos;
-      boolean first_sent = false;
-      
-      input_check();
-      if(sensor_usage > 0){
-        Serial.print("Check cycle: "); Serial.print(check_delayer); Serial.print("\t\t");
-        //1. Read from eHealth.
-        if(is_enabled(S_AIRF)){
-          airflow = eHealth.getAirFlow();
-        }
-         
-         if(is_enabled(S_TEMP)){
-           temperature = eHealth.getTemperature();
-         }
-         if(is_enabled(S_COND)){
-           conductance = eHealth.getSkinConductance();
-         }
-         if(is_enabled(S_RESI)){
-           resistance = eHealth.getSkinResistance();
-         }
-         if(is_enabled(S_EKG)){
-           EKG = eHealth.getECG();
-         }
-         if(is_enabled(S_BPM)){
-           BPM = eHealth.getBPM();
-         }
-         if(is_enabled(S_SPO2)){
-           SPO2 = eHealth.getOxygenSaturation();
-         }
-         if(is_enabled(S_ACCE)){
-           pos = eHealth.getBodyPosition();
-         }
-         
-         
-        
-      
-        Serial.print("[");
-        if(is_enabled(S_AIRF)){
-          first_sent = print_if_not_first("F&", 0, airflow, first_sent);
-        }
-        if(is_enabled(S_TEMP)){
-          first_sent = print_if_not_first("T&", 2, temperature, first_sent);    // teplota
-        }
-        if(is_enabled(S_BPM)){
-          first_sent = print_if_not_first("P&", 0, int(BPM), first_sent);       // puls
-        }
-        if(is_enabled(S_SPO2)){
-          first_sent = print_if_not_first("O&", 0, int(SPO2), first_sent);      // okysliceni
-        }
-        if(is_enabled(S_COND)){
-          first_sent = print_if_not_first("V&", 3, conductance, first_sent);    // GSR - napětí
-        }
-        if(is_enabled(S_RESI)){
-          first_sent = print_if_not_first("R&", 3, int(resistance), first_sent);// GSR - odpor
-        }
-        if(is_enabled(S_EKG)){
-          first_sent = print_if_not_first("H&", 6, EKG, first_sent);            // EKG
-        }
-        if(is_enabled(S_ACCE)){
-          first_sent = print_if_not_first("A&", 0, int(pos), first_sent);      // akcelerometr
-        }
-        Serial.print("]\n");
-        // Reduce this delay for more data rate
-        delay(250);
-      } else {
-        Serial.print("Sleep cycle: "); Serial.print(check_delayer); Serial.print("\n");
-        delay(500);
-      }
+  float SPO2, BPM, temperature, conductance, resistance, EKG;
+  int   airflow;
+  uint8_t pos;
+  boolean first_sent = false;
+  
+  input_check();
+  if(sensor_usage > 0){
+    Serial.print("Check cycle: "); Serial.print(check_delayer); Serial.print("\t\t");
+    
+    if(is_enabled(S_AIRF)){
+      airflow = eHealth.getAirFlow();
+    }
+    if(is_enabled(S_TEMP)){
+      temperature = eHealth.getTemperature();
+    }
+    if(is_enabled(S_COND)){
+      conductance = eHealth.getSkinConductance();
+    }
+    if(is_enabled(S_RESI)){
+      resistance = eHealth.getSkinResistance();
+    }
+    if(is_enabled(S_EKG)){
+      EKG = eHealth.getECG();
+    }
+    if(is_enabled(S_BPM)){
+      BPM = eHealth.getBPM();
+    }
+    if(is_enabled(S_SPO2)){
+      SPO2 = eHealth.getOxygenSaturation();
+    }
+    if(is_enabled(S_ACCE)){
+      pos = eHealth.getBodyPosition();
+    }
+  
+    Serial.print("[");
+    if(is_enabled(S_AIRF)){
+      first_sent = fprint_int   (first_sent, "F&", airflow, 0);
+    }
+    if(is_enabled(S_TEMP)){
+      first_sent = fprint_float (first_sent, "T&", temperature, 2);    // teplota
+    }
+    if(is_enabled(S_BPM)){
+      first_sent = fprint_int   (first_sent, "P&", int(BPM), 2);       // puls
+    }
+    if(is_enabled(S_SPO2)){
+      first_sent = fprint_int   (first_sent, "O&", SPO2, 0);           // okysliceni
+    }
+    if(is_enabled(S_COND)){
+      first_sent = fprint_float (first_sent, "V&", conductance, 2);    // GSR - napětí
+    }
+    if(is_enabled(S_RESI)){
+      first_sent = fprint_int   (first_sent, "R&", int(resistance), 0);// GSR - odpor
+    }
+    if(is_enabled(S_EKG)){
+      first_sent = fprint_float (first_sent, "H&", EKG, 6);            // EKG
+    }
+    if(is_enabled(S_ACCE)){
+      first_sent = fprint_int   (first_sent, "A&", int(pos), 0);      // akcelerometr
+    }
+    Serial.print("]\n");
+    // Reduce this delay for more data rate
+    delay(CYCLE_DELAY);
+  } else {
+    Serial.print("Sleep cycle: "); Serial.print(check_delayer); Serial.print("\n");
+    delay(CYCLE_DELAY * 4 / 3);
+  }
 
 }
 
@@ -167,11 +167,27 @@ boolean is_enabled(int sensor_number){
   return sensor_usage[sensor_number];
 }
 
-boolean print_if_not_first(char* stamp, int acc, int val, boolean first_sent){
+boolean fprint_int(boolean first_sent, char* stamp, int val, int format){
   if(first_sent){
     Serial.print("\t");
   }
-  Serial.print(stamp); Serial.print(val, acc);
+  
+  Serial.print(stamp);
+  
+  if(format > 1){ Serial.print(val, format);
+  } else {
+    Serial.print(val);
+  }
+  
+  return true;
+}
+
+boolean fprint_float(boolean first_sent, char* stamp, float val, int format){
+  if(first_sent){
+    Serial.print("\t");
+  }
+  Serial.print(stamp); Serial.print(val, format);
+  
   return true;
 }
 
