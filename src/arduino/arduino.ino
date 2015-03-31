@@ -51,8 +51,6 @@ void bt_setup(){
   digitalWrite(LED, LOW);
   Serial.flush();
   
-  delay(1000);
-  Serial.print("AT+JSCR\r\n"); // Stream Connection Request command
 }
 
 void bt_sync(){
@@ -70,6 +68,10 @@ void setup()
   delay(2000);
   bt_setup();
   bt_sync();
+  
+  delay(1000);
+  Serial.print("AT+JSCR\r\n"); // Stream Connection Request command
+  
   for(short i = 0; i < SENSOR_COUNT; i++){
     sensor_usage[i] = true;
   }
@@ -124,28 +126,28 @@ void loop()
       
         Serial.print("[");
         if(is_enabled(S_AIRF)){
-          first_sent = print_if_not_first("F&", airflow, first_sent);
+          first_sent = print_if_not_first("F&", 0, airflow, first_sent);
         }
         if(is_enabled(S_TEMP)){
-          first_sent = print_if_not_first("T&", temperature, first_sent);    // teplota
+          first_sent = print_if_not_first("T&", 2, temperature, first_sent);    // teplota
         }
         if(is_enabled(S_BPM)){
-          first_sent = print_if_not_first("P&", int(BPM), first_sent);       // puls
+          first_sent = print_if_not_first("P&", 0, int(BPM), first_sent);       // puls
         }
         if(is_enabled(S_SPO2)){
-          first_sent = print_if_not_first("O&", int(SPO2), first_sent);      // okysliceni
+          first_sent = print_if_not_first("O&", 0, int(SPO2), first_sent);      // okysliceni
         }
         if(is_enabled(S_COND)){
-          first_sent = print_if_not_first("V&", conductance, first_sent);    // GSR - napětí
+          first_sent = print_if_not_first("V&", 3, conductance, first_sent);    // GSR - napětí
         }
         if(is_enabled(S_RESI)){
-          first_sent = print_if_not_first("R&", int(resistance), first_sent);// GSR - odpor
+          first_sent = print_if_not_first("R&", 3, int(resistance), first_sent);// GSR - odpor
         }
         if(is_enabled(S_EKG)){
-          first_sent = print_if_not_first("H&", EKG, first_sent);            // EKG
+          first_sent = print_if_not_first("H&", 6, EKG, first_sent);            // EKG
         }
         if(is_enabled(S_ACCE)){
-          first_sent = print_if_not_first("A&", int(pos), first_sent);      // akcelerometr
+          first_sent = print_if_not_first("A&", 0, int(pos), first_sent);      // akcelerometr
         }
         Serial.print("]\n");
         // Reduce this delay for more data rate
@@ -165,11 +167,11 @@ boolean is_enabled(int sensor_number){
   return sensor_usage[sensor_number];
 }
 
-boolean print_if_not_first(char* stamp, int val, boolean first_sent){
+boolean print_if_not_first(char* stamp, int acc, int val, boolean first_sent){
   if(first_sent){
     Serial.print("\t");
   }
-  Serial.print(stamp); Serial.print(val);
+  Serial.print(stamp); Serial.print(val, acc);
   return true;
 }
 
