@@ -39,6 +39,7 @@ HEADERS  += main.h\
     gui/sensorwidget.h \
     gui/ui_mainwindow.h \
     core/idatalistener.h \
-    core/ianalyseable.h
+    core/ianalyseable.h \
+    core/iminer.h
 
 FORMS    += gui/mainwindow.ui
