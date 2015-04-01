@@ -43,16 +43,25 @@ short check_delayer = 0;
 //  See the next link http://www.cooking-hacks.com/index.php/documentation/tutorials/arduino-xbee-shield
 
 void bt_setup(){
-  Serial.print("AT+JSEC=1,1,1,04,1111\r\n"); // Enable security command
-  delay(2000);
-  Serial.print("AT+JDIS=3\r\n"); // Discorable command
-  delay(2000);
+  delay(4000);
+  Serial.print("AT+JSEC=1,1,2,04,0000\r\n"); // Enable security command
+  delay(4000);
+  Serial.print("AT+JSLN=10,JauvajsIno\r\n"); // Setup name of device
+  delay(4000);  
+  Serial.print("AT+JDIS=3\r\n"); // Discoverable command
+  delay(4000);
   Serial.print("AT+JRLS=1101,11,Serial Port,01,000000\r\n"); // Register local sevice command
-  delay(2000);
+  delay(4000);
   Serial.print("AT+JAAC=1\r\n");// Auto accept connection requests command
-  delay(2000);
+  delay(4000);
   pinMode(LED, OUTPUT);
   digitalWrite(LED, LOW);
+  for(int i = 0; i < 10; i++){
+    digitalWrite(LED, HIGH);
+    delay(2000);
+    digitalWrite(LED, LOW);
+    delay(2000);    
+  }
   Serial.flush();
 
   //wait until BT module will be configured
