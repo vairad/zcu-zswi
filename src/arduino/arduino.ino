@@ -211,8 +211,9 @@ int process_command(char *command, char *argument){
     case 'P': differ = S_BPM;  break;
     case 'O': differ = S_SPO2; break;
     case 'A': differ = S_ACCE; break;
+    case 'F': differ = S_AIRF; break;
     default:
-      Serial.print("Invalid argument: "); Serial.print(argument); Serial.print(" value not in [A H O P R T V]!\n");
+      Serial.print("Invalid argument: "); Serial.print(argument); Serial.print(" value not in [A F H O P R T V]!\n");
       return 2;
   }
   switch(command[0]){
