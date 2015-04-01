@@ -64,7 +64,7 @@ void bt_setup(){
   
 }
 
-void bt_sync(){
+void sync(){
   char val = Serial.read();
   while (val != 'P'){
     Serial.print("Ja jsem Jauvajs Ino.\n Potrebuji >P< abych mohlo zacit pracovat.");
@@ -83,7 +83,7 @@ void setup()
 #endif
 
 #ifdef SYNC
-  bt_sync();
+  sync();
 #endif 
 
   delay(1000);
