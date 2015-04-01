@@ -56,12 +56,6 @@ void bt_setup(){
   delay(4000);
   pinMode(LED, OUTPUT);
   digitalWrite(LED, LOW);
-  for(int i = 0; i < 10; i++){
-    digitalWrite(LED, HIGH);
-    delay(2000);
-    digitalWrite(LED, LOW);
-    delay(2000);    
-  }
   Serial.flush();
 
   //wait until BT module will be configured
