@@ -15,7 +15,8 @@
 #include <PinChangeInt.h>
 #include <eHealth.h>
 
-#define DEBUG
+#define BT
+//#define SYNC
 
 #define S_TEMP 0
 #define S_COND 1
@@ -53,10 +54,17 @@ void bt_setup(){
   pinMode(LED, OUTPUT);
   digitalWrite(LED, LOW);
   Serial.flush();
+
+  //wait until BT module will be configured
+  int val = -1;
+  val = Serial.read();
+  while (val != 'R'){
+    val = Serial.read();
+  }
   
 }
 
-void bt_sync(){
+void sync(){
   char val = Serial.read();
   while (val != 'P'){
     Serial.print("Ja jsem Jauvajs Ino.\n Potrebuji >P< abych mohlo zacit pracovat.");
@@ -69,10 +77,15 @@ void setup()
 {
   Serial.begin(115200);
   delay(2000);
-#ifndef DEBUG
+
+#ifdef BT
   bt_setup();
-  bt_sync();
-#endif  
+#endif
+
+#ifdef SYNC
+  sync();
+#endif 
+
   delay(1000);
   Serial.print("AT+JSCR\r\n"); // Stream Connection Request command
   
@@ -211,8 +224,9 @@ int process_command(char *command, char *argument){
     case 'P': differ = S_BPM;  break;
     case 'O': differ = S_SPO2; break;
     case 'A': differ = S_ACCE; break;
+    case 'F': differ = S_AIRF; break;
     default:
-      Serial.print("Invalid argument: "); Serial.print(argument); Serial.print(" value not in [A H O P R T V]!\n");
+      Serial.print("Invalid argument: "); Serial.print(argument); Serial.print(" value not in [A F H O P R T V]!\n");
       return 2;
   }
   switch(command[0]){
