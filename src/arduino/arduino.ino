@@ -15,7 +15,8 @@
 #include <PinChangeInt.h>
 #include <eHealth.h>
 
-#define DEBUG
+#define BT
+//#define SYNC
 
 #define S_TEMP 0
 #define S_COND 1
@@ -53,6 +54,13 @@ void bt_setup(){
   pinMode(LED, OUTPUT);
   digitalWrite(LED, LOW);
   Serial.flush();
+
+  //wait until BT module will be configured
+  int val = -1;
+  val = Serial.read();
+  while (val != 'R'){
+    val = Serial.read();
+  }
   
 }
 
@@ -69,10 +77,15 @@ void setup()
 {
   Serial.begin(115200);
   delay(2000);
-#ifndef DEBUG
+
+#ifdef BT
   bt_setup();
+#endif
+
+#ifdef SYNC
   bt_sync();
-#endif  
+#endif 
+
   delay(1000);
   Serial.print("AT+JSCR\r\n"); // Stream Connection Request command
   
