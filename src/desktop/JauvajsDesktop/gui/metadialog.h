@@ -30,7 +30,7 @@ class SensorsTab : public QWidget {
     Q_OBJECT
 
 public:
-    explicit SensorsTab(SensorWidget *sensors[], QWidget *parent = 0);
+    explicit SensorsTab(SensorWidget *sensors[], int numberOfSensors, QWidget *parent = 0);
 };
 
 /**
@@ -41,7 +41,7 @@ class MetaDialog : public QDialog {
     Q_OBJECT
 
 public:
-    explicit MetaDialog(SensorWidget *sensors[], QWidget *parent = 0);
+    explicit MetaDialog(SensorWidget *sensors[], int numberOfSensors, QWidget *parent = 0);
     /** hlavni list */
     MainTab *mainTab;
 

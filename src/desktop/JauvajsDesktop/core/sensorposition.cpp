@@ -6,7 +6,7 @@ SensorPosition::SensorPosition() {
     minX = 0;
     maxX = 200;
     time = 0;
-    lastY = -1;
+    lastValue = -1;
 
     name = "Poloha";
 }

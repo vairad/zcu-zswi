@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     core/sensortemp.cpp \
     gui/mainwindow.cpp \
     gui/metadialog.cpp \
-    gui/sensorwidget.cpp
+    gui/sensorwidget.cpp \
+    gui/detailedwindow.cpp
 
 HEADERS  += main.h\
     loadfile.h \
@@ -40,6 +41,8 @@ HEADERS  += main.h\
     gui/ui_mainwindow.h \
     core/idatalistener.h \
     core/ianalyseable.h \
-    core/iminer.h
+    core/iminer.h \
+    gui/detailedwindow.h
 
-FORMS    += gui/mainwindow.ui
+FORMS    += gui/mainwindow.ui \
+    gui/dialog.ui

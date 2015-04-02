@@ -27,8 +27,8 @@ public:
     int maxY;
     /** cas (osa X) */
     int time;
-    /** posledni hodnota Y */
-    int lastY;
+    /** posledni hodnota */
+    double lastValue;
 
 protected:
     /** nazev senzoru */

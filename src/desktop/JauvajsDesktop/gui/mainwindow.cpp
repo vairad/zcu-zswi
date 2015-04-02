@@ -23,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     sensors[4] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorGSR(), ui->scrollAreaWidgetContents_2);
     sensors[5] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorHeartRate(), ui->scrollAreaWidgetContents_2);
 
-    metaDialog = new MetaDialog(sensors);
+    metaDialog = new MetaDialog(sensors, NUMBER_OF_SENSORS);
     setMetadata();
     // propojeni zmeny udaju v metaDialogu s pravym sloupcem
     QObject::connect(metaDialog, SIGNAL(accepted()), this, SLOT(setMetadata()));
@@ -34,7 +34,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
  * @brief MainWindow::draw
  */
 void MainWindow::draw() {
-    sensors[0]->setUp();
+    for (int i = 0; i < NUMBER_OF_SENSORS; i++) {
+       sensors[i]->setUp();
+    }
 }
 
 MainWindow::~MainWindow() {

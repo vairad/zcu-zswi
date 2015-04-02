@@ -3,14 +3,15 @@
 /**
  * Vytvori dialog umoznujici nastaveni meta dat
  * @brief MetaDialog::MetaDialog
- * @param sensors
+ * @param sensors widgety senzoru
+ * @param numberOfSensors pocet senzoru
  * @param parent
  */
-MetaDialog::MetaDialog(SensorWidget *sensors[], QWidget *parent) : QDialog(parent) {
+MetaDialog::MetaDialog(SensorWidget *sensors[], int numberOfSensors, QWidget *parent) : QDialog(parent) {
     tabWidget = new QTabWidget;
     mainTab = new MainTab();
     tabWidget->addTab(mainTab, tr("Hlavní"));
-    tabWidget->addTab(new SensorsTab(sensors), tr("Senzory"));
+    tabWidget->addTab(new SensorsTab(sensors, numberOfSensors), tr("Senzory"));
 
     buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
 
@@ -60,17 +61,18 @@ MainTab::MainTab(QWidget *parent) : QWidget(parent) {
 /**
  * Vytvori list senzory - nastaveni viditelnych senzoru
  * @brief SensorsTab::SensorsTab
- * @param sensors
+ * @param sensors widgety senzoru
+ * @param numberOfSensors pocet senzoru
  * @param parent
  */
-SensorsTab::SensorsTab(SensorWidget *sensors[], QWidget *parent) : QWidget(parent) {
+SensorsTab::SensorsTab(SensorWidget *sensors[], int numberOfSensors, QWidget *parent) : QWidget(parent) {
     QGroupBox *sensorsGroup = new QGroupBox(tr("Zobrazené senzory"));
 
     QCheckBox *sensorCB;
     QVBoxLayout *permissionsLayout = new QVBoxLayout;
 
     // prochazeni vsech senzoru
-    for(int i = 0; i < 6; i++) {
+    for(int i = 0; i < numberOfSensors; i++) {
         sensorCB = new QCheckBox(sensors[i]->getSensor()->getName().toStdString().c_str());
 
         if (!sensors[i]->isHidden()) sensorCB->setChecked(true);

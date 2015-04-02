@@ -21,6 +21,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     void draw();
     ~MainWindow();
+    static const int NUMBER_OF_SENSORS = 6;
 
 public slots:
     void setMetadata();
@@ -33,7 +34,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     /** senzory */
-    SensorWidget *sensors[6];
+    SensorWidget *sensors[NUMBER_OF_SENSORS];
     MetaDialog *metaDialog;
 };
 

@@ -10,6 +10,7 @@
 #include <QAction>
 #include <QMenu>
 #include "core/idisplayable.h"
+#include "gui/detailedwindow.h"
 
 /**
  * Reprezentace widgetu - podokno zobrazene ve ScrollArea, obsluhuje akce uzivatele
@@ -44,6 +45,7 @@ signals:
     void visible(bool arg1);
 
 protected:
+    void mousePressEvent(QMouseEvent *event);
     void resizeEvent(QResizeEvent *event);
     /** scena pro vykresleni grafu */
     QGraphicsScene *scene;
@@ -70,6 +72,8 @@ private:
     QGraphicsTextItem *textMinY;
     /** popis nejvyssi hodnoty X */
     QGraphicsTextItem *textMaxX;
+    /** detailni okno senzoru */
+    DetailedWindow *detailedWindow;
 };
 
 #endif // SENSORWIDGET_H

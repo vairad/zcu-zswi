@@ -1,7 +1,6 @@
 #include "gui/sensorwidget.h"
 #include <QApplication>
 #include "loadfile.h"
-//#include "gui/ui_mainwindow.h"
 #include <QGraphicsTextItem>
 
 SensorWidget::SensorWidget(QVBoxLayout *vLayout, QMenu *menuZobrazit, IDisplayable *sensor, QWidget *parent) : menuZobrazit(menuZobrazit), sensor(sensor), QWidget(parent) {
@@ -18,6 +17,8 @@ SensorWidget::SensorWidget(QVBoxLayout *vLayout, QMenu *menuZobrazit, IDisplayab
     createGraphicsView();
     createAction();
     itemsExist = false;
+
+    detailedWindow = new DetailedWindow(sensor);
 }
 
 /**
@@ -78,6 +79,7 @@ void SensorWidget::createGraphicsView() {
     graphicsView->setScene(scene);
     graphicsView->setBackgroundBrush(QBrush(QColor(48, 128, 20), Qt::SolidPattern));
     graphicsView->setFrameStyle(0);
+    graphicsView->setCursor(Qt::PointingHandCursor);
 
     layout->addWidget(graphicsView);
 }
@@ -112,12 +114,23 @@ void SensorWidget::resizeEvent(QResizeEvent *e) {
 }
 
 /**
+ * @brief mousePressEvent
+ * @param event
+ */
+void SensorWidget::mousePressEvent(QMouseEvent *event) {
+    detailedWindow->showNormal();
+}
+
+/**
  * Pocatecni nastaveni velikosti sceny
  * @brief SensorWidget::setUp
  */
 void SensorWidget::setUp() {
     scene->setSceneRect(QRectF(QPointF(0, 0), QPointF(this->graphicsView->viewport()->width(), this->graphicsView->viewport()->height())));
     drawNumbers();
+    detailedWindow->showMinimized();
+    detailedWindow->hide();
+    detailedWindow->setUp();
 }
 
 /**
@@ -145,12 +158,16 @@ void SensorWidget::on_action_toggled(bool arg1) {
  */
 void SensorWidget::update(double value) {
     int y = graphicsView->viewport()->height() - ((value - sensor->minY) / (sensor->maxY - sensor->minY) * graphicsView->viewport()->height());
-    if (sensor->lastY != -1) {
-        scene->addLine(sensor->time, sensor->lastY, sensor->time+1, y, QPen(Qt::white));
+    int lastY = graphicsView->viewport()->height() - ((sensor->lastValue - sensor->minY) / (sensor->maxY - sensor->minY) * graphicsView->viewport()->height());
+
+    if (sensor->lastValue != -1) {
+        scene->addLine(sensor->time, lastY, sensor->time+1, y, QPen(Qt::white));
         graphicsView->viewport()->repaint();
     }
 
-    sensor->lastY = y;
+    detailedWindow->update(value);
+
+    sensor->lastValue = value;
     sensor->time++;
 }
 
@@ -163,6 +180,7 @@ void SensorWidget::on_button_clicked() {
 }
 
 /**
+ * Vykresli popisy grafu
  * @brief SensorWidget::drawNumbers
  */
 void SensorWidget::drawNumbers() {
