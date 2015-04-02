@@ -18,9 +18,9 @@ LIBS += -lBTHPROPS
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    MyThread.cpp
+    ArduinoMiner.cpp
 
 HEADERS  += mainwindow.h \
-    MyThread.h
+    ArduinoMiner.h
 
 FORMS    += mainwindow.ui

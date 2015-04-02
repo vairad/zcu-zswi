@@ -11,17 +11,20 @@
 #include <BluetoothAPIs.h>
 #include <Ws2bth.h>
 
-class MyThread: public QThread
+class ArduinoMiner: public QThread
 {
     Q_OBJECT
 public:
-    explicit MyThread(QObject *parent = 0);
-    ~MyThread();
+    explicit ArduinoMiner(QObject *parent = 0);
+    ~ArduinoMiner();
     void run();
     bool stop;
-    QStringListModel *modelNalezenychZarieni;
+    QStringList ListNalezenychZarizeni;
 
 signals:
+    void SeznamChanged(QStringList*);
+    void ZmenaStavu(QString);
+
 
 public slots:
 
@@ -30,7 +33,7 @@ private:
    BLUETOOTH_DEVICE_SEARCH_PARAMS btSearchParams;
    HBLUETOOTH_DEVICE_FIND deviceHandle;
    BLUETOOTH_DEVICE_INFO btDeviceInfo;
-   QStringList ListNalezenychZarizeni;
+
 
 };
 

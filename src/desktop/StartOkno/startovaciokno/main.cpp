@@ -17,13 +17,5 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
 
-    ///////////////
-
-   /* ArduinoMiner* arduinoMiner = new ArduinoMiner();
-    arduinoMiner->start();*/
-    //MainWindow::ui->listView->setModel(arduinoMiner->modelNalezenychZarieni);
-
-
-    ///////////////
     return a.exec();
 }
