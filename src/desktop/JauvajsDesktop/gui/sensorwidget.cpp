@@ -74,7 +74,7 @@ void SensorWidget::createGraphicsView() {
     graphicsView->setRubberBandSelectionMode(Qt::ContainsItemShape);
 
     scene = new QGraphicsScene(this);
-    scene->setSceneRect(QRectF(QPointF(0, 0), QPointF(this->graphicsView->viewport()->width(), this->graphicsView->viewport()->height())));
+    scene->setSceneRect(QRectF(QPointF(0, 0), QPointF(this->graphicsView->width(), this->graphicsView->height())));
 
     graphicsView->setScene(scene);
     graphicsView->setBackgroundBrush(QBrush(QColor(48, 128, 20), Qt::SolidPattern));
@@ -157,11 +157,13 @@ void SensorWidget::on_action_toggled(bool arg1) {
  * @param value
  */
 void SensorWidget::update(double value) {
-    int y = graphicsView->viewport()->height() - ((value - sensor->minY) / (sensor->maxY - sensor->minY) * graphicsView->viewport()->height());
-    int lastY = graphicsView->viewport()->height() - ((sensor->lastValue - sensor->minY) / (sensor->maxY - sensor->minY) * graphicsView->viewport()->height());
+    int height = graphicsView->viewport()->height() - BOTTOM_OFFSET;
+
+    int y = graphicsView->viewport()->height() - ((value - sensor->minY) / (sensor->maxY - sensor->minY) * height + BOTTOM_OFFSET);
+    int lastY = graphicsView->viewport()->height() - ((sensor->lastValue - sensor->minY) / (sensor->maxY - sensor->minY) * height + BOTTOM_OFFSET);
 
     if (sensor->lastValue != -1) {
-        scene->addLine(sensor->time, lastY, sensor->time+1, y, QPen(Qt::white));
+        scene->addLine(LEFT_OFFSET + sensor->time, lastY, LEFT_OFFSET + sensor->time+1, y, QPen(Qt::white));
         graphicsView->viewport()->repaint();
     }
 
@@ -189,7 +191,12 @@ void SensorWidget::drawNumbers() {
         scene->removeItem(textMaxY);
         scene->removeItem(textMinY);
         scene->removeItem(textMaxX);
+        scene->removeItem(textMinX);
+        scene->removeItem(horizontalLine);
     }
+
+    horizontalLine =  scene->addLine(0, graphicsView->viewport()->height() - BOTTOM_OFFSET, graphicsView->viewport()->width(), graphicsView->viewport()->height() - BOTTOM_OFFSET, QPen(Qt::white));
+    verticalLine =  scene->addLine(LEFT_OFFSET, 0, LEFT_OFFSET, graphicsView->viewport()->height(), QPen(Qt::white));
 
     QFont font = QFont("Arial", 6);
     // popis nejvyssi hodnoty Y
@@ -199,14 +206,19 @@ void SensorWidget::drawNumbers() {
 
     // popis nejmensi hodnoty Y
     textMinY = scene->addText(QString::number(sensor->minY), font);
-    QFontMetrics *fm = new QFontMetrics(font);
-    textMinY->setPos(0, graphicsView->viewport()->height() - fm->height()*2);
+    textMinY->setPos(0, graphicsView->viewport()->height() - textMinY->boundingRect().height() - BOTTOM_OFFSET);
     textMinY->setDefaultTextColor(Qt::white);
 
     // popis nejvyssi hodnoty X
-    textMaxX = scene->addText(QString::number(graphicsView->viewport()->width()), font);
-    textMaxX->setPos(graphicsView->viewport()->width() - fm->width(QString::number(graphicsView->viewport()->width()))*2, graphicsView->viewport()->height() - fm->height()*2);
+    textMaxX = scene->addText(QString::number(graphicsView->viewport()->width()) + " [time]", font);
+    textMaxX->setPos(graphicsView->viewport()->width() - textMaxX->boundingRect().width(), graphicsView->height() - textMaxX->boundingRect().height());
     textMaxX->setDefaultTextColor(Qt::white);
+
+    // popis nejmensi hodnoty X
+    textMinX = scene->addText(QString::number(sensor->minX), font);
+    textMinX->setPos(LEFT_OFFSET, graphicsView->viewport()->height() - textMinY->boundingRect().height());
+    textMinX->setDefaultTextColor(Qt::white);
+
     itemsExist = true;
 }
 

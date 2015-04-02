@@ -36,6 +36,16 @@ private:
     QGraphicsTextItem *textMinY;
     /** popis nejvyssi hodnoty X */
     QGraphicsTextItem *textMaxX;
+    /** popis nejmensi hodnoty X */
+    QGraphicsTextItem *textMinX;
+    /** osa x */
+    QGraphicsLineItem *horizontalLine;
+    /** osa y */
+    QGraphicsLineItem *verticalLine;
+    /** leve odsazeni grafu */
+    static const int LEFT_OFFSET = 20;
+    /** spodni odsazeni grafu */
+    static const int BOTTOM_OFFSET = 15;
 };
 
 #endif // DETAILEDWINDOW_H

@@ -9,6 +9,7 @@
 #include <QSizePolicy>
 #include <QAction>
 #include <QMenu>
+#include <QGraphicsLineItem>
 #include "core/idisplayable.h"
 #include "gui/detailedwindow.h"
 
@@ -72,8 +73,18 @@ private:
     QGraphicsTextItem *textMinY;
     /** popis nejvyssi hodnoty X */
     QGraphicsTextItem *textMaxX;
+    /** popis nejmensi hodnoty X */
+    QGraphicsTextItem *textMinX;
     /** detailni okno senzoru */
     DetailedWindow *detailedWindow;
+    /** osa x */
+    QGraphicsLineItem *horizontalLine;
+    /** osa y */
+    QGraphicsLineItem *verticalLine;
+    /** leve odsazeni grafu */
+    static const int LEFT_OFFSET = 20;
+    /** spodni odsazeni grafu */
+    static const int BOTTOM_OFFSET = 15;
 };
 
 #endif // SENSORWIDGET_H
