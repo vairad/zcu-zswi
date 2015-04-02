@@ -16,7 +16,6 @@
 #include <eHealth.h>
 
 #define BT
-//#define SYNC
 
 #define S_TEMP 0
 #define S_COND 1
@@ -57,19 +56,15 @@ void bt_setup(){
   pinMode(LED, OUTPUT);
   digitalWrite(LED, LOW);
   Serial.flush();
-
-  //wait until BT module will be configured
-  int val = -1;
-  val = Serial.read();
-  while (val != 'R'){
-    val = Serial.read();
-  }
-  
+  sync();
+  delay(1000);
+  Serial.print("AT+JSCR\r\n"); // Stream Connection Request command
 }
 
 void sync(){
   char val = Serial.read();
-  while (val != 'P'){
+  while (val != 'P')
+  {
     Serial.print("Ja jsem Jauvajs Ino.\n Potrebuji >P< abych mohlo zacit pracovat.");
     delay(333);
     val = Serial.read();
@@ -84,15 +79,9 @@ void setup()
 #ifdef BT
   bt_setup();
 #endif
-
-#ifdef SYNC
-  sync();
-#endif 
-
-  delay(1000);
-  Serial.print("AT+JSCR\r\n"); // Stream Connection Request command
   
-  for(short i = 0; i < SENSOR_COUNT; i++){
+  for(short i = 0; i < SENSOR_COUNT; i++)
+  {
     sensor_usage[i] = true;
   }
   eHealth.initPulsioximeter();
@@ -109,88 +98,57 @@ void loop()
   float SPO2, BPM, temperature, conductance, resistance, EKG;
   int   airflow;
   uint8_t pos;
-  boolean first_sent = false;
+  boolean tab = false;
   
   input_check();
-  if(sensor_usage > 0){
-    Serial.print("Check cycle: "); Serial.print(check_delayer); Serial.print("\t\t");
-    
-    if(is_enabled(S_AIRF)){
-      airflow = eHealth.getAirFlow();
-    }
-    if(is_enabled(S_TEMP)){
-      temperature = eHealth.getTemperature();
-    }
-    if(is_enabled(S_COND)){
-      conductance = eHealth.getSkinConductance();
-    }
-    if(is_enabled(S_RESI)){
-      resistance = eHealth.getSkinResistance();
-    }
-    if(is_enabled(S_EKG)){
-      EKG = eHealth.getECG();
-    }
-    if(is_enabled(S_BPM)){
-      BPM = eHealth.getBPM();
-    }
-    if(is_enabled(S_SPO2)){
-      SPO2 = eHealth.getOxygenSaturation();
-    }
-    if(is_enabled(S_ACCE)){
-      pos = eHealth.getBodyPosition();
-    }
   
-    Serial.print("[");
-    if(is_enabled(S_AIRF)){
-      first_sent = fprint_int   (first_sent, "F&", airflow, 0);
-    }
-    if(is_enabled(S_TEMP)){
-      first_sent = fprint_float (first_sent, "T&", temperature, 2);    // teplota
-    }
-    if(is_enabled(S_BPM)){
-      first_sent = fprint_int   (first_sent, "P&", int(BPM), 2);       // puls
-    }
-    if(is_enabled(S_SPO2)){
-      first_sent = fprint_int   (first_sent, "O&", SPO2, 0);           // okysliceni
-    }
-    if(is_enabled(S_COND)){
-      first_sent = fprint_float (first_sent, "V&", conductance, 2);    // GSR - napětí
-    }
-    if(is_enabled(S_RESI)){
-      first_sent = fprint_int   (first_sent, "R&", int(resistance), 0);// GSR - odpor
-    }
-    if(is_enabled(S_EKG)){
-      first_sent = fprint_float (first_sent, "H&", EKG, 6);            // EKG
-    }
-    if(is_enabled(S_ACCE)){
-      first_sent = fprint_int   (first_sent, "A&", int(pos), 0);      // akcelerometr
-    }
-    Serial.print("]\n");
-    // Reduce this delay for more data rate
-    delay(CYCLE_DELAY);
-  } else {
-    Serial.print("Sleep cycle: "); Serial.print(check_delayer); Serial.print("\n");
-    delay(CYCLE_DELAY * 4 / 3);
-  }
+  Serial.print("Check "); Serial.print(check_delayer); Serial.print(":\t");
+  
+  if(is_enabled(S_AIRF)){ airflow = eHealth.getAirFlow();             }
+  if(is_enabled(S_TEMP)){ temperature = eHealth.getTemperature();     }
+  if(is_enabled(S_COND)){ conductance = eHealth.getSkinConductance(); }
+  if(is_enabled(S_RESI)){ resistance = eHealth.getSkinResistance();   }
+  if(is_enabled(S_EKG)) { EKG = eHealth.getECG();                     }
+  if(is_enabled(S_BPM)) { BPM = eHealth.getBPM();                     }
+  if(is_enabled(S_SPO2)){ SPO2 = eHealth.getOxygenSaturation();       }
+  if(is_enabled(S_ACCE)){ pos = eHealth.getBodyPosition();            }
+
+  Serial.print("[");
+  if(is_enabled(S_AIRF)){ tab = fprint_int   (tab, "F&", airflow, 0);         }  // dech
+  if(is_enabled(S_TEMP)){ tab = fprint_float (tab, "T&", temperature, 2);     }  // teplota
+  if(is_enabled(S_BPM)){  tab = fprint_int   (tab, "P&", int(BPM), 2);        }  // puls
+  if(is_enabled(S_SPO2)){ tab = fprint_int   (tab, "O&", SPO2, 0);            }  // okysliceni
+  if(is_enabled(S_COND)){ tab = fprint_float (tab, "V&", conductance, 2);     }  // GSR - napětí
+  if(is_enabled(S_RESI)){ tab = fprint_int   (tab, "R&", int(resistance), 0); }  // GSR - odpor
+  if(is_enabled(S_EKG)){  tab = fprint_float (tab, "H&", EKG, 6);             }  // EKG
+  if(is_enabled(S_ACCE)){ tab = fprint_int   (tab, "A&", int(pos), 0);        }  // akcelerometr
+  
+  Serial.print("]\n");
+  // Reduce this delay for more data rate
+  delay(CYCLE_DELAY);
 
 }
 
 boolean is_enabled(int sensor_number){
-  if(sensor_number < 0 || sensor_number > SENSOR_COUNT){
-    Serial.print("Bad sensor number: "); Serial.print(sensor_number);
+  if(sensor_number < 0 || sensor_number > SENSOR_COUNT)
+  {
+    Serial.print("Bad sensor number: "); Serial.println(sensor_number);
     return false;
   }
   return sensor_usage[sensor_number];
 }
 
 boolean fprint_int(boolean first_sent, char* stamp, int val, int format){
-  if(first_sent){
+  if(first_sent)
+  {
     Serial.print("\t");
   }
   
   Serial.print(stamp);
   
-  if(format > 1){ Serial.print(val, format);
+  if(format > 1)
+  { 
+    Serial.print(val, format);
   } else {
     Serial.print(val);
   }
@@ -199,7 +157,8 @@ boolean fprint_int(boolean first_sent, char* stamp, int val, int format){
 }
 
 boolean fprint_float(boolean first_sent, char* stamp, float val, int format){
-  if(first_sent){
+  if(first_sent)
+  {
     Serial.print("\t");
   }
   Serial.print(stamp); Serial.print(val, format);
@@ -208,7 +167,8 @@ boolean fprint_float(boolean first_sent, char* stamp, float val, int format){
 }
 
 void set_enabled(boolean value, short sensor){
-  if(sensor < 0 || sensor >= SENSOR_COUNT){
+  if(sensor < 0 || sensor >= SENSOR_COUNT)
+  {
     Serial.print("Invalid bit index: "); Serial.print(sensor);
   }
   sensor_usage[sensor] = value;
@@ -216,7 +176,8 @@ void set_enabled(boolean value, short sensor){
 
 int process_command(char *command, char *argument){
   unsigned short differ;
-  if(strcmp(command, "SET") == 0){
+  if(strcmp(command, "SET") == 0)
+  {
     return set_usage_bits(argument);
   }
   switch(argument[0]){
@@ -229,16 +190,17 @@ int process_command(char *command, char *argument){
     case 'A': differ = S_ACCE; break;
     case 'F': differ = S_AIRF; break;
     default:
-      Serial.print("Invalid argument: "); Serial.print(argument); Serial.print(" value not in [A F H O P R T V]!\n");
+      Serial.print("Invalid argument: "); Serial.print(argument); Serial.println(" value not in [A F H O P R T V]!");
       return 2;
   }
-  switch(command[0]){
+  switch(command[0])
+  {
     case 'E':
-      Serial.print("Enabling "); Serial.print(differ); Serial.print("\n");
+      Serial.print("Enabling "); Serial.println(differ);
       set_enabled(true, differ);
       break;
     case 'D':
-      Serial.print("Disabling "); Serial.print(differ); Serial.print("\n");
+      Serial.print("Disabling "); Serial.println(differ);
       set_enabled(false, differ);
       break;
     default: 
@@ -249,30 +211,36 @@ int process_command(char *command, char *argument){
 
 int set_usage_bits(char *argument){
   int len = strlen(argument);
-  if(len != SENSOR_COUNT){
-    Serial.print("Can't set "); Serial.print(argument); Serial.print(" size not SENSOR_COUNT was ");
-    Serial.print(len); Serial.print("\n");
+  if(len != SENSOR_COUNT)
+  {
+    Serial.print("Can't set "); Serial.print(argument); Serial.print(" size not ");
+    Serial.print(SENSOR_COUNT); Serial.print(" was "); Serial.println(len);
     return 1;
   }
   short i;
-  for(i = 0; i < SENSOR_COUNT; i++){
+  for(i = 0; i < SENSOR_COUNT; i++)
+  {
     set_enabled((argument[i] == '1'), i);
   }
-  Serial.print("Setting "); Serial.print(argument); 
+  Serial.print("Setting "); Serial.println(argument); 
   return 0;
 }
 
 void input_check(){
   char *temp, *command, *argument;
   
-  if(++check_delayer >= CHECK_DELAY){
+  if(++check_delayer >= CHECK_DELAY)
+  {
     check_delayer = 0;
     check();
-    if(cont != 0){
+    if(cont != 0)
+    {
       command = strtok_r(recv, " ", &temp);
       argument= strtok_r(NULL, " ", &temp);
-      if(command != NULL && argument != NULL){
-        switch(process_command(command, argument)){
+      if(command != NULL && argument != NULL)
+      {
+        switch(process_command(command, argument))
+        {
           default: case 0:
             break;
           case 1: case 2: case 3:
@@ -298,7 +266,8 @@ void check(){
 }
 
 void blik(int n, int t){
-  while(n > 0){
+  while(n > 0)
+  {
     digitalWrite(LED, HIGH);
     delay(t);
     digitalWrite(LED, LOW);
