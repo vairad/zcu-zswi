@@ -59,34 +59,48 @@ MainTab::MainTab(QWidget *parent) : QWidget(parent) {
 }
 
 /**
- * Vytvori list senzory - nastaveni viditelnych senzoru
+ * Vytvori list senzory - nastaveni viditelnych senzoru + nastaveni ukladani dat
  * @brief SensorsTab::SensorsTab
  * @param sensors widgety senzoru
  * @param numberOfSensors pocet senzoru
  * @param parent
  */
 SensorsTab::SensorsTab(SensorWidget *sensors[], int numberOfSensors, QWidget *parent) : QWidget(parent) {
+    // ----------------- skupina senzory
     QGroupBox *sensorsGroup = new QGroupBox(tr("Zobrazené senzory"));
 
     QCheckBox *sensorCB;
-    QVBoxLayout *permissionsLayout = new QVBoxLayout;
+    QVBoxLayout *sensorsLayout = new QVBoxLayout;
 
     // prochazeni vsech senzoru
     for(int i = 0; i < numberOfSensors; i++) {
         sensorCB = new QCheckBox(sensors[i]->getSensor()->getName().toStdString().c_str());
 
         if (!sensors[i]->isHidden()) sensorCB->setChecked(true);
-        permissionsLayout->addWidget(sensorCB);
+        sensorsLayout->addWidget(sensorCB);
         // propojeni checkboxu s akci v SensorWidget
         QObject::connect(sensorCB, SIGNAL(toggled(bool)), sensors[i], SLOT(on_action_toggled(bool)));
         // propojeni zmeny v akci v SensorWidget s checkboxem
         QObject::connect(sensors[i], SIGNAL(visible(bool)), sensorCB, SLOT(setChecked(bool)));
 
     }
-    sensorsGroup->setLayout(permissionsLayout);
+    sensorsGroup->setLayout(sensorsLayout);
+
+    // ----------------- skupina ukladani
+    QGroupBox *saveGroup = new QGroupBox(tr("Ukládání dat"));
+
+    QCheckBox *saveCB;
+    saveCB = new QCheckBox("Ukládat naměřená data do formátu csv pro další zpracování");
+
+    QVBoxLayout *saveLayout = new QVBoxLayout;
+    saveLayout->addWidget(saveCB);
+    saveGroup->setLayout(saveLayout);
+
+    // -----------------
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addWidget(sensorsGroup);
+    mainLayout->addWidget(saveGroup);
     mainLayout->addStretch(1);
     setLayout(mainLayout);
 }
