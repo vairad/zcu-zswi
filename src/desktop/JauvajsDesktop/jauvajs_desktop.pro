@@ -24,7 +24,9 @@ SOURCES += main.cpp\
     gui/mainwindow.cpp \
     gui/metadialog.cpp \
     gui/sensorwidget.cpp \
-    gui/detailedwindow.cpp
+    gui/detailedwindow.cpp \
+    analysis/analyserekg.cpp \
+    analysis/transcriberekg.cpp
 
 HEADERS  += main.h\
     loadfile.h \
@@ -42,7 +44,9 @@ HEADERS  += main.h\
     core/idatalistener.h \
     core/ianalyseable.h \
     core/iminer.h \
-    gui/detailedwindow.h
+    gui/detailedwindow.h \
+    analysis/analyserekg.h \
+    analysis/transcriberekg.h
 
 FORMS    += gui/mainwindow.ui \
     gui/dialog.ui
