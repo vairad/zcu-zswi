@@ -1,8 +1,8 @@
 #include "core/sensortemp.h"
 
 SensorTemp::SensorTemp() {
-    minY = -1;
-    maxY = 1;
+    minY = 32;
+    maxY = 42;
     minX = 0;
     maxX = 200;
     time = 0;

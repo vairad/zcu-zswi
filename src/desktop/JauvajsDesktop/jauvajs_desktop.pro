@@ -48,5 +48,4 @@ HEADERS  += main.h\
     analysis/analyserekg.h \
     analysis/transcriberekg.h
 
-FORMS    += gui/mainwindow.ui \
-    gui/dialog.ui
+FORMS    += gui/mainwindow.ui

@@ -19,6 +19,8 @@ public:
     void resizeEvent(QResizeEvent *e);
     void drawNumbers();
     void setUp();
+    void drawVerticalLines();
+    void drawHorizontalLines();
     ~DetailedWindow();
 
 private:

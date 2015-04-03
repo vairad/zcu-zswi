@@ -28,7 +28,7 @@ DetailedWindow::DetailedWindow(IDisplayable *sensor, QWidget *parent) : QDialog(
     scene->setSceneRect(QRectF(QPointF(0, 0), QPointF(this->graphicsView->viewport()->width(), this->graphicsView->viewport()->height())));
 
     graphicsView->setScene(scene);
-    graphicsView->setBackgroundBrush(QBrush(QColor(48, 128, 20), Qt::SolidPattern));
+    graphicsView->setBackgroundBrush(QBrush(QColor(1, 51, 50), Qt::SolidPattern));
     graphicsView->setFrameStyle(0);
 
     layout->addWidget(graphicsView);
@@ -68,6 +68,8 @@ void DetailedWindow::resizeEvent(QResizeEvent *e) {
  */
 void DetailedWindow::setUp() {
     resizeEvent(NULL);
+    drawVerticalLines();
+    drawHorizontalLines();
 }
 
 /**
@@ -85,8 +87,8 @@ void DetailedWindow::drawNumbers() {
         scene->removeItem(horizontalLine);
     }
 
-    horizontalLine =  scene->addLine(0, graphicsView->viewport()->height() - BOTTOM_OFFSET, graphicsView->viewport()->width(), graphicsView->viewport()->height() - BOTTOM_OFFSET, QPen(Qt::white));
-    verticalLine =  scene->addLine(LEFT_OFFSET, 0, LEFT_OFFSET, graphicsView->viewport()->height(), QPen(Qt::white));
+    horizontalLine = scene->addLine(0, graphicsView->viewport()->height() - BOTTOM_OFFSET, graphicsView->viewport()->width(), graphicsView->viewport()->height() - BOTTOM_OFFSET, QPen(Qt::white));
+    verticalLine = scene->addLine(LEFT_OFFSET, 0, LEFT_OFFSET, graphicsView->viewport()->height(), QPen(Qt::white));
 
     QFont font = QFont("Arial", 6);
     // popis nejvyssi hodnoty Y
@@ -100,7 +102,7 @@ void DetailedWindow::drawNumbers() {
     textMinY->setDefaultTextColor(Qt::white);
 
     // popis nejvyssi hodnoty X
-    textMaxX = scene->addText(QString::number(graphicsView->viewport()->width()) + " [time]", font);
+    textMaxX = scene->addText(QString::number(graphicsView->viewport()->width() - LEFT_OFFSET) + " [time]", font);
     textMaxX->setPos(graphicsView->viewport()->width() - textMaxX->boundingRect().width(), graphicsView->height() - textMaxX->boundingRect().height());
     textMaxX->setDefaultTextColor(Qt::white);
 
@@ -110,6 +112,57 @@ void DetailedWindow::drawNumbers() {
     textMinX->setDefaultTextColor(Qt::white);
 
     itemsExist = true;
+}
+
+/**
+ * Vykresli vertikalni cary pro lepsi orientaci v grafu
+ * @brief SensorWidget::drawVerticalLines
+ */
+void DetailedWindow::drawVerticalLines() {
+    int interval = 10; // interval car
+    int boldInterval = 50; // interval tucnych car
+    int width = 1500;
+    for (int i = 0; i < width; i += interval) {
+        if (i != 0)
+        if (i % boldInterval == 0) {
+            QPen pen;
+            pen.setWidth(2);
+            pen.setBrush(QColor(0, 102, 96));
+            scene->addLine(LEFT_OFFSET + i, 0, LEFT_OFFSET + i, graphicsView->viewport()->height(), pen);
+        }
+        else {
+            scene->addLine(LEFT_OFFSET + i, 0, LEFT_OFFSET + i, graphicsView->viewport()->height(), QPen(QColor(0, 102, 96)));
+        }
+    }
+}
+
+/**
+ * Vykresli horizontalni cary pro lepsi orientaci v grafu
+ * @brief SensorWidget::drawVerticalLines
+ */
+void DetailedWindow::drawHorizontalLines() {
+    int numberOfLines; // pocet car
+    double interval; // interval car
+    int boldInterval = 4; // interval tucnych car
+    int width = 1500;
+    int height = sensor->maxY - sensor->minY; // skutecna vyska
+    numberOfLines = height;
+    while (numberOfLines < 10) {
+        numberOfLines *= 2;
+    }
+
+    interval = (graphicsView->viewport()->height() - BOTTOM_OFFSET) / (double) numberOfLines;
+    for (int i = 1; i < numberOfLines; i++) {
+        if (i % boldInterval == 0) {
+            QPen pen;
+            pen.setWidth(2);
+            pen.setBrush(QColor(0, 102, 96));
+            scene->addLine(0,(int) i * interval, width, (int) i * interval, pen);
+        }
+        else {
+            scene->addLine(0,(int) i * interval, width, (int) i * interval, QPen(QColor(0, 102, 96)));
+        }
+    }
 }
 
 DetailedWindow::~DetailedWindow() {

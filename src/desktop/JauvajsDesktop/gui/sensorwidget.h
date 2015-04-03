@@ -29,6 +29,8 @@ public:
     void setUp();
     void update(double value);
     void drawNumbers();
+    void drawVerticalLines();
+    void drawHorizontalLines();
     IDisplayable *getSensor();
     ~SensorWidget();
     QGraphicsView *graphicsView;
