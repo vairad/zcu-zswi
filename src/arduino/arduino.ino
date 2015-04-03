@@ -17,6 +17,7 @@
 
 #define BT
 
+#define S_INVALID -1
 #define S_TEMP 0
 #define S_COND 1
 #define S_RESI 2
@@ -28,13 +29,15 @@
 #define SENSOR_COUNT 8
 
 #define CHECK_DELAY 4
-#define CYCLE_DELAY 500
+#define CYCLE_DELAY 100
 #define LED 13
 
-char recv[128];
+#define SETUP_WAIT 4000
+
+#define RECV_SIZE 32
+
+char recv[RECV_SIZE];
 uint8_t cont = 0;
-
-
 boolean sensor_usage[SENSOR_COUNT];
 short check_delayer = 0;
 
@@ -42,17 +45,17 @@ short check_delayer = 0;
 //  See the next link http://www.cooking-hacks.com/index.php/documentation/tutorials/arduino-xbee-shield
 
 void bt_setup(){
-  delay(4000);
+  delay(SETUP_WAIT);
   Serial.print("AT+JSEC=1,1,2,04,0000\r\n"); // Enable security command
-  delay(4000);
+  delay(SETUP_WAIT);
   Serial.print("AT+JSLN=10,JauvajsIno\r\n"); // Setup name of device
-  delay(4000);  
+  delay(SETUP_WAIT);  
   Serial.print("AT+JDIS=3\r\n"); // Discoverable command
-  delay(4000);
+  delay(SETUP_WAIT);
   Serial.print("AT+JRLS=1101,11,Serial Port,01,000000\r\n"); // Register local sevice command
-  delay(4000);
+  delay(SETUP_WAIT);
   Serial.print("AT+JAAC=1\r\n");// Auto accept connection requests command
-  delay(4000);
+  delay(SETUP_WAIT);
   pinMode(LED, OUTPUT);
   digitalWrite(LED, LOW);
   Serial.flush();
@@ -169,30 +172,25 @@ boolean fprint_float(boolean first_sent, char* stamp, float val, int format){
 void set_enabled(boolean value, short sensor){
   if(sensor < 0 || sensor >= SENSOR_COUNT)
   {
-    Serial.print("Invalid bit index: "); Serial.print(sensor);
+    Serial.print("Invalid bit index: "); Serial.println(sensor);
   }
   sensor_usage[sensor] = value;
 }
 
 int process_command(char *command, char *argument){
-  unsigned short differ;
+
   if(strcmp(command, "SET") == 0)
   {
     return set_usage_bits(argument);
   }
-  switch(argument[0]){
-    case 'T': differ = S_TEMP; break;
-    case 'V': differ = S_COND; break;
-    case 'R': differ = S_RESI; break;
-    case 'H': differ = S_EKG;  break;
-    case 'P': differ = S_BPM;  break;
-    case 'O': differ = S_SPO2; break;
-    case 'A': differ = S_ACCE; break;
-    case 'F': differ = S_AIRF; break;
-    default:
-      Serial.print("Invalid argument: "); Serial.print(argument); Serial.println(" value not in [A F H O P R T V]!");
+  
+  unsigned short differ = char_to_sensor_number(argument[0]);
+  
+  if(differ == S_INVALID){
+    Serial.print("Invalid argument: "); Serial.print(argument); Serial.println(" value not in [A F H O P R T V]!");
       return 2;
   }
+  
   switch(command[0])
   {
     case 'E':
@@ -207,6 +205,21 @@ int process_command(char *command, char *argument){
       return 3;
   }
     return 0;
+}
+
+unsigned short char_to_sensor_number(char c){
+  switch(c){
+    case 'T': return S_TEMP;
+    case 'V': return S_COND;
+    case 'R': return S_RESI;
+    case 'H': return S_EKG;
+    case 'P': return S_BPM;
+    case 'O': return S_SPO2;
+    case 'A': return S_ACCE;
+    case 'F': return S_AIRF;
+    default : return S_INVALID;
+      
+  }
 }
 
 int set_usage_bits(char *argument){
@@ -237,7 +250,7 @@ void input_check(){
     {
       command = strtok_r(recv, " ", &temp);
       argument= strtok_r(NULL, " ", &temp);
-      if(command != NULL && argument != NULL)
+      if(command != NULL)
       {
         switch(process_command(command, argument))
         {
@@ -247,7 +260,7 @@ void input_check(){
             blik(3, 150);
         }
       } else {
-        Serial.print("Neplatny prikaz-argument!\n");
+        Serial.print("Neplatny prikaz!\n");
       }
     }
   }
@@ -255,13 +268,22 @@ void input_check(){
 
 void check(){
   cont=0; delay(350);
+  int drop = 0;
   while (Serial.available()>0)
   {
-     recv[cont]=toupper(Serial.read()); delay(10);
-     cont++;
+    if(cont < RECV_SIZE -1){
+      recv[cont]=toupper(Serial.read()); delay(10);
+      cont++;
+    } else {
+      drop++;
+    }
   }
   recv[cont]='\0';
-  Serial.println(recv);
+  if(drop)
+  {
+    Serial.print("Incomming command was "); Serial.print(drop); Serial.print(" characters longer than max of ");
+    Serial.println(RECV_SIZE-1);
+  }
   Serial.flush(); delay(100);
 }
 
