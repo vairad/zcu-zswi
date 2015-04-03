@@ -117,14 +117,14 @@ void loop()
   if(is_enabled(S_ACCE)){ pos = eHealth.getBodyPosition();            }
 
   Serial.print("[");
-  if(is_enabled(S_AIRF)){ tab = fprint_int   (tab, "F&", airflow, 0);         }  // dech
-  if(is_enabled(S_TEMP)){ tab = fprint_float (tab, "T&", temperature, 2);     }  // teplota
-  if(is_enabled(S_BPM)){  tab = fprint_int   (tab, "P&", int(BPM), 2);        }  // puls
-  if(is_enabled(S_SPO2)){ tab = fprint_int   (tab, "O&", SPO2, 0);            }  // okysliceni
-  if(is_enabled(S_COND)){ tab = fprint_float (tab, "V&", conductance, 2);     }  // GSR - napětí
-  if(is_enabled(S_RESI)){ tab = fprint_int   (tab, "R&", int(resistance), 0); }  // GSR - odpor
-  if(is_enabled(S_EKG)){  tab = fprint_float (tab, "H&", EKG, 6);             }  // EKG
-  if(is_enabled(S_ACCE)){ tab = fprint_int   (tab, "A&", int(pos), 0);        }  // akcelerometr
+  if(is_enabled(S_AIRF)){ tab = fprint_int   (tab, "F&", airflow         );    }  // dech
+  if(is_enabled(S_TEMP)){ tab = fprint_float (tab, "T&", temperature, 2  );    }  // teplota
+  if(is_enabled(S_BPM)) { tab = fprint_int   (tab, "P&", int(BPM)        );    }  // puls
+  if(is_enabled(S_SPO2)){ tab = fprint_int   (tab, "O&", SPO2            );    }  // okysliceni
+  if(is_enabled(S_COND)){ tab = fprint_float (tab, "V&", conductance, 2  );    }  // GSR - napětí
+  if(is_enabled(S_RESI)){ tab = fprint_int   (tab, "R&", int(resistance) );    }  // GSR - odpor
+  if(is_enabled(S_EKG)) { tab = fprint_float (tab, "H&", EKG, 6          );    }  // EKG
+  if(is_enabled(S_ACCE)){ tab = fprint_int   (tab, "A&", int(pos)        );    }  // akcelerometr
   
   Serial.print("]\n");
   // Reduce this delay for more data rate
@@ -141,20 +141,14 @@ boolean is_enabled(int sensor_number){
   return sensor_usage[sensor_number];
 }
 
-boolean fprint_int(boolean first_sent, char* stamp, int val, int format){
+boolean fprint_int(boolean first_sent, char* stamp, int val){
   if(first_sent)
   {
     Serial.print("\t");
   }
   
   Serial.print(stamp);
-  
-  if(format > 1)
-  { 
-    Serial.print(val, format);
-  } else {
-    Serial.print(val);
-  }
+  Serial.print(val);
   
   return true;
 }
