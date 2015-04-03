@@ -1,12 +1,10 @@
 #include "analyserekg.h"
 
-analyserekg::analyserekg()
-{
+AnalyserEKG::AnalyserEKG() {
 
 }
 
-analyserekg::~analyserekg()
-{
+AnalyserEKG::~AnalyserEKG() {
 
 }
 

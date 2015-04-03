@@ -1,12 +1,18 @@
 #ifndef ANALYSEREKG_H
 #define ANALYSEREKG_H
 
+/**
+ * Analyzátor EKG.
+ * @brief The analyserekg class
+ */
+class AnalyserEKG {
 
-class analyserekg
-{
 public:
-    analyserekg();
-    ~analyserekg();
+    AnalyserEKG();
+    void setFlag(char flag[]);
+    void monitorFrequency();
+    char* identifyDeviation();
+    ~AnalyserEKG();
 };
 
 #endif // ANALYSEREKG_H
