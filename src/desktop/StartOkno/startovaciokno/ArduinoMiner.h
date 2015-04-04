@@ -11,30 +11,32 @@
 #include <BluetoothAPIs.h>
 #include <Ws2bth.h>
 
+
 class ArduinoMiner: public QThread
 {
     Q_OBJECT
+
 public:
     explicit ArduinoMiner(QObject *parent = 0);
     ~ArduinoMiner();
     void run();
-    bool stop;
     QStringList ListNalezenychZarizeni;
+    QString vybraneZarizeni;
+    typedef enum {STATUS_KLID, STATUS_HLEDEJ, STATUS_SPOJENI } STATUS;
+    STATUS stav;
+
 
 signals:
     void SeznamChanged(QStringList*);
     void ZmenaStavu(QString);
-
-
-public slots:
-
+    void ZmenaSpojeni(QString);
 
 private:
    BLUETOOTH_DEVICE_SEARCH_PARAMS btSearchParams;
    HBLUETOOTH_DEVICE_FIND deviceHandle;
    BLUETOOTH_DEVICE_INFO btDeviceInfo;
-
-
+   void hledejOkolniZarizeni();
+   void navazSpojeni();
 };
 
 #endif // ARDUINOMINER_H

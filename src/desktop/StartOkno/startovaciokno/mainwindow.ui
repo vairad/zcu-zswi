@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>418</width>
-    <height>393</height>
+    <width>749</width>
+    <height>482</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,29 +17,11 @@
    <widget class="QListView" name="listView">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>90</y>
-      <width>256</width>
+      <x>20</x>
+      <y>120</y>
+      <width>291</width>
       <height>111</height>
      </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="popisekStav">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>50</y>
-      <width>371</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Nedělám nic</string>
     </property>
    </widget>
    <widget class="QPushButton" name="tlacitkoPripojit">
@@ -48,8 +30,8 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>270</x>
-      <y>100</y>
+      <x>330</x>
+      <y>130</y>
       <width>75</width>
       <height>41</height>
      </rect>
@@ -60,12 +42,12 @@
    </widget>
    <widget class="QPushButton" name="tlacitkoOdpojit">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>
-      <x>270</x>
-      <y>150</y>
+      <x>330</x>
+      <y>180</y>
       <width>75</width>
       <height>41</height>
      </rect>
@@ -77,8 +59,8 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>200</y>
+      <x>20</x>
+      <y>230</y>
       <width>41</width>
       <height>31</height>
      </rect>
@@ -95,9 +77,9 @@
    <widget class="QLabel" name="popisekStavSpojeni">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>200</y>
-      <width>101</width>
+      <x>60</x>
+      <y>230</y>
+      <width>341</width>
       <height>31</height>
      </rect>
     </property>
@@ -115,14 +97,68 @@
    <widget class="QPushButton" name="tlacitkoHledejZarizeni">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>20</y>
-      <width>111</width>
+      <x>20</x>
+      <y>80</y>
+      <width>291</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
      <string>Hledat zařízení</string>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>10</y>
+      <width>371</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Stav aplikace</string>
+    </property>
+    <widget class="QLabel" name="popisekStav">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>351</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Nedělám nic</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QTextEdit" name="poleLog">
+    <property name="geometry">
+     <rect>
+      <x>440</x>
+      <y>50</y>
+      <width>301</width>
+      <height>341</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>440</x>
+      <y>20</y>
+      <width>47</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Záznamy:</string>
     </property>
    </widget>
   </widget>
@@ -131,7 +167,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>418</width>
+     <width>749</width>
      <height>21</height>
     </rect>
    </property>

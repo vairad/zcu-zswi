@@ -33,7 +33,7 @@ private slots:
 public slots:
     void on_SeznamChanged(QStringList* list);
     void on_ZmenaStavu(QString stav);
-
+    void on_ZmenaStavuSpojeni(QString stavSpojeni);
 };
 
 #endif // MAINWINDOW_H
