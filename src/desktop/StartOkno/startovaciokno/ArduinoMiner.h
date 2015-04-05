@@ -20,16 +20,18 @@ public:
     explicit ArduinoMiner(QObject *parent = 0);
     ~ArduinoMiner();
     void run();
+    int OdesliData(QString);
+    void UkonciSpojeni();
     QStringList ListNalezenychZarizeni;
     QString vybraneZarizeni;
     typedef enum {STATUS_KLID, STATUS_HLEDEJ, STATUS_SPOJENI } STATUS;
     STATUS stav;
 
-
 signals:
     void SeznamChanged(QStringList*);
     void ZmenaStavu(QString);
     void ZmenaSpojeni(QString);
+    void PrijmiData(QString);
 
 private:
    BLUETOOTH_DEVICE_SEARCH_PARAMS btSearchParams;
@@ -37,6 +39,8 @@ private:
    BLUETOOTH_DEVICE_INFO btDeviceInfo;
    void hledejOkolniZarizeni();
    void navazSpojeni();
+   SOCKET soket;
+   int err; // příznak označující stav spojení
 };
 
 #endif // ARDUINOMINER_H

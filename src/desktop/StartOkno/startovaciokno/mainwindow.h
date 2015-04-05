@@ -30,10 +30,13 @@ private slots:
 
     void on_listView_clicked(const QModelIndex &index);
 
+    void on_tlacitkoOdeslat_clicked();
+
 public slots:
     void on_SeznamChanged(QStringList* list);
     void on_ZmenaStavu(QString stav);
     void on_ZmenaStavuSpojeni(QString stavSpojeni);
+    void on_PrijmiData(QString data);
 };
 
 #endif // MAINWINDOW_H

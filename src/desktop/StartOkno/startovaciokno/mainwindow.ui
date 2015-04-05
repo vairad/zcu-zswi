@@ -30,9 +30,9 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>330</x>
-      <y>130</y>
-      <width>75</width>
+      <x>20</x>
+      <y>240</y>
+      <width>131</width>
       <height>41</height>
      </rect>
     </property>
@@ -46,9 +46,9 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>330</x>
-      <y>180</y>
-      <width>75</width>
+      <x>160</x>
+      <y>240</y>
+      <width>151</width>
       <height>41</height>
      </rect>
     </property>
@@ -60,7 +60,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>230</y>
+      <y>300</y>
       <width>41</width>
       <height>31</height>
      </rect>
@@ -78,8 +78,8 @@
     <property name="geometry">
      <rect>
       <x>60</x>
-      <y>230</y>
-      <width>341</width>
+      <y>300</y>
+      <width>251</width>
       <height>31</height>
      </rect>
     </property>
@@ -112,7 +112,7 @@
      <rect>
       <x>20</x>
       <y>10</y>
-      <width>371</width>
+      <width>291</width>
       <height>61</height>
      </rect>
     </property>
@@ -124,7 +124,7 @@
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>351</width>
+       <width>271</width>
        <height>31</height>
       </rect>
      </property>
@@ -141,24 +141,92 @@
    <widget class="QTextEdit" name="poleLog">
     <property name="geometry">
      <rect>
-      <x>440</x>
-      <y>50</y>
-      <width>301</width>
-      <height>341</height>
+      <x>530</x>
+      <y>40</y>
+      <width>181</width>
+      <height>371</height>
      </rect>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>440</x>
-      <y>20</y>
+      <x>530</x>
+      <y>10</y>
       <width>47</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
      <string>Záznamy:</string>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="polePrijataData">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>40</y>
+      <width>201</width>
+      <height>291</height>
+     </rect>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>10</y>
+      <width>71</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Přijatá data:</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="tlacitkoOdeslat">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>380</y>
+      <width>201</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Odeslat</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="poleKOdeslani">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>350</y>
+      <width>201</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>330</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Data k odeslání:</string>
     </property>
    </widget>
   </widget>
