@@ -36,9 +36,15 @@
 
 #define RECV_SIZE 32
 
+char sensor_labels[]           = {'T', 'C', 'R', 'H', 'P', 'O', 'A', 'F'};
+unsigned short dec_positions[] = { 0 ,  2 ,  2 ,  6 ,  0 ,  0 ,  0 ,  0 }; 
+boolean sensor_usage[SENSOR_COUNT];
+
 char recv[RECV_SIZE];
 uint8_t cont = 0;
-boolean sensor_usage[SENSOR_COUNT];
+
+
+char verification_key = 0;
 short check_delayer = 0;
 
 //  Note :  The Xbee modules must be configured previously.
@@ -106,30 +112,40 @@ void loop()
   input_check();
   
   Serial.print("Check "); Serial.print(check_delayer); Serial.print(":\t");
+  int i;
+  float vals[SENSOR_COUNT];
   
-  if(is_enabled(S_AIRF)){ airflow = eHealth.getAirFlow();             }
-  if(is_enabled(S_TEMP)){ temperature = eHealth.getTemperature();     }
-  if(is_enabled(S_COND)){ conductance = eHealth.getSkinConductance(); }
-  if(is_enabled(S_RESI)){ resistance = eHealth.getSkinResistance();   }
-  if(is_enabled(S_EKG)) { EKG = eHealth.getECG();                     }
-  if(is_enabled(S_BPM)) { BPM = eHealth.getBPM();                     }
-  if(is_enabled(S_SPO2)){ SPO2 = eHealth.getOxygenSaturation();       }
-  if(is_enabled(S_ACCE)){ pos = eHealth.getBodyPosition();            }
+  for(i = 0; i < SENSOR_COUNT; i++){
+    vals[i] = get_sensor_value(i);
+  }
 
   Serial.print("[");
-  if(is_enabled(S_AIRF)){ tab = fprint_int   (tab, "F&", airflow         );    }  // dech
-  if(is_enabled(S_TEMP)){ tab = fprint_float (tab, "T&", temperature, 2  );    }  // teplota
-  if(is_enabled(S_BPM)) { tab = fprint_int   (tab, "P&", int(BPM)        );    }  // puls
-  if(is_enabled(S_SPO2)){ tab = fprint_int   (tab, "O&", SPO2            );    }  // okysliceni
-  if(is_enabled(S_COND)){ tab = fprint_float (tab, "V&", conductance, 2  );    }  // GSR - napětí
-  if(is_enabled(S_RESI)){ tab = fprint_int   (tab, "R&", int(resistance) );    }  // GSR - odpor
-  if(is_enabled(S_EKG)) { tab = fprint_float (tab, "H&", EKG, 6          );    }  // EKG
-  if(is_enabled(S_ACCE)){ tab = fprint_int   (tab, "A&", int(pos)        );    }  // akcelerometr
+  for(int i = 0; i < SENSOR_COUNT; i++){
+    if(!is_enabled(i)) { continue; }
+    tab = fprint_val(tab, sensor_labels[i], vals[i], dec_positions[i]);
+  }
   
   Serial.print("]\n");
   // Reduce this delay for more data rate
   delay(CYCLE_DELAY);
 
+}
+
+float get_sensor_value(int S){
+  if(!is_enabled(S)){
+    return 0;
+  }
+  switch(S){
+    case S_AIRF: return eHealth.getAirFlow();
+    case S_TEMP: return eHealth.getTemperature();
+    case S_COND: return eHealth.getSkinConductance();
+    case S_RESI: return eHealth.getSkinResistance();
+    case S_EKG: return eHealth.getECG();
+    case S_BPM: return eHealth.getBPM();
+    case S_SPO2: return eHealth.getOxygenSaturation();
+    case S_ACCE: return eHealth.getBodyPosition();
+    default: return S_INVALID;
+  }
 }
 
 boolean is_enabled(int sensor_number){
@@ -141,19 +157,7 @@ boolean is_enabled(int sensor_number){
   return sensor_usage[sensor_number];
 }
 
-boolean fprint_int(boolean first_sent, char* stamp, int val){
-  if(first_sent)
-  {
-    Serial.print("\t");
-  }
-  
-  Serial.print(stamp);
-  Serial.print(val);
-  
-  return true;
-}
-
-boolean fprint_float(boolean first_sent, char* stamp, float val, int format){
+boolean fprint_val(boolean first_sent, char stamp, float val, int format){
   if(first_sent)
   {
     Serial.print("\t");
@@ -178,6 +182,11 @@ int process_command(char *command, char *argument){
     return set_usage_bits(argument);
   }
   
+  if(strcmp(command, "REVERIFY") == 0){
+    return print_enabled_sensors();
+  }
+  
+  
   unsigned short differ = char_to_sensor_number(argument[0]);
   
   if(differ == S_INVALID){
@@ -190,10 +199,12 @@ int process_command(char *command, char *argument){
     case 'E':
       Serial.print("Enabling "); Serial.println(differ);
       set_enabled(true, differ);
+      print_enabled_sensors();
       break;
     case 'D':
       Serial.print("Disabling "); Serial.println(differ);
       set_enabled(false, differ);
+      print_enabled_sensors();
       break;
     default: 
       return 3;
@@ -230,6 +241,32 @@ int set_usage_bits(char *argument){
     set_enabled((argument[i] == '1'), i);
   }
   Serial.print("Setting "); Serial.println(argument); 
+  print_enabled_sensors();
+  return 0;
+}
+
+int print_enabled_sensors(){
+  verification_key++;
+  boolean first_comma = false;
+  
+  Serial.print(verification_key);
+  Serial.print("[");  
+  
+  for(int i = 0; i < SENSOR_COUNT; i++)
+  {
+    if(is_enabled(i))
+    {
+      if(first_comma)
+      {
+        Serial.print(", ");
+      }
+      Serial.print(sensor_labels[i]);
+      first_comma = true;
+    }
+  }
+  Serial.print("]");
+  
+  
   return 0;
 }
 
