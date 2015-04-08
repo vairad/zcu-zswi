@@ -42,6 +42,7 @@ boolean sensor_usage[SENSOR_COUNT];
 
 char recv[RECV_SIZE];
 uint8_t cont = 0;
+uint8_t pulsCount = 0;
 
 
 char verification_key = 0;
@@ -64,9 +65,13 @@ void bt_setup(){
   delay(SETUP_WAIT);
   pinMode(LED, OUTPUT);
   digitalWrite(LED, LOW);
-  Serial.flush();
-  sync();
-  delay(1000);
+
+  char val = 0;
+  while (val != 'R'){
+    val = Serial.read();
+    Serial.flush();
+  }
+  
   Serial.print("AT+JSCR\r\n"); // Stream Connection Request command
 }
 
@@ -87,6 +92,7 @@ void setup()
 
 #ifdef BT
   bt_setup();
+  sync();  
 #endif
   
   for(short i = 0; i < SENSOR_COUNT; i++)
@@ -279,6 +285,7 @@ void input_check(){
     check();
     if(cont != 0)
     {
+      Serial.print("Received cmd: "); Serial.println(recv);
       command = strtok_r(recv, " ", &temp);
       argument= strtok_r(NULL, " ", &temp);
       if(command != NULL)
@@ -333,10 +340,10 @@ void blik(int n, int t){
 //=========================================================================
 void readPulsioximeter(){
 
-  cont ++;
+  pulsCount ++;
 
-  if (cont == 50) { //Get only one of 50 measures to reduce the latency
+  if (pulsCount >= 50) { //Get only one of 50 measures to reduce the latency
     eHealth.readPulsioximeter();
-    cont = 0;
+    pulsCount = 0;
   }
 }
