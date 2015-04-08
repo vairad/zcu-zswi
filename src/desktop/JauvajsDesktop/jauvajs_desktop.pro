@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     gui/sensorwidget.cpp \
     gui/detailedwindow.cpp \
     analysis/analyserekg.cpp \
-    analysis/transcriberekg.cpp
+    analysis/transcriberekg.cpp \
+    gui/graphdescription.cpp
 
 HEADERS  += main.h\
     loadfile.h \
@@ -46,6 +47,7 @@ HEADERS  += main.h\
     core/iminer.h \
     gui/detailedwindow.h \
     analysis/analyserekg.h \
-    analysis/transcriberekg.h
+    analysis/transcriberekg.h \
+    gui/graphdescription.h
 
 FORMS    += gui/mainwindow.ui

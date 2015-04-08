@@ -3,7 +3,9 @@
 #include "loadfile.h"
 #include <QGraphicsTextItem>
 
-SensorWidget::SensorWidget(QVBoxLayout *vLayout, QMenu *menuZobrazit, IDisplayable *sensor, QWidget *parent) : menuZobrazit(menuZobrazit), sensor(sensor), QWidget(parent) {
+SensorWidget::SensorWidget(QVBoxLayout *vLayout, QMenu *menuZobrazit, IDisplayable *sensor, QWidget *parent) : menuZobrazit(menuZobrazit), QWidget(parent) {
+    this->sensor = sensor;
+
     this->setObjectName(QStringLiteral("widget"));
     this->setEnabled(true);
     this->setMinimumSize(QSize(0, 100));
@@ -16,7 +18,10 @@ SensorWidget::SensorWidget(QVBoxLayout *vLayout, QMenu *menuZobrazit, IDisplayab
     createLeftBox();
     createGraphicsView();
     createAction();
-    itemsExist = false;
+
+    verticalLinesInterval = 10;
+    verticalLinesBoldInterval = 50;
+    minNumberOfHorizontalLines = 6;
 
     detailedWindow = new DetailedWindow(sensor);
 }
@@ -181,98 +186,6 @@ void SensorWidget::update(double value) {
  */
 void SensorWidget::on_button_clicked() {
     new LoadFile(this);
-}
-
-/**
- * Vykresli popisy grafu
- * @brief SensorWidget::drawNumbers
- */
-void SensorWidget::drawNumbers() {
-    if (itemsExist) {
-        // odebrani starych hodnot
-        scene->removeItem(textMaxY);
-        scene->removeItem(textMinY);
-        scene->removeItem(textMaxX);
-        scene->removeItem(textMinX);
-        scene->removeItem(horizontalLine);
-    }
-
-    horizontalLine = scene->addLine(0, graphicsView->viewport()->height() - BOTTOM_OFFSET, graphicsView->viewport()->width(), graphicsView->viewport()->height() - BOTTOM_OFFSET, QPen(Qt::white));
-    verticalLine = scene->addLine(LEFT_OFFSET, 0, LEFT_OFFSET, graphicsView->viewport()->height(), QPen(Qt::white));
-
-    QFont font = QFont("Arial", 6);
-    // popis nejvyssi hodnoty Y
-    textMaxY = scene->addText(QString::number(sensor->maxY), font);
-    textMaxY->setPos(0,0);
-    textMaxY->setDefaultTextColor(Qt::white);
-
-    // popis nejmensi hodnoty Y
-    textMinY = scene->addText(QString::number(sensor->minY), font);
-    textMinY->setPos(0, graphicsView->viewport()->height() - textMinY->boundingRect().height() - BOTTOM_OFFSET);
-    textMinY->setDefaultTextColor(Qt::white);
-
-    // popis nejvyssi hodnoty X
-    textMaxX = scene->addText(QString::number(graphicsView->viewport()->width() - LEFT_OFFSET) + " [time]", font);
-    textMaxX->setPos(graphicsView->viewport()->width() - textMaxX->boundingRect().width(), graphicsView->height() - textMaxX->boundingRect().height());
-    textMaxX->setDefaultTextColor(Qt::white);
-
-    // popis nejmensi hodnoty X
-    textMinX = scene->addText(QString::number(sensor->minX), font);
-    textMinX->setPos(LEFT_OFFSET, graphicsView->viewport()->height() - textMinY->boundingRect().height());
-    textMinX->setDefaultTextColor(Qt::white);
-
-    itemsExist = true;
-}
-
-/**
- * Vykresli vertikalni cary pro lepsi orientaci v grafu
- * @brief SensorWidget::drawVerticalLines
- */
-void SensorWidget::drawVerticalLines() {
-    int interval = 10; // interval car
-    int boldInterval = 50; // interval tucnych car
-    int width = 1500;
-    for (int i = 0; i < width; i += interval) {
-        if (i != 0)
-        if (i % boldInterval == 0) {
-            QPen pen;
-            pen.setWidth(2);
-            pen.setBrush(QColor(0, 102, 96));
-            scene->addLine(LEFT_OFFSET + i, 0, LEFT_OFFSET + i, graphicsView->viewport()->height(), pen);
-        }
-        else {
-            scene->addLine(LEFT_OFFSET + i, 0, LEFT_OFFSET + i, graphicsView->viewport()->height(), QPen(QColor(0, 102, 96)));
-        }
-    }
-}
-
-/**
- * Vykresli horizontalni cary pro lepsi orientaci v grafu
- * @brief SensorWidget::drawVerticalLines
- */
-void SensorWidget::drawHorizontalLines() {
-    int numberOfLines; // pocet car
-    double interval; // interval car
-    int boldInterval = 4; // interval tucnych car
-    int width = 1500;
-    int height = sensor->maxY - sensor->minY; // skutecna vyska
-    numberOfLines = height;
-    while (numberOfLines < 6) {
-        numberOfLines *= 2;
-    }
-
-    interval = (graphicsView->viewport()->height() - BOTTOM_OFFSET) / (double) numberOfLines;
-    for (int i = 1; i < numberOfLines; i++) {
-        if (i % boldInterval == 0) {
-            QPen pen;
-            pen.setWidth(2);
-            pen.setBrush(QColor(0, 102, 96));
-            scene->addLine(0,(int) i * interval, width, (int) i * interval, pen);
-        }
-        else {
-            scene->addLine(0,(int) i * interval, width, (int) i * interval, QPen(QColor(0, 102, 96)));
-        }
-    }
 }
 
 /**
