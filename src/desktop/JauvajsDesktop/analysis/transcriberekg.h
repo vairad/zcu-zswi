@@ -14,7 +14,7 @@ public:
     char* getString();
     ~TranscriberEKG();
     float data[];
-    char transcribedData[];
+    //char transcribedData[];
 };
 
 #endif // TRANSCRIBEREKG_H

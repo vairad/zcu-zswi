@@ -12,9 +12,9 @@ void transcribeData() {
 
 }
 
-char* getString() {
+//char* getString() {
 
-}
+//}
 
 TranscriberEKG::~TranscriberEKG() {
 
