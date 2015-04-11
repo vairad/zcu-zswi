@@ -16,15 +16,10 @@ void TranscriberEKG::transcribeData() {
 
 }
 
-<<<<<<< HEAD
 vector<char> TranscriberEKG::getString() {
     return transcribedData;
 }
-=======
-//char* getString() {
 
-//}
->>>>>>> 3dc8e5b5580f10b96d039bbae8c9aa02a4dd0da5
 
 TranscriberEKG::~TranscriberEKG() {
 

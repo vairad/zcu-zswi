@@ -16,7 +16,6 @@ public:
     void transcribeData();
     vector<char> getString();
     ~TranscriberEKG();
-<<<<<<< HEAD
     vector<float> data;
     vector<char> transcribedData;
 
@@ -26,10 +25,7 @@ private:
     float diving; /* prudke klesani */
     float up; /* stoupani */
     float down; /* klesani */
-=======
     float data[];
-    //char transcribedData[];
->>>>>>> 3dc8e5b5580f10b96d039bbae8c9aa02a4dd0da5
 };
 
 #endif // TRANSCRIBEREKG_H
