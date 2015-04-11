@@ -1,11 +1,11 @@
 #include "transcriberekg.h"
 
-TranscriberEKG::TranscriberEKG(float data[], int size) {
+TranscriberEKG::TranscriberEKG(vector<float> data, int size) {
     this->dataSize = size;
     setData(data, dataSize);
 }
 
-void TranscriberEKG::setData(float data[], int size) {
+void TranscriberEKG::setData(vector<float> data, int size) {
     int i;
     for(i = 0; i < size; i++) {
         this->data.push_back(data[i]);
@@ -24,4 +24,3 @@ vector<char> TranscriberEKG::getString() {
 TranscriberEKG::~TranscriberEKG() {
 
 }
-
