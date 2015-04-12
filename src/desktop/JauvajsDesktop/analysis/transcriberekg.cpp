@@ -74,15 +74,22 @@ void TranscriberEKG::transcribeData() {
     }
 
     for (i = 0; i < dataSize; i++) {
-        if (i+1 < dataSize) {
-            valueDifferences.push_back(data[i+1] - data[i]);
+        if (i + 1 < dataSize) {
+            valueDifferences.push_back(data[i + 1] - data[i]);
             section = isSection(from, i);
             if (section == true) {
                 from = i;
             }
-          //  character = transcribeValue(valueDifferences[i]);
-          //  transcribedData.push_back(character);
+
+            //character = transcribeValue(valueDifferences[i]);
+            //transcribedData.push_back(character);
         }
+    }
+
+    /* vyresi posledni usek, ktery v cyklu nemohl byt uzavren */
+    if (from < (i - 1) && i > 0) {
+        sectionLengths.push_back((i - 1) - from);
+        sectionDifferences.push_back(data[i - 1] - data[from]);
     }
 }
 
