@@ -21,11 +21,13 @@ TranscriberEKG::TranscriberEKG(float data[], int size) {
  * @return pismeno dle rustu/poklesu krivky
  * S (SOARING) - prudke stoupani
  * V (DIVING) - prudke klesani
- * U (UP) - mirne stoupani
- * D (DOWN) - mirne klesani
+ * U (UP) - stredni stoupani
+ * D (DOWN) - stredni klesani
+ * L (LIGHTLY UP) - mirne stoupani
+ * E (EASILY DOWN) - mirne klesani
  * C (CONSTANT) - temer konstantni
  */
-char TranscriberEKG::transcribeValue(float value) {
+char TranscriberEKG::valuesToScale(float value) {
     if (value >= SOARING) {
         return 'S';
     } else if (value <= DIVING) {
@@ -34,6 +36,10 @@ char TranscriberEKG::transcribeValue(float value) {
         return 'U';
     } else if (value <= DOWN && value > DIVING) {
         return 'D';
+    } else if (value >= LIGHTLY_UP && value < UP) {
+        return 'L';
+    } else if(value <= EASILY_DOWN && value > DOWN) {
+        return 'E';
     } else {
         return 'C';
     }
@@ -81,19 +87,27 @@ void TranscriberEKG::transcribeData() {
                 from = i;
             }
 
-            //character = transcribeValue(valueDifferences[i]);
-            //transcribedData.push_back(character);
+            character = valuesToScale(valueDifferences[i]);
+            dataScale.push_back(character);
+
+            /* dokud nevymyslim spravny retezec, zustane tu
+               nasledujici radek, aby byl alespon nejaky vystup :-) */
+            transcribedData.push_back(character); // prozatimni reseni
         }
     }
 
-    /* vyresi posledni usek, ktery v cyklu nemohl byt uzavren */
     if (from < (i - 1) && i > 0) {
         sectionLengths.push_back((i - 1) - from);
         sectionDifferences.push_back(data[i - 1] - data[from]);
     }
 }
 
-
+/**
+ * Nastavi data, ktera se maji prepsat na retezec.
+ * @brief TranscriberEKG::setData
+ * @param data data, ktera se maji prepsat
+ * @param size pocet prvku v poli dat
+ */
 void TranscriberEKG::setData(float data[], int size) {
     int i;
     this->dataSize = size;
