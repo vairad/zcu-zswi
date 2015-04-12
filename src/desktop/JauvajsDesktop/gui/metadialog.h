@@ -18,10 +18,15 @@ class MainTab : public QWidget {
     Q_OBJECT
 
 public:
-    explicit MainTab(QWidget *parent = 0);
+    explicit MainTab(DataManager *dataManager, QWidget *parent = 0);
+    /** textove pole pro jmeno */
     QLineEdit *nameE;
+    /** textove pole pro prijmeni */
     QLineEdit *surnameE;
+    /** textove pole pro uzivatelske jmeno */
     QLineEdit *usernameE;
+    /** pole pro informaci o umisteni metadat */
+    QLabel *pathVL;
 };
 
 /**
@@ -50,6 +55,7 @@ public:
     DataManager *dataManager;
 
 public slots:
+    void checkingInputs();
     void updateMetadata();
 
 private:
@@ -59,6 +65,8 @@ private:
     QDialogButtonBox *buttonBox;
     /** checkboxy senzoru */
     QCheckBox *sensorCB[6];
+    /** true pokud jsou validni vstupy od uzivatele */
+    bool isValidInputs;
 };
 
 #endif

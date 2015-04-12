@@ -1,5 +1,4 @@
 #include "gui/metadialog.h"
-#include <iostream>
 
 /**
  * Vytvori dialog umoznujici nastaveni meta dat
@@ -12,7 +11,7 @@ MetaDialog::MetaDialog(SensorWidget *sensors[], int numberOfSensors, QWidget *pa
     dataManager = new DataManager();
 
     tabWidget = new QTabWidget;
-    mainTab = new MainTab();
+    mainTab = new MainTab(dataManager);
     tabWidget->addTab(mainTab, tr("Hlavní"));
     tabWidget->addTab(new SensorsTab(sensors, numberOfSensors, sensorCB), tr("Senzory"));
 
@@ -20,6 +19,8 @@ MetaDialog::MetaDialog(SensorWidget *sensors[], int numberOfSensors, QWidget *pa
 
     connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
     connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+    // kontrola vstupnich dat
+    connect(buttonBox, SIGNAL(accepted()), this, SLOT(checkingInputs()));
     // ulozeni metadat do Data manageru
     connect(buttonBox, SIGNAL(accepted()), this, SLOT(updateMetadata()));
 
@@ -30,21 +31,54 @@ MetaDialog::MetaDialog(SensorWidget *sensors[], int numberOfSensors, QWidget *pa
 
     setWindowTitle(tr("Nastavení"));
 }
+
+/**
+ * Kontrola vstupnich dat od uzivatele
+ * @brief MetaDialog::checkingInputs
+ */
+void MetaDialog::checkingInputs() {
+    isValidInputs = true;
+
+    // overeni, zda neni prazdne pole uzivatelske jmeno
+    if (!QString::compare(mainTab->usernameE->text(), "")) {
+        this->show();
+        QMessageBox messageBox;
+        messageBox.critical(0,"Chyba", "Uživatelské jméno nesmí být prázdné!");
+        isValidInputs = false;
+    }
+    // overeni, zda upravene uzivatelske jmeno (odlisnost v dataManageru od QLineEdit) neni jiz v datove slozce
+    else if (QString::compare(mainTab->usernameE->text(), dataManager->username)) {
+        QDir dir(mainTab->usernameE->text());
+        if (dir.exists()) {
+            this->show();
+            QMessageBox messageBox;
+            messageBox.critical(0,"Chyba", tr("Zvolené uživatelské jméno už existuje!<br>Zvolte prosím jiné, aby nedošlo k přepsání dat."));
+            isValidInputs = false;
+        }
+    }
+}
+
 /**
  * Aktualizace dat v data manageru
  * @brief MetaDialog::updateMetadata
  */
 void MetaDialog::updateMetadata() {
-    for (int i = 0; i < dataManager->NUMBER_OF_SENSORS; i++) {
-        dataManager->sensors[i] = sensorCB[i]->isChecked();
+    if (isValidInputs) {
+        for (int i = 0; i < dataManager->NUMBER_OF_SENSORS; i++) {
+            dataManager->sensors[i] = sensorCB[i]->isChecked();
+        }
+
+        dataManager->name[0] = mainTab->nameE->text();
+        dataManager->name[1] = mainTab->surnameE->text();
+
+        dataManager->username = mainTab->usernameE->text();
+
+        dataManager->transmitMetadata();
+
+        // aktualizace cesty k souboru
+        QFileInfo fileInfo(dataManager->username+"/metadata.txt");
+        mainTab->pathVL->setText(fileInfo.absoluteFilePath());
     }
-
-    dataManager->name[0] = mainTab->nameE->text();
-    dataManager->name[1] = mainTab->surnameE->text();
-
-    dataManager->username = mainTab->usernameE->text();
-
-    dataManager->transmitMetadata();
 }
 
 /**
@@ -53,20 +87,20 @@ void MetaDialog::updateMetadata() {
  * @param fileInfo
  * @param parent
  */
-MainTab::MainTab(QWidget *parent) : QWidget(parent) {
-    QFileInfo fileInfo("metadata.txt");
+MainTab::MainTab(DataManager *dataManager, QWidget *parent) : QWidget(parent) {
+    QFileInfo fileInfo(dataManager->username+"/metadata.txt");
 
     QLabel *nameL = new QLabel(tr("Jméno:"));
-    nameE = new QLineEdit("Jan");
+    nameE = new QLineEdit(dataManager->name[0]);
 
     QLabel *surnameL = new QLabel(tr("Příjmení:"));
-    surnameE = new QLineEdit("Novák");
+    surnameE = new QLineEdit(dataManager->name[1]);
 
     QLabel *usernameL = new QLabel(tr("Uživatelské jméno:"));
-    usernameE = new QLineEdit("novakjan");
+    usernameE = new QLineEdit(dataManager->username);
 
     QLabel *pathL = new QLabel(tr("Cesta k úložišti dat:"));
-    QLabel *pathVL = new QLabel(fileInfo.absoluteFilePath());
+    pathVL = new QLabel(fileInfo.absoluteFilePath());
     pathVL->setFrameStyle(QFrame::Panel | QFrame::Sunken);
 
     QVBoxLayout *mainLayout = new QVBoxLayout;

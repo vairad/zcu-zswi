@@ -7,6 +7,11 @@
 
 DataManager::DataManager() {
     saver = new FileSaver();
+
+    // zatim docasna testovaci data - BUDOU ODSTRANENA
+    name[0] = "Jan";
+    name[1] = "Novák";
+    username = "novakjan";
 }
 
 /**
