@@ -1,17 +1,16 @@
 #include "transcriberekg.h"
 
+/**
+ * Konstruktor nastavi data k prepsani.
+ * Pri vytvoreni instance Transcriberu nedochazi
+ * k samotnemu prepsani na charakteristicky retezec.
+ * @brief TranscriberEKG::TranscriberEKG
+ * @param data data k prepsani
+ * @param size pocet hodnot v poli
+ */
 TranscriberEKG::TranscriberEKG(float data[], int size) {
     this->dataSize = size;
     setData(data, dataSize);
-}
-
-void TranscriberEKG::setData(float data[], int size) {
-    int i;
-    this->dataSize = size;
-
-    for(i = 0; i < dataSize; i++) {
-        this->data.push_back(data[i]);
-    }
 }
 
 /**
@@ -40,9 +39,13 @@ char TranscriberEKG::transcribeValue(float value) {
     }
 }
 
+/**
+ * "Prepise" data na charakteristicky retezec znaku.
+ * @brief TranscriberEKG::transcribeData
+ */
 void TranscriberEKG::transcribeData() {
     int i;
-    float difference = 0.0;
+    float difference;
     char character;
 
     if(data.empty()) {
@@ -58,10 +61,23 @@ void TranscriberEKG::transcribeData() {
     }
 }
 
+
+void TranscriberEKG::setData(float data[], int size) {
+    int i;
+    this->dataSize = size;
+
+    for(i = 0; i < dataSize; i++) {
+        this->data.push_back(data[i]);
+    }
+}
+
 vector<char> TranscriberEKG::getString() {
     return transcribedData;
 }
 
+vector<float> TranscriberEKG::getData() {
+    return data;
+}
 
 TranscriberEKG::~TranscriberEKG() {
 

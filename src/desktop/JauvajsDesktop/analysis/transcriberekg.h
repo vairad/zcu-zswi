@@ -20,12 +20,16 @@ public:
     void setData(float data[], int size);
     void transcribeData();
     vector<char> getString();
+    vector<float> getData();
     ~TranscriberEKG();
-    vector<float> data;
-    vector<char> transcribedData;
 
 private:
     char transcribeValue(float value);
+    /** Prijata neprepsana data */
+    vector<float> data;
+    /** Charakteristicky retezec znaku (prepsana data) */
+    vector<char> transcribedData;
+    /** Velikost prijatych neprepsanych dat (pocet hodnot) */
     int dataSize;
 };
 
