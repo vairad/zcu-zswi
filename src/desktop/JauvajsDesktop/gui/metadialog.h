@@ -21,6 +21,7 @@ public:
     explicit MainTab(QWidget *parent = 0);
     QLineEdit *nameE;
     QLineEdit *surnameE;
+    QLineEdit *usernameE;
 };
 
 /**

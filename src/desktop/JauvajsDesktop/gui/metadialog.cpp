@@ -36,13 +36,13 @@ MetaDialog::MetaDialog(SensorWidget *sensors[], int numberOfSensors, QWidget *pa
  */
 void MetaDialog::updateMetadata() {
     for (int i = 0; i < dataManager->NUMBER_OF_SENSORS; i++) {
-        std::cout << QString::number(sensorCB[i]->isChecked()).toUtf8().constData();
-
         dataManager->sensors[i] = sensorCB[i]->isChecked();
     }
 
     dataManager->name[0] = mainTab->nameE->text();
     dataManager->name[1] = mainTab->surnameE->text();
+
+    dataManager->username = mainTab->usernameE->text();
 
     dataManager->transmitMetadata();
 }
@@ -62,6 +62,9 @@ MainTab::MainTab(QWidget *parent) : QWidget(parent) {
     QLabel *surnameL = new QLabel(tr("Příjmení:"));
     surnameE = new QLineEdit("Novák");
 
+    QLabel *usernameL = new QLabel(tr("Uživatelské jméno:"));
+    usernameE = new QLineEdit("novakjan");
+
     QLabel *pathL = new QLabel(tr("Cesta k úložišti dat:"));
     QLabel *pathVL = new QLabel(fileInfo.absoluteFilePath());
     pathVL->setFrameStyle(QFrame::Panel | QFrame::Sunken);
@@ -71,6 +74,8 @@ MainTab::MainTab(QWidget *parent) : QWidget(parent) {
     mainLayout->addWidget(nameE);
     mainLayout->addWidget(surnameL);
     mainLayout->addWidget(surnameE);
+    mainLayout->addWidget(usernameL);
+    mainLayout->addWidget(usernameE);
 
     mainLayout->addWidget(pathL);
     mainLayout->addWidget(pathVL);

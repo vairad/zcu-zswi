@@ -23,6 +23,8 @@ public:
     QString name[2];
     /** Metadata - senzory nastavene danemu pacientovi */
     bool sensors[NUMBER_OF_SENSORS];
+    /** Metadata - uzivatelske jmeno (pacienta), slouzi k nazvu slozky */
+    QString username;
 
 };
 
