@@ -27,7 +27,9 @@ SOURCES += main.cpp\
     gui/detailedwindow.cpp \
     analysis/analyserekg.cpp \
     analysis/transcriberekg.cpp \
-    gui/graphdescription.cpp
+    gui/graphdescription.cpp \
+    core/datamanager.cpp \
+    core/filesaver.cpp
 
 HEADERS  += main.h\
     loadfile.h \
@@ -48,6 +50,9 @@ HEADERS  += main.h\
     gui/detailedwindow.h \
     analysis/analyserekg.h \
     analysis/transcriberekg.h \
-    gui/graphdescription.h
+    gui/graphdescription.h \
+    core/datamanager.h \
+    core/istorable.h \
+    core/filesaver.h
 
 FORMS    += gui/mainwindow.ui
