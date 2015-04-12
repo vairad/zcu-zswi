@@ -25,6 +25,11 @@ public:
 
 private:
     char transcribeValue(float value);
+    bool isSection(int from, int to);
+
+    vector<float> valueDifferences;
+    vector<float> sectionDifferences;
+    vector<int> sectionLengths;
     /** Prijata neprepsana data */
     vector<float> data;
     /** Charakteristicky retezec znaku (prepsana data) */
