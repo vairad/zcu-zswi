@@ -1,4 +1,5 @@
 #include "gui/metadialog.h"
+#include <iostream>
 
 /**
  * Vytvori dialog umoznujici nastaveni meta dat
@@ -8,16 +9,19 @@
  * @param parent
  */
 MetaDialog::MetaDialog(SensorWidget *sensors[], int numberOfSensors, QWidget *parent) : QDialog(parent) {
+    dataManager = new DataManager();
+
     tabWidget = new QTabWidget;
     mainTab = new MainTab();
     tabWidget->addTab(mainTab, tr("Hlavní"));
-    tabWidget->addTab(new SensorsTab(sensors, numberOfSensors), tr("Senzory"));
+    tabWidget->addTab(new SensorsTab(sensors, numberOfSensors, sensorCB), tr("Senzory"));
 
     buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
 
     connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
     connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
-    //connect(this, SIGNAL(accepted()), mainWindow, SLOT(setMetaData()));
+    // ulozeni metadat do Data manageru
+    connect(buttonBox, SIGNAL(accepted()), this, SLOT(updateMetadata()));
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addWidget(tabWidget);
@@ -25,6 +29,22 @@ MetaDialog::MetaDialog(SensorWidget *sensors[], int numberOfSensors, QWidget *pa
     setLayout(mainLayout);
 
     setWindowTitle(tr("Nastavení"));
+}
+/**
+ * Aktualizace dat v data manageru
+ * @brief MetaDialog::updateMetadata
+ */
+void MetaDialog::updateMetadata() {
+    for (int i = 0; i < dataManager->NUMBER_OF_SENSORS; i++) {
+        std::cout << QString::number(sensorCB[i]->isChecked()).toUtf8().constData();
+
+        dataManager->sensors[i] = sensorCB[i]->isChecked();
+    }
+
+    dataManager->name[0] = mainTab->nameE->text();
+    dataManager->name[1] = mainTab->surnameE->text();
+
+    dataManager->transmitMetadata();
 }
 
 /**
@@ -65,24 +85,21 @@ MainTab::MainTab(QWidget *parent) : QWidget(parent) {
  * @param numberOfSensors pocet senzoru
  * @param parent
  */
-SensorsTab::SensorsTab(SensorWidget *sensors[], int numberOfSensors, QWidget *parent) : QWidget(parent) {
+SensorsTab::SensorsTab(SensorWidget *sensors[], int numberOfSensors, QCheckBox *sensorCB[], QWidget *parent) : QWidget(parent) {
     // ----------------- skupina senzory
     QGroupBox *sensorsGroup = new QGroupBox(tr("Zobrazené senzory"));
-
-    QCheckBox *sensorCB;
     QVBoxLayout *sensorsLayout = new QVBoxLayout;
 
     // prochazeni vsech senzoru
     for(int i = 0; i < numberOfSensors; i++) {
-        sensorCB = new QCheckBox(sensors[i]->getSensor()->getName().toStdString().c_str());
+        sensorCB[i] = new QCheckBox(sensors[i]->getSensor()->getName().toStdString().c_str());
 
-        if (!sensors[i]->isHidden()) sensorCB->setChecked(true);
-        sensorsLayout->addWidget(sensorCB);
+        if (!sensors[i]->isHidden()) sensorCB[i]->setChecked(true);
+        sensorsLayout->addWidget(sensorCB[i]);
         // propojeni checkboxu s akci v SensorWidget
-        QObject::connect(sensorCB, SIGNAL(toggled(bool)), sensors[i], SLOT(on_action_toggled(bool)));
+        QObject::connect(sensorCB[i], SIGNAL(toggled(bool)), sensors[i], SLOT(on_action_toggled(bool)));
         // propojeni zmeny v akci v SensorWidget s checkboxem
-        QObject::connect(sensors[i], SIGNAL(visible(bool)), sensorCB, SLOT(setChecked(bool)));
-
+        QObject::connect(sensors[i], SIGNAL(visible(bool)), sensorCB[i], SLOT(setChecked(bool)));
     }
     sensorsGroup->setLayout(sensorsLayout);
 
