@@ -4,11 +4,12 @@ SensorEKG::SensorEKG() {
     minY = 0;
     maxY = 6;
     minX = 0;
-    maxX = 200;
+    maxX = 30;
     time = 0;
     lastValue = -1;
 
     name = "EKG";
+    unit = "mV";
 }
 
 /**

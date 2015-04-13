@@ -4,11 +4,12 @@ SensorTemp::SensorTemp() {
     minY = 32;
     maxY = 42;
     minX = 0;
-    maxX = 200;
+    maxX = 60;
     time = 0;
     lastValue = -1;
 
     name = "Teplota";
+    unit = "°C";
 }
 
 /**

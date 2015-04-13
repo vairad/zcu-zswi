@@ -4,11 +4,12 @@ SensorHeartRate::SensorHeartRate() {
     minY = -1;
     maxY = 1;
     minX = 0;
-    maxX = 200;
+    maxX = 60;
     time = 0;
     lastValue = -1;
 
     name = "Puls";
+    unit = "";
 }
 
 /**

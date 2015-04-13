@@ -29,6 +29,8 @@ public:
     int time;
     /** posledni hodnota */
     double lastValue;
+    /** jednotka zobrazovane veliciny na ose Y */
+    QString unit;
 
 protected:
     /** nazev senzoru */
