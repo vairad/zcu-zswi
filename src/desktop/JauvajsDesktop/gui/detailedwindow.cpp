@@ -35,8 +35,8 @@ DetailedWindow::DetailedWindow(IDisplayable *sensor, QWidget *parent) : QDialog(
 
     layout->addWidget(graphicsView);
 
-    verticalLinesInterval = 10;
-    verticalLinesBoldInterval = 50;
+    verticalLinesInterval = 1;
+    verticalLinesBoldInterval = 5;
     minNumberOfHorizontalLines = 10;
 }
 
@@ -64,6 +64,7 @@ void DetailedWindow::update(double value) {
  */
 void DetailedWindow::resizeEvent(QResizeEvent *e) {
     scene->setSceneRect(QRectF(QPointF(0, 0), QPointF(graphicsView->viewport()->width(), graphicsView->viewport()->height())));
+    drawVerticalLines();
     drawNumbers();
 }
 

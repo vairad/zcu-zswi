@@ -23,7 +23,7 @@ void GraphDescription::drawNumbers() {
 
     QFont font = QFont("Arial", 6);
     // popis nejvyssi hodnoty Y
-    textMaxY = scene->addText(QString::number(sensor->maxY), font);
+    textMaxY = scene->addText(QString::number(sensor->maxY) + " " + sensor->unit, font);
     textMaxY->setPos(0,0);
     textMaxY->setDefaultTextColor(Qt::white);
 
@@ -33,7 +33,7 @@ void GraphDescription::drawNumbers() {
     textMinY->setDefaultTextColor(Qt::white);
 
     // popis nejvyssi hodnoty X
-    textMaxX = scene->addText(QString::number(graphicsView->viewport()->width() - LEFT_OFFSET) + " [time]", font);
+    textMaxX = scene->addText(QString::number(sensor->maxX) + " s [time]", font);
     textMaxX->setPos(graphicsView->viewport()->width() - textMaxX->boundingRect().width(), graphicsView->height() - textMaxX->boundingRect().height());
     textMaxX->setDefaultTextColor(Qt::white);
 
@@ -50,16 +50,26 @@ void GraphDescription::drawNumbers() {
  * @brief SensorWidget::drawVerticalLines
  */
 void GraphDescription::drawVerticalLines() {
-    for (int i = 0; i < WIDTH; i += verticalLinesInterval) {
+    // odebrani starych hodnot
+    foreach (QGraphicsLineItem *item, lineList) {
+        scene->removeItem(item);
+    }
+    lineList.clear();
+
+    int width = sensor->maxX - sensor->minX; // skutecna sirka (v jednotkach)
+    double numberOfLines = width / (double) verticalLinesInterval;
+    double interval = (graphicsView->viewport()->width() - LEFT_OFFSET) / numberOfLines; // interval v px
+
+    for (int i = 1; i <= numberOfLines; i++) {
         if (i != 0)
         if (i % verticalLinesBoldInterval == 0) {
             QPen pen;
             pen.setWidth(2);
             pen.setBrush(QColor(0, 102, 96));
-            scene->addLine(LEFT_OFFSET + i, 0, LEFT_OFFSET + i, graphicsView->viewport()->height(), pen);
+            lineList.push_back(scene->addLine(LEFT_OFFSET + i*interval, 0, LEFT_OFFSET + i*interval, graphicsView->viewport()->height(), pen));
         }
         else {
-            scene->addLine(LEFT_OFFSET + i, 0, LEFT_OFFSET + i, graphicsView->viewport()->height(), QPen(QColor(0, 102, 96)));
+            lineList.push_back(scene->addLine(LEFT_OFFSET + i*interval, 0, LEFT_OFFSET + i*interval, graphicsView->viewport()->height(), QPen(QColor(0, 102, 96))));
         }
     }
 }

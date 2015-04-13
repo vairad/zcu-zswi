@@ -19,8 +19,8 @@ SensorWidget::SensorWidget(QVBoxLayout *vLayout, QMenu *menuZobrazit, IDisplayab
     createGraphicsView();
     createAction();
 
-    verticalLinesInterval = 10;
-    verticalLinesBoldInterval = 50;
+    verticalLinesInterval = 1;
+    verticalLinesBoldInterval = 5;
     minNumberOfHorizontalLines = 6;
 
     detailedWindow = new DetailedWindow(sensor);
@@ -115,6 +115,7 @@ void SensorWidget::zobrazit() {
  */
 void SensorWidget::resizeEvent(QResizeEvent *e) {
     graphicsView->scene()->setSceneRect(QRectF(QPointF(0, 0), QPointF(graphicsView->viewport()->width(), graphicsView->viewport()->height())));
+    drawVerticalLines();
     drawNumbers();
 }
 
