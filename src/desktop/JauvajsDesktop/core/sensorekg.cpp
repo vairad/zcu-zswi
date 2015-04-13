@@ -1,8 +1,8 @@
 #include "core/sensorekg.h"
 
 SensorEKG::SensorEKG() {
-    minY = -1;
-    maxY = 1;
+    minY = 0;
+    maxY = 6;
     minX = 0;
     maxX = 200;
     time = 0;
