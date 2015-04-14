@@ -6,7 +6,7 @@ SensorEKG::SensorEKG() {
     minX = 0;
     maxX = 30;
     time = 0;
-    lastValue = -1;
+    timeInterval = 0.02;
 
     name = "EKG";
     unit = "mV";

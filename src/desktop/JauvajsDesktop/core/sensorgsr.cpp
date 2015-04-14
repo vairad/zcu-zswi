@@ -6,7 +6,7 @@ SensorGSR::SensorGSR() {
     minX = 0;
     maxX = 60;
     time = 0;
-    lastValue = -1;
+    timeInterval = 0.02;
 
     name = "GSR";
     unit = "V";

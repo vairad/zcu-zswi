@@ -26,9 +26,9 @@ public:
     /** maximum na ose Y */
     int maxY;
     /** cas (osa X) */
-    int time;
-    /** posledni hodnota */
-    double lastValue;
+    double time;
+    /** cas, po kterem prichazi hodnoty z Arduina */
+    double timeInterval;
     /** jednotka zobrazovane veliciny na ose Y */
     QString unit;
 
