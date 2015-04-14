@@ -159,11 +159,14 @@ void SensorWidget::repaintGraph() {
 }
 
 /**
+ * Reakce na kliknuti do grafu
  * @brief mousePressEvent
  * @param event
  */
 void SensorWidget::mousePressEvent(QMouseEvent *) {
     detailedWindow->showNormal();
+    detailedWindow->raise();
+    QApplication::setActiveWindow(detailedWindow);
 }
 
 /**
