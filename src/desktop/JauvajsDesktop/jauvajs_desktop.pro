@@ -11,6 +11,10 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = gui_arduino
 TEMPLATE = app
 
+@win32:
+LIBS += -lWS2_32
+LIBS += -lBTHPROPS
+@
 
 SOURCES += main.cpp\
     loadfile.cpp \
@@ -30,7 +34,8 @@ SOURCES += main.cpp\
     gui/graphdescription.cpp \
     core/datamanager.cpp \
     core/filesaver.cpp \
-    core/fileminer.cpp
+    core/fileminer.cpp \
+    core/arduinominer.cpp
 
 HEADERS  += main.h\
     loadfile.h \
@@ -55,6 +60,7 @@ HEADERS  += main.h\
     core/datamanager.h \
     core/istorable.h \
     core/filesaver.h \
-    core/fileminer.h
+    core/fileminer.h \
+    core/arduinominer.h
 
 FORMS    += gui/mainwindow.ui
