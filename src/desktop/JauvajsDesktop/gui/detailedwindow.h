@@ -20,6 +20,7 @@ public:
     void resizeEvent(QResizeEvent *);
     void setUp();
     void repaintGraph();
+    void resetGraph();
     ~DetailedWindow();
     /** krivka kreslena do grafu */
     QPainterPath *path;
@@ -27,6 +28,14 @@ public:
     QList<double> *values;
     /** polozka krivky kreslena do sceny */
     QGraphicsPathItem *curve;
+    /** polozka krivky z minuleho zaznamu kreslena do sceny */
+    QGraphicsPathItem *curve2;
+    /** zda je zapnuto prepisovani */
+    bool transcription;
+    /** prepisovaci index, kde je zrovna provaden */
+    int transcriptionIndex;
+    /** vlastni cas detailniho okna */
+    double time;
 };
 
 #endif // DETAILEDWINDOW_H

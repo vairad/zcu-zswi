@@ -30,6 +30,7 @@ public:
     void setUp();
     void update(double value);
     void repaintGraph();
+    void resetGraph();
     IDisplayable *getSensor();
     ~SensorWidget();
     QAction *action1;
@@ -66,7 +67,12 @@ private:
     QList<double> values;
     /** polozka krivky kreslena do sceny */
     QGraphicsPathItem *curve;
-
+    /** polozka krivky z minuleho zaznamu kreslena do sceny */
+    QGraphicsPathItem *curve2;
+    /** zda je zapnuto prepisovani */
+    bool transcription;
+    /** prepisovaci index, kde je zrovna provaden */
+    int transcriptionIndex;
 };
 
 #endif // SENSORWIDGET_H

@@ -26,6 +26,8 @@ SensorWidget::SensorWidget(QVBoxLayout *vLayout, QMenu *menuZobrazit, IDisplayab
     detailedWindow = new DetailedWindow(sensor, &values);
     path = NULL;
     curve = NULL;
+    curve2 = NULL;
+    transcription = false;
 }
 
 /**
@@ -129,6 +131,10 @@ void SensorWidget::resizeEvent(QResizeEvent *) {
 void SensorWidget::repaintGraph() {
     if (path != NULL) {
         if (curve != NULL) scene->removeItem(curve); // odstaneni stare krivky z grafu
+        if (curve2 != NULL){
+            scene->removeItem(curve2); // odstaneni stare krivky z grafu
+            curve2 = NULL;
+        }
         sensor->time = 0;
         int width = sensor->maxX - sensor->minX; // skutecna sirka (v jednotkach)
         int height = graphicsView->viewport()->height() - BOTTOM_OFFSET;
@@ -209,10 +215,50 @@ void SensorWidget::update(double value) {
     else {
         path = new QPainterPath(QPoint(LEFT_OFFSET, y)); // vytvoreni path s pocatecnim bodem
     }
-    values.push_back(value); // pridani hodnoty y do listu
-    detailedWindow->update(value); // kresleni do detailniho okna
 
+    // pokud je zapnuto prepisovani, hodnota se prida do values na misto transcriptionIndex
+    if (transcription) {
+        if (curve2 != NULL) scene->removeItem(curve2); // odstaneni stare krivky z grafu
+        QPainterPath path2(QPoint(x, y));
+        values.replace(transcriptionIndex, value); // pridani hodnoty na misto transcriptionIndex
+        transcriptionIndex++;
+        // vykresleni krivky z minuleho zobrazeni od transcriptionIndex do konce
+        int i = 0;
+        double time2 = sensor->time + sensor->timeInterval;
+        foreach (double value, values) {
+            i++;
+            if (i <= transcriptionIndex) continue;
+            x = (time2 / (double) width) * (graphicsView->viewport()->width() - LEFT_OFFSET) + LEFT_OFFSET;
+            y = graphicsView->viewport()->height() - ((value - sensor->minY) / (sensor->maxY - sensor->minY) * height + BOTTOM_OFFSET);
+            path2.lineTo(x, y); //  pridani dalsi hodnoty do path
+            time2 += sensor->timeInterval; // pricteni casu pro dalsi hodnotu
+        }
+        curve2 = scene->addPath(path2, QPen(Qt::white));
+    }
+    // pokud se neprepisuje, hodota je pridana na konec values
+    else {
+        values.push_back(value); // pridani hodnoty y do listu
+    }
+
+    detailedWindow->update(value); // kresleni do detailniho okna
     sensor->time += sensor->timeInterval; // pricteni casu pro dalsi hodnotu
+
+    // pokud graf dobehne do konce platna, je zapnuto prepisovani od zacatku platna
+    if (sensor->time > sensor->maxX) {
+        resetGraph();
+        detailedWindow->resetGraph();
+        transcription = true;
+        transcriptionIndex = 0;
+    }
+}
+
+/**
+ * Odstraneni vykreslene krivky a resetovani hodnot
+ * @brief SensorWidget::resetGraph
+ */
+void SensorWidget::resetGraph() {
+    sensor->time = 0;
+    path = NULL;
 }
 
 /**
