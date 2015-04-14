@@ -31,6 +31,7 @@ public:
     void update(double value);
     void repaintGraph();
     void resetGraph();
+    void cleanGraph();
     IDisplayable *getSensor();
     ~SensorWidget();
     QAction *action1;
@@ -39,6 +40,7 @@ signals:
 
 public slots:
     void on_button_clicked();
+    void on_button2_clicked();
     void on_action_toggled(bool arg1);
 
 signals:
@@ -55,6 +57,8 @@ private:
     QWidget *widget;
     /** tlacitko zahajeni zaznamu */
     QPushButton *button;
+    /** tlacitko vycisteni sceny */
+    QPushButton *button2;
     /** popisek widgetu */
     QLabel *label;
     /** layout widgetu */

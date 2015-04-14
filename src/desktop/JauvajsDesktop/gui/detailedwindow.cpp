@@ -143,6 +143,24 @@ void DetailedWindow::resetGraph() {
 }
 
 /**
+ * Odstraneni vykreslene krivky a resetovani hodnot
+ * @brief SensorWidget::resetGraph
+ */
+void DetailedWindow::cleanGraph() {
+    if (curve != NULL) {
+        scene->removeItem(curve); // odstaneni stare krivky z grafu
+        curve = NULL;
+    }
+    if (curve2 != NULL){
+        scene->removeItem(curve2); // odstaneni stare krivky z grafu
+        curve2 = NULL;
+    }
+    sensor->time = 0;
+    path = NULL;
+    transcription = false;
+}
+
+/**
  * Pocatecni nastaveni velikosti sceny
  * @brief DetailedWindow::setUp
  */

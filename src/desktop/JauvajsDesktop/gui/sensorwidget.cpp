@@ -57,6 +57,11 @@ void SensorWidget::createLeftBox() {
     button->setGeometry(QRect(10, 50, 131, 23));
     button->setText(QApplication::translate("MainWindow", "Zah\303\241jit z\303\241znam", 0));
 
+    button2 = new QPushButton(widget);
+    button2->setObjectName(QStringLiteral("button2"));
+    button2->setGeometry(QRect(10, 75, 131, 23));
+    button2->setText(QApplication::translate("MainWindow", "Vyčisti", 0));
+
     label = new QLabel(widget);
     label->setObjectName(QStringLiteral("label"));
     label->setGeometry(QRect(50, 20, 47, 13));
@@ -253,7 +258,7 @@ void SensorWidget::update(double value) {
 }
 
 /**
- * Odstraneni vykreslene krivky a resetovani hodnot
+ * Resetovani hodnot
  * @brief SensorWidget::resetGraph
  */
 void SensorWidget::resetGraph() {
@@ -262,11 +267,39 @@ void SensorWidget::resetGraph() {
 }
 
 /**
+ * Odstraneni vykreslene krivky a resetovani hodnot
+ * @brief SensorWidget::resetGraph
+ */
+void SensorWidget::cleanGraph() {
+    if (curve != NULL) {
+        scene->removeItem(curve); // odstaneni stare krivky z grafu
+        curve = NULL;
+    }
+    if (curve2 != NULL){
+        scene->removeItem(curve2); // odstaneni stare krivky z grafu
+        curve2 = NULL;
+    }
+    sensor->time = 0;
+    path = NULL;
+    transcription = false;
+    values.clear();
+    detailedWindow->cleanGraph();
+}
+
+/**
  * Udalost na stisk Zahajit zaznam
  * @brief SensorWidget::on_button_clicked
  */
 void SensorWidget::on_button_clicked() {
     new LoadFile(this);
+}
+
+/**
+ * Udalost na stisk Vyčisti
+ * @brief SensorWidget::on_button_clicked
+ */
+void SensorWidget::on_button2_clicked() {
+    cleanGraph();
 }
 
 /**

@@ -21,6 +21,7 @@ public:
     void setUp();
     void repaintGraph();
     void resetGraph();
+    void cleanGraph();
     ~DetailedWindow();
     /** krivka kreslena do grafu */
     QPainterPath *path;
