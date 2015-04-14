@@ -35,7 +35,8 @@ SOURCES += main.cpp\
     core/datamanager.cpp \
     core/filesaver.cpp \
     core/fileminer.cpp \
-    core/arduinominer.cpp
+    core/arduinominer.cpp \
+	core/iworking.cpp
 
 HEADERS  += main.h\
     loadfile.h \
@@ -61,6 +62,7 @@ HEADERS  += main.h\
     core/istorable.h \
     core/filesaver.h \
     core/fileminer.h \
-    core/arduinominer.h
+    core/arduinominer.h \
+	core/iworking.h
 
 FORMS    += gui/mainwindow.ui
