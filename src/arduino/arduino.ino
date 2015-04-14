@@ -35,7 +35,7 @@
 
 #define SETUP_WAIT 3000
 
-#define RECV_SIZE 32
+#define RECV_SIZE 16
 
 char sensor_labels[]           = {'T', 'C', 'R', 'H', 'P', 'O', 'A', 'F'};
 unsigned short dec_positions[] = { 0 ,  2 ,  2 ,  6 ,  0 ,  0 ,  0 ,  0 }; 
@@ -125,7 +125,6 @@ void loop() {
   
   input_check();
   
-  Serial.print("Check "); Serial.print(check_delayer); Serial.print(":\t");
   int i;
   float vals[SENSOR_COUNT];
   
@@ -141,7 +140,9 @@ void loop() {
   
   Serial.println("]");
   // Reduce this delay for more data rate
-  delay(CYCLE_DELAY);
+  if (check_delayer != 0) {
+    delay(CYCLE_DELAY);
+  }
 
 }
 
@@ -276,8 +277,11 @@ int print_enabled_sensors() {
 
 void input_check() {
   char *temp, *command, *argument;
+  short result;
   
-  if (++check_delayer >= CHECK_DELAY) {
+  Serial.print("Check "); Serial.print(++check_delayer); Serial.print(":\t");
+  
+  if (check_delayer >= CHECK_DELAY) {
     check_delayer = 0;
     check();
     if (cont != 0) {
@@ -285,11 +289,13 @@ void input_check() {
       command = strtok_r(recv, " ", &temp);
       argument= strtok_r(NULL, " ", &temp);
       if (command != NULL) {
-        switch (process_command(command, argument)) {
+        result = process_command(command, argument);
+        switch (result) {
           default: case 0:
             break;
           case 1: case 2: case 3:
-            blik(3, 150);
+            Serial.print("ERR "); Serial.println(result);
+            break;
         }
       } else {
         Serial.print("Neplatny prikaz!\n");
@@ -299,7 +305,7 @@ void input_check() {
 }
 
 void check() {
-  cont=0; delay(350);
+  cont=0;
   int drop = 0;
   while (Serial.available()>0) {
     if(cont < RECV_SIZE -1) {
