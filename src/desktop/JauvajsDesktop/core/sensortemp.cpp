@@ -22,6 +22,14 @@ QGraphicsScene* SensorTemp::getSceneGraph() {
     //return this->scene;
 }
 
+/**
+ * Pracuje s predanymi daty
+ * @param data prijata data
+ */
+void SensorTemp::transmitData(float data){
+    data = 42;
+}
+
 SensorTemp::~SensorTemp() {
 
 }

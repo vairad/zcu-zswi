@@ -22,6 +22,14 @@ QGraphicsScene* SensorEKG::getSceneGraph() {
     //return this->scene;
 }
 
+/**
+ * Pracuje s predanymi daty
+ * @param data prijata data
+ */
+void SensorEKG::transmitData(float data){
+    data = 42;
+}
+
 SensorEKG::~SensorEKG() {
 
 }

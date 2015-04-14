@@ -22,7 +22,17 @@ QGraphicsScene* SensorOxy::getSceneGraph() {
     //return this->scene;
 }
 
+/**
+ * Pracuje s predanymi daty
+ * @param data prijata data
+ */
+void SensorOxy::transmitData(float data){
+
+}
+
 SensorOxy::~SensorOxy() {
 
 }
+
+
 

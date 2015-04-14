@@ -22,6 +22,14 @@ QGraphicsScene* SensorGSR::getSceneGraph() {
     //return this->scene;
 }
 
+/**
+ * Pracuje s predanymi daty
+ * @param data prijata data
+ */
+void SensorGSR::transmitData(float data){
+    data = 42;
+}
+
 SensorGSR::~SensorGSR() {
 
 }

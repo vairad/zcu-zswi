@@ -14,6 +14,9 @@ public:
     DataManager();
     ~DataManager();
 
+    /** predani dat jednotlivym senzorum */
+    void transmitData();
+    /** */
     void transmitMetadata();
     /** ukladac dat */
     IStorable *saver;

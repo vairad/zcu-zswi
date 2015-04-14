@@ -22,6 +22,14 @@ QGraphicsScene* SensorHeartRate::getSceneGraph() {
     //return this->scene;
 }
 
+/**
+ * Pracuje s predanymi daty
+ * @param data prijata data
+ */
+void SensorHeartRate::transmitData(float data){
+    data = 42;
+}
+
 SensorHeartRate::~SensorHeartRate() {
 
 }

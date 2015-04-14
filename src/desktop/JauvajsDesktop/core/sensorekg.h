@@ -2,12 +2,16 @@
 #define EKGSENSOR_H
 
 #include "core/idisplayable.h"
+#include "core/iworking.h"
+
 #include "gui/sensorwidget.h"
 
-class SensorEKG : public IDisplayable {
+class SensorEKG : public IDisplayable, public IWorking {
 public:
     SensorEKG();
     QGraphicsScene* getSceneGraph();
+    void transmitData(float data);
+
     ~SensorEKG();
 
 };

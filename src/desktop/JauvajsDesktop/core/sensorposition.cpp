@@ -22,6 +22,14 @@ QGraphicsScene* SensorPosition::getSceneGraph() {
     //return this->scene;
 }
 
+/**
+ * Pracuje s predanymi daty
+ * @param data prijata data
+ */
+void SensorPosition::transmitData(float data){
+    data = 42;
+}
+
 SensorPosition::~SensorPosition() {
 
 }
