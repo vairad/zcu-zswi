@@ -19,7 +19,7 @@ void LoadFile::run() {
 
     int i = 0;
 
-    while (fscanf(f, "%f", &value) == 1 && i<500) {
+    while (fscanf(f, "%f", &value) == 1 /*&& i<500*/) {
         g->update(value);
         //printf("%d\n", i);
         i++;

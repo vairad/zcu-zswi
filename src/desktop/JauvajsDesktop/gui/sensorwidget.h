@@ -29,6 +29,7 @@ public:
     void zobrazit();
     void setUp();
     void update(double value);
+    void repaintGraph();
     IDisplayable *getSensor();
     ~SensorWidget();
     QAction *action1;
@@ -43,8 +44,8 @@ signals:
     void visible(bool arg1);
 
 protected:
-    void mousePressEvent(QMouseEvent *event);
-    void resizeEvent(QResizeEvent *event);
+    void mousePressEvent(QMouseEvent *);
+    void resizeEvent(QResizeEvent *);
 
 private:
     /** polozka Zobrazit hlavniho menu */
@@ -59,6 +60,13 @@ private:
     QHBoxLayout *layout;
     /** detailni okno senzoru */
     DetailedWindow *detailedWindow;
+    /** krivka kreslena do grafu */
+    QPainterPath *path;
+    /** list hodnot v grafu */
+    QList<double> values;
+    /** polozka krivky kreslena do sceny */
+    QGraphicsPathItem *curve;
+
 };
 
 #endif // SENSORWIDGET_H

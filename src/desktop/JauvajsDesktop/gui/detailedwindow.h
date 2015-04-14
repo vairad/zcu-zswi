@@ -15,11 +15,18 @@
 class DetailedWindow : public QDialog, public GraphDescription {
     Q_OBJECT
 public:
-    explicit DetailedWindow(IDisplayable *sensor, QWidget *parent = 0);
+    explicit DetailedWindow(IDisplayable *sensor, QList<double> *values, QWidget *parent = 0);
     void update(double value);
-    void resizeEvent(QResizeEvent *e);
+    void resizeEvent(QResizeEvent *);
     void setUp();
+    void repaintGraph();
     ~DetailedWindow();
+    /** krivka kreslena do grafu */
+    QPainterPath *path;
+    /** ukazatel na list hodnot v grafu */
+    QList<double> *values;
+    /** polozka krivky kreslena do sceny */
+    QGraphicsPathItem *curve;
 };
 
 #endif // DETAILEDWINDOW_H

@@ -8,8 +8,9 @@
  * @param sensor senzor pro detalni zobrazeni
  * @param parent
  */
-DetailedWindow::DetailedWindow(IDisplayable *sensor, QWidget *parent) : QDialog(parent) {
+DetailedWindow::DetailedWindow(IDisplayable *sensor, QList<double> *values, QWidget *parent) : QDialog(parent) {
     this->sensor = sensor;
+    this->values = values;
 
     setWindowTitle(sensor->getName().toStdString().c_str() + tr(" - detail senzoru"));
     QHBoxLayout *layout = new QHBoxLayout();
@@ -38,6 +39,8 @@ DetailedWindow::DetailedWindow(IDisplayable *sensor, QWidget *parent) : QDialog(
     verticalLinesInterval = 1;
     verticalLinesBoldInterval = 5;
     minNumberOfHorizontalLines = 10;
+    path = NULL;
+    curve = NULL;
 }
 
 /**
@@ -47,13 +50,20 @@ DetailedWindow::DetailedWindow(IDisplayable *sensor, QWidget *parent) : QDialog(
  */
 void DetailedWindow::update(double value) {
     int height = graphicsView->viewport()->height() - BOTTOM_OFFSET;
+    int width = sensor->maxX - sensor->minX; // skutecna sirka (v jednotkach)
 
+    int x = (sensor->time / (double) width) * (graphicsView->viewport()->width() - LEFT_OFFSET) + LEFT_OFFSET;
     int y = graphicsView->viewport()->height() - ((value - sensor->minY) / (sensor->maxY - sensor->minY) * height + BOTTOM_OFFSET);
-    int lastY = graphicsView->viewport()->height() - ((sensor->lastValue - sensor->minY) / (sensor->maxY - sensor->minY) * height + BOTTOM_OFFSET);
 
-    if (sensor->lastValue != -1) {
-        scene->addLine(LEFT_OFFSET + sensor->time, lastY, LEFT_OFFSET + sensor->time+1, y, QPen(Qt::white));
-        graphicsView->viewport()->repaint();
+    if (path != NULL) {
+        path->lineTo(x, y); //  pridani dalsi hodnoty do path
+
+        if (curve != NULL) scene->removeItem(curve); // odstaneni stare krivky z grafu
+        curve = scene->addPath(*path, QPen(Qt::white)); // pridani aktualni krivky do grafu
+        graphicsView->viewport()->repaint(); // prekresleni
+    }
+    else {
+        path = new QPainterPath(QPoint(LEFT_OFFSET, y)); // vytvoreni path s pocatecnim bodem
     }
 }
 
@@ -62,10 +72,36 @@ void DetailedWindow::update(double value) {
  * @brief SensorWidget::resizeEvent
  * @param e
  */
-void DetailedWindow::resizeEvent(QResizeEvent *e) {
+void DetailedWindow::resizeEvent(QResizeEvent *) {
     scene->setSceneRect(QRectF(QPointF(0, 0), QPointF(graphicsView->viewport()->width(), graphicsView->viewport()->height())));
     drawVerticalLines();
     drawNumbers();
+    repaintGraph();
+}
+
+/**
+ * Prekresli graf na aktualni sirku widgetu
+ * @brief SensorWidget::repaintGraph
+ */
+void DetailedWindow::repaintGraph() {
+    if (path != NULL) {
+        if (curve != NULL) scene->removeItem(curve); // odstaneni stare krivky z grafu
+        sensor->time = 0;
+        int width = sensor->maxX - sensor->minX; // skutecna sirka (v jednotkach)
+        int height = graphicsView->viewport()->height() - BOTTOM_OFFSET;
+        int x, y;
+        QPainterPath path(QPoint(LEFT_OFFSET, 0));
+
+        foreach (double value, *values) {
+            x = (sensor->time / (double) width) * (graphicsView->viewport()->width() - LEFT_OFFSET) + LEFT_OFFSET;
+            y = graphicsView->viewport()->height() - ((value - sensor->minY) / (sensor->maxY - sensor->minY) * height + BOTTOM_OFFSET);
+            path.lineTo(x, y); //  pridani dalsi hodnoty do path
+            sensor->time += sensor->timeInterval; // pricteni casu pro dalsi hodnotu
+        }
+
+       curve = scene->addPath(path, QPen(Qt::white));
+       graphicsView->viewport()->repaint();
+    }
 }
 
 /**
