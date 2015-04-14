@@ -31,9 +31,10 @@
 
 #define CHECK_DELAY 4
 #define CYCLE_DELAY 20
-#define LED 13
 
-#define SETUP_WAIT 3000
+#define LED 13
+#define BAUD_RATE 115200
+#define SETUP_WAIT 2000
 
 #define RECV_SIZE 16
 
@@ -80,6 +81,11 @@ void bt_setup() {
     val = Serial.read();
   }
   
+#ifdef SYNC
+  delay(SETUP_WAIT);
+  sync();  
+#endif
+  
   Serial.print("AT+JSCR\r\n"); // Stream Connection Request command
 }
 
@@ -93,17 +99,13 @@ void sync() {
 }
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(BAUD_RATE);
   delay(2000);
 
 #ifdef BT
   bt_setup();
 #endif
 
-#ifdef SYNC
-  delay(SETUP_WAIT);
-  sync();  
-#endif
   
   for (short i = 0; i < SENSOR_COUNT; i++) {
     sensor_usage[i] = true;
@@ -123,7 +125,7 @@ void loop() {
   uint8_t pos;
   boolean tab = false;
   
-  input_check();
+  //input_check();
   
   int i;
   float vals[SENSOR_COUNT];
@@ -140,7 +142,7 @@ void loop() {
   
   Serial.println("]");
   // Reduce this delay for more data rate
-  if (check_delayer != 0) {
+  if (true || check_delayer != 0) {
     delay(CYCLE_DELAY);
   }
 
