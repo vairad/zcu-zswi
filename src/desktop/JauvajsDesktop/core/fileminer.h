@@ -12,7 +12,7 @@ class FileMiner : public IMiner{
     /** Opened file */
     QFile sourceFile;
     /** flag if file was opened correctly default false */
-    bool opened = false;
+    bool opened;
 
 public:
     /** Constructor opens file and create input stream */

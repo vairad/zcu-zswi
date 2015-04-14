@@ -7,6 +7,7 @@
 
 FileMiner::FileMiner(QString fileName){
     sourceFile.setFileName(fileName);
+    opened = false;
     opened = sourceFile.open(QIODevice::ReadOnly);
 }
 
