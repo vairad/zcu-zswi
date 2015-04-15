@@ -28,17 +28,19 @@ int val = -1;
 int n = 0;
 
 void setup(){
-	delay(4000);
+  Serial.begin(115200);
+  
+  delay(2000);
   Serial.print("AT+JSEC=1,1,2,04,0000\r\n"); // Enable security command
-  delay(4000);
+  delay(2000);
   Serial.print("AT+JSLN=10,JauvajsIno\r\n"); // Setup name of device
-  delay(4000);  
+  delay(2000);  
   Serial.print("AT+JDIS=3\r\n"); // Discoverable command
-  delay(4000);
+  delay(2000);
   Serial.print("AT+JRLS=1101,11,Serial Port,01,000000\r\n"); // Register local sevice command
-  delay(4000);
+  delay(2000);
   Serial.print("AT+JAAC=1\r\n");// Auto accept connection requests command
-  delay(4000);
+  delay(2000);
   pinMode(led,  OUTPUT);
   digitalWrite(led, LOW);
   Serial.flush();
@@ -53,16 +55,7 @@ void setup(){
 }
 
 void loop(){
-  Serial.println("Hola caracola...");
   
-  digitalWrite(led,HIGH);
-  delay(250);
-  digitalWrite(led,LOW);
-  delay(250);
-  digitalWrite(led,HIGH);
-  delay(250);
-  digitalWrite(led,LOW);
-  delay(250);
-  
-  delay(1000);
+  Serial.print(++n); Serial.println("\tHola caracola...");
+  delay(20);
 }

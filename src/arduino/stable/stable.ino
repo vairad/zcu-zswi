@@ -29,7 +29,7 @@
 #define SENSOR_COUNT 8
 
 #define CHECK_DELAY 4
-#define CYCLE_DELAY 500
+#define CYCLE_DELAY 20
 #define LED 13
 
 char recv[128];
@@ -111,9 +111,10 @@ void loop()
   uint8_t pos;
   boolean first_sent = false;
   
-  input_check();
+  //input_check();
   if(sensor_usage > 0){
-    Serial.print("Check cycle: "); Serial.print(check_delayer); Serial.print("\t\t");
+    
+    Serial.print(millis());Serial.print("\tCheck: "); Serial.print(check_delayer); Serial.print("\t-\t");
     
     if(is_enabled(S_AIRF)){
       airflow = eHealth.getAirFlow();

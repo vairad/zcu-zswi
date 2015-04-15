@@ -15,8 +15,7 @@
 #include <PinChangeInt.h>
 #include <eHealth.h>
 
-#define BT
-//#define SYNC 
+//#define BT 
 
 #define S_INVALID -1
 #define S_TEMP 0
@@ -81,21 +80,7 @@ void bt_setup() {
     val = Serial.read();
   }
   
-#ifdef SYNC
-  delay(SETUP_WAIT);
-  sync();  
-#endif
-  
   Serial.print("AT+JSCR\r\n"); // Stream Connection Request command
-}
-
-void sync() {
-  char val = Serial.read();
-  while (val != 'P') {
-    Serial.print("Ja jsem Jauvajs Ino.\n Potrebuji >P< abych mohlo zacit pracovat.");
-    delay(333);
-    val = Serial.read();
-  }
 }
 
 void setup() {
@@ -130,22 +115,23 @@ void loop() {
   int i;
   float vals[SENSOR_COUNT];
   
+  
   for (i = 0; i < SENSOR_COUNT; i++) {
     vals[i] = get_sensor_value(i);
   }
-
+  
   Serial.print("[");
   for (int i = 0; i < SENSOR_COUNT; i++) {
     if (!is_enabled(i)) { continue; }
     tab = fprint_val(tab, sensor_labels[i], vals[i], dec_positions[i]);
   }
   
+  
   Serial.println("]");
   // Reduce this delay for more data rate
   if (true || check_delayer != 0) {
     delay(CYCLE_DELAY);
   }
-
 }
 
 float get_sensor_value(int S) {
@@ -323,16 +309,6 @@ void check() {
     Serial.println(RECV_SIZE-1);
   }
   Serial.flush(); delay(100);
-}
-
-void blik(int n, int t) {
-  while(n > 0) {
-    digitalWrite(LED, HIGH);
-    delay(t);
-    digitalWrite(LED, LOW);
-    delay(t);
-    n--;
-  }
 }
 
 //Include always this code when using the pulsioximeter sensor
