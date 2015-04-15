@@ -39,7 +39,7 @@ protected:
     /** osa y */
     QGraphicsLineItem *verticalLine;
     /** leve odsazeni grafu */
-    static const int LEFT_OFFSET = 30;
+    static const int LEFT_OFFSET = 35;
     /** spodni odsazeni grafu */
     static const int BOTTOM_OFFSET = 15;
 
@@ -51,6 +51,8 @@ protected:
     static const int WIDTH = 1500;
     /** minimalni pocet horizontalnich car v grafu */
     int minNumberOfHorizontalLines;
+    /** maximalni pocet horizontalnich car v grafu */
+    int maxNumberOfHorizontalLines;
     /** list vertikalnich car */
     QList<QGraphicsLineItem*> lineList;
 };

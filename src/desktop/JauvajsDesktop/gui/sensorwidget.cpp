@@ -22,6 +22,7 @@ SensorWidget::SensorWidget(QVBoxLayout *vLayout, QMenu *menuZobrazit, IDisplayab
     verticalLinesInterval = 1;
     verticalLinesBoldInterval = 5;
     minNumberOfHorizontalLines = 6;
+    maxNumberOfHorizontalLines = 20;
 
     detailedWindow = new DetailedWindow(sensor, &values);
     path = NULL;

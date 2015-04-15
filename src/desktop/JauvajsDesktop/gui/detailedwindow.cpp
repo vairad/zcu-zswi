@@ -39,6 +39,7 @@ DetailedWindow::DetailedWindow(IDisplayable *sensor, QList<double> *values, QWid
     verticalLinesInterval = 1;
     verticalLinesBoldInterval = 5;
     minNumberOfHorizontalLines = 10;
+    maxNumberOfHorizontalLines = 40;
     path = NULL;
     curve = NULL;
     curve2 = NULL;

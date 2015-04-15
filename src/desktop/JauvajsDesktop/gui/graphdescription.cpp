@@ -84,21 +84,38 @@ void GraphDescription::drawHorizontalLines() {
     int boldInterval = 4; // interval tucnych car
 
     int height = sensor->maxY - sensor->minY; // skutecna vyska
+    int pxHeight = graphicsView->viewport()->height() - BOTTOM_OFFSET;// vyska v pixelech
     numberOfLines = height;
+    // zvysovani poctu car dokud jich je min nez minNumberOfHorizontalLines
     while (numberOfLines < minNumberOfHorizontalLines) {
         numberOfLines *= 2;
+    }
+    // snizovani poctu car dokud jich je vic nez maxNumberOfHorizontalLines
+    while (numberOfLines > maxNumberOfHorizontalLines) {
+        // pokud neni zadny zbytek po deleni 2, provedeme deleni 2
+        if (numberOfLines % 2 == 0) {
+            numberOfLines /= 2;
+        }
+        // pokud je zbytek, pokusime se delit maxNumberOfHorizontalLines
+        else {
+            numberOfLines = height;
+            while (numberOfLines > maxNumberOfHorizontalLines) {
+                numberOfLines /= maxNumberOfHorizontalLines;
+            }
+            break;
+        }
     }
 
     interval = (graphicsView->viewport()->height() - BOTTOM_OFFSET) / (double) numberOfLines;
     for (int i = 1; i < numberOfLines; i++) {
-        if (i % boldInterval == 0) {
+        if (i % (boldInterval + 1) == 0) {
             QPen pen;
             pen.setWidth(2);
             pen.setBrush(QColor(0, 102, 96));
-            scene->addLine(0,(int) i * interval, WIDTH, (int) i * interval, pen);
+            scene->addLine(0, pxHeight - (int) i * interval, WIDTH, pxHeight - (int) i * interval, pen);
         }
         else {
-            scene->addLine(0,(int) i * interval, WIDTH, (int) i * interval, QPen(QColor(0, 102, 96)));
+            scene->addLine(0, pxHeight - (int) i * interval, WIDTH, pxHeight - (int) i * interval, QPen(QColor(0, 102, 96)));
         }
     }
 }
