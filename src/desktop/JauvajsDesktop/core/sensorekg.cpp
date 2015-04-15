@@ -2,7 +2,7 @@
 
 SensorEKG::SensorEKG() {
     minY = 0;
-    maxY = 6;
+    maxY = 5;
     minX = 0;
     maxX = 30;
     time = 0;

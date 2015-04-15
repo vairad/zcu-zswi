@@ -1,8 +1,8 @@
 #include "core/sensorposition.h"
 
 SensorPosition::SensorPosition() {
-    minY = -1;
-    maxY = 1;
+    minY = 1;
+    maxY = 5;
     minX = 0;
     maxX = 60;
     time = 0;

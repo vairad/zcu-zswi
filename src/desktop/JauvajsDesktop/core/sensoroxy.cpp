@@ -1,15 +1,15 @@
 #include "core/sensoroxy.h"
 
 SensorOxy::SensorOxy() {
-    minY = -1;
-    maxY = 1;
+    minY = 0;
+    maxY = 100;
     minX = 0;
     maxX = 60;
     time = 0;
     timeInterval = 0.02;
 
     name = "Okysličení";
-    unit = "";
+    unit = "%";
 }
 
 /**

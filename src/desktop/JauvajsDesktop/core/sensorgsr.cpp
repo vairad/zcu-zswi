@@ -1,15 +1,15 @@
 #include "core/sensorgsr.h"
 
 SensorGSR::SensorGSR() {
-    minY = -1;
-    maxY = 1;
+    minY = 0;
+    maxY = 10;
     minX = 0;
     maxX = 60;
     time = 0;
     timeInterval = 0.02;
 
     name = "GSR";
-    unit = "V";
+    unit = "S";
 }
 
 /**
