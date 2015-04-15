@@ -21,13 +21,19 @@ class ArduinoMiner: public QThread
 public:
     explicit ArduinoMiner(QObject *parent = 0);
     ~ArduinoMiner();
+    /** Metoda bezici ve vlaknu (navazuje spojeni, cte data) */
     void run();
+    /** Odesilani dat do Arduina */
     int SendData(QString);
+    /** Ukonceni BT komunikace */
     void CloseConnection();
+    /** Seznam nalezenych zarizeni */
     QStringList ListFoundDevices;
-    QString vybraneZarizeni;
+    /** Vybrane zarizeni se kterym se navaze spojeni */
+    QString selectedDevice;
+    /** Vyctovy typ udavajici stav vlakna */
     typedef enum {STATUS_KLID, STATUS_HLEDEJ, STATUS_SPOJENI } STATUS;
-    STATUS stav;
+    STATUS status;
 
 signals:
     void ListChanged(QStringList*);
@@ -39,10 +45,14 @@ private:
    BLUETOOTH_DEVICE_SEARCH_PARAMS btSearchParams;
    HBLUETOOTH_DEVICE_FIND deviceHandle;
    BLUETOOTH_DEVICE_INFO btDeviceInfo;
+   /** Vyhledani okolnich zarizeni */
    void findDevices();
+   /** Navazani BT komunikace */
    void beginConnection();
+   /** Soket pres ktery se komunikuje pres BT */
    SOCKET soket;
-   int err; // příznak označující stav spojení
+   /** Priznak oznacujici stav spojeni */
+   int err;
 };
 
 #endif // ARDUINOMINER_H
