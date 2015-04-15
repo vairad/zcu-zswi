@@ -7,228 +7,162 @@
     <x>0</x>
     <y>0</y>
     <width>749</width>
-    <height>482</height>
+    <height>481</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QListView" name="listView">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>120</y>
-      <width>291</width>
-      <height>111</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="tlacitkoPripojit">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>240</y>
-      <width>131</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Připojit</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="tlacitkoOdpojit">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>160</x>
-      <y>240</y>
-      <width>151</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Odpojit</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>300</y>
-      <width>41</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Stav:</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="popisekStavSpojeni">
-    <property name="geometry">
-     <rect>
-      <x>60</x>
-      <y>300</y>
-      <width>251</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Nepřipojeno</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="tlacitkoHledejZarizeni">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>80</y>
-      <width>291</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Hledat zařízení</string>
-    </property>
-   </widget>
-   <widget class="QGroupBox" name="groupBox">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>10</y>
-      <width>291</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Stav aplikace</string>
-    </property>
-    <widget class="QLabel" name="popisekStav">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>20</y>
-       <width>271</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Nedělám nic</string>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QTextEdit" name="poleLog">
-    <property name="geometry">
-     <rect>
-      <x>530</x>
-      <y>40</y>
-      <width>181</width>
-      <height>371</height>
-     </rect>
-    </property>
-    <property name="readOnly">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>530</x>
-      <y>10</y>
-      <width>47</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Záznamy:</string>
-    </property>
-   </widget>
-   <widget class="QTextEdit" name="polePrijataData">
-    <property name="geometry">
-     <rect>
-      <x>320</x>
-      <y>40</y>
-      <width>201</width>
-      <height>291</height>
-     </rect>
-    </property>
-    <property name="readOnly">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>320</x>
-      <y>10</y>
-      <width>71</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Přijatá data:</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="tlacitkoOdeslat">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>320</x>
-      <y>380</y>
-      <width>201</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Odeslat</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="poleKOdeslani">
-    <property name="geometry">
-     <rect>
-      <x>320</x>
-      <y>350</y>
-      <width>201</width>
-      <height>21</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_4">
-    <property name="geometry">
-     <rect>
-      <x>320</x>
-      <y>330</y>
-      <width>81</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Data k odeslání:</string>
-    </property>
-   </widget>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="4" column="0" rowspan="3" colspan="4">
+     <widget class="QGroupBox" name="groupBox">
+      <property name="title">
+       <string>Stav aplikace</string>
+      </property>
+      <widget class="QLabel" name="popisekStav">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>231</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Nedělám nic</string>
+       </property>
+      </widget>
+      <zorder>popisekStav</zorder>
+      <zorder>poleLog</zorder>
+     </widget>
+    </item>
+    <item row="0" column="4">
+     <widget class="QLabel" name="label_3">
+      <property name="text">
+       <string>Přijatá data:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0" colspan="3">
+     <widget class="QPushButton" name="tlacitkoPripojit">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string>Připojit</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="3">
+     <widget class="QPushButton" name="tlacitkoOdpojit">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="text">
+       <string>Odpojit</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0" rowspan="2" colspan="4">
+     <widget class="QPushButton" name="tlacitkoHledejZarizeni">
+      <property name="text">
+       <string>Hledat zařízení</string>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="0">
+     <widget class="QLabel" name="label_2">
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Stav:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="4">
+     <widget class="QLineEdit" name="poleKOdeslani"/>
+    </item>
+    <item row="5" column="4">
+     <widget class="QLabel" name="label_4">
+      <property name="text">
+       <string>Data k odeslání:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="4">
+     <widget class="QPushButton" name="tlacitkoOdeslat">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="text">
+       <string>Odeslat</string>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="1" colspan="4">
+     <widget class="QLabel" name="popisekStavSpojeni">
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Nepřipojeno</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="0">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Záznamy:</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="0" rowspan="2" colspan="4">
+     <widget class="QTextEdit" name="poleLog">
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0" colspan="4">
+     <widget class="QListView" name="listView"/>
+    </item>
+    <item row="6" column="5">
+     <spacer name="horizontalSpacer">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="1" column="4" rowspan="4" colspan="2">
+     <widget class="QTextEdit" name="polePrijataData">
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

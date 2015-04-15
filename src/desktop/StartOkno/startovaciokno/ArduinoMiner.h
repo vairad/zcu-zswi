@@ -11,6 +11,7 @@
 #include <BluetoothAPIs.h>
 #include <Ws2bth.h>
 
+DEFINE_GUID(RFCOMM_PROTOCOL_UUID, 0x00000003, 0x0000, 0x1000, 0x80, 0x00, 0x00, 0x80, 0x5F, 0x9B, 0x34, 0xFB);
 
 class ArduinoMiner: public QThread
 {
@@ -20,25 +21,25 @@ public:
     explicit ArduinoMiner(QObject *parent = 0);
     ~ArduinoMiner();
     void run();
-    int OdesliData(QString);
-    void UkonciSpojeni();
-    QStringList ListNalezenychZarizeni;
+    int SendData(QString);
+    void CloseConnection();
+    QStringList ListFoundDevices;
     QString vybraneZarizeni;
     typedef enum {STATUS_KLID, STATUS_HLEDEJ, STATUS_SPOJENI } STATUS;
     STATUS stav;
 
 signals:
-    void SeznamChanged(QStringList*);
-    void ZmenaStavu(QString);
-    void ZmenaSpojeni(QString);
-    void PrijmiData(QString);
+    void ListChanged(QStringList*);
+    void changeStatus(QString);
+    void ConnectionChanged(QString);
+    void ReceiveData(QString);
 
 private:
    BLUETOOTH_DEVICE_SEARCH_PARAMS btSearchParams;
    HBLUETOOTH_DEVICE_FIND deviceHandle;
    BLUETOOTH_DEVICE_INFO btDeviceInfo;
-   void hledejOkolniZarizeni();
-   void navazSpojeni();
+   void findDevices();
+   void beginConnection();
    SOCKET soket;
    int err; // příznak označující stav spojení
 };

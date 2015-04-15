@@ -9,11 +9,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     this->modelNalezenychZarieni = new QStringListModel();
     arduMiner = new ArduinoMiner(this);
-    connect(arduMiner,SIGNAL(SeznamChanged(QStringList*)),this,SLOT(on_SeznamChanged(QStringList*)));
-    connect(arduMiner,SIGNAL(ZmenaStavu(QString)),this,SLOT(on_ZmenaStavu(QString)));
-    connect(arduMiner,SIGNAL(ZmenaSpojeni(QString)),this,SLOT(on_ZmenaStavuSpojeni(QString)));
-    connect(arduMiner,SIGNAL(PrijmiData(QString)),this,SLOT(on_PrijmiData(QString)));
 
+    connect(arduMiner,SIGNAL(ListChanged(QStringList*)),this,SLOT(on_SeznamChanged(QStringList*)));
+    connect(arduMiner,SIGNAL(changeStatus(QString)),this,SLOT(on_ZmenaStavu(QString)));
+    connect(arduMiner,SIGNAL(ConnectionChanged(QString)),this,SLOT(on_ZmenaStavuSpojeni(QString)));
+    connect(arduMiner,SIGNAL(ReceiveData(QString)),this,SLOT(on_PrijmiData(QString)));
 }
 
 MainWindow::~MainWindow(){
@@ -39,10 +39,6 @@ void MainWindow::on_ZmenaStavuSpojeni(QString stavSpojeni){ // pri zmene modelu 
 
 }
 void MainWindow::on_tlacitkoPripojit_clicked(){ // navázání spojení s vybraným zařízením
-   /* ui->tlacitkoPripojit->setEnabled(false);
-    arduMiner->ListNalezenychZarizeni.clear();
-    this->modelNalezenychZarieni->setStringList(arduMiner->ListNalezenychZarizeni);
-    ui->listView->setModel(this->modelNalezenychZarieni);*/
 
     arduMiner->stav = ArduinoMiner::STATUS_SPOJENI;
     arduMiner->start();
@@ -53,13 +49,13 @@ void MainWindow::on_tlacitkoPripojit_clicked(){ // navázání spojení s vybran
 
 void MainWindow::on_tlacitkoOdpojit_clicked(){
     ui->poleLog->append("Ukončuji spojení");
-    arduMiner->UkonciSpojeni();
+    arduMiner->CloseConnection();
 }
 
 void MainWindow::on_tlacitkoHledejZarizeni_clicked(){
     ui->tlacitkoPripojit->setEnabled(false); //tlačítko "Připojit" disabled
-    arduMiner->ListNalezenychZarizeni.clear(); // vymazání seznamu nalezených zařízení
-    this->modelNalezenychZarieni->setStringList(arduMiner->ListNalezenychZarizeni);// vymázání modelu
+    arduMiner->ListFoundDevices.clear(); // vymazání seznamu nalezených zařízení
+    this->modelNalezenychZarieni->setStringList(arduMiner->ListFoundDevices);// vymázání modelu
     ui->listView->setModel(this->modelNalezenychZarieni); // nastavení prázdného modelu do listView
 
     ui->poleLog->append("Začáním hledat");
@@ -81,7 +77,7 @@ void MainWindow::on_PrijmiData(QString data){
 void MainWindow::on_tlacitkoOdeslat_clicked(){
     QString obsah = ui->poleKOdeslani->text();
     if(obsah != ""){
-        arduMiner->OdesliData(obsah);
+        arduMiner->SendData(obsah);
         ui->poleKOdeslani->setText("");
     }
 }
