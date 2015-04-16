@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QObject>
+#include "metadatareader.h"
 #include "istorable.h"
 
 /**
@@ -17,9 +18,12 @@ public:
     /** predani dat jednotlivym senzorum */
     void transmitData();
     /** */
-    void transmitMetadata();
+    void transmitMetadata();    
+    void getMetadata(QString username);
     /** ukladac dat */
     IStorable *saver;
+
+    MetadataReader *metadataReader;
     /** pocet senzoru */
     static const int NUMBER_OF_SENSORS = 6;
     /** Metadata - jmeno a prijmeni pacienta */

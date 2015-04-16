@@ -1,6 +1,5 @@
 #include <QFile>
 #include <QTextStream>
-#include <iostream>
 #include <QDir>
 #include "filesaver.h"
 
