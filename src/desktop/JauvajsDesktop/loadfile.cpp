@@ -1,5 +1,8 @@
 #include "loadfile.h"
 #include "gui/mainwindow.h"
+#include "core/fileminer.h"
+
+
 
 LoadFile::LoadFile(SensorWidget *g) : g(g) {
     run();
@@ -9,7 +12,7 @@ LoadFile::LoadFile(SensorWidget *g) : g(g) {
  * Nacte soubor a spusti vykresleni dat
  * @brief LoadFile::run
  */
-void LoadFile::run() {
+void LoadFile::run2() {
     FILE *f;
     float value = 0;
 
@@ -26,6 +29,29 @@ void LoadFile::run() {
     }
 
     fclose(f);
+}
+
+/**
+ * Nacte soubor a spusti vykresleni dat
+ * @brief LoadFile::run
+ */
+void LoadFile::run() {
+
+    try{
+        FileMiner miner("ekg.dat");
+
+        //qDebug() << "miner loaded \n";
+
+        QString line = miner.getLastIncoming(); //read last line from miner OR NULL
+        while (line != NULL){
+            g->update(line.toDouble()); //this line is not possible for Arduino data
+
+            line = miner.getLastIncoming();
+        }
+    }catch(QException &e){
+        //handle exception caused
+    }
+
 }
 
 void LoadFile::setGraph(SensorWidget *g) {
