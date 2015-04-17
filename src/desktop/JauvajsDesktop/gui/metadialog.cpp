@@ -13,7 +13,7 @@ MetaDialog::MetaDialog(SensorWidget *sensors[], int numberOfSensors, QWidget *pa
     tabWidget = new QTabWidget;
     mainTab = new MainTab(dataManager);
     tabWidget->addTab(mainTab, tr("Hlavní"));
-    tabWidget->addTab(new SensorsTab(sensors, numberOfSensors, sensorCB), tr("Senzory"));
+    tabWidget->addTab(new SensorsTab(sensors, numberOfSensors, sensorCB, dataManager), tr("Senzory"));
 
     buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
 
@@ -124,7 +124,7 @@ MainTab::MainTab(DataManager *dataManager, QWidget *parent) : QWidget(parent) {
  * @param numberOfSensors pocet senzoru
  * @param parent
  */
-SensorsTab::SensorsTab(SensorWidget *sensors[], int numberOfSensors, QCheckBox *sensorCB[], QWidget *parent) : QWidget(parent) {
+SensorsTab::SensorsTab(SensorWidget *sensors[], int numberOfSensors, QCheckBox *sensorCB[], DataManager *dataManager, QWidget *parent) : QWidget(parent) {
     // ----------------- skupina senzory
     QGroupBox *sensorsGroup = new QGroupBox(tr("Zobrazené senzory"));
     QVBoxLayout *sensorsLayout = new QVBoxLayout;
@@ -133,7 +133,14 @@ SensorsTab::SensorsTab(SensorWidget *sensors[], int numberOfSensors, QCheckBox *
     for(int i = 0; i < numberOfSensors; i++) {
         sensorCB[i] = new QCheckBox(sensors[i]->getSensor()->getName().toStdString().c_str());
 
-        if (!sensors[i]->isHidden()) sensorCB[i]->setChecked(true);
+        // nastaveni zaskrtnutych a zobrazenych sensoru dle dataManageru
+        if (dataManager->sensors[i]) {
+            sensorCB[i]->setChecked(true);
+        }
+        else {
+            sensors[i]->isVisible = false;
+        }
+
         sensorsLayout->addWidget(sensorCB[i]);
         // propojeni checkboxu s akci v SensorWidget
         QObject::connect(sensorCB[i], SIGNAL(toggled(bool)), sensors[i], SLOT(on_action_toggled(bool)));

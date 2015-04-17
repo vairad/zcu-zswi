@@ -35,6 +35,8 @@ public:
     IDisplayable *getSensor();
     ~SensorWidget();
     QAction *action1;
+    /** nastaveni viditelnosti widgetu */
+    bool isVisible;
 
 signals:
 
@@ -76,7 +78,7 @@ private:
     /** zda je zapnuto prepisovani */
     bool transcription;
     /** prepisovaci index, kde je zrovna provaden */
-    int transcriptionIndex;
+    int transcriptionIndex;   
 };
 
 #endif // SENSORWIDGET_H

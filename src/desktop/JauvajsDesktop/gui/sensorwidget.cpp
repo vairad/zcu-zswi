@@ -178,7 +178,12 @@ void SensorWidget::setUp() {
     scene->setSceneRect(QRectF(QPointF(0, 0), QPointF(this->graphicsView->viewport()->width(), this->graphicsView->viewport()->height())));
     drawNumbers();
     drawVerticalLines();
-    drawHorizontalLines();
+    drawHorizontalLines();    
+    if (!isVisible) {
+        hide();
+        action1->setChecked(false);
+    }
+
     detailedWindow->showMinimized();
     detailedWindow->hide();
     detailedWindow->setUp();
@@ -194,11 +199,13 @@ void SensorWidget::on_action_toggled(bool arg1) {
         this->show();
         action1->setChecked(true);
         visible(true);
+        resizeEvent(NULL);
     }
     else {
         this->hide();
         action1->setChecked(false);
         visible(false);
+        resizeEvent(NULL);
     }
 }
 

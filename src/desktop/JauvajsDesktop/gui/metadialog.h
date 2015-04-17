@@ -37,7 +37,7 @@ class SensorsTab : public QWidget {
     Q_OBJECT
 
 public:
-    explicit SensorsTab(SensorWidget *sensors[], int numberOfSensors, QCheckBox *sensorCB[], QWidget *parent = 0);
+    explicit SensorsTab(SensorWidget *sensors[], int numberOfSensors, QCheckBox *sensorCB[], DataManager *dataManager, QWidget *parent = 0);
 };
 
 /**
