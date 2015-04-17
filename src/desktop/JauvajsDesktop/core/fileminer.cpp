@@ -2,13 +2,21 @@
 
 #include <QString>
 #include <QFile>
+#include <QTextStream>
+#include <QException>
 
-#define LINE_SIZE_BUFFER 255
+//#include <QDebug>
+
 
 FileMiner::FileMiner(QString fileName){
     sourceFile.setFileName(fileName);
-    opened = false;
     opened = sourceFile.open(QIODevice::ReadOnly);
+
+    if(opened){
+        in = new QTextStream(&sourceFile);
+    }else{
+        throw new QException();
+    }
 }
 
 FileMiner::~FileMiner(){
@@ -21,15 +29,15 @@ void FileMiner::sendMessage(QString line){
 }
 
 QString FileMiner::getLastIncoming(){
-    char buffer[LINE_SIZE_BUFFER];
 
-    if(opened && sourceFile.canReadLine()){
-        sourceFile.readLine(buffer, LINE_SIZE_BUFFER);
-        return QString(buffer);
-
-    }else{
-        return NULL;
+    if(opened && !in->atEnd()){
+       // qDebug() << "read line";
+        QString line = in->readLine();
+       // qDebug() << line;
+        return line;
 
     }
+   // qDebug() << "read NOline";
+    return NULL;
 }
 

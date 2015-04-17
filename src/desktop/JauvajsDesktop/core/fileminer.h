@@ -13,6 +13,8 @@ class FileMiner : public IMiner{
     QFile sourceFile;
     /** flag if file was opened correctly default false */
     bool opened;
+    /** input stream for siply reading file*/
+    QTextStream* in;
 
 public:
     /** Constructor opens file and create input stream */
