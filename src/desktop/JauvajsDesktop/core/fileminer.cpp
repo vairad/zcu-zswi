@@ -15,7 +15,7 @@ FileMiner::FileMiner(QString fileName){
     if(opened){
         in = new QTextStream(&sourceFile);
     }else{
-        throw new QException();
+        throw QException();
     }
 }
 
