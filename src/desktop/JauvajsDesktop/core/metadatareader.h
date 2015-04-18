@@ -9,9 +9,11 @@
  */
 class MetadataReader {
 public:
-    MetadataReader();
+    MetadataReader(QString folderName, QString fileName);
     ~MetadataReader();
     QList<QString> loadMetadata(QString username);
+    /** nazev slozky pro ukladani dat */
+    QString FOLDER_NAME;
     /** nazev souboru pro nacteni metadat */
     QString FILENAME;
 };

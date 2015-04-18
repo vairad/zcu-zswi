@@ -48,7 +48,7 @@ void MetaDialog::checkingInputs() {
     }
     // overeni, zda upravene uzivatelske jmeno (odlisnost v dataManageru od QLineEdit) neni jiz v datove slozce
     else if (QString::compare(mainTab->usernameE->text(), dataManager->username)) {
-        QDir dir(mainTab->usernameE->text());
+        QDir dir(dataManager->FOLDER_NAME + "/" + mainTab->usernameE->text());
         if (dir.exists()) {
             this->show();
             QMessageBox messageBox;

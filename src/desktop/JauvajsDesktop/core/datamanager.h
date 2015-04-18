@@ -28,8 +28,12 @@ public:
     void getMetadata(QString username);
     /** ukladac dat */
     IStorable *saver;
-
+    /** cteni metadat */
     MetadataReader *metadataReader;
+    /** nasev souboru pro metadata */
+    QString FILE_METADATA_NAME;
+    /** nazev slozky pro ukladani dat */
+    QString FOLDER_NAME;
     /** pocet senzoru */
     static const int NUMBER_OF_SENSORS = 6;
     /** Metadata - jmeno a prijmeni pacienta */

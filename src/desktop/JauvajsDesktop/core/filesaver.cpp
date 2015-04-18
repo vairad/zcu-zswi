@@ -3,8 +3,9 @@
 #include <QDir>
 #include "filesaver.h"
 
-FileSaver::FileSaver() {
-    FILENAME = "metadata.txt";
+FileSaver::FileSaver(QString folderName, QString fileName) {
+    FOLDER_NAME = folderName;
+    FILENAME = fileName;
 }
 
 /**
@@ -12,13 +13,19 @@ FileSaver::FileSaver() {
  * @brief FileSaver::saveMetadata
  */
 void FileSaver::saveMetadata(QList<QString> data) {
-    // vytvoreni slozky
-    QDir dir(data[0]);
+    // vytvoreni slozky pro data
+    QDir dir(FOLDER_NAME);
     if (!dir.exists()) {
       dir.mkdir(".");
     }
 
-    QFile *file = new QFile(data[0]+"/"+FILENAME);
+    // vytvoreni slozky pro uzivatele
+    QDir dir2(FOLDER_NAME + "/" + data[0]);
+    if (!dir2.exists()) {
+      dir2.mkdir(".");
+    }
+
+    QFile *file = new QFile(FOLDER_NAME + "/" + data[0] + "/" + FILENAME);
     file->open(QIODevice::WriteOnly);
 
     for (int i = 1; i < data.size(); i++) {

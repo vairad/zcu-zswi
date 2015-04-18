@@ -5,8 +5,11 @@
 #include <QStringList>
 
 DataManager::DataManager() {
-    saver = new FileSaver();
-    metadataReader = new MetadataReader();
+    FOLDER_NAME = "data";
+    FILE_METADATA_NAME = "metadata.txt";
+
+    saver = new FileSaver(FOLDER_NAME, FILE_METADATA_NAME);
+    metadataReader = new MetadataReader(FOLDER_NAME, FILE_METADATA_NAME);
 
     this->sensorEKG = new SensorEKG();
     this->sensorGSR = new SensorGSR();
