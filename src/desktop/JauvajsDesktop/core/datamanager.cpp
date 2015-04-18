@@ -8,6 +8,12 @@ DataManager::DataManager() {
     saver = new FileSaver();
     metadataReader = new MetadataReader();
 
+    this->sensorEKG = new SensorEKG();
+    this->sensorGSR = new SensorGSR();
+    this->sensorHeartRate = new SensorHeartRate();
+    this->sensorOxy = new SensorOxy();
+    this->sensorPosition = new SensorPosition();
+
     // zatim docasna testovaci data - BUDOU ODSTRANENA
     name[0] = "Jan";
     name[1] = "Novák";
@@ -58,7 +64,6 @@ void DataManager::getMetadata(QString username) {
     }
 }
 
-
 /**
  * Prijem namerenych dat
  * @brief DataManager::getData
@@ -66,35 +71,37 @@ void DataManager::getMetadata(QString username) {
  */
 void DataManager::transmitData(QString row) {
     //split dle tabulatoru: [T&28	C&-1.00	R&6017652.50	H&1.241447	P&0	O&0.00	F&7]
+    row.replace("[", "");// odstraneni zavorek
+    row.replace("]", "");
     QStringList cellData = row.split('\t');
     foreach (const QString &cell, cellData) {
         //mam data ve formatu (senzor)&(hodnota)
         QStringList sensorData = cell.split('&');
         QString sensorFlag = sensorData.at(0);
-        QString sensorValue = sensorData.at(1);
+        float sensorValue = sensorData.at(1).toFloat();
         if(sensorFlag == "T") {
-            // senzor teploty
+            this->sensorTemp->transmitData(sensorValue);
         }
         else if(sensorFlag == "P") {
-            //senzor pulsu
+            this->sensorHeartRate->transmitData(sensorValue);
         }
         else if(sensorFlag == "O") {
-            //senzor okysliceni
+            this->sensorOxy->transmitData(sensorValue);
         }
         else if(sensorFlag == "V") {
-            //senzor vodivosti pokozky
+            this->sensorGSR->transmitData(sensorValue);
         }
         else if(sensorFlag == "R") {
-            //senzor odporu pokozky
+          //  TO DO
         }
         else if(sensorFlag == "H") {
-            //senzor ekg
+            this->sensorEKG->transmitData(sensorValue);
         }
         else if(sensorFlag == "A") {
-            //senzor polohy/akcelerometr
+            this->sensorPosition->transmitData(sensorValue);
         }
         else if(sensorFlag == "F") {
-            //senzor proudeni vzduchu
+            this->sensorOxy->transmitData(sensorValue);
         }
         else {
             // neznamy sensor

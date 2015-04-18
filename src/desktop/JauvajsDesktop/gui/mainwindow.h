@@ -22,6 +22,8 @@ public:
     void draw();
     ~MainWindow();
     static const int NUMBER_OF_SENSORS = 6;
+    /** senzory */
+    SensorWidget *sensors[NUMBER_OF_SENSORS];
 
 public slots:
     void setMetadata();
@@ -33,8 +35,6 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    /** senzory */
-    SensorWidget *sensors[NUMBER_OF_SENSORS];
     MetaDialog *metaDialog;
 };
 

@@ -5,6 +5,12 @@
 #include <QObject>
 #include "metadatareader.h"
 #include "istorable.h"
+#include "sensorekg.h"
+#include "sensorgsr.h"
+#include "sensorheartrate.h"
+#include "sensoroxy.h"
+#include "sensorposition.h"
+#include "sensortemp.h"
 
 /**
  * Sprava dat ziskanych z IMiner a IStorable, predani dat konkretnim senzorum
@@ -33,6 +39,18 @@ public:
     /** Metadata - uzivatelske jmeno (pacienta), slouzi k nazvu slozky */
     QString username;
 
+    /** Odkaz na senzor EKG */
+    SensorEKG *sensorEKG;
+    /** Odkaz na senzor GSR */
+    SensorGSR *sensorGSR;
+    /** Odkaz na senzor HearthRate */
+    SensorHeartRate *sensorHeartRate;
+    /** Odkaz na senzor Oxy */
+    SensorOxy *sensorOxy;
+    /** Odkaz na senzor pozice */
+    SensorPosition *sensorPosition;
+    /** Odkaz na senzor teploty */
+    SensorTemp *sensorTemp;
 };
 
 #endif // DATAMANAGER_H

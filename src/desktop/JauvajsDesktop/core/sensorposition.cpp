@@ -27,7 +27,15 @@ QGraphicsScene* SensorPosition::getSceneGraph() {
  * @param data prijata data
  */
 void SensorPosition::transmitData(float data){
-    data = 42;
+   this->validateData(data);
+}
+
+/**
+ * Validuje prijata data a odesila je k vykresleni
+ * @param data data k zvalidovani
+ */
+void SensorPosition::validateData(float data) {
+
 }
 
 SensorPosition::~SensorPosition() {

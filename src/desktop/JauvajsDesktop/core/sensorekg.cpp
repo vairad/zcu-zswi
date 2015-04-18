@@ -27,7 +27,15 @@ QGraphicsScene* SensorEKG::getSceneGraph() {
  * @param data prijata data
  */
 void SensorEKG::transmitData(float data){
-    data = 42;
+    this->validateData(data);
+}
+
+/**
+ * Validuje prijata data a odesila je k vykresleni
+ * @param data data k zvalidovani
+ */
+void SensorEKG::validateData(float data) {
+
 }
 
 SensorEKG::~SensorEKG() {

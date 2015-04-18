@@ -27,8 +27,17 @@ QGraphicsScene* SensorHeartRate::getSceneGraph() {
  * @param data prijata data
  */
 void SensorHeartRate::transmitData(float data){
-    data = 42;
+   this->validateData(data);
 }
+
+/**
+ * Validuje prijata data a odesila je k vykresleni
+ * @param data data k zvalidovani
+ */
+void SensorHeartRate::validateData(float data) {
+
+}
+
 
 SensorHeartRate::~SensorHeartRate() {
 

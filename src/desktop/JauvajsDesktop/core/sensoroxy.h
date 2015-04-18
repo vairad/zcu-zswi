@@ -8,9 +8,12 @@ class SensorOxy : public IDisplayable, IWorking {
 public:
     SensorOxy();
     QGraphicsScene* getSceneGraph();
-    void transmitData(float data);
+    void transmitData(float);
 
     ~SensorOxy();
+
+private:
+    void validateData(float);
 };
 
 #endif // SENSOROXY_H

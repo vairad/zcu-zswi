@@ -6,6 +6,7 @@
 #include "core/sensoroxy.h"
 #include "core/sensorgsr.h"
 #include "core/sensorheartrate.h"
+#include "core/datamanager.h"
 
 /**
   Vytvori okno
@@ -17,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     /* vytvoreni vsech senzoru a jejich pridani do okna */
     sensors[0] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorEKG(), ui->scrollAreaWidgetContents_2);
-    sensors[1] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorTemp(), ui->scrollAreaWidgetContents_2);
+    sensors[1] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorTemp, ui->scrollAreaWidgetContents_2);
     sensors[2] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorPosition(), ui->scrollAreaWidgetContents_2);
     sensors[3] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorOxy(), ui->scrollAreaWidgetContents_2);
     sensors[4] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorGSR(), ui->scrollAreaWidgetContents_2);

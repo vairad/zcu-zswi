@@ -27,8 +27,17 @@ QGraphicsScene* SensorOxy::getSceneGraph() {
  * @param data prijata data
  */
 void SensorOxy::transmitData(float data){
+    this->validateData(data);
+}
+
+/**
+ * Validuje prijata data a odesila je k vykresleni
+ * @param data data k zvalidovani
+ */
+void SensorOxy::validateData(float data) {
 
 }
+
 
 SensorOxy::~SensorOxy() {
 

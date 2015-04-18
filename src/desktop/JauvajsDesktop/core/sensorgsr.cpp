@@ -27,7 +27,15 @@ QGraphicsScene* SensorGSR::getSceneGraph() {
  * @param data prijata data
  */
 void SensorGSR::transmitData(float data){
-    data = 42;
+    this->validateData(data);
+}
+
+/**
+ * Validuje prijata data a odesila je k vykresleni
+ * @param data data k zvalidovani
+ */
+void SensorGSR::validateData(float data) {
+
 }
 
 SensorGSR::~SensorGSR() {

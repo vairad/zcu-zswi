@@ -11,6 +11,9 @@ public:
     void transmitData(float data);
 
     ~SensorGSR();
+
+private:
+    void validateData(float);
 };
 
 #endif // SENSORGSR_H

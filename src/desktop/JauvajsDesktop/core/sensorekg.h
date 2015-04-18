@@ -14,6 +14,9 @@ public:
 
     ~SensorEKG();
 
+private:
+    void validateData(float);
 };
 
 #endif // EKGSENSOR_H
+

@@ -8,9 +8,12 @@ class SensorHeartRate : public IDisplayable, public IWorking {
 public:
     SensorHeartRate();
     QGraphicsScene* getSceneGraph();
-    void transmitData(float data);
+    void transmitData(float);
 
     ~SensorHeartRate();
+
+private:
+    void validateData(float);
 };
 
 #endif // SENSORHEARTRATE_H

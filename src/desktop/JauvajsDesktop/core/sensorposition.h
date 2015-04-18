@@ -11,6 +11,9 @@ public:
     void transmitData(float);
 
     ~SensorPosition();
+
+private:
+    void validateData(float);
 };
 
 #endif // POSITIONSENSOR_H
