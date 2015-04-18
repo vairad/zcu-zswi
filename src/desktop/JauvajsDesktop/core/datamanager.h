@@ -16,7 +16,7 @@ public:
     ~DataManager();
 
     /** predani dat jednotlivym senzorum */
-    void transmitData();
+    void transmitData(QString row);
     /** */
     void transmitMetadata();    
     void getMetadata(QString username);
