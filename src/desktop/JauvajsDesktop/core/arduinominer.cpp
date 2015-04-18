@@ -21,10 +21,10 @@ ArduinoMiner::ArduinoMiner(QObject *parent): QThread(parent) {
 
 void ArduinoMiner::run() {
     switch (this->status) {
-    case STATUS_HLEDEJ:
+    case STATUS_FIND:
         this->findDevices();
         break;
-    case STATUS_SPOJENI:
+    case STATUS_CONNECT:
         this->beginConnection();
         break;
     }
@@ -84,10 +84,7 @@ void ArduinoMiner::beginConnection() {
            emit ConnectionChanged("The operation being requested was not performed because the user has not been authenticated.");//endl;
         if (res == ERROR_SUCCESS)
            emit ConnectionChanged("Spojeni úspěšně navázáno");
-
-
        err = 0;
-
         if (err != ERROR_SUCCESS) {
             err = GetLastError();
             emit ConnectionChanged("BluetoothRegisterForAuthentication Error");// << err << endl;
@@ -129,7 +126,7 @@ void ArduinoMiner::beginConnection() {
               else
                    emit changeStatus("Chyba příjmu dat, "+WSAGetLastError());
 
-              if(this->status != STATUS_SPOJENI)
+              if(this->status != STATUS_CONNECT)
                  break;
 
             } while( iResult > 0); // konec smyčky pro příjem dat
@@ -163,7 +160,7 @@ int ArduinoMiner::SendData(QString data) {
 }
 
 void ArduinoMiner::CloseConnection() {
-    this->status = STATUS_KLID;
+    this->status = STATUS_REST;
     this->err = shutdown(this->soket, SD_BOTH);
 }
 
