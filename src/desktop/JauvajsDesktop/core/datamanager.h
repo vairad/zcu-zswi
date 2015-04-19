@@ -26,6 +26,8 @@ public:
     /** */
     void transmitMetadata();    
     void getMetadata(QString username);
+    QString getNameFromMetadata(QString username);
+    QStringList listOfFolders();
     /** ukladac dat */
     IStorable *saver;
     /** cteni metadat */

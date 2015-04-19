@@ -37,7 +37,8 @@ SOURCES += main.cpp\
     core/fileminer.cpp \
     core/arduinominer.cpp \
 	core/iworking.cpp \
-    core/metadatareader.cpp
+    core/metadatareader.cpp \
+    gui/initialwindow.cpp
 
 HEADERS  += main.h\
     loadfile.h \
@@ -65,6 +66,7 @@ HEADERS  += main.h\
     core/fileminer.h \
     core/arduinominer.h \
 	core/iworking.h \
-    core/metadatareader.h
+    core/metadatareader.h \
+    gui/initialwindow.h
 
 FORMS    += gui/mainwindow.ui

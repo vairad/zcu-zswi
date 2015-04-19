@@ -48,7 +48,7 @@ class MetaDialog : public QDialog {
     Q_OBJECT
 
 public:
-    explicit MetaDialog(SensorWidget *sensors[], int numberOfSensors, QWidget *parent = 0);
+    explicit MetaDialog(DataManager *dataManager, SensorWidget *sensors[], int numberOfSensors, QWidget *parent = 0);
     /** hlavni list */
     MainTab *mainTab;
     /** spravce dat */

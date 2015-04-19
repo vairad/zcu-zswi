@@ -1,4 +1,5 @@
 #include <QList>
+#include <QDir>
 #include "datamanager.h"
 #include "filesaver.h"
 #include <QRegExp>
@@ -110,6 +111,30 @@ void DataManager::transmitData(QString row) {
             // neznamy sensor
         }
     }
+}
+
+/**
+ * Vypise seznam slozek umistenych v datove slozce data/
+ * @brief DataManager::listOfFolders
+ * @return  seznam slozek
+ */
+QStringList DataManager::listOfFolders() {
+    QDir path(FOLDER_NAME + "/");
+    QStringList folders = path.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+    return folders;
+}
+
+/**
+ * Vrati jmeno uzivatele nactenim se souboru metadat dle uživatelskeho jmena
+ * @brief DataManager::getNameFromMetadata
+ * @param username uzivatelske jmeno
+ * @return cele jmeno
+ */
+QString DataManager::getNameFromMetadata(QString username) {
+    QList<QString> list = metadataReader->loadMetadata(username);
+
+    QString name = list[0]+" "+list[1];
+    return name;
 }
 
 DataManager::~DataManager() {

@@ -7,9 +7,7 @@
  * @param numberOfSensors pocet senzoru
  * @param parent
  */
-MetaDialog::MetaDialog(SensorWidget *sensors[], int numberOfSensors, QWidget *parent) : QDialog(parent) {
-    dataManager = new DataManager();
-
+MetaDialog::MetaDialog(DataManager *dataManager, SensorWidget *sensors[], int numberOfSensors, QWidget *parent) : QDialog(parent), dataManager(dataManager) {
     tabWidget = new QTabWidget;
     mainTab = new MainTab(dataManager);
     tabWidget->addTab(mainTab, tr("Hlavní"));

@@ -5,6 +5,7 @@
 #include "gui/ui_mainwindow.h"
 #include "gui/sensorwidget.h"
 #include "gui/metadialog.h"
+#include "initialwindow.h"
 
 namespace Ui {
 class MainWindow;
@@ -21,6 +22,9 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     void draw();
     ~MainWindow();
+
+    /** uvodni okno */
+    InitialWindow *initialWindow;
     static const int NUMBER_OF_SENSORS = 6;
     /** senzory */
     SensorWidget *sensors[NUMBER_OF_SENSORS];
