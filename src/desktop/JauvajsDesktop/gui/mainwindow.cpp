@@ -15,9 +15,9 @@
  */
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
-    DataManager *dataManager = new DataManager();
+    ui->verticalLayout_3->setAlignment(Qt::AlignTop);
+    dataManager = new DataManager();
     initialWindow = new InitialWindow(dataManager, this);
-
 
     /* vytvoreni vsech senzoru a jejich pridani do okna */
     sensors[0] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorEKG(), ui->scrollAreaWidgetContents_2);
@@ -26,22 +26,21 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     sensors[3] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorOxy(), ui->scrollAreaWidgetContents_2);
     sensors[4] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorGSR(), ui->scrollAreaWidgetContents_2);
     sensors[5] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorHeartRate(), ui->scrollAreaWidgetContents_2);
-
-    metaDialog = new MetaDialog(dataManager, sensors, NUMBER_OF_SENSORS);
-    setMetadata();
-    // propojeni zmeny udaju v metaDialogu s pravym sloupcem
-    QObject::connect(metaDialog, SIGNAL(accepted()), this, SLOT(setMetadata()));
 }
 
 /**
  * Pocatecni nastaveni senzoru
- * @brief MainWindow::draw
+ * @brief MainWindow::setUp
  */
-void MainWindow::draw() {
+void MainWindow::setUp() {
+    metaDialog = new MetaDialog(dataManager, sensors, NUMBER_OF_SENSORS);
+    setMetadata();
+    // propojeni zmeny udaju v metaDialogu s pravym sloupcem
+    QObject::connect(metaDialog, SIGNAL(accepted()), this, SLOT(setMetadata()));
+
     for (int i = 0; i < NUMBER_OF_SENSORS; i++) {
        sensors[i]->setUp();
     }
-    initialWindow->show();
 }
 
 MainWindow::~MainWindow() {

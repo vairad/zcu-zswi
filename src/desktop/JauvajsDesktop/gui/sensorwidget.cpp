@@ -176,9 +176,9 @@ void SensorWidget::mousePressEvent(QMouseEvent *) {
  */
 void SensorWidget::setUp() {
     scene->setSceneRect(QRectF(QPointF(0, 0), QPointF(this->graphicsView->viewport()->width(), this->graphicsView->viewport()->height())));
-    drawNumbers();
     drawVerticalLines();
-    drawHorizontalLines();    
+    drawHorizontalLines();
+    drawNumbers();
     if (!isVisible) {
         hide();
         action1->setChecked(false);

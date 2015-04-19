@@ -55,6 +55,8 @@ void DataManager::transmitMetadata() {
 void DataManager::getMetadata(QString username) {
     QList<QString> list = metadataReader->loadMetadata(username);
 
+    this->username = username;
+
     // ziskani jmena a prijmeni z listu
     for (int i = 0; i < 2; i++) {
         name[i] = list.front();

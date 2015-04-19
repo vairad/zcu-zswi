@@ -1,6 +1,7 @@
 #include "initialwindow.h"
 #include <QApplication>
 #include <QButtonGroup>
+#include "mainwindow.h"
 
 /**
  * Vytvori uvodni okno
@@ -10,6 +11,7 @@
  */
 InitialWindow::InitialWindow(DataManager *dataManager, QWidget *parent) : QDialog(parent), dataManager(dataManager) {
     this->resize(501, 313);
+    this->mainWindow = parent;
 
     setWindowTitle("Vítejte v aplikaci E-health");
 
@@ -60,7 +62,7 @@ void InitialWindow::createListOfNames() {
     font1.setUnderline(true);
 
     foreach (QString s, list) {
-        QLabel *label = new QLabel(/*widget*/);
+        UserLabel *label = new UserLabel(s);
         label->setObjectName(QStringLiteral("label_2"));
         label->setGeometry(QRect(20, 20, 461, 13));
         label->setFont(font1);
@@ -68,6 +70,8 @@ void InitialWindow::createListOfNames() {
         label->setText(dataManager->getNameFromMetadata(s));
 
         widgetLayout->addWidget(label);
+        // propojeni udalosti na kliknuti s setUser
+        connect(label, SIGNAL(clicked(QString)), this, SLOT(setUser(QString)));
     }
 
     verticalLayout->addWidget(widget);
@@ -98,7 +102,34 @@ void InitialWindow::createButtons() {
     verticalLayout->addWidget(widgetBT, 0, Qt::AlignBottom);
 }
 
+/**
+ * Nastavi zvoleneho uzivatele
+ * @brief InitialWindow::setUser
+ * @param username uzivatelske jmeno
+ */
+void InitialWindow::setUser(QString username) {
+    dataManager->getMetadata(username);
+    ((MainWindow *)mainWindow)->setUp();
+    this->close();
+}
+
 InitialWindow::~InitialWindow() {
 
 }
+/**
+ * Vytvori uzivatelsky label
+ * @brief UserLabel::UserLabel
+ * @param parent
+ */
+UserLabel::UserLabel(QString username, QWidget *parent) : QLabel(parent), username(username) {}
 
+/**
+ * Reakce na stisk labelu vola signal clicked
+ * @brief UserLabel::mousePressEvent
+ * @param event
+ */
+void UserLabel::mousePressEvent(QMouseEvent *) {
+    emit clicked(username);
+}
+
+UserLabel::~UserLabel() {}
