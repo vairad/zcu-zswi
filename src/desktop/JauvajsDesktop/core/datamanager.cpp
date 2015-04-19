@@ -18,10 +18,11 @@ DataManager::DataManager() {
     this->sensorOxy = new SensorOxy();
     this->sensorPosition = new SensorPosition();
 
-    // zatim docasna testovaci data - BUDOU ODSTRANENA
-    name[0] = "Jan";
-    name[1] = "Novák";
-    username = "novakjan";
+    // vyprazdneni metadat
+    name[0] = "";
+    name[1] = "";
+    username = "";
+    isSetMetadata = false;
 }
 
 /**
@@ -68,6 +69,7 @@ void DataManager::getMetadata(QString username) {
         sensors[i] = list.front().toInt();
         list.pop_front();
     }
+    isSetMetadata = true;
 }
 
 /**

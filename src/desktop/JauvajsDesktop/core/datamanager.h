@@ -23,7 +23,6 @@ public:
 
     /** predani dat jednotlivym senzorum */
     void transmitData(QString row);
-    /** */
     void transmitMetadata();    
     void getMetadata(QString username);
     QString getNameFromMetadata(QString username);
@@ -44,6 +43,8 @@ public:
     bool sensors[NUMBER_OF_SENSORS];
     /** Metadata - uzivatelske jmeno (pacienta), slouzi k nazvu slozky */
     QString username;
+    /** zda jsou nacetena metadata */
+    bool isSetMetadata;
 
     /** Odkaz na senzor EKG */
     SensorEKG *sensorEKG;

@@ -91,6 +91,8 @@ void InitialWindow::createButtons() {
     createBT->setGeometry(QRect(10, 50, 131, 23));
     createBT->setText("Vytvoř nového uživatele");
     group->addWidget(createBT);
+    // propojeni udalosti na kliknuti
+    connect(createBT, SIGNAL(clicked()), this, SLOT(createNewUser()));
 
     // tlacitko pokracovat bez prihlaseni
     QPushButton *continueBT = new QPushButton();
@@ -98,6 +100,8 @@ void InitialWindow::createButtons() {
     continueBT->setGeometry(QRect(10, 50, 131, 23));
     continueBT->setText("Pokračuj bez přihlášení");
     group->addWidget(continueBT);
+    // propojeni udalosti na kliknuti
+    connect(continueBT, SIGNAL(clicked()), this, SLOT(closeWithoutLogin()));
 
     verticalLayout->addWidget(widgetBT, 0, Qt::AlignBottom);
 }
@@ -110,7 +114,30 @@ void InitialWindow::createButtons() {
 void InitialWindow::setUser(QString username) {
     dataManager->getMetadata(username);
     ((MainWindow *)mainWindow)->setUp();
-    this->close();
+    this->hide();
+}
+
+/**
+ * Zavre uvodni okno bez nastaveni metadat pouze jako promotion
+ * @brief InitialWindow::closeWithoutLogin
+ */
+void InitialWindow::closeWithoutLogin() {
+    ((MainWindow *)mainWindow)->setUp();
+    this->hide();
+}
+
+void InitialWindow::createNewUser() {
+    ((MainWindow *)mainWindow)->setUp();
+    ((MainWindow *)mainWindow)->metaDialog->show();
+    this->hide();
+}
+
+/**
+ * Reakce na zavreni okna krizkem
+ * @brief InitialWindow::closeEvent
+ */
+void InitialWindow::closeEvent(QCloseEvent *) {
+    closeWithoutLogin();
 }
 
 InitialWindow::~InitialWindow() {

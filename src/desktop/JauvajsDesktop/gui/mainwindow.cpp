@@ -26,6 +26,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     sensors[3] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorOxy(), ui->scrollAreaWidgetContents_2);
     sensors[4] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorGSR(), ui->scrollAreaWidgetContents_2);
     sensors[5] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorHeartRate(), ui->scrollAreaWidgetContents_2);
+
+    ui->label->setText("");
+    ui->label_2->setText("");
 }
 
 /**
@@ -40,6 +43,10 @@ void MainWindow::setUp() {
 
     for (int i = 0; i < NUMBER_OF_SENSORS; i++) {
        sensors[i]->setUp();
+    }
+
+    if (!dataManager->isSetMetadata) {
+        ui->actionU_ivatelsk_nastaven->setDisabled(true);
     }
 }
 
@@ -77,6 +84,7 @@ void MainWindow::on_actionU_ivatelsk_nastaven_triggered() {
  * @brief MainWindow::setMetaData
  */
 void MainWindow::setMetadata() {
+    ui->actionU_ivatelsk_nastaven->setDisabled(false);
     ui->label->setText(metaDialog->mainTab->nameE->text());
     ui->label_2->setText(metaDialog->mainTab->surnameE->text());
 }

@@ -29,6 +29,8 @@ public:
     SensorWidget *sensors[NUMBER_OF_SENSORS];
     /** spravce dat */
     DataManager *dataManager;
+    /** dialog metadat */
+    MetaDialog *metaDialog;
 
 public slots:
     void setMetadata();
@@ -40,7 +42,6 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    MetaDialog *metaDialog;
 };
 
 #endif // MAINWINDOW_H

@@ -21,9 +21,12 @@ public:
     void createTitle();
     void createListOfNames();
     void createButtons();
+    void closeEvent(QCloseEvent *);
 
 public slots:
     void setUser(QString username);
+    void closeWithoutLogin();
+    void createNewUser();
 
 private:
     /** spravce dat */
