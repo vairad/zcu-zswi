@@ -158,6 +158,58 @@ void DataManager::initSenzorListeners(){
     listenTemp = NULL;
 }
 
+
+/**
+ * Nastaví EKG listener
+ * @brief DataManager::setListenerEKG
+ * @param senzorEKG - IWorking pro předání dat
+ */
+void DataManager::setListenerEKG(IWorking *senzorEKG){
+    listenEKG = senzorEKG;
+}
+
+/**
+ * Nastaví GSR listener
+ * @brief DataManager::setListenerGSR
+ * @param senzorGSR - IWorking pro předání dat
+ */
+void DataManager::setListenerGSR(IWorking *senzorGSR){
+    listenGSR = senzorGSR;
+}
+
+/**
+ * Nastaví HearthRate listener
+ * @brief DataManager::setListenerEKG
+ * @param senzorHearthRate - IWorking pro předání dat
+ */
+void DataManager::setListenerHearthRate(IWorking *senzorHearthRate){
+    listenHeartRate = senzorHearthRate;
+}
+
+/**
+ * @brief DataManager::setListenerOxy
+ * @param senzorOxy - IWorking pro předání dat
+ */
+void DataManager::setListenerOxy(IWorking *senzorOxy){
+    listenOxy = senzorOxy;
+}
+
+/**
+ * @brief DataManager::setListenerPosition
+ * @param senzorPosition - IWorking pro předání dat
+ */
+void DataManager::setListenerPosition(IWorking *senzorPosition){
+    listenPosition = senzorPosition;
+}
+
+/**
+ * @brief DataManager::setListenerTemp
+ * @param senzorTemp - IWorking pro předání dat
+ */
+void DataManager::setListenerTemp(IWorking *senzorTemp){
+    listenTemp = senzorTemp;
+}
+
 DataManager::~DataManager() {
 
 }

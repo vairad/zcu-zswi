@@ -52,6 +52,16 @@ public:
     QString username;
     /** zda jsou nacetena metadata */
     bool isSetMetadata;
+
+
+    /** Nastavení listenerů patřičným senzorům */
+    void setListenerEKG(IWorking *senzorEKG);
+    void setListenerGSR(IWorking *senzorGSR);
+    void setListenerHearthRate(IWorking *senzorHearthRate);
+    void setListenerOxy(IWorking *senzorOxy);
+    void setListenerPosition(IWorking *senzorPosition);
+    void setListenerTemp(IWorking *senzorTemp);
+
 };
 
 #endif // DATAMANAGER_H
