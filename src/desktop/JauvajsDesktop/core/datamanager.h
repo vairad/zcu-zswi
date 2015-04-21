@@ -34,6 +34,7 @@ public:
     void getMetadata(QString username);
     QString getNameFromMetadata(QString username);
     QStringList listOfFolders();
+    void logoutUser();
     /** ukladac dat */
     IStorable *saver;
     /** cteni metadat */

@@ -88,3 +88,11 @@ void MainWindow::setMetadata() {
     ui->label->setText(metaDialog->mainTab->nameE->text());
     ui->label_2->setText(metaDialog->mainTab->surnameE->text());
 }
+
+/**
+ * Zobrazi uvodni okno ke zmene uzivatele
+ * @brief MainWindow::on_actionZm_na_u_ivatele_triggered
+ */
+void MainWindow::on_actionZm_na_u_ivatele_triggered() {
+    initialWindow->show();
+}

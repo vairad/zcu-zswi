@@ -122,11 +122,17 @@ void InitialWindow::setUser(QString username) {
  * @brief InitialWindow::closeWithoutLogin
  */
 void InitialWindow::closeWithoutLogin() {
+    dataManager->logoutUser();
     ((MainWindow *)mainWindow)->setUp();
     this->hide();
 }
 
+/**
+ * Otevre dialog k vytvoreni noveho uzivatele a zavre uvodni okno
+ * @brief InitialWindow::createNewUser
+ */
 void InitialWindow::createNewUser() {
+    dataManager->logoutUser();
     ((MainWindow *)mainWindow)->setUp();
     ((MainWindow *)mainWindow)->metaDialog->show();
     this->hide();

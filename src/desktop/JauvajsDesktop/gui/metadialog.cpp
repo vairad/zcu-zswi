@@ -136,8 +136,10 @@ SensorsTab::SensorsTab(SensorWidget *sensors[], int numberOfSensors, QCheckBox *
         // nastaveni zaskrtnutych a zobrazenych sensoru dle dataManageru
         if (dataManager->sensors[i]) {
             sensorCB[i]->setChecked(true);
+            sensors[i]->isVisible = true;
         }
         else {
+            sensorCB[i]->setChecked(false);
             sensors[i]->isVisible = false;
         }
 

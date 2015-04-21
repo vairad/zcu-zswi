@@ -183,6 +183,10 @@ void SensorWidget::setUp() {
         hide();
         action1->setChecked(false);
     }
+    else {
+        show();
+        action1->setChecked(true);
+    }
 
     detailedWindow->showMinimized();
     detailedWindow->hide();

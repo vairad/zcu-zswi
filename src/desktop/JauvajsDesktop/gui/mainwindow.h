@@ -41,6 +41,8 @@ private slots:
     void on_actionO_aplikaci_triggered();
     void on_actionU_ivatelsk_nastaven_triggered();
 
+    void on_actionZm_na_u_ivatele_triggered();
+
 private:
     Ui::MainWindow *ui;
 };

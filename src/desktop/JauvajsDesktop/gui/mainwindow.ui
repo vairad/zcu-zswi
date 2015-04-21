@@ -188,6 +188,7 @@
      <string>Nastavení</string>
     </property>
     <addaction name="actionU_ivatelsk_nastaven"/>
+    <addaction name="actionZm_na_u_ivatele"/>
    </widget>
    <addaction name="menuSoubor"/>
    <addaction name="menuZobrazit"/>
@@ -211,6 +212,11 @@
   <action name="actionU_ivatelsk_nastaven">
    <property name="text">
     <string>Uživatelské nastavení</string>
+   </property>
+  </action>
+  <action name="actionZm_na_u_ivatele">
+   <property name="text">
+    <string>Změna uživatele</string>
    </property>
   </action>
  </widget>

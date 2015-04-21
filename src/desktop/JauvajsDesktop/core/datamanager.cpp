@@ -23,10 +23,7 @@ DataManager::DataManager() {
     this->sensorPosition = new SensorPosition();*/
 
     // vyprazdneni metadat
-    name[0] = "";
-    name[1] = "";
-    username = "";
-    isSetMetadata = false;
+    logoutUser();
 }
 
 /**
@@ -143,6 +140,17 @@ QString DataManager::getNameFromMetadata(QString username) {
 
     QString name = list[0]+" "+list[1];
     return name;
+}
+
+/**
+ * Vyprazneni metadat
+ * @brief DataManager::logoutUser
+ */
+void DataManager::logoutUser() {
+    name[0] = "";
+    name[1] = "";
+    username = "";
+    isSetMetadata = false;
 }
 
 /**

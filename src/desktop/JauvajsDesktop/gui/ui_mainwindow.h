@@ -33,6 +33,7 @@ public:
     QAction *actionO_aplikaci;
     QAction *actionZav_t;
     QAction *actionU_ivatelsk_nastaven;
+    QAction *actionZm_na_u_ivatele;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout;
     QScrollArea *scrollArea;
@@ -64,6 +65,8 @@ public:
         actionZav_t->setEnabled(true);
         actionU_ivatelsk_nastaven = new QAction(MainWindow);
         actionU_ivatelsk_nastaven->setObjectName(QStringLiteral("actionU_ivatelsk_nastaven"));
+        actionZm_na_u_ivatele = new QAction(MainWindow);
+        actionZm_na_u_ivatele->setObjectName(QStringLiteral("actionZm_na_u_ivatele"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         horizontalLayout = new QHBoxLayout(centralWidget);
@@ -155,6 +158,7 @@ public:
         menuSoubor->addAction(actionZav_t);
         menuN_pov_da->addAction(actionO_aplikaci);
         menuNastaven->addAction(actionU_ivatelsk_nastaven);
+        menuNastaven->addAction(actionZm_na_u_ivatele);
 
         retranslateUi(MainWindow);
 
@@ -167,6 +171,7 @@ public:
         actionO_aplikaci->setText(QApplication::translate("MainWindow", "O aplikaci", 0));
         actionZav_t->setText(QApplication::translate("MainWindow", "Zav\305\231\303\255t", 0));
         actionU_ivatelsk_nastaven->setText(QApplication::translate("MainWindow", "U\305\276ivatelsk\303\251 nastaven\303\255", 0));
+        actionZm_na_u_ivatele->setText(QApplication::translate("MainWindow", "Zm\304\233na u\305\276ivatele", 0));
         groupBox->setTitle(QApplication::translate("MainWindow", "Nastaven\303\255", 0));
         label->setText(QApplication::translate("MainWindow", "TextLabel", 0));
         label_2->setText(QApplication::translate("MainWindow", "TextLabel", 0));
