@@ -13,6 +13,8 @@ DataManager::DataManager() {
     saver = new FileSaver(FOLDER_NAME, FILE_METADATA_NAME);
     metadataReader = new MetadataReader(FOLDER_NAME, FILE_METADATA_NAME);
 
+    initSenzorListeners(); //všechny listenery nastaví na NULL
+
    /* Touto cestou ne... Nastavit pomocí setSenzorXX(&senzor) ... v  místě kde se vytvoří */
    /* this->sensorEKG = new SensorEKG();
     this->sensorGSR = new SensorGSR();
@@ -90,28 +92,28 @@ void DataManager::transmitData(QString row) {
         QString sensorFlag = sensorData.at(0);
         float sensorValue = sensorData.at(1).toFloat();
         if(sensorFlag == "T") {
-            this->sensorTemp->transmitData(sensorValue);
+            this->listenTemp->transmitData(sensorValue);
         }
         else if(sensorFlag == "P") {
-            this->sensorHeartRate->transmitData(sensorValue);
+            this->listenHeartRate->transmitData(sensorValue);
         }
         else if(sensorFlag == "O") {
-            this->sensorOxy->transmitData(sensorValue);
+            this->listenOxy->transmitData(sensorValue);
         }
         else if(sensorFlag == "V") {
-            this->sensorGSR->transmitData(sensorValue);
+            this->listenGSR->transmitData(sensorValue);
         }
         else if(sensorFlag == "R") {
           //  TO DO
         }
         else if(sensorFlag == "H") {
-            this->sensorEKG->transmitData(sensorValue);
+            this->listenEKG->transmitData(sensorValue);
         }
         else if(sensorFlag == "A") {
-            this->sensorPosition->transmitData(sensorValue);
+            this->listenPosition->transmitData(sensorValue);
         }
         else if(sensorFlag == "F") {
-            this->sensorOxy->transmitData(sensorValue);
+            this->listenOxy->transmitData(sensorValue);
         }
         else {
             // neznamy sensor
@@ -141,6 +143,19 @@ QString DataManager::getNameFromMetadata(QString username) {
 
     QString name = list[0]+" "+list[1];
     return name;
+}
+
+/**
+ * Nastaví ukazatele všech senzorů na NULL
+ * @brief DataManager::initSenzorListeners
+ */
+void DataManager::initSenzorListeners(){
+    listenEKG = NULL;
+    listenGSR = NULL;
+    listenHeartRate = NULL;
+    listenOxy = NULL;
+    listenPosition = NULL;
+    listenTemp = NULL;
 }
 
 DataManager::~DataManager() {

@@ -15,12 +15,14 @@
 class DataManager {
 
     /** Privátní odkazy na senzory */
-     IWorking *sensorEKG;
-     IWorking *sensorGSR;
-     IWorking *sensorHeartRate;
-     IWorking *sensorOxy;
-     IWorking *sensorPosition;
-     IWorking *sensorTemp;
+     IWorking *listenEKG;
+     IWorking *listenGSR;
+     IWorking *listenHeartRate;
+     IWorking *listenOxy;
+     IWorking *listenPosition;
+     IWorking *listenTemp;
+
+     void initSenzorListeners();
 
 public:
     DataManager();
