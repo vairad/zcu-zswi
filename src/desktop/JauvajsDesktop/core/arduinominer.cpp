@@ -36,21 +36,22 @@ void ArduinoMiner::findDevices() {
     emit changeStatus("Hledám zařízení...");
 
     this->deviceHandle = BluetoothFindFirstDevice(&this->btSearchParams, &this->btDeviceInfo);
-    while (true || BluetoothFindNextDevice(&this->deviceHandle, &this->btDeviceInfo)) {
-       QString foundDevices = QString::fromWCharArray(this->btDeviceInfo.szName);
-       emit changeStatus("Nalezeno: "+foundDevices);
-       if(foundDevices != "")
-        this->ListFoundDevices.append(foundDevices);
-       emit ListChanged(&this->ListFoundDevices);
-       msleep(250);
-       if(!BluetoothFindNextDevice(deviceHandle, &btDeviceInfo)) {
-           break;
-       }
+    while (true || BluetoothFindNextDevice(&this->deviceHandle, &this->btDeviceInfo)){
+        QString foundDevices = QString::fromWCharArray(this->btDeviceInfo.szName);
+        emit changeStatus("Nalezeno: "+foundDevices);
+        if(foundDevices != ""){
+            this->ListFoundDevices.append(foundDevices);
+        }
+        emit ListChanged(&this->ListFoundDevices);
+        msleep(250);
+        if(!BluetoothFindNextDevice(deviceHandle, &btDeviceInfo)){
+            break;
+        }
     }
-    int rozdil = time.elapsed();
+    int timeElapsed = time.elapsed();
 
     QString BTerror;
-    if(rozdil < 1000) {
+    if(timeElapsed < 1000) {
         BTerror = ", problém se zařízením Bluetooth";
     }
     else {
@@ -62,37 +63,44 @@ void ArduinoMiner::findDevices() {
 
 void ArduinoMiner::beginConnection() {
     this->deviceHandle = BluetoothFindFirstDevice(&this->btSearchParams, &this->btDeviceInfo);
-    while (true || BluetoothFindNextDevice(&this->deviceHandle, &this->btDeviceInfo)) {
-       if(QString::fromWCharArray(this->btDeviceInfo.szName) == this->selectedDevice) {
-         break;
-       }
-       if(!BluetoothFindNextDevice(deviceHandle, &btDeviceInfo)) {
-           break;
-       }
+    while (true || BluetoothFindNextDevice(&this->deviceHandle, &this->btDeviceInfo)){
+        if(QString::fromWCharArray(this->btDeviceInfo.szName) == this->selectedDevice){
+            break;
+        }
+        if(!BluetoothFindNextDevice(deviceHandle, &btDeviceInfo)) {
+            break;
+        }
     }
 
     if (this->deviceHandle) {
-        int res = BluetoothAuthenticateDeviceEx(NULL, NULL, &btDeviceInfo, NULL, MITMProtectionRequiredBonding);
+        int res_WhatTHEresIS_refactorIT = BluetoothAuthenticateDeviceEx(NULL, NULL, &btDeviceInfo, NULL, MITMProtectionRequiredBonding);
 
-        if (res == ERROR_CANCELLED)
+        if (res_WhatTHEresIS_refactorIT == ERROR_CANCELLED){
            emit ConnectionChanged("The user aborted the operation.");
-        if (res == ERROR_INVALID_PARAMETER)
+        }
+        if (res_WhatTHEresIS_refactorIT == ERROR_INVALID_PARAMETER){
            emit ConnectionChanged("The device structure specified in pbdti is invalid.");
-        if (res == ERROR_NO_MORE_ITEMS)
+        }
+        if (res_WhatTHEresIS_refactorIT == ERROR_NO_MORE_ITEMS){
            emit ConnectionChanged("Zařízení je spárované, navazuji spojení...");
-        if (res == ERROR_NOT_AUTHENTICATED)
+        }
+        if (res_WhatTHEresIS_refactorIT == ERROR_NOT_AUTHENTICATED){
            emit ConnectionChanged("The operation being requested was not performed because the user has not been authenticated.");//endl;
-        if (res == ERROR_SUCCESS)
+        }
+        if (res_WhatTHEresIS_refactorIT == ERROR_SUCCESS){
            emit ConnectionChanged("Spojeni úspěšně navázáno");
+        }
+
        err = 0;
-        if (err != ERROR_SUCCESS) {
+        if (err != ERROR_SUCCESS){
             err = GetLastError();
             emit ConnectionChanged("BluetoothRegisterForAuthentication Error");// << err << endl;
         }
         WSADATA wsaData;
         err = WSAStartup(MAKEWORD(2, 2), &wsaData);
-        if (err)
+        if (err){
             emit ConnectionChanged("WSAStartup error = "+ err);
+        }
 
          emit ConnectionChanged("Vytvářím soket");
         // vytvoření BT socketu
@@ -119,15 +127,17 @@ void ArduinoMiner::beginConnection() {
             do { // smyčka pro příjem dat
               iResult = recv(soket, recvbuf, recvbuflen, 0);
 
-              if (iResult > 0)
+              if (iResult > 0){
                   emit PrijmiData((QString)recvbuf);
-              else if ( iResult == 0 )
+              }else if ( iResult == 0 ){
                   emit changeStatus("Spojení uzavřeno");
-              else
+              }else{
                    emit changeStatus("Chyba příjmu dat, "+WSAGetLastError());
+              }
 
-              if(this->status != STATUS_CONNECT)
+              if(this->status != STATUS_CONNECT){
                  break;
+              }
 
             } while( iResult > 0); // konec smyčky pro příjem dat
 
