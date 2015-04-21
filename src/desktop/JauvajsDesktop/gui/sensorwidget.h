@@ -1,6 +1,11 @@
 #ifndef SENSORWIDGET_H
 #define SENSORWIDGET_H
 
+#include "core/idisplayable.h"
+
+#include "gui/detailedwindow.h"
+#include "gui/graphdescription.h"
+
 #include <QWidget>
 #include <QPushButton>
 #include <QGraphicsView>
@@ -10,9 +15,6 @@
 #include <QAction>
 #include <QMenu>
 #include <QGraphicsLineItem>
-#include "core/idisplayable.h"
-#include "gui/detailedwindow.h"
-#include "gui/graphdescription.h"
 
 /**
  * Reprezentace widgetu - podokno zobrazene ve ScrollArea, obsluhuje akce uzivatele

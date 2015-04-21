@@ -1,12 +1,15 @@
 #ifndef DETAILEDWINDOW_H
 #define DETAILEDWINDOW_H
 
+#include "core/idisplayable.h"
+
+#include "gui/graphdescription.h"
+
 #include <QDialog>
 #include <QWidget>
 #include <QGraphicsScene>
 #include <QGraphicsTextItem>
-#include "core/idisplayable.h"
-#include "gui/graphdescription.h"
+
 
 /**
  * Detailne zobrazi graf zadaneho senzoru

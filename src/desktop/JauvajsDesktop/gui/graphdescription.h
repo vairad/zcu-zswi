@@ -1,9 +1,10 @@
 #ifndef GRAPHDESCRIPTION_H
 #define GRAPHDESCRIPTION_H
 
+#include "core/idisplayable.h"
+
 #include <QGraphicsView>
 #include <QGraphicsLineItem>
-#include "core/idisplayable.h"
 
 /**
  * Zajistuje vykresleni popisu a mrizky grafu

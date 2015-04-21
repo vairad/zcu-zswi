@@ -1,10 +1,11 @@
 #ifndef TABDIALOG_H
 #define TABDIALOG_H
 
+#include "core/datamanager.h"
+#include "gui/sensorwidget.h"
+
 #include <QtWidgets>
 #include <QDialog>
-#include "gui/sensorwidget.h"
-#include "core/datamanager.h"
 
 class QDialogButtonBox;
 class QFileInfo;

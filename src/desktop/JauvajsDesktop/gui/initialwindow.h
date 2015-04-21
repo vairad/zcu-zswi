@@ -1,12 +1,13 @@
 #ifndef INITIALWINDOW_H
 #define INITIALWINDOW_H
 
+#include "core/datamanager.h"
+
 #include <QDialog>
 #include <QWidget>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QVBoxLayout>
 #include <QListWidget>
-#include "core/datamanager.h"
 
 /**
  * Uvodni okno pro vyber jiz ulozenych uzivatelu,

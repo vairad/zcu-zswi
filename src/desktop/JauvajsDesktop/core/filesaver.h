@@ -1,8 +1,9 @@
 #ifndef FILESAVER_H
 #define FILESAVER_H
 
+#include "core/istorable.h"
+
 #include <QString>
-#include "istorable.h"
 
 /**
  * Uklada data do souboru

@@ -1,11 +1,11 @@
 #ifndef FILEMINER_H
 #define FILEMINER_H
 
+#include "core/iminer.h"
+
 #include <QString>
 #include <QFile>
 #include <QTextStream>
-
-#include "core/iminer.h"
 
 class FileMiner : public IMiner{
 
