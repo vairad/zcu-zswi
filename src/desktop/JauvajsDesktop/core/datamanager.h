@@ -5,18 +5,23 @@
 #include <QObject>
 #include "metadatareader.h"
 #include "istorable.h"
-#include "sensorekg.h"
-#include "sensorgsr.h"
-#include "sensorheartrate.h"
-#include "sensoroxy.h"
-#include "sensorposition.h"
-#include "sensortemp.h"
+
+#include "core/iworking.h"
 
 /**
  * Sprava dat ziskanych z IMiner a IStorable, predani dat konkretnim senzorum
  * @brief The DataManager class
  */
 class DataManager {
+
+    /** Privátní odkazy na senzory */
+     IWorking *sensorEKG;
+     IWorking *sensorGSR;
+     IWorking *sensorHeartRate;
+     IWorking *sensorOxy;
+     IWorking *sensorPosition;
+     IWorking *sensorTemp;
+
 public:
     DataManager();
     ~DataManager();
@@ -45,19 +50,6 @@ public:
     QString username;
     /** zda jsou nacetena metadata */
     bool isSetMetadata;
-
-    /** Odkaz na senzor EKG */
-    SensorEKG *sensorEKG;
-    /** Odkaz na senzor GSR */
-    SensorGSR *sensorGSR;
-    /** Odkaz na senzor HearthRate */
-    SensorHeartRate *sensorHeartRate;
-    /** Odkaz na senzor Oxy */
-    SensorOxy *sensorOxy;
-    /** Odkaz na senzor pozice */
-    SensorPosition *sensorPosition;
-    /** Odkaz na senzor teploty */
-    SensorTemp *sensorTemp;
 };
 
 #endif // DATAMANAGER_H

@@ -1,7 +1,8 @@
-#include <QList>
-#include <QDir>
 #include "datamanager.h"
 #include "filesaver.h"
+
+#include <QList>
+#include <QDir>
 #include <QRegExp>
 #include <QStringList>
 
@@ -12,11 +13,12 @@ DataManager::DataManager() {
     saver = new FileSaver(FOLDER_NAME, FILE_METADATA_NAME);
     metadataReader = new MetadataReader(FOLDER_NAME, FILE_METADATA_NAME);
 
-    this->sensorEKG = new SensorEKG();
+   /* Touto cestou ne... Nastavit pomocí setSenzorXX(&senzor) ... v  místě kde se vytvoří */
+   /* this->sensorEKG = new SensorEKG();
     this->sensorGSR = new SensorGSR();
     this->sensorHeartRate = new SensorHeartRate();
     this->sensorOxy = new SensorOxy();
-    this->sensorPosition = new SensorPosition();
+    this->sensorPosition = new SensorPosition();*/
 
     // vyprazdneni metadat
     name[0] = "";
