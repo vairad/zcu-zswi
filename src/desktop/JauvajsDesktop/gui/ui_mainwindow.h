@@ -34,6 +34,7 @@ public:
     QAction *actionZav_t;
     QAction *actionU_ivatelsk_nastaven;
     QAction *actionZm_na_u_ivatele;
+    QAction *actionVy_istit_v_e;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout;
     QScrollArea *scrollArea;
@@ -51,6 +52,7 @@ public:
     QMenu *menuN_pov_da;
     QMenu *menuZobrazit;
     QMenu *menuNastaven;
+    QMenu *menu_pravy;
     QStatusBar *statusBar;
 
     void setupUi(QMainWindow *MainWindow)
@@ -67,6 +69,8 @@ public:
         actionU_ivatelsk_nastaven->setObjectName(QStringLiteral("actionU_ivatelsk_nastaven"));
         actionZm_na_u_ivatele = new QAction(MainWindow);
         actionZm_na_u_ivatele->setObjectName(QStringLiteral("actionZm_na_u_ivatele"));
+        actionVy_istit_v_e = new QAction(MainWindow);
+        actionVy_istit_v_e->setObjectName(QStringLiteral("actionVy_istit_v_e"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         horizontalLayout = new QHBoxLayout(centralWidget);
@@ -146,12 +150,15 @@ public:
         menuZobrazit->setObjectName(QStringLiteral("menuZobrazit"));
         menuNastaven = new QMenu(menuBar);
         menuNastaven->setObjectName(QStringLiteral("menuNastaven"));
+        menu_pravy = new QMenu(menuBar);
+        menu_pravy->setObjectName(QStringLiteral("menu_pravy"));
         MainWindow->setMenuBar(menuBar);
         statusBar = new QStatusBar(MainWindow);
         statusBar->setObjectName(QStringLiteral("statusBar"));
         MainWindow->setStatusBar(statusBar);
 
         menuBar->addAction(menuSoubor->menuAction());
+        menuBar->addAction(menu_pravy->menuAction());
         menuBar->addAction(menuZobrazit->menuAction());
         menuBar->addAction(menuNastaven->menuAction());
         menuBar->addAction(menuN_pov_da->menuAction());
@@ -159,6 +166,7 @@ public:
         menuN_pov_da->addAction(actionO_aplikaci);
         menuNastaven->addAction(actionU_ivatelsk_nastaven);
         menuNastaven->addAction(actionZm_na_u_ivatele);
+        menu_pravy->addAction(actionVy_istit_v_e);
 
         retranslateUi(MainWindow);
 
@@ -172,6 +180,7 @@ public:
         actionZav_t->setText(QApplication::translate("MainWindow", "Zav\305\231\303\255t", 0));
         actionU_ivatelsk_nastaven->setText(QApplication::translate("MainWindow", "U\305\276ivatelsk\303\251 nastaven\303\255", 0));
         actionZm_na_u_ivatele->setText(QApplication::translate("MainWindow", "Zm\304\233na u\305\276ivatele", 0));
+        actionVy_istit_v_e->setText(QApplication::translate("MainWindow", "Vy\304\215istit v\305\241e", 0));
         groupBox->setTitle(QApplication::translate("MainWindow", "Nastaven\303\255", 0));
         label->setText(QApplication::translate("MainWindow", "TextLabel", 0));
         label_2->setText(QApplication::translate("MainWindow", "TextLabel", 0));
@@ -181,6 +190,7 @@ public:
         menuN_pov_da->setTitle(QApplication::translate("MainWindow", "N\303\241pov\304\233da", 0));
         menuZobrazit->setTitle(QApplication::translate("MainWindow", "Zobrazit", 0));
         menuNastaven->setTitle(QApplication::translate("MainWindow", "Nastaven\303\255", 0));
+        menu_pravy->setTitle(QApplication::translate("MainWindow", "\303\232pravy", 0));
     } // retranslateUi
 
 };

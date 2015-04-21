@@ -23,6 +23,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void setUp();
+    void cleanAll();
     /** uvodni okno */
     InitialWindow *initialWindow;
     static const int NUMBER_OF_SENSORS = 6;
@@ -40,8 +41,8 @@ private slots:
     void on_actionZav_t_triggered();
     void on_actionO_aplikaci_triggered();
     void on_actionU_ivatelsk_nastaven_triggered();
-
     void on_actionZm_na_u_ivatele_triggered();
+    void on_actionVy_istit_v_e_triggered();
 
 private:
     Ui::MainWindow *ui;

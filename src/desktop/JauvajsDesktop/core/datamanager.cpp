@@ -143,7 +143,7 @@ QString DataManager::getNameFromMetadata(QString username) {
 }
 
 /**
- * Vyprazneni metadat
+ * Vyprazdneni metadat
  * @brief DataManager::logoutUser
  */
 void DataManager::logoutUser() {

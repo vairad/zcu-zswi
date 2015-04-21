@@ -190,7 +190,14 @@
     <addaction name="actionU_ivatelsk_nastaven"/>
     <addaction name="actionZm_na_u_ivatele"/>
    </widget>
+   <widget class="QMenu" name="menu_pravy">
+    <property name="title">
+     <string>Úpravy</string>
+    </property>
+    <addaction name="actionVy_istit_v_e"/>
+   </widget>
    <addaction name="menuSoubor"/>
+   <addaction name="menu_pravy"/>
    <addaction name="menuZobrazit"/>
    <addaction name="menuNastaven"/>
    <addaction name="menuN_pov_da"/>
@@ -217,6 +224,11 @@
   <action name="actionZm_na_u_ivatele">
    <property name="text">
     <string>Změna uživatele</string>
+   </property>
+  </action>
+  <action name="actionVy_istit_v_e">
+   <property name="text">
+    <string>Vyčistit vše</string>
    </property>
   </action>
  </widget>

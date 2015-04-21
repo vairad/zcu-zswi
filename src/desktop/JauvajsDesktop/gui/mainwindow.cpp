@@ -50,6 +50,16 @@ void MainWindow::setUp() {
     }
 }
 
+/**
+ * Odstraneni vykreslene krivky a resetovani hodnot v grafech vsech senzoru
+ * @brief MainWindow::cleanAll
+ */
+void MainWindow::cleanAll() {
+    for (int i = 0; i < NUMBER_OF_SENSORS; i++) {
+       sensors[i]->cleanGraph();
+    }
+}
+
 MainWindow::~MainWindow() {
     delete ui;
 }
@@ -95,4 +105,12 @@ void MainWindow::setMetadata() {
  */
 void MainWindow::on_actionZm_na_u_ivatele_triggered() {
     initialWindow->show();
+}
+
+/**
+ * Volani cleanAll pro vycisteni grafi vsech sensoru
+ * @brief MainWindow::on_actionVy_istit_v_e_triggered
+ */
+void MainWindow::on_actionVy_istit_v_e_triggered() {
+    cleanAll();
 }
