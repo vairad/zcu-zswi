@@ -108,9 +108,11 @@ MainTab::MainTab(DataManager *dataManager, QWidget *parent) : QWidget(parent) {
     mainLayout->addWidget(surnameE);
     mainLayout->addWidget(usernameL);
     mainLayout->addWidget(usernameE);
-
-    mainLayout->addWidget(pathL);
-    mainLayout->addWidget(pathVL);
+    // pokud se username v dataManageru nerovna "", potom vypsat cestu k metadatum
+    if (QString::compare(dataManager->username, "")) {
+        mainLayout->addWidget(pathL);
+        mainLayout->addWidget(pathVL);
+    }
     mainLayout->addStretch(1);
     setLayout(mainLayout);
 }
