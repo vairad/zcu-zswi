@@ -57,9 +57,15 @@ private:
    /** Navazani BT komunikace */
    void beginConnection();
    /** Soket pres ktery se komunikuje pres BT */
-   SOCKET soket;
+   SOCKET sckt;
    /** Priznak oznacujici stav spojeni */
    int err;
+   /** Prvni faze navazini spojeni */
+   void connectionStatus();
+   /** Otevreni a navazani soketu */
+   void openSocket();
+   /** Zahajeni naslouchani prichozich dat na soketu */
+   void startListening();
 };
 
 #endif // ARDUINOMINER_H
