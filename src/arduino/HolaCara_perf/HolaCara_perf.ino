@@ -1,23 +1,5 @@
 /*
-*  Sending data using Bluetooth module from Libelium for Arduino
-*  Connect without security
-*
-*  Copyright (C) 2009 Libelium Comunicaciones Distribuidas S.L.
-*  http://www.libelium.com
-*
-*  This program is free software: you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation, either version 3 of the License, or
-*  (at your option) any later version.
-*
-*  This program is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  You should have received a copy of the GNU General Public License
-*  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*
+*  Odesilani hola caracola v nekolika prikazech, oproti odesilani cele zpravy
 *  Version 0.1
 *  Author: Marcos Yarza
 */
@@ -25,8 +7,10 @@
 
 int led = 13;
 int val = -1;
+char holaC[] = {'H', 'o', 'l', 'a', ' ', 'C', 'a', 'r', 'a', 'c', 'o', 'l', 'a', '.', '.', '.', '\n'};
 
-void setup(){
+
+void setup() {
 	delay(2000);
 	Serial.begin(115200);
 	delay(2000);
@@ -40,16 +24,26 @@ void setup(){
 	delay(2000);
 	pinMode(led, OUTPUT);
 	digitalWrite(led,HIGH);
+
 	Serial.flush();
 	val = Serial.read();
-	while (val != 'R'){
+	while (val != 'R') {
 	  val = Serial.read();
 	}
 	delay(1000);
+
 	Serial.print("AT+JSCR\r\n"); // Stream Connection Request command
 }
 
-void loop(){
-	Serial.println("Hola caracola...");
-	delay(2000);
+void loop() {
+  int i = -1;
+  char sending;
+  
+  do {
+    sending = holaC[++i];
+    Serial.print(sending);
+  }
+  while (sending != '\n');
+  
+  delay(2000);
 }
