@@ -17,8 +17,6 @@ void FileSaver::saveMetadata(QString folderName, QList<QString> data) {
     // vytvoreni slozky pro data
     QDir dir(FOLDER_NAME);
 
-    printf("%s\n", FOLDER_NAME.toStdString().c_str());
-    printf("%s\n", dir.absolutePath().toStdString().c_str());
     if (!dir.exists()) {
       dir.mkdir(".");
     }

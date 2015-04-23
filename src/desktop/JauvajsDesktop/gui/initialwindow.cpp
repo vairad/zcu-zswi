@@ -145,7 +145,7 @@ void InitialWindow::createButtons() {
  * @brief InitialWindow::changeWorkspace
  */
 void InitialWindow::changeWorkspace() {
-    QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"), "/home", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Otevřít workspace"), QDir::homePath(), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     dataManager->FOLDER_NAME = dir;
 
     // odebrani starych labelu
