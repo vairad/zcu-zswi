@@ -57,7 +57,7 @@ private:
    /** Navazani BT komunikace */
    void beginConnection();
    /** Soket pres ktery se komunikuje pres BT */
-   SOCKET sckt;
+   SOCKET BTsocket;
    /** Priznak oznacujici stav spojeni */
    int err;
    /** Prvni faze navazini spojeni */

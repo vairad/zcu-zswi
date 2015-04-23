@@ -36,7 +36,7 @@ void ArduinoMiner::findDevices() {
     emit changeStatus("Hledám zařízení...");
 
     this->deviceHandle = BluetoothFindFirstDevice(&this->btSearchParams, &this->btDeviceInfo);
-    while (true || BluetoothFindNextDevice(&this->deviceHandle, &this->btDeviceInfo)){
+    while (true){
         QString foundDevices = QString::fromWCharArray(this->btDeviceInfo.szName);
         emit changeStatus("Nalezeno: "+foundDevices);
         if(foundDevices != ""){
@@ -63,7 +63,7 @@ void ArduinoMiner::findDevices() {
 
 void ArduinoMiner::beginConnection() {
     this->deviceHandle = BluetoothFindFirstDevice(&this->btSearchParams, &this->btDeviceInfo);
-    while (true || BluetoothFindNextDevice(&this->deviceHandle, &this->btDeviceInfo)) {
+    while (true) {
         if(QString::fromWCharArray(this->btDeviceInfo.szName) == this->selectedDevice) {
             break;
         }
@@ -95,7 +95,7 @@ void ArduinoMiner::startListening() {
         int iResult;
 
         do { // smyčka pro příjem dat
-          iResult = recv(sckt, recvbuf, recvbuflen, 0);
+          iResult = recv(BTsocket, recvbuf, recvbuflen, 0);
 
           if (iResult > 0){
               emit PrijmiData((QString)recvbuf);
@@ -129,7 +129,7 @@ void ArduinoMiner::openSocket() {
 
     emit ConnectionChanged("Vytvářím soket");
 
-    sckt = socket(AF_BTH, SOCK_STREAM, BTHPROTO_RFCOMM);
+    BTsocket = socket(AF_BTH, SOCK_STREAM, BTHPROTO_RFCOMM);
 
     SOCKADDR_BTH btSockAddr;
     btSockAddr.addressFamily = AF_BTH;
@@ -137,25 +137,25 @@ void ArduinoMiner::openSocket() {
     btSockAddr.serviceClassId = SerialPortServiceClass_UUID;
     btSockAddr.port = BT_PORT_ANY;
 
-    err = ::connect(sckt, reinterpret_cast<SOCKADDR*>(&btSockAddr), sizeof(SOCKADDR_BTH));
+    err = ::connect(BTsocket, reinterpret_cast<SOCKADDR*>(&btSockAddr), sizeof(SOCKADDR_BTH));
 }
 
 void ArduinoMiner::connectionStatus() {
-    int res_WhatTHEresIS_refactorIT = BluetoothAuthenticateDeviceEx(NULL, NULL, &btDeviceInfo, NULL, MITMProtectionRequiredBonding);
+    int resultAuthenticate = BluetoothAuthenticateDeviceEx(NULL, NULL, &btDeviceInfo, NULL, MITMProtectionRequiredBonding);
 
-    if (res_WhatTHEresIS_refactorIT == ERROR_CANCELLED){
+    if (resultAuthenticate == ERROR_CANCELLED){
        emit ConnectionChanged("The user aborted the operation.");
     }
-    if (res_WhatTHEresIS_refactorIT == ERROR_INVALID_PARAMETER){
+    if (resultAuthenticate == ERROR_INVALID_PARAMETER){
        emit ConnectionChanged("The device structure specified in pbdti is invalid.");
     }
-    if (res_WhatTHEresIS_refactorIT == ERROR_NO_MORE_ITEMS){
+    if (resultAuthenticate == ERROR_NO_MORE_ITEMS){
        emit ConnectionChanged("Zařízení je spárované, navazuji spojení...");
     }
-    if (res_WhatTHEresIS_refactorIT == ERROR_NOT_AUTHENTICATED){
+    if (resultAuthenticate == ERROR_NOT_AUTHENTICATED){
        emit ConnectionChanged("The operation being requested was not performed because the user has not been authenticated.");//endl;
     }
-    if (res_WhatTHEresIS_refactorIT == ERROR_SUCCESS){
+    if (resultAuthenticate == ERROR_SUCCESS){
        emit ConnectionChanged("Spojeni úspěšně navázáno");
     }
 
@@ -168,10 +168,10 @@ void ArduinoMiner::connectionStatus() {
 
 int ArduinoMiner::SendData(QString data) {
    const char* sendbuf = data.toLatin1().data();
-   int iResult = send( this->sckt, sendbuf, (int)strlen(sendbuf), 0 );
+   int iResult = send( this->BTsocket, sendbuf, (int)strlen(sendbuf), 0 );
    if (iResult == SOCKET_ERROR) {
       emit changeStatus("Odesílání selhalo, error: "+QString::number(WSAGetLastError()));
-      ::closesocket(this->sckt);
+      ::closesocket(this->BTsocket);
       WSACleanup();
       return 1;
    }
@@ -181,7 +181,7 @@ int ArduinoMiner::SendData(QString data) {
 
 void ArduinoMiner::CloseConnection() {
     this->status = STATUS_REST;
-    this->err = shutdown(this->sckt, SD_BOTH);
+    this->err = shutdown(this->BTsocket, SD_BOTH);
 }
 
 ArduinoMiner::~ArduinoMiner() {
