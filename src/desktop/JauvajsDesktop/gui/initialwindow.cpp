@@ -43,38 +43,72 @@ void InitialWindow::createTitle() {
     label->setText("Vítejte v aplikaci E-health");
 
     verticalLayout->addWidget(label);
+
+    // tlacitko zmenit workspace
+    QPushButton *selectBT = new QPushButton();
+    selectBT->setObjectName(QStringLiteral("button"));
+    selectBT->setGeometry(QRect(10, 50, 131, 23));
+    selectBT->setText("Změnit workspace");
+    verticalLayout->addWidget(selectBT);
+    // propojeni udalosti na kliknuti
+    connect(selectBT, SIGNAL(clicked()), this, SLOT(changeWorkspace()));
 }
 
 /**
- * Vypise jmena ulozenych uzivatelu
+ * Pripravi okno pro vypis ulozenych uzivatelu
  * @brief InitialWindow::createListOfNames
  */
 void InitialWindow::createListOfNames() {
     // widget pro vypis uzivatelu
     QWidget *widget = new QWidget(this);
     widget->setObjectName(QStringLiteral("widget"));
-    QVBoxLayout *widgetLayout = new QVBoxLayout(widget);
+    widgetLayout = new QVBoxLayout(widget);
     widgetLayout->setAlignment(Qt::AlignTop);
 
+    listsOfNames();
+
+    verticalLayout->addWidget(widget);
+}
+
+/**
+ * Vypise jmena vsech ulozenych uzivatelu
+ * @brief InitialWindow::listsOfNames
+ */
+void InitialWindow::listsOfNames() {
+    QString name;
+    // indikuje, zda je ve slozce nejaka slozka s metadata.txt
+    bool isExistName = false;
     // ziska list uzivatelskych jmen v datove slozce
     QStringList list = dataManager->listOfFolders();
     QFont font1;
     font1.setUnderline(true);
 
     foreach (QString s, list) {
-        UserLabel *label = new UserLabel(s);
+        name = dataManager->getNameFromMetadata(s);
+        if (!name.isNull()) {
+            isExistName = true;
+            UserLabel *label = new UserLabel(s);
+            label->setObjectName(QStringLiteral("label_2"));
+            label->setGeometry(QRect(20, 20, 461, 13));
+            label->setFont(font1);
+            label->setCursor(Qt::PointingHandCursor);
+            label->setText(name);
+            listOfLabels.append(label);
+
+            widgetLayout->addWidget(label);
+            // propojeni udalosti na kliknuti s setUser
+            connect(label, SIGNAL(clicked(QString)), this, SLOT(setUser(QString)));
+        }
+    }
+    // ve slozce neni slozka s metadata.txt
+    if (!isExistName) {
+        QLabel *label = new QLabel();
         label->setObjectName(QStringLiteral("label_2"));
         label->setGeometry(QRect(20, 20, 461, 13));
-        label->setFont(font1);
-        label->setCursor(Qt::PointingHandCursor);
-        label->setText(dataManager->getNameFromMetadata(s));
-
+        label->setText("V této složce nemá žádný uživatel data");
+        listOfLabels.append(label);
         widgetLayout->addWidget(label);
-        // propojeni udalosti na kliknuti s setUser
-        connect(label, SIGNAL(clicked(QString)), this, SLOT(setUser(QString)));
     }
-
-    verticalLayout->addWidget(widget);
 }
 
 /**
@@ -104,6 +138,41 @@ void InitialWindow::createButtons() {
     connect(continueBT, SIGNAL(clicked()), this, SLOT(closeWithoutLogin()));
 
     verticalLayout->addWidget(widgetBT, 0, Qt::AlignBottom);
+}
+
+/**
+ * Otevre okno pro vyber slozky a prepise jmena ulozenych uzivatelu
+ * @brief InitialWindow::changeWorkspace
+ */
+void InitialWindow::changeWorkspace() {
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"), "/home", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    dataManager->FOLDER_NAME = dir;
+
+    // odebrani starych labelu
+    deleteLabels();
+    listsOfNames();
+}
+
+/**
+ * Odebrani starych labelu
+ * @brief InitialWindow::deleteLabels
+ */
+void InitialWindow::deleteLabels() {
+    foreach (QWidget *l, listOfLabels) {
+        widgetLayout->removeWidget((QWidget *) l);
+        listOfLabels.removeOne(l);
+        delete l;
+    }
+}
+
+/**
+ * Aktualizace jmen po zobrazeni okna
+ * @brief InitialWindow::showEvent
+ */
+void InitialWindow::showEvent(QShowEvent *) {
+    // odebrani starych labelu
+    deleteLabels();
+    listsOfNames();
 }
 
 /**

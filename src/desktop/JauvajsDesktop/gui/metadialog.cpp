@@ -74,8 +74,10 @@ void MetaDialog::updateMetadata() {
         dataManager->transmitMetadata();
 
         // aktualizace cesty k souboru
-        QFileInfo fileInfo(dataManager->username+"/metadata.txt");
+        QFileInfo fileInfo(dataManager->FOLDER_NAME+"/"+dataManager->username+"/metadata.txt");
         mainTab->pathVL->setText(fileInfo.absoluteFilePath());
+        mainTab->pathL->show();
+        mainTab->pathVL->show();
     }
 }
 
@@ -86,7 +88,7 @@ void MetaDialog::updateMetadata() {
  * @param parent
  */
 MainTab::MainTab(DataManager *dataManager, QWidget *parent) : QWidget(parent) {
-    QFileInfo fileInfo(dataManager->username+"/metadata.txt");
+    QFileInfo fileInfo(dataManager->FOLDER_NAME+"/"+dataManager->username+"/metadata.txt");
 
     QLabel *nameL = new QLabel(tr("Jméno:"));
     nameE = new QLineEdit(dataManager->name[0]);
@@ -97,7 +99,7 @@ MainTab::MainTab(DataManager *dataManager, QWidget *parent) : QWidget(parent) {
     QLabel *usernameL = new QLabel(tr("Uživatelské jméno:"));
     usernameE = new QLineEdit(dataManager->username);
 
-    QLabel *pathL = new QLabel(tr("Cesta k úložišti dat:"));
+    pathL = new QLabel(tr("Cesta k úložišti dat:"));
     pathVL = new QLabel(fileInfo.absoluteFilePath());
     pathVL->setFrameStyle(QFrame::Panel | QFrame::Sunken);
 
@@ -108,11 +110,15 @@ MainTab::MainTab(DataManager *dataManager, QWidget *parent) : QWidget(parent) {
     mainLayout->addWidget(surnameE);
     mainLayout->addWidget(usernameL);
     mainLayout->addWidget(usernameE);
-    // pokud se username v dataManageru nerovna "", potom vypsat cestu k metadatum
-    if (QString::compare(dataManager->username, "")) {
-        mainLayout->addWidget(pathL);
-        mainLayout->addWidget(pathVL);
+
+    mainLayout->addWidget(pathL);
+    mainLayout->addWidget(pathVL);
+    // pokud se username v dataManageru rovna "", potom skryt cestu k metadatum
+    if (!QString::compare(dataManager->username, "")) {
+        pathL->hide();
+        pathVL->hide();
     }
+
     mainLayout->addStretch(1);
     setLayout(mainLayout);
 }

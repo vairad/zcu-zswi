@@ -11,9 +11,9 @@
  */
 class FileSaver : public IStorable {
 public:
-    FileSaver(QString folderName, QString fileName);
+    FileSaver(QString fileName);
     ~FileSaver();
-    void saveMetadata(QList<QString> data);
+    void saveMetadata(QString folderName, QList<QString> data);
     /** nazev slozky pro ukladani dat */
     QString FOLDER_NAME;
     /** nazev souboru pro ulozeni metadat */

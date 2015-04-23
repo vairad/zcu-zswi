@@ -28,6 +28,8 @@ public:
     QLineEdit *usernameE;
     /** pole pro informaci o umisteni metadat */
     QLabel *pathVL;
+    /** label pro pole pro informaci o umisteni metadat */
+    QLabel *pathL;
 };
 
 /**

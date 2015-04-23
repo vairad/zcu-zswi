@@ -10,8 +10,8 @@ DataManager::DataManager() {
     FOLDER_NAME = "data";
     FILE_METADATA_NAME = "metadata.txt";
 
-    saver = new FileSaver(FOLDER_NAME, FILE_METADATA_NAME);
-    metadataReader = new MetadataReader(FOLDER_NAME, FILE_METADATA_NAME);
+    saver = new FileSaver(FILE_METADATA_NAME);
+    metadataReader = new MetadataReader(FILE_METADATA_NAME);
 
     initSenzorListeners(); //všechny listenery nastaví na NULL
 
@@ -46,7 +46,7 @@ void DataManager::transmitMetadata() {
         list.push_back(QString::number(sensors[i]));
     }
 
-    saver->saveMetadata(list);
+    saver->saveMetadata(FOLDER_NAME, list);
 }
 
 /**
@@ -55,7 +55,7 @@ void DataManager::transmitMetadata() {
  * @param username uzivatelske jmeno
  */
 void DataManager::getMetadata(QString username) {
-    QList<QString> list = metadataReader->loadMetadata(username);
+    QList<QString> list = metadataReader->loadMetadata(FOLDER_NAME, username);
 
     this->username = username;
 
@@ -136,9 +136,16 @@ QStringList DataManager::listOfFolders() {
  * @return cele jmeno
  */
 QString DataManager::getNameFromMetadata(QString username) {
-    QList<QString> list = metadataReader->loadMetadata(username);
+    QList<QString> list = metadataReader->loadMetadata(FOLDER_NAME, username);
 
-    QString name = list[0]+" "+list[1];
+    QString name;
+    if (!list.isEmpty()) {
+        name = list[0]+" "+list[1];
+    }
+    else {
+        name = QString();
+    }
+
     return name;
 }
 

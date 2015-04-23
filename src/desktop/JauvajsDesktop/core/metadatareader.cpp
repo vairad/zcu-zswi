@@ -3,8 +3,7 @@
 #include <QTextStream>
 #include "metadatareader.h"
 
-MetadataReader::MetadataReader(QString folderName, QString fileName) {
-    FOLDER_NAME = folderName;
+MetadataReader::MetadataReader(QString fileName) {
     FILENAME = fileName;
 }
 
@@ -14,7 +13,8 @@ MetadataReader::MetadataReader(QString folderName, QString fileName) {
  * @param username uzivatelske jmeno
  * @return QList metadat
  */
-QList<QString> MetadataReader::loadMetadata(QString username) {
+QList<QString> MetadataReader::loadMetadata(QString folderName, QString username) {
+    FOLDER_NAME = folderName;
     // nalezeni slozky
     QDir dir(FOLDER_NAME + "/" + username);
     if (!dir.exists()) {
@@ -22,6 +22,9 @@ QList<QString> MetadataReader::loadMetadata(QString username) {
     }
 
     QFile *file = new QFile(FOLDER_NAME + "/" + username + "/" + FILENAME);
+    if (!file->exists()) {
+        return QList<QString>();
+    }
     file->open(QIODevice::ReadOnly);
 
     QTextStream in(file);

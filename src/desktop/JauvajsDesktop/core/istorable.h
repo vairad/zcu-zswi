@@ -16,7 +16,7 @@ public:
      * @brief saveMetadata
      * @param data list dat
      */
-    virtual void saveMetadata(QList<QString> data) = 0;
+    virtual void saveMetadata(QString folderName, QList<QString> data) = 0;
 };
 
 #endif // ISTORABLE_H

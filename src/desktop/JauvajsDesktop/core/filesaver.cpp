@@ -3,8 +3,7 @@
 #include <QDir>
 #include "filesaver.h"
 
-FileSaver::FileSaver(QString folderName, QString fileName) {
-    FOLDER_NAME = folderName;
+FileSaver::FileSaver(QString fileName) {
     FILENAME = fileName;
 }
 
@@ -12,9 +11,14 @@ FileSaver::FileSaver(QString folderName, QString fileName) {
  * Ulozi metadata do souboru
  * @brief FileSaver::saveMetadata
  */
-void FileSaver::saveMetadata(QList<QString> data) {
+void FileSaver::saveMetadata(QString folderName, QList<QString> data) {
+    FOLDER_NAME = folderName;
+
     // vytvoreni slozky pro data
     QDir dir(FOLDER_NAME);
+
+    printf("%s\n", FOLDER_NAME.toStdString().c_str());
+    printf("%s\n", dir.absolutePath().toStdString().c_str());
     if (!dir.exists()) {
       dir.mkdir(".");
     }
