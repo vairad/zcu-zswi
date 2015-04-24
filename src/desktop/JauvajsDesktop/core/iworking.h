@@ -6,8 +6,6 @@
 class IWorking
 {
 public:
-    IWorking();
-    ~IWorking();
 
     /** Predavani dat senzorum */
     virtual void transmitData(float data) = 0;

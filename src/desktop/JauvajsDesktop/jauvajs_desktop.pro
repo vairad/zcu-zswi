@@ -36,7 +36,6 @@ SOURCES += main.cpp\
     core/filesaver.cpp \
     core/fileminer.cpp \
     core/arduinominer.cpp \
-	core/iworking.cpp \
     core/metadatareader.cpp \
     gui/initialwindow.cpp
 
