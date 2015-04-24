@@ -7,12 +7,13 @@
 
 #include <QString>
 #include <QObject>
+#include <QThread>
 
 /**
  * Sprava dat ziskanych z IMiner a IStorable, predani dat konkretnim senzorum
  * @brief The DataManager class
  */
-class DataManager {
+class DataManager : public QThread {
 
     /** Privátní odkazy na senzory */
      IWorking *listenEKG;
@@ -54,6 +55,7 @@ public:
     /** zda jsou nacetena metadata */
     bool isSetMetadata;
 
+    void run();
 
     /** Nastavení listenerů patřičným senzorům */
     void setListenerEKG(IWorking *senzorEKG);

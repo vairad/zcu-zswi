@@ -5,6 +5,7 @@
 #include <QDir>
 #include <QRegExp>
 #include <QStringList>
+#include <QDebug>
 
 DataManager::DataManager() {
     FOLDER_NAME = "data";
@@ -223,6 +224,25 @@ void DataManager::setListenerPosition(IWorking *senzorPosition){
  */
 void DataManager::setListenerTemp(IWorking *senzorTemp){
     listenTemp = senzorTemp;
+}
+
+
+void DataManager::run(){
+    qDebug() << "run";
+    int count = 0;
+    while(count < 25000){
+        if(listenEKG != NULL){
+            listenEKG->transmitData(4.0);
+            qDebug() << "transmit" << (count % 25);
+        }else{
+            qDebug() << "NULL";
+        }
+        for(int i=0; i < 100000; i++){
+
+        }
+        count++;
+    }
+
 }
 
 DataManager::~DataManager() {

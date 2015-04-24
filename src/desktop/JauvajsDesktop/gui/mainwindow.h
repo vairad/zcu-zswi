@@ -20,7 +20,7 @@ class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(DataManager *manager, QWidget *parent = 0);
     ~MainWindow();
     void setUp();
     void cleanAll();

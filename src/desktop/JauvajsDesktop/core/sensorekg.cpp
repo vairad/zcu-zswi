@@ -1,5 +1,7 @@
 #include "core/sensorekg.h"
 
+#include <QDebug>
+
 SensorEKG::SensorEKG() {
     minY = 0;
     maxY = 5;
@@ -27,7 +29,8 @@ QGraphicsScene* SensorEKG::getSceneGraph() {
  * @param data prijata data
  */
 void SensorEKG::transmitData(float data){
-    this->validateData(data);
+   // this->validateData(data);
+    qDebug() << "přijatá data" << data ;
 }
 
 /**

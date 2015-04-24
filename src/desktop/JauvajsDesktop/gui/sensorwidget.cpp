@@ -307,6 +307,7 @@ void SensorWidget::cleanGraph() {
  */
 void SensorWidget::on_button_clicked() {
     new LoadFile(this);
+    updTEsENSORS = TRUE;
 }
 
 /**

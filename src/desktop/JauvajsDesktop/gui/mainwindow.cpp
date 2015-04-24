@@ -7,20 +7,25 @@
 #include "core/sensorgsr.h"
 #include "core/sensorheartrate.h"
 #include "core/datamanager.h"
+#include "core/iworking.h"
 
 /**
   Vytvori okno
  * @brief MainWindow::MainWindow
  * @param parent
  */
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
+MainWindow::MainWindow(DataManager *manager, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), dataManager(manager) {
     ui->setupUi(this);
     ui->verticalLayout_3->setAlignment(Qt::AlignTop);
-    dataManager = new DataManager();
+   // dataManager = new DataManager();
+   // dataManager = manager;
     initialWindow = new InitialWindow(dataManager, this);
 
+    SensorEKG *ekg = new SensorEKG();
+    dataManager->setListenerEKG(ekg);
+
     /* vytvoreni vsech senzoru a jejich pridani do okna */
-    sensors[0] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorEKG(), ui->scrollAreaWidgetContents_2);
+    sensors[0] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, ekg, ui->scrollAreaWidgetContents_2);
     sensors[1] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorTemp(), ui->scrollAreaWidgetContents_2);
     sensors[2] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorPosition(), ui->scrollAreaWidgetContents_2);
     sensors[3] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorOxy(), ui->scrollAreaWidgetContents_2);
