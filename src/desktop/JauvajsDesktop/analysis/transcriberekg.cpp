@@ -6,7 +6,6 @@
  * k samotnemu prepsani na charakteristicky retezec.
  * @brief TranscriberEKG::TranscriberEKG
  * @param data data k prepsani
- * @param size pocet hodnot v poli
  */
 TranscriberEKG::TranscriberEKG(vector <float> data) {
     setData(data);

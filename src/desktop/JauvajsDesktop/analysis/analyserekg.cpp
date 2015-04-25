@@ -1,8 +1,10 @@
 #include "analyserekg.h"
+#include <math.h>
 
 AnalyserEKG::AnalyserEKG(vector<float> data) {
-    transcriber = new TranscriberEKG(data);
-    transcriber->transcribeData();
+    this->transcriber = new TranscriberEKG(data);
+    this->transcriber->transcribeData();
+    this->string = transcriber->getString();
 }
 
 /**
@@ -13,7 +15,6 @@ AnalyserEKG::AnalyserEKG(vector<float> data) {
  */
 vector<float> AnalyserEKG::getRRInterval() {
     vector<float> interval;
-    vector<char> string = transcriber->getString();
     int i, counter = 0;
     bool isIn = false;
 
@@ -30,6 +31,46 @@ vector<float> AnalyserEKG::getRRInterval() {
     }
 
     return interval;
+}
+
+vector<float> AnalyserEKG::getPWave() {
+    vector<float> pWave;
+    int i;
+
+    for (i = 0; i < string.size(); i++) {
+
+    }
+
+    return pWave;
+}
+
+/**
+ * Analyzuje vlnu Q. Ulozi do vektoru pravdivostni hodnoty
+ * dle toho, zda je vlna v danem cyklu normalni.
+ * @brief AnalyserEKG::analyseQWave
+ * @return vektor pravdivostnich hodnot, zda je vlna v danych cyklech normalni
+ */
+vector<bool> AnalyserEKG::analyseQWave() {
+    vector<bool> qWave;
+    vector<float> differences = transcriber->getValueDifferences();
+    int i;
+
+    for (i = 0; i < string.size(); i++) {
+        if (string[i] == 'S' && i > 0) {
+            if (string[i - 1] == 'D' &&
+                    fabs(differences[i - 1]) < fabs (0.25 * differences[i])) {
+                if (i > 2) {
+                    if (differences[i - 3] > 0) {
+                        qWave.push_back(true); /* vlna je OK */
+                    } else {
+                        qWave.push_back(false); /* vlna není OK */
+                    }
+                }
+            }
+        }
+    }
+
+    return qWave;
 }
 
 AnalyserEKG::~AnalyserEKG() {

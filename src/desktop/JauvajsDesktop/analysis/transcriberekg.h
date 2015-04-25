@@ -6,8 +6,8 @@
 #define DIVING -1 /* prudke klesani, horni mez */
 #define UP 0.1 /* stoupani, dolni mez */
 #define DOWN -0.1 /* klesani, horni mez */
-#define LIGHTLY_UP 0.01 /* lehke stoupani, dolni mez */
-#define EASILY_DOWN -0.01 /* lehke klesani, horni mez */
+#define LIGHTLY_UP 0.05 /* lehke stoupani, dolni mez */
+#define EASILY_DOWN -0.05 /* lehke klesani, horni mez */
 
 using namespace std;
 
