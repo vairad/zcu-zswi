@@ -3,8 +3,9 @@
 #include "loadfile.h"
 #include <QGraphicsTextItem>
 
-SensorWidget::SensorWidget(QVBoxLayout *vLayout, QMenu *menuZobrazit, IDisplayable *sensor, QWidget *parent) : menuZobrazit(menuZobrazit), QWidget(parent) {
+SensorWidget::SensorWidget(QVBoxLayout *vLayout, QMenu *menuZobrazit, IDisplayable *sensor, GUILoop *loop, QWidget *parent) : menuZobrazit(menuZobrazit), QWidget(parent) {
     this->sensor = sensor;
+    this->loop = loop;
 
     this->setObjectName(QStringLiteral("widget"));
     this->setEnabled(true);
@@ -230,7 +231,7 @@ void SensorWidget::update(double value) {
 
         if (curve != NULL) scene->removeItem(curve); // odstaneni stare krivky z grafu
         curve = scene->addPath(*path, QPen(Qt::white)); // pridani aktualni krivky do grafu
-        graphicsView->viewport()->repaint(); // prekresleni
+        //graphicsView->viewport()->repaint(); // prekresleni
     }
     else {
         path = new QPainterPath(QPoint(LEFT_OFFSET, y)); // vytvoreni path s pocatecnim bodem
@@ -306,8 +307,8 @@ void SensorWidget::cleanGraph() {
  * @brief SensorWidget::on_button_clicked
  */
 void SensorWidget::on_button_clicked() {
-    new LoadFile(this);
-    updTEsENSORS = TRUE;
+    //new LoadFile(this);
+    loop->draw = true;
 }
 
 /**

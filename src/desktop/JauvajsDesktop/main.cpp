@@ -1,4 +1,5 @@
 #include "core/datamanager.h"
+#include "gui/guiloop.h"
 #include "gui/mainwindow.h"
 #include <QApplication>
 #include <QDebug>
@@ -14,10 +15,11 @@ int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
 
     DataManager manager;
+    GUILoop loop;
 
     qDebug()<<"manager loaded";
-
-    MainWindow w(&manager);
+    loop.start();
+    MainWindow w(&manager, &loop);
 
     qDebug()<<"main win const";
     w.show();
@@ -29,6 +31,7 @@ int main(int argc, char *argv[]) {
     manager.start();
 
     qDebug()<<"manager started";
+    //QObject::connect(&loop, SIGNAL(finished()), &a, SLOT(quit()));
 
     return a.exec();
 }

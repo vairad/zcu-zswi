@@ -8,13 +8,15 @@
 #include "core/sensorheartrate.h"
 #include "core/datamanager.h"
 #include "core/iworking.h"
+#include <QDebug>
 
 /**
   Vytvori okno
  * @brief MainWindow::MainWindow
  * @param parent
  */
-MainWindow::MainWindow(DataManager *manager, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), dataManager(manager) {
+MainWindow::MainWindow(DataManager *manager, GUILoop *loop, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), dataManager(manager) {
+    this->loop = loop;
     ui->setupUi(this);
     ui->verticalLayout_3->setAlignment(Qt::AlignTop);
    // dataManager = new DataManager();
@@ -22,15 +24,20 @@ MainWindow::MainWindow(DataManager *manager, QWidget *parent) : QMainWindow(pare
     initialWindow = new InitialWindow(dataManager, this);
 
     SensorEKG *ekg = new SensorEKG();
-    dataManager->setListenerEKG(ekg);
+    dataManager->setListenerEKG(ekg);   
 
     /* vytvoreni vsech senzoru a jejich pridani do okna */
-    sensors[0] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, ekg, ui->scrollAreaWidgetContents_2);
-    sensors[1] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorTemp(), ui->scrollAreaWidgetContents_2);
-    sensors[2] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorPosition(), ui->scrollAreaWidgetContents_2);
-    sensors[3] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorOxy(), ui->scrollAreaWidgetContents_2);
-    sensors[4] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorGSR(), ui->scrollAreaWidgetContents_2);
-    sensors[5] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorHeartRate(), ui->scrollAreaWidgetContents_2);
+    sensors[0] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, ekg, loop, ui->scrollAreaWidgetContents_2);
+    sensors[1] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorTemp(), loop, ui->scrollAreaWidgetContents_2);
+    sensors[2] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorPosition(), loop, ui->scrollAreaWidgetContents_2);
+    sensors[3] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorOxy(), loop, ui->scrollAreaWidgetContents_2);
+    sensors[4] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorGSR(), loop, ui->scrollAreaWidgetContents_2);
+    sensors[5] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorHeartRate(), loop, ui->scrollAreaWidgetContents_2);
+
+    //loop->sensorEKG = sensors[0];
+    qDebug() << "loop < sensorEKG";
+    connect(loop, SIGNAL(updateSignal(double)), sensors[0], SLOT(update(double)));
+    qDebug() << "connect";
 
     ui->label->setText("");
     ui->label_2->setText("");
@@ -53,6 +60,7 @@ void MainWindow::setUp() {
     if (!dataManager->isSetMetadata) {
         ui->actionU_ivatelsk_nastaven->setDisabled(true);
     }
+
 }
 
 /**
