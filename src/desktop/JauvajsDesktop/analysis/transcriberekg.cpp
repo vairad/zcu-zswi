@@ -8,9 +8,8 @@
  * @param data data k prepsani
  * @param size pocet hodnot v poli
  */
-TranscriberEKG::TranscriberEKG(float data[], int size) {
-    this->dataSize = size;
-    setData(data, dataSize);
+TranscriberEKG::TranscriberEKG(vector <float> data) {
+    setData(data);
 }
 
 /**
@@ -75,12 +74,12 @@ void TranscriberEKG::transcribeData() {
     bool section;
     char character;
 
-    if(data.empty()) {
+    if (data.empty()) {
         return;
     }
 
-    for (i = 0; i < dataSize; i++) {
-        if (i + 1 < dataSize) {
+    for (i = 0; i < data.size(); i++) {
+        if (i + 1 < data.size()) {
             valueDifferences.push_back(data[i + 1] - data[i]);
             section = isSection(from, i);
             if (section == true) {
@@ -102,14 +101,12 @@ void TranscriberEKG::transcribeData() {
  * Nastavi data, ktera se maji prepsat na retezec.
  * @brief TranscriberEKG::setData
  * @param data data, ktera se maji prepsat
- * @param size pocet prvku v poli dat
  */
-void TranscriberEKG::setData(float data[], int size) {
+void TranscriberEKG::setData(vector<float> data) {
     int i;
-    this->dataSize = size;
 
-    for (i = 0; i < dataSize; i++) {
-        this->data.push_back(data[i]);
+    for (i = 0; i < data.size(); i++) {
+        this->data[i] = data[i];
     }
 }
 

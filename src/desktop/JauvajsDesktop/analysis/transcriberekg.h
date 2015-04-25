@@ -9,8 +9,6 @@
 #define LIGHTLY_UP 0.01 /* lehke stoupani, dolni mez */
 #define EASILY_DOWN -0.01 /* lehke klesani, horni mez */
 
-#define DATA_SEC 50 /* pocet prijatych hodnot za sekundu */
-
 using namespace std;
 
 /**
@@ -20,9 +18,9 @@ using namespace std;
 class TranscriberEKG {
 
 public:
-    explicit TranscriberEKG(float data[], int size);
-    void setData(float data[], int size);
+    explicit TranscriberEKG(vector<float> data);
     void transcribeData();
+    void setData(vector<float> data);
     vector<char> getString();
     vector<float> getData();
     vector<float> getValueDifferences();
@@ -40,13 +38,10 @@ private:
     vector<float> sectionDifferences;
     /** Vektor delek jednotlivych useku */
     vector<int> sectionLengths;
-
     /** Prijata neprepsana data */
     vector<float> data;
     /** Charakteristicky retezec znaku (prepsana data, kde kazde pismeno znamena urcitou zmenu krivky) */
     vector<char> transcribedData;
-    /** Velikost prijatych neprepsanych dat (pocet hodnot) */
-    int dataSize;
 };
 
 #endif // TRANSCRIBEREKG_H
