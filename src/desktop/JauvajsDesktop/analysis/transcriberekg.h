@@ -9,6 +9,8 @@
 #define LIGHTLY_UP 0.01 /* lehke stoupani, dolni mez */
 #define EASILY_DOWN -0.01 /* lehke klesani, horni mez */
 
+#define DATA_SEC 50 /* pocet prijatych hodnot za sekundu */
+
 using namespace std;
 
 /**
@@ -23,6 +25,9 @@ public:
     void transcribeData();
     vector<char> getString();
     vector<float> getData();
+    vector<float> getValueDifferences();
+    vector<float> getSectionDifferences();
+    vector<float> getSectionLengths();
     ~TranscriberEKG();
 
 private:
@@ -35,12 +40,10 @@ private:
     vector<float> sectionDifferences;
     /** Vektor delek jednotlivych useku */
     vector<int> sectionLengths;
-    /** Vektor znaku, kde kazde pismeno znamena urcitou zmenu krivky */
-    vector<char> dataScale;
 
     /** Prijata neprepsana data */
     vector<float> data;
-    /** Charakteristicky retezec znaku (prepsana data) */
+    /** Charakteristicky retezec znaku (prepsana data, kde kazde pismeno znamena urcitou zmenu krivky) */
     vector<char> transcribedData;
     /** Velikost prijatych neprepsanych dat (pocet hodnot) */
     int dataSize;

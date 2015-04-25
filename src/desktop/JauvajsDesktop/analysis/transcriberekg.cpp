@@ -88,11 +88,7 @@ void TranscriberEKG::transcribeData() {
             }
 
             character = valuesToScale(valueDifferences[i]);
-            dataScale.push_back(character);
-
-            /* dokud nevymyslim spravny retezec, zustane tu
-               nasledujici radek, aby byl alespon nejaky vystup :-) */
-            transcribedData.push_back(character); // prozatimni reseni
+            transcribedData.push_back(character);
         }
     }
 
@@ -123,6 +119,18 @@ vector<char> TranscriberEKG::getString() {
 
 vector<float> TranscriberEKG::getData() {
     return data;
+}
+
+vector<float> TranscriberEKG::getValueDifferences() {
+    return valueDifferences;
+}
+
+vector<float> TranscriberEKG::getSectionDifferences() {
+    return sectionDifferences;
+}
+
+vector<float> TranscriberEKG::getSectionLengths() {
+    return sectionLengths;
 }
 
 TranscriberEKG::~TranscriberEKG() {
