@@ -36,7 +36,7 @@ void ArduinoMiner::findDevices() {
     emit changeStatus("Hledám zařízení...");
 
     this->deviceHandle = BluetoothFindFirstDevice(&this->btSearchParams, &this->btDeviceInfo);
-    while (true){
+    while (true) {
         QString foundDevices = QString::fromWCharArray(this->btDeviceInfo.szName);
         emit changeStatus("Nalezeno: "+foundDevices);
         if(foundDevices != ""){
@@ -97,15 +97,15 @@ void ArduinoMiner::startListening() {
         do { // smyčka pro příjem dat
           iResult = recv(BTsocket, recvbuf, recvbuflen, 0);
 
-          if (iResult > 0){
+          if (iResult > 0) {
               emit PrijmiData((QString)recvbuf);
-          }else if ( iResult == 0 ){
+          }else if ( iResult == 0 ) {
               emit changeStatus("Spojení uzavřeno");
           }else{
                emit changeStatus("Chyba příjmu dat, "+WSAGetLastError());
           }
 
-          if(this->status != STATUS_CONNECT){
+          if(this->status != STATUS_CONNECT) {
              break;
           }
 

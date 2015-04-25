@@ -79,43 +79,38 @@ void DataManager::getMetadata(QString username) {
  * @param row prijaty radek
  */
 void DataManager::transmitData(QString row) {
-    //split dle tabulatoru: [T&28	C&-1.00	R&6017652.50	H&1.241447	P&0	O&0.00	F&7]
-    row.replace("[", "");// odstraneni zavorek
-    row.replace("]", "");
-    QStringList cellData = row.split('\t');
-    foreach (const QString &cell, cellData) {
-        //mam data ve formatu (senzor)&(hodnota)
-        QStringList sensorData = cell.split('&');
-        QString sensorFlag = sensorData.at(0);
-        float sensorValue = sensorData.at(1).toFloat();
-        if(sensorFlag == "T") {
-            this->listenTemp->transmitData(sensorValue);
+
+    QStringList leftBracket = row.split('[');
+    if(leftBracket.size() == 2) {
+        // leva je nalezena, pracuji s pravou stranou
+
+        QStringList rightBracket = leftBracket[1].split(']');
+        if(rightBracket.size() == 2) {
+
+            //split dle tabulatoru: [T&28	C&-1.00	R&6017652.50	H&1.241447	P&0	O&0.00	F&7]
+            QStringList cellData = rightBracket[0].split('\t');
+            foreach (const QString &cell, cellData) {
+                //mam data ve formatu (senzor)&(hodnota)
+                QStringList sensorData = cell.split('&');
+                char sensorFlag = sensorData.at(0)[0].toLatin1(); // funkce .toAscii je zastaralá
+                float sensorValue = sensorData.at(1).toFloat();// hodnota za ampersandem
+
+                switch(sensorFlag)
+                {
+                    case 'T': this->listenTemp->transmitData(sensorValue);break;
+                    case 'P': this->listenHeartRate->transmitData(sensorValue);break;
+                    case 'O': this->listenOxy->transmitData(sensorValue);break;
+                    case 'V': this->listenGSR->transmitData(sensorValue);break;
+                    case 'H': this->listenEKG->transmitData(sensorValue);break;
+                    case 'A': this->listenPosition->transmitData(sensorValue);break;
+                    case 'F': this->listenOxy->transmitData(sensorValue);break;
+                default:
+                    // neznamy sensor
+                    break;
+                }
+            }
         }
-        else if(sensorFlag == "P") {
-            this->listenHeartRate->transmitData(sensorValue);
-        }
-        else if(sensorFlag == "O") {
-            this->listenOxy->transmitData(sensorValue);
-        }
-        else if(sensorFlag == "V") {
-            this->listenGSR->transmitData(sensorValue);
-        }
-        else if(sensorFlag == "R") {
-          //  TO DO
-        }
-        else if(sensorFlag == "H") {
-            this->listenEKG->transmitData(sensorValue);
-        }
-        else if(sensorFlag == "A") {
-            this->listenPosition->transmitData(sensorValue);
-        }
-        else if(sensorFlag == "F") {
-            this->listenOxy->transmitData(sensorValue);
-        }
-        else {
-            // neznamy sensor
-        }
-    }
+  }
 }
 
 /**
