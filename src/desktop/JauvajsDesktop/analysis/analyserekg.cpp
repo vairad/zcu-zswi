@@ -44,6 +44,39 @@ vector<float> AnalyserEKG::getPWave() {
     return pWave;
 }
 
+vector<bool> AnalyserEKG::analysePRInterval() {
+    vector<bool> pr;
+
+    return pr;
+}
+
+/**
+ * Zjisti trvani Q vlny ve vsech srdecnich cyklech.
+ * @brief AnalyserEKG::getQWaveDuration
+ * @return vektor trvani Q vlny ve vsech cyklech
+ */
+vector<int> AnalyserEKG::getQWaveDuration() {
+    vector<int> duration;
+    vector<float> differences = transcriber->getValueDifferences();
+    int i, j, counter;
+
+    for(i = 0; i < string.size(); i++) {
+        counter = 0;
+        if (string[i] == 'S') {
+            for(j = i; j > 0; j--) {
+                if (differences[j-1] < 0) { /* pocita, dokud vlna klesa */
+                    counter++;
+                } else {
+                    break;
+                }
+            }
+            duration.push_back(counter);
+        }
+    }
+
+    return duration;
+}
+
 /**
  * Analyzuje vlnu Q. Ulozi do vektoru pravdivostni hodnoty
  * dle toho, zda je vlna v danem cyklu normalni.
@@ -53,20 +86,20 @@ vector<float> AnalyserEKG::getPWave() {
 vector<bool> AnalyserEKG::analyseQWave() {
     vector<bool> qWave;
     vector<float> differences = transcriber->getValueDifferences();
-    int i;
+    int i, counter = 0;
 
     for (i = 0; i < string.size(); i++) {
         if (string[i] == 'S' && i > 0) {
-            if (string[i - 1] == 'D' &&
+            if (getQWaveDuration()[counter] == 1 && /* amplituda musi byt mensi nez 1/4 R vlny */
                     fabs(differences[i - 1]) < fabs (0.25 * differences[i])) {
-                if (i > 2) {
-                    if (differences[i - 3] > 0) {
-                        qWave.push_back(true); /* vlna je OK */
-                    } else {
-                        qWave.push_back(false); /* vlna není OK */
-                    }
-                }
+                qWave.push_back(true); /* vlna je OK */
+            } else if (getQWaveDuration()[counter] == 2 &&
+                       fabs(differences[i - 1] + differences[i - 2]) < fabs(0.25 * differences[i])) {
+                qWave.push_back(true); /* vlna je OK */
+            } else { /* klesani nesmi byt delsi nez 2 pismenka (0,04 s) */
+                qWave.push_back(false); /* vlna neni OK */
             }
+            counter++;
         }
     }
 

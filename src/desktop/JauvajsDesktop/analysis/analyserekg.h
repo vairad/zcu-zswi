@@ -23,8 +23,10 @@ public:
 private:
     vector<float> getRRInterval();
     vector<float> getPWave();
+    vector<int> getQWaveDuration();
 
     vector<bool> analyseQWave();
+    vector<bool> analysePRInterval();
 
     TranscriberEKG *transcriber;
     vector<char> string;
