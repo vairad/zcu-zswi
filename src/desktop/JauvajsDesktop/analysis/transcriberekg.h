@@ -27,7 +27,7 @@ public:
     vector<float> getData();
     vector<float> getValueDifferences();
     vector<float> getSectionDifferences();
-    vector<float> getSectionLengths();
+    vector<int> getSectionLengths();
     ~TranscriberEKG();
 
 private:

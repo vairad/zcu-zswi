@@ -129,7 +129,7 @@ vector<float> TranscriberEKG::getSectionDifferences() {
     return sectionDifferences;
 }
 
-vector<float> TranscriberEKG::getSectionLengths() {
+vector<int> TranscriberEKG::getSectionLengths() {
     return sectionLengths;
 }
 
