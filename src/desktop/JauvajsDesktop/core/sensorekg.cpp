@@ -29,8 +29,20 @@ QGraphicsScene* SensorEKG::getSceneGraph() {
  * @param data prijata data
  */
 void SensorEKG::transmitData(float data){
-   // this->validateData(data);
-    qDebug() << "přijatá data" << data ;
+    this->lastData = data;
+    // this->validateData(data);
+    //qDebug() << "přijatá data" << data ;
+}
+
+/**
+ * vrati posledni prijata data
+ * @brief SensorEKG::getLastData
+ * @return posledni data
+ */
+float SensorEKG::getLastData() {
+    float data = this->lastData;
+    this->lastData = std::numeric_limits<float>::quiet_NaN();
+    return data;
 }
 
 /**

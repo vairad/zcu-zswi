@@ -1,5 +1,6 @@
 #include "datamanager.h"
 #include "filesaver.h"
+#include "fileminer.h"
 
 #include <QList>
 #include <QDir>
@@ -13,6 +14,8 @@ DataManager::DataManager() {
 
     saver = new FileSaver(FILE_METADATA_NAME);
     metadataReader = new MetadataReader(FILE_METADATA_NAME);
+
+    draw = false;
 
     initSenzorListeners(); //všechny listenery nastaví na NULL
 
@@ -228,12 +231,16 @@ void DataManager::setListenerTemp(IWorking *senzorTemp){
 
 
 void DataManager::run(){
+    FileMiner *fileMiner = new FileMiner("ekg.dat");
     qDebug() << "run";
     int count = 0;
-    while(count < 25000){
+    while(count < 80000){
         if(listenEKG != NULL){
-            listenEKG->transmitData(4.0);
-            qDebug() << "transmit" << (count % 25);
+            if (draw && count % 60 == 0) {
+                listenEKG->transmitData(fileMiner->getLastIncoming().toFloat());
+            }
+
+            //qDebug() << "transmit" << (count % 25);
         }else{
             qDebug() << "NULL";
         }

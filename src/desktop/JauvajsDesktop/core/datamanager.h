@@ -55,6 +55,7 @@ public:
     /** zda jsou nacetena metadata */
     bool isSetMetadata;
 
+    bool draw;
     void run();
 
     /** Nastavení listenerů patřičným senzorům */

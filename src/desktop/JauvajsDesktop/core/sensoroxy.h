@@ -9,6 +9,7 @@ public:
     SensorOxy();
     QGraphicsScene* getSceneGraph();
     void transmitData(float);
+    float getLastData();
 
     ~SensorOxy();
 

@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
 
     DataManager manager;
-    GUILoop loop;
+    GUILoop loop(&manager);
 
     qDebug()<<"manager loaded";
     loop.start();

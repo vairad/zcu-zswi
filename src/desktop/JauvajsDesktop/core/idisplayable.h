@@ -14,6 +14,8 @@ public:
 
     /** vrati vytvoreny graf */
     virtual QGraphicsScene* getSceneGraph() = 0;
+    /** vrati posledni prijata data */
+    virtual float getLastData() = 0;
 
     QString getName();
 

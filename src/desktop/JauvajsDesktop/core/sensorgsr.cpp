@@ -31,6 +31,17 @@ void SensorGSR::transmitData(float data){
 }
 
 /**
+ * vrati posledni prijata data
+ * @brief SensorGSR::getLastData
+ * @return posledni data
+ */
+float SensorGSR::getLastData() {
+    float data = this->lastData;
+    this->lastData = std::numeric_limits<float>::quiet_NaN();
+    return data;
+}
+
+/**
  * Validuje prijata data a odesila je k vykresleni
  * @param data data k zvalidovani
  */

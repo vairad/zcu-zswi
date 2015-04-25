@@ -2,6 +2,7 @@
 #include <QApplication>
 #include "loadfile.h"
 #include <QGraphicsTextItem>
+#include <QDebug>
 
 SensorWidget::SensorWidget(QVBoxLayout *vLayout, QMenu *menuZobrazit, IDisplayable *sensor, GUILoop *loop, QWidget *parent) : menuZobrazit(menuZobrazit), QWidget(parent) {
     this->sensor = sensor;
@@ -219,7 +220,10 @@ void SensorWidget::on_action_toggled(bool arg1) {
  * @brief SensorWidget::update
  * @param value
  */
-void SensorWidget::update(double value) {
+void SensorWidget::update(double v) {
+    double value = sensor->getLastData();
+    if (value != value) return;
+    //qDebug() << "update with: " << value;
     int height = graphicsView->viewport()->height() - BOTTOM_OFFSET;
     int width = sensor->maxX - sensor->minX; // skutecna sirka (v jednotkach)
 
@@ -231,7 +235,7 @@ void SensorWidget::update(double value) {
 
         if (curve != NULL) scene->removeItem(curve); // odstaneni stare krivky z grafu
         curve = scene->addPath(*path, QPen(Qt::white)); // pridani aktualni krivky do grafu
-        //graphicsView->viewport()->repaint(); // prekresleni
+        graphicsView->viewport()->repaint(); // prekresleni
     }
     else {
         path = new QPainterPath(QPoint(LEFT_OFFSET, y)); // vytvoreni path s pocatecnim bodem

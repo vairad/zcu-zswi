@@ -31,6 +31,17 @@ void SensorOxy::transmitData(float data){
 }
 
 /**
+ * vrati posledni prijata data
+ * @brief SensorOxy::getLastData
+ * @return posledni data
+ */
+float SensorOxy::getLastData() {
+    float data = this->lastData;
+    this->lastData = std::numeric_limits<float>::quiet_NaN();
+    return data;
+}
+
+/**
  * Validuje prijata data a odesila je k vykresleni
  * @param data data k zvalidovani
  */

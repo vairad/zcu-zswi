@@ -3,8 +3,9 @@
 #include <QDebug>
 #include <QCoreApplication>
 
-GUILoop::GUILoop() {
+GUILoop::GUILoop(DataManager *manager) {
     draw = false;
+    this->manager = manager;
 }
 
 void GUILoop::run() {
@@ -13,6 +14,7 @@ void GUILoop::run() {
     int count = 0;
     while(count < 80000) {
         if (draw && count % 20 == 0) {
+            manager->draw = true;
             QCoreApplication::processEvents();
             emit updateSignal(2.5);
         }

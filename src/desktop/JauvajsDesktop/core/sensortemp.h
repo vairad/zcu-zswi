@@ -10,6 +10,8 @@ public:
     SensorTemp();
     QGraphicsScene* getSceneGraph();
     void transmitData(float);
+    float getLastData();
+
     ~SensorTemp();
 
 private:

@@ -9,6 +9,7 @@ public:
     SensorHeartRate();
     QGraphicsScene* getSceneGraph();
     void transmitData(float);
+    float getLastData();
 
     ~SensorHeartRate();
 
