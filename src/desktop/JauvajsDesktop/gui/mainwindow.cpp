@@ -9,6 +9,7 @@
 #include "core/datamanager.h"
 #include "core/iworking.h"
 #include <QDebug>
+#include <QDir>
 
 /**
   Vytvori okno
@@ -18,10 +19,11 @@
 MainWindow::MainWindow(DataManager *manager, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), dataManager(manager) {
     ui->setupUi(this);
     ui->verticalLayout_3->setAlignment(Qt::AlignTop);
-   // dataManager = new DataManager();
-   // dataManager = manager;
+
+    createToolBar();
     initialWindow = new InitialWindow(dataManager, this);
 
+    // Vytvoreni senzoru
     SensorEKG *ekg = new SensorEKG();
     SensorTemp *temp = new SensorTemp();
     SensorPosition *pos = new SensorPosition();
@@ -29,6 +31,7 @@ MainWindow::MainWindow(DataManager *manager, QWidget *parent) : QMainWindow(pare
     SensorGSR *gsr = new SensorGSR();
     SensorHeartRate *hr = new SensorHeartRate();
 
+    // Nastaveni listeneru
     dataManager->setListenerEKG(ekg);
     dataManager->setListenerTemp(temp);
     dataManager->setListenerOxy(oxy);
@@ -44,13 +47,45 @@ MainWindow::MainWindow(DataManager *manager, QWidget *parent) : QMainWindow(pare
     sensors[4] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, gsr, manager, ui->scrollAreaWidgetContents_2);
     sensors[5] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, hr, manager, ui->scrollAreaWidgetContents_2);
 
-    //loop->sensorEKG = sensors[0];
-    qDebug() << "loop < sensorEKG";
-    //connect(loop, SIGNAL(updateSignal(double)), sensors[0], SLOT(update(double)));
-    qDebug() << "connect";
-
     ui->label->setText("");
     ui->label_2->setText("");
+}
+
+/**
+ * Vytvori listu nastroju
+ * @brief MainWindow::createToolBar
+ */
+void MainWindow::createToolBar() {
+    QToolBar *toolbar = addToolBar("main toolbar");
+
+    // akce pro zahajeni snimani
+    QAction *startA = new QAction(this);
+    startA->setObjectName(QStringLiteral("action"));
+    startA->setText("Zahájit snímání");
+    QPixmap start("start.png");
+    startA->setIcon(QIcon(start));
+    connect(startA, SIGNAL(triggered()), this, SLOT(startScanning()));
+    toolbar->addAction(startA);
+
+    // akce pro ukonceni snimani
+    QAction *stopA = new QAction(this);
+    stopA->setObjectName(QStringLiteral("action"));
+    stopA->setText("Ukončit snímání");
+    QPixmap stop("stop.png");
+    stopA->setIcon(QIcon(stop));
+    connect(stopA, SIGNAL(triggered()), this, SLOT(stopScanning()));
+    toolbar->addAction(stopA);
+
+    // akce pro vycisteni vsech senzoru
+    QAction *cleanAllA = new QAction(this);
+    cleanAllA->setObjectName(QStringLiteral("action"));
+    cleanAllA->setText("Ukončit snímání");
+    QPixmap cleanAll("clean.png");
+    cleanAllA->setIcon(QIcon(cleanAll));
+    connect(cleanAllA, SIGNAL(triggered()), this, SLOT(cleanAll()));
+    toolbar->addAction(cleanAllA);
+
+    this->addToolBar(toolbar);
 }
 
 /**
@@ -81,6 +116,22 @@ void MainWindow::cleanAll() {
     for (int i = 0; i < NUMBER_OF_SENSORS; i++) {
        sensors[i]->cleanGraph();
     }
+}
+
+/**
+ * Zahaji snimani senzoru
+ * @brief MainWindow::startScanning
+ */
+void MainWindow::startScanning() {
+    dataManager->draw = true;
+}
+
+/**
+ * Ukonci snimani senzoru
+ * @brief MainWindow::stopScanning
+ */
+void MainWindow::stopScanning() {
+    dataManager->draw = false;
 }
 
 MainWindow::~MainWindow() {
