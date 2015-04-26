@@ -86,6 +86,7 @@ void GraphDescription::drawHorizontalLines() {
     int height = sensor->maxY - sensor->minY; // skutecna vyska
     int pxHeight = graphicsView->viewport()->height() - BOTTOM_OFFSET;// vyska v pixelech
     numberOfLines = height;
+    int tmp; // docasna hodnota poctu car
     // zvysovani poctu car dokud jich je min nez minNumberOfHorizontalLines
     while (numberOfLines < minNumberOfHorizontalLines) {
         numberOfLines *= 2;
@@ -98,11 +99,13 @@ void GraphDescription::drawHorizontalLines() {
         }
         // pokud je zbytek, pokusime se delit maxNumberOfHorizontalLines
         else {
+            tmp = numberOfLines;
             numberOfLines = height;
             while (numberOfLines > maxNumberOfHorizontalLines) {
                 numberOfLines /= maxNumberOfHorizontalLines;
             }
-            break;
+            if (numberOfLines >= minNumberOfHorizontalLines) break;
+            else numberOfLines = tmp - 1;
         }
     }
 
