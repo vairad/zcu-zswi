@@ -50,63 +50,11 @@ unsigned short last_check[SENSOR_COUNT];
 uint8_t pulsCount = 0;
 int cycle_delay;
 
-//  Note :  The Xbee modules must be configured previously.
-//  See the next link http://www.cooking-hacks.com/index.php/documentation/tutorials/arduino-xbee-shield
-
-void bt_setup() {
-  delay(SETUP_WAIT);
-  Serial.print("AT+JSEC=1,1,2,04,0000\r\n"); // Enable security command
-  
-  delay(SETUP_WAIT);
-  Serial.print("AT+JSLN=10,JauvajsIno\r\n"); // Setup name of device
-  
-  delay(SETUP_WAIT);  
-  Serial.print("AT+JDIS=3\r\n"); // Discoverable command
-  
-  delay(SETUP_WAIT);
-  Serial.print("AT+JRLS=1101,11,Serial Port,01,000000\r\n"); // Register local sevice command
-  
-  delay(SETUP_WAIT);
-  Serial.print("AT+JAAC=1\r\n");// Auto accept connection requests command
-  
-  delay(SETUP_WAIT);
-  pinMode(LED, OUTPUT);
-  digitalWrite(LED, LOW);
-  
-  Serial.flush();
-
-  //wait until BT module will be configured
-  int val = Serial.read();
-  while (val != 'R') {
-    val = Serial.read();
-  }
-  
-  Serial.print("AT+JSCR\r\n"); // Stream Connection Request command
-}
-
-// taken from http://codereview.stackexchange.com/questions/37189/euclids-algorithm-greatest-common-divisor/37267#37267
-// greatest common divisor
-int gcd(unsigned int m, unsigned int n) {
-    if(!m || !n)
-        return(0);
-
-    for (int r = m%n; r; m = n, n = r, r = m%n);
-
-    return(n);
-}
-
-// calculates time gaps between measures for every sensor for given number of measures per 1000 millis
-// returns cycle delay as greatest common divisor of all the calculated values
-int calc_gaps() {
-  for (int i = 0; i < SENSOR_COUNT; i++) {
-    measure_gaps[i] = 1000 / measure_gaps[i];
-  }
-  int g_c_d = measure_gaps[0];
-  for (int i = 1; i < SENSOR_COUNT; i++) {
-    g_c_d = gcd(g_c_d, measure_gaps[i]);
-  }
-  return g_c_d;
-}
+/*  
+ * #######################
+ *     Main functions
+ * #######################
+ */
 
 void setup() {
   Serial.begin(BAUD_RATE);
@@ -168,6 +116,73 @@ void loop() {
     second_done();
   }
 }
+
+/*  
+ * #######################
+ *      Setup-related
+ * #######################
+ */
+
+void bt_setup() {
+  delay(SETUP_WAIT);
+  Serial.print("AT+JSEC=1,1,2,04,0000\r\n"); // Enable security command
+  
+  delay(SETUP_WAIT);
+  Serial.print("AT+JSLN=10,JauvajsIno\r\n"); // Setup name of device
+  
+  delay(SETUP_WAIT);  
+  Serial.print("AT+JDIS=3\r\n"); // Discoverable command
+  
+  delay(SETUP_WAIT);
+  Serial.print("AT+JRLS=1101,11,Serial Port,01,000000\r\n"); // Register local sevice command
+  
+  delay(SETUP_WAIT);
+  Serial.print("AT+JAAC=1\r\n");// Auto accept connection requests command
+  
+  delay(SETUP_WAIT);
+  pinMode(LED, OUTPUT);
+  digitalWrite(LED, LOW);
+  
+  Serial.flush();
+
+  //wait until BT module will be configured
+  int val = Serial.read();
+  while (val != 'R') {
+    val = Serial.read();
+  }
+  
+  Serial.print("AT+JSCR\r\n"); // Stream Connection Request command
+}
+
+// taken from http://codereview.stackexchange.com/questions/37189/euclids-algorithm-greatest-common-divisor/37267#37267
+// greatest common divisor
+int gcd(unsigned int m, unsigned int n) {
+    if(!m || !n)
+        return(0);
+
+    for (int r = m%n; r; m = n, n = r, r = m%n);
+
+    return(n);
+}
+
+// calculates time gaps between measures for every sensor for given number of measures per 1000 millis
+// returns cycle delay as greatest common divisor of all the calculated values
+int calc_gaps() {
+  for (int i = 0; i < SENSOR_COUNT; i++) {
+    measure_gaps[i] = 1000 / measure_gaps[i];
+  }
+  int g_c_d = measure_gaps[0];
+  for (int i = 1; i < SENSOR_COUNT; i++) {
+    g_c_d = gcd(g_c_d, measure_gaps[i]);
+  }
+  return g_c_d;
+}
+
+/*  
+ * #######################
+ *       Loop related
+ * #######################
+ */
 
 void second_done() {
   seconds_online++;
