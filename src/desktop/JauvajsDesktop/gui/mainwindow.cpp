@@ -79,7 +79,7 @@ void MainWindow::createToolBar() {
     // akce pro vycisteni vsech senzoru
     QAction *cleanAllA = new QAction(this);
     cleanAllA->setObjectName(QStringLiteral("action"));
-    cleanAllA->setText("Ukončit snímání");
+    cleanAllA->setText("Vyčistit vše");
     QPixmap cleanAll("clean.png");
     cleanAllA->setIcon(QIcon(cleanAll));
     connect(cleanAllA, SIGNAL(triggered()), this, SLOT(cleanAll()));
@@ -187,4 +187,19 @@ void MainWindow::on_actionZm_na_u_ivatele_triggered() {
  */
 void MainWindow::on_actionVy_istit_v_e_triggered() {
     cleanAll();
+}
+
+/**
+ * Dotaz pred zavrenim aplikace
+ * @brief MainWindow::closeEvent
+ * @param event
+ */
+void MainWindow::closeEvent(QCloseEvent *event) {
+    int reply = QMessageBox::question(this, "Zavřít", "Opravdu chcete ukončit aplikaci?", "Ano", "Ne");
+    if (reply == 0) {
+        QApplication::closeAllWindows();
+        event->accept();
+    } else {
+        event->ignore();
+    }
 }

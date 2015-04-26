@@ -24,6 +24,7 @@ public:
     ~MainWindow();
     void createToolBar();
     void setUp();
+    void closeEvent(QCloseEvent *event);
     /** uvodni okno */
     InitialWindow *initialWindow;
     static const int NUMBER_OF_SENSORS = 6;
