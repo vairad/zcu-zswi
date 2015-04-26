@@ -130,17 +130,18 @@ void setup() {
 }
 
 void loop() {
-  float SPO2, BPM, temperature, conductance, resistance, EKG;
-  int   airflow;
-  uint8_t pos;
   boolean indent = false;
+  float vals[SENSOR_COUNT];
   
   int i;
-  float vals[SENSOR_COUNT];
+  
+  // printing timestamp
+  Serial.print(seconds_online); Serial.print(':');
+  Serial.print(millis_state);   Serial.print('\t');
   
   // reading values 
   for (i = 0; i < SENSOR_COUNT; i++) {
-    if(last_check[i] + measure_delay[i] < millis_state) { continue; }
+    if(millis_state - last_check[i] - measure_delay[i] > measure_gaps[i]) { continue; }
     
     vals[i] = get_sensor_value(i);
     last_check[i] = millis_state;
@@ -161,6 +162,7 @@ void loop() {
   Serial.println("]");
   // Reduce this delay for more data rate
   delay(cycle_delay);
+  
   millis_state += cycle_delay;
   if(millis_state >= 1000){
     second_done();
