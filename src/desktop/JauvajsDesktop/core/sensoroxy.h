@@ -4,7 +4,7 @@
 #include "core/iworking.h"
 #include "core/idisplayable.h"
 
-class SensorOxy : public IDisplayable, IWorking {
+class SensorOxy : public IDisplayable, public IWorking {
 public:
     SensorOxy();
     QGraphicsScene* getSceneGraph();

@@ -15,8 +15,7 @@
  * @brief MainWindow::MainWindow
  * @param parent
  */
-MainWindow::MainWindow(DataManager *manager, GUILoop *loop, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), dataManager(manager) {
-    this->loop = loop;
+MainWindow::MainWindow(DataManager *manager, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), dataManager(manager) {
     ui->setupUi(this);
     ui->verticalLayout_3->setAlignment(Qt::AlignTop);
    // dataManager = new DataManager();
@@ -24,19 +23,30 @@ MainWindow::MainWindow(DataManager *manager, GUILoop *loop, QWidget *parent) : Q
     initialWindow = new InitialWindow(dataManager, this);
 
     SensorEKG *ekg = new SensorEKG();
-    dataManager->setListenerEKG(ekg);   
+    SensorTemp *temp = new SensorTemp();
+    SensorPosition *pos = new SensorPosition();
+    SensorOxy *oxy = new SensorOxy();
+    SensorGSR *gsr = new SensorGSR();
+    SensorHeartRate *hr = new SensorHeartRate();
+
+    dataManager->setListenerEKG(ekg);
+    dataManager->setListenerTemp(temp);
+    dataManager->setListenerOxy(oxy);
+    dataManager->setListenerPosition(pos);
+    dataManager->setListenerGSR(gsr);
+    dataManager->setListenerHearthRate(hr);
 
     /* vytvoreni vsech senzoru a jejich pridani do okna */
-    sensors[0] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, ekg, loop, ui->scrollAreaWidgetContents_2);
-    sensors[1] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorTemp(), loop, ui->scrollAreaWidgetContents_2);
-    sensors[2] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorPosition(), loop, ui->scrollAreaWidgetContents_2);
-    sensors[3] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorOxy(), loop, ui->scrollAreaWidgetContents_2);
-    sensors[4] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorGSR(), loop, ui->scrollAreaWidgetContents_2);
-    sensors[5] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorHeartRate(), loop, ui->scrollAreaWidgetContents_2);
+    sensors[0] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, ekg, manager, ui->scrollAreaWidgetContents_2);
+    sensors[1] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, temp, manager, ui->scrollAreaWidgetContents_2);
+    sensors[2] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, pos, manager, ui->scrollAreaWidgetContents_2);
+    sensors[3] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, oxy, manager, ui->scrollAreaWidgetContents_2);
+    sensors[4] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, gsr, manager, ui->scrollAreaWidgetContents_2);
+    sensors[5] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, hr, manager, ui->scrollAreaWidgetContents_2);
 
     //loop->sensorEKG = sensors[0];
     qDebug() << "loop < sensorEKG";
-    connect(loop, SIGNAL(updateSignal(double)), sensors[0], SLOT(update(double)));
+    //connect(loop, SIGNAL(updateSignal(double)), sensors[0], SLOT(update(double)));
     qDebug() << "connect";
 
     ui->label->setText("");

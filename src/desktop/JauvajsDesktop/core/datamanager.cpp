@@ -234,19 +234,34 @@ void DataManager::run(){
     FileMiner *fileMiner = new FileMiner("ekg.dat");
     qDebug() << "run";
     int count = 0;
-    while(count < 80000){
-        if(listenEKG != NULL){
-            if (draw && count % 60 == 0) {
-                listenEKG->transmitData(fileMiner->getLastIncoming().toFloat());
-            }
+    while (true) {
+        if (listenEKG != NULL) {
+            if (count == 300) {
+                if (draw) {
+                    QString data = fileMiner->getLastIncoming();
+                    if (data != NULL) {
+                        //if (count % 10 == 0)
+                            //qDebug() << "data: " << (data.toFloat());
+                            listenEKG->transmitData(data.toFloat());
+                            listenTemp->transmitData(data.toFloat());
+                            listenOxy->transmitData(data.toFloat());
+                            listenPosition->transmitData(data.toFloat());
+                            listenGSR->transmitData(data.toFloat());
+                            listenHeartRate->transmitData(data.toFloat());
+                    }
+                    else {
+                        draw = false;
+                    }
 
+                }
+                count = 0;
+            }
             //qDebug() << "transmit" << (count % 25);
-        }else{
+        } else {
             qDebug() << "NULL";
         }
-        for(int i=0; i < 100000; i++){
 
-        }
+        for(int i=0; i < 100000; i++) {}
         count++;
     }
 

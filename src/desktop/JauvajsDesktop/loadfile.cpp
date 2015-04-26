@@ -23,7 +23,7 @@ void LoadFile::run2() {
     int i = 0;
 
     while (fscanf(f, "%f", &value) == 1 /*&& i<500*/) {
-        g->update(value);
+        //g->update(value);
         //printf("%d\n", i);
         i++;
     }
@@ -44,7 +44,7 @@ void LoadFile::run() {
 
         QString line = miner.getLastIncoming(); //read last line from miner OR NULL
         while (line != NULL){
-            g->update(line.toDouble()); //this line is not possible for Arduino data
+            //g->update(line.toDouble()); //this line is not possible for Arduino data
 
             line = miner.getLastIncoming();
         }

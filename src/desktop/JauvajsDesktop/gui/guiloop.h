@@ -9,7 +9,7 @@ Q_OBJECT
 public:
     GUILoop(DataManager *manager);
     ~GUILoop();
-    void run();
+    //void run();
 
     bool draw;
     DataManager *manager;

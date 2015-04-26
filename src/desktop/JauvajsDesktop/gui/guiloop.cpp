@@ -8,22 +8,25 @@ GUILoop::GUILoop(DataManager *manager) {
     this->manager = manager;
 }
 
-void GUILoop::run() {
+/*void GUILoop::run() {
     qDebug() << "run GUI loop";
 
     int count = 0;
-    while(count < 80000) {
-        if (draw && count % 20 == 0) {
-            manager->draw = true;
-            QCoreApplication::processEvents();
-            emit updateSignal(2.5);
+    while (true) {
+        if (count == 20) {
+            if (draw) {
+                manager->draw = true;
+                QCoreApplication::processEvents();
+                //emit updateSignal(2.5);
+            }
+            count = 0;
         }
         //qDebug() << count;
 
         for(int i=0; i < 100000; i++) {}
         count++;
     }
-}
+}*/
 
 GUILoop::~GUILoop() {
 

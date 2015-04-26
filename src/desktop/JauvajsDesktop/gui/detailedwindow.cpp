@@ -65,7 +65,7 @@ void DetailedWindow::update(double value) {
 
         if (curve != NULL) {scene->removeItem(curve); /*printf("odstranena\n");*/} // odstaneni stare krivky z grafu
         curve = scene->addPath(*path, QPen(Qt::white)); // pridani aktualni krivky do grafu
-        graphicsView->viewport()->repaint(); // prekresleni
+        //graphicsView->viewport()->repaint(); // prekresleni
     }
     else {
         path = new QPainterPath(QPoint(LEFT_OFFSET, y)); // vytvoreni path s pocatecnim bodem

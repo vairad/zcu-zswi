@@ -20,7 +20,7 @@ class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
-    explicit MainWindow(DataManager *manager, GUILoop *loop, QWidget *parent = 0);
+    explicit MainWindow(DataManager *manager, QWidget *parent = 0);
     ~MainWindow();
     void setUp();
     void cleanAll();
@@ -33,8 +33,6 @@ public:
     DataManager *dataManager;
     /** dialog metadat */
     MetaDialog *metaDialog;
-
-    GUILoop *loop;
 
 public slots:
     void setMetadata();

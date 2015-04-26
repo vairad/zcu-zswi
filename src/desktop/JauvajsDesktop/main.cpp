@@ -15,11 +15,11 @@ int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
 
     DataManager manager;
-    GUILoop loop(&manager);
+    //GUILoop loop(&manager);
 
     qDebug()<<"manager loaded";
-    loop.start();
-    MainWindow w(&manager, &loop);
+    //loop.start();
+    MainWindow w(&manager);
 
     qDebug()<<"main win const";
     w.show();

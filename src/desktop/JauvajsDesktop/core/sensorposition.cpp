@@ -27,7 +27,8 @@ QGraphicsScene* SensorPosition::getSceneGraph() {
  * @param data prijata data
  */
 void SensorPosition::transmitData(float data){
-   this->validateData(data);
+   emit haveData(data);
+    //this->validateData(data);
 }
 
 /**

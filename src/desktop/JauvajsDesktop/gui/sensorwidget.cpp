@@ -4,9 +4,9 @@
 #include <QGraphicsTextItem>
 #include <QDebug>
 
-SensorWidget::SensorWidget(QVBoxLayout *vLayout, QMenu *menuZobrazit, IDisplayable *sensor, GUILoop *loop, QWidget *parent) : menuZobrazit(menuZobrazit), QWidget(parent) {
+SensorWidget::SensorWidget(QVBoxLayout *vLayout, QMenu *menuZobrazit, IDisplayable *sensor, DataManager *manager, QWidget *parent) : menuZobrazit(menuZobrazit), QWidget(parent) {
     this->sensor = sensor;
-    this->loop = loop;
+    this->manager = manager;
 
     this->setObjectName(QStringLiteral("widget"));
     this->setEnabled(true);
@@ -31,6 +31,8 @@ SensorWidget::SensorWidget(QVBoxLayout *vLayout, QMenu *menuZobrazit, IDisplayab
     curve = NULL;
     curve2 = NULL;
     transcription = false;
+
+    connect(sensor, SIGNAL(haveData(float)), this, SLOT(update2(float)));
 }
 
 /**
@@ -220,8 +222,8 @@ void SensorWidget::on_action_toggled(bool arg1) {
  * @brief SensorWidget::update
  * @param value
  */
-void SensorWidget::update(double v) {
-    double value = sensor->getLastData();
+void SensorWidget::update2(float value) {
+    //double value = sensor->getLastData();
     if (value != value) return;
     //qDebug() << "update with: " << value;
     int height = graphicsView->viewport()->height() - BOTTOM_OFFSET;
@@ -235,7 +237,7 @@ void SensorWidget::update(double v) {
 
         if (curve != NULL) scene->removeItem(curve); // odstaneni stare krivky z grafu
         curve = scene->addPath(*path, QPen(Qt::white)); // pridani aktualni krivky do grafu
-        graphicsView->viewport()->repaint(); // prekresleni
+        //graphicsView->viewport()->repaint(); // prekresleni
     }
     else {
         path = new QPainterPath(QPoint(LEFT_OFFSET, y)); // vytvoreni path s pocatecnim bodem
@@ -312,7 +314,8 @@ void SensorWidget::cleanGraph() {
  */
 void SensorWidget::on_button_clicked() {
     //new LoadFile(this);
-    loop->draw = true;
+    //loop->draw = true;
+    manager->draw = true;
 }
 
 /**

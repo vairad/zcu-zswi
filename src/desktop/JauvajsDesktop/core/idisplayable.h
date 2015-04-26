@@ -2,12 +2,14 @@
 #define IDISPLAYABLE
 
 #include <QGraphicsScene>
+#include <QObject>
 
 /**
  * Rozhrani pripravi scenu pro SensorWidget
  * @brief The IDisplayable class
  */
-class IDisplayable {
+class IDisplayable : public QObject {
+Q_OBJECT
 public:
     IDisplayable();
     ~IDisplayable();
@@ -37,6 +39,10 @@ public:
 protected:
     /** nazev senzoru */
     QString name;
+
+signals:
+    void haveData(float);
+
 };
 
 #endif // IDISPLAYABLE

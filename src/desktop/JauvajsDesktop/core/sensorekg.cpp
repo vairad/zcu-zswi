@@ -30,6 +30,7 @@ QGraphicsScene* SensorEKG::getSceneGraph() {
  */
 void SensorEKG::transmitData(float data){
     this->lastData = data;
+    emit haveData(data);
     // this->validateData(data);
     //qDebug() << "přijatá data" << data ;
 }
