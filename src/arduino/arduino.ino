@@ -38,9 +38,14 @@
 // sensor organisation
 //                                EKG  TEMP COND RESI BPM  SPO2 ACCE AIRF
 char sensor_labels[]           = {'E', 'T', 'C', 'R', 'P', 'O', 'A', 'F'};
-unsigned char dec_positions[] = { 6 ,  0 ,  2 ,  2 ,  0 ,  0 ,  0 ,  0 };
+unsigned char dec_positions[]  = { 6 ,  0 ,  2 ,  2 ,  0 ,  0 ,  0 ,  0 };
 // number of measures to be made per second / 1000 millis
 int measure_gaps[]             = { 50,  1 ,  4 ,  4 ,  2 ,  2 ,  5 ,  25};
+byte measure_delay[]           = { 0,   20,  50,  60,  30,  40,  70,  10};
+
+unsigned short seconds_online = 0;
+unsigned short millis_state = 0;
+unsigned short last_check[SENSOR_COUNT];
 
 uint8_t pulsCount = 0;
 int cycle_delay;
@@ -135,17 +140,20 @@ void loop() {
   
   // reading values 
   for (i = 0; i < SENSOR_COUNT; i++) {
+    if(last_check[i] + measure_delay[i] < millis_state) { continue; }
+    
     vals[i] = get_sensor_value(i);
+    last_check[i] = millis_state;
   }
   
   // printing values 
   Serial.print("[");
   for (int i = 0; i < SENSOR_COUNT; i++) {
-    if (indent) {
-      Serial.print("\t");
-    } else {
-      indent = true;
-    }
+    if(last_check[i] != millis_state) { continue; }
+    
+    if (indent) { Serial.print("\t"); }
+    else { indent = true; }
+    
     fprint_val( sensor_labels[i], vals[i], dec_positions[i]);
   }
   
@@ -153,6 +161,18 @@ void loop() {
   Serial.println("]");
   // Reduce this delay for more data rate
   delay(cycle_delay);
+  millis_state += cycle_delay;
+  if(millis_state >= 1000){
+    second_done();
+  }
+}
+
+void second_done() {
+  seconds_online++;
+  millis_state -= 1000;
+  for(int i = 0; i < SENSOR_COUNT; i++){
+    last_check[i] -= 1000;
+  }
 }
 
 float get_sensor_value(int S) {
