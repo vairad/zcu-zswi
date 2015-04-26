@@ -27,7 +27,19 @@ QGraphicsScene* SensorOxy::getSceneGraph() {
  * @param data prijata data
  */
 void SensorOxy::transmitData(float data){
-    this->validateData(data);
+    emit haveData(data);
+    //this->validateData(data);
+}
+
+/**
+ * vrati posledni prijata data
+ * @brief SensorOxy::getLastData
+ * @return posledni data
+ */
+float SensorOxy::getLastData() {
+    float data = this->lastData;
+    this->lastData = std::numeric_limits<float>::quiet_NaN();
+    return data;
 }
 
 /**

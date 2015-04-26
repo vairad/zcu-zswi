@@ -9,6 +9,8 @@ public:
 
     /** Predavani dat senzorum */
     virtual void transmitData(float data) = 0;
+    /** posledni prijata data */
+    float lastData;
 
 private:
 

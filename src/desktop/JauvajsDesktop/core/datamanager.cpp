@@ -1,10 +1,13 @@
 #include "datamanager.h"
 #include "filesaver.h"
+#include "fileminer.h"
 
 #include <QList>
 #include <QDir>
 #include <QRegExp>
 #include <QStringList>
+#include <QDebug>
+#include <QCoreApplication>
 
 DataManager::DataManager() {
     FOLDER_NAME = "data";
@@ -12,6 +15,8 @@ DataManager::DataManager() {
 
     saver = new FileSaver(FILE_METADATA_NAME);
     metadataReader = new MetadataReader(FILE_METADATA_NAME);
+
+    draw = false;
 
     initSenzorListeners(); //všechny listenery nastaví na NULL
 
@@ -153,6 +158,10 @@ void DataManager::logoutUser() {
     name[1] = "";
     username = "";
     isSetMetadata = false;
+
+    for (int i = 0; i < NUMBER_OF_SENSORS; i++) {
+        sensors[i] = true;
+    }
 }
 
 /**
@@ -218,6 +227,45 @@ void DataManager::setListenerPosition(IWorking *senzorPosition){
  */
 void DataManager::setListenerTemp(IWorking *senzorTemp){
     listenTemp = senzorTemp;
+}
+
+
+void DataManager::run() {
+    FileMiner *fileMiner = new FileMiner("ekg.dat");
+    //qDebug() << "run";
+    int count = 0;
+    while (true) {
+        if (listenEKG != NULL) {
+            if (count == 50) {
+                if (draw) {
+                    QCoreApplication::processEvents();
+                    QString data = fileMiner->getLastIncoming();
+                    if (data != NULL) {
+                        //if (count % 10 == 0)
+                        //qDebug() << "data: " << (data.toFloat());
+                        listenEKG->transmitData(data.toFloat());
+                        listenTemp->transmitData(data.toFloat());
+                        listenOxy->transmitData(data.toFloat());
+                        listenPosition->transmitData(data.toFloat());
+                        listenGSR->transmitData(data.toFloat());
+                        listenHeartRate->transmitData(data.toFloat());
+                    }
+                    else {
+                        draw = false;
+                    }
+
+                }
+                count = 0;
+            }
+            //qDebug() << "transmit" << (count % 25);
+        } else {
+            qDebug() << "NULL";
+        }
+
+        for(int i=0; i < 100000; i++) {}
+        count++;
+    }
+
 }
 
 DataManager::~DataManager() {

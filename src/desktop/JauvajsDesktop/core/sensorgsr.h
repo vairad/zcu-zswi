@@ -9,6 +9,7 @@ public:
     SensorGSR();
     QGraphicsScene* getSceneGraph();
     void transmitData(float data);
+    float getLastData();
 
     ~SensorGSR();
 

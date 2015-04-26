@@ -11,6 +11,7 @@ public:
     SensorEKG();
     QGraphicsScene* getSceneGraph();
     void transmitData(float data);
+    float getLastData();
 
     ~SensorEKG();
 

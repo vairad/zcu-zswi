@@ -2,9 +2,11 @@
 #include <QApplication>
 #include "loadfile.h"
 #include <QGraphicsTextItem>
+#include <QDebug>
 
-SensorWidget::SensorWidget(QVBoxLayout *vLayout, QMenu *menuZobrazit, IDisplayable *sensor, QWidget *parent) : menuZobrazit(menuZobrazit), QWidget(parent) {
+SensorWidget::SensorWidget(QVBoxLayout *vLayout, QMenu *menuZobrazit, IDisplayable *sensor, DataManager *manager, QWidget *parent) : menuZobrazit(menuZobrazit), QWidget(parent) {
     this->sensor = sensor;
+    this->manager = manager;
 
     this->setObjectName(QStringLiteral("widget"));
     this->setEnabled(true);
@@ -29,6 +31,9 @@ SensorWidget::SensorWidget(QVBoxLayout *vLayout, QMenu *menuZobrazit, IDisplayab
     curve = NULL;
     curve2 = NULL;
     transcription = false;
+
+    // propojeni signalu indikujici ziskani dat z Arduina s metodou update2 pro vykresleni
+    connect(sensor, SIGNAL(haveData(float)), this, SLOT(update2(float)));
 }
 
 /**
@@ -53,10 +58,10 @@ void SensorWidget::createLeftBox() {
     widget->setMinimumSize(QSize(150, 0));
     widget->setMaximumSize(QSize(150, 16777215));
 
-    button = new QPushButton(widget);
-    button->setObjectName(QStringLiteral("button"));
-    button->setGeometry(QRect(10, 50, 131, 23));
-    button->setText(QApplication::translate("MainWindow", "Zah\303\241jit z\303\241znam", 0));
+    //button = new QPushButton(widget);
+    //button->setObjectName(QStringLiteral("button"));
+    //button->setGeometry(QRect(10, 50, 131, 23));
+    //button->setText(QApplication::translate("MainWindow", "Zah\303\241jit z\303\241znam", 0));
 
     button2 = new QPushButton(widget);
     button2->setObjectName(QStringLiteral("button2"));
@@ -179,6 +184,7 @@ void SensorWidget::setUp() {
     drawVerticalLines();
     drawHorizontalLines();
     drawNumbers();
+
     if (!isVisible) {
         hide();
         action1->setChecked(false);
@@ -218,7 +224,9 @@ void SensorWidget::on_action_toggled(bool arg1) {
  * @brief SensorWidget::update
  * @param value
  */
-void SensorWidget::update(double value) {
+void SensorWidget::update2(float value) {
+    if (value != value) return;
+
     int height = graphicsView->viewport()->height() - BOTTOM_OFFSET;
     int width = sensor->maxX - sensor->minX; // skutecna sirka (v jednotkach)
 
@@ -228,9 +236,12 @@ void SensorWidget::update(double value) {
     if (path != NULL) {
         path->lineTo(x, y); //  pridani dalsi hodnoty do path
 
-        if (curve != NULL) scene->removeItem(curve); // odstaneni stare krivky z grafu
-        curve = scene->addPath(*path, QPen(Qt::white)); // pridani aktualni krivky do grafu
-        graphicsView->viewport()->repaint(); // prekresleni
+        if (x % 3 == 0) {
+            if (curve != NULL) scene->removeItem(curve); // odstaneni stare krivky z grafu
+            curve = scene->addPath(*path, QPen(Qt::white)); // pridani aktualni krivky do grafu
+            //graphicsView->viewport()->repaint(); // prekresleni
+        }
+
     }
     else {
         path = new QPainterPath(QPoint(LEFT_OFFSET, y)); // vytvoreni path s pocatecnim bodem
@@ -278,6 +289,7 @@ void SensorWidget::update(double value) {
  */
 void SensorWidget::resetGraph() {
     sensor->time = 0;
+    delete path;
     path = NULL;
 }
 
@@ -288,13 +300,16 @@ void SensorWidget::resetGraph() {
 void SensorWidget::cleanGraph() {
     if (curve != NULL) {
         scene->removeItem(curve); // odstaneni stare krivky z grafu
+        delete curve;
         curve = NULL;
     }
     if (curve2 != NULL){
         scene->removeItem(curve2); // odstaneni stare krivky z grafu
+        delete curve2;
         curve2 = NULL;
     }
     sensor->time = 0;
+    delete path;
     path = NULL;
     transcription = false;
     values.clear();
@@ -305,9 +320,9 @@ void SensorWidget::cleanGraph() {
  * Udalost na stisk Zahajit zaznam
  * @brief SensorWidget::on_button_clicked
  */
-void SensorWidget::on_button_clicked() {
-    new LoadFile(this);
-}
+//void SensorWidget::on_button_clicked() {
+//    manager->draw = true;
+//}
 
 /**
  * Udalost na stisk Vyčisti

@@ -5,6 +5,8 @@
 
 #include "gui/detailedwindow.h"
 #include "gui/graphdescription.h"
+#include "gui/guiloop.h"
+
 
 #include <QWidget>
 #include <QPushButton>
@@ -16,6 +18,7 @@
 #include <QMenu>
 #include <QGraphicsLineItem>
 
+
 /**
  * Reprezentace widgetu - podokno zobrazene ve ScrollArea, obsluhuje akce uzivatele
  * @brief The SensorWidget class
@@ -23,14 +26,14 @@
 class SensorWidget : public QWidget, public GraphDescription {
     Q_OBJECT
 public:
-    explicit SensorWidget(QVBoxLayout *vLayout, QMenu *menuZobrazit, IDisplayable *sensor, QWidget *parent = 0);
+    explicit SensorWidget(QVBoxLayout *vLayout, QMenu *menuZobrazit, IDisplayable *sensor, DataManager *manager, QWidget *parent = 0);
     void createLayout();
     void createLeftBox();
     void createGraphicsView();
     void createAction();
     void zobrazit();
     void setUp();
-    void update(double value);
+   // void update(double value);
     void repaintGraph();
     void resetGraph();
     void cleanGraph();
@@ -40,12 +43,16 @@ public:
     /** nastaveni viditelnosti widgetu */
     bool isVisible;
 
+    GUILoop *loop;
+    DataManager *manager;
+
 signals:
 
 public slots:
-    void on_button_clicked();
+    //void on_button_clicked();
     void on_button2_clicked();
     void on_action_toggled(bool arg1);
+    void update2(float value);
 
 signals:
     void visible(bool arg1);

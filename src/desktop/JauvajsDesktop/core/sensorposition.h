@@ -9,6 +9,7 @@ public:
     SensorPosition();
     QGraphicsScene* getSceneGraph();
     void transmitData(float);
+    float getLastData();
 
     ~SensorPosition();
 

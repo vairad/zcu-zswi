@@ -27,7 +27,19 @@ QGraphicsScene* SensorHeartRate::getSceneGraph() {
  * @param data prijata data
  */
 void SensorHeartRate::transmitData(float data){
-   this->validateData(data);
+    emit haveData(data);
+    //this->validateData(data);
+}
+
+/**
+ * vrati posledni prijata data
+ * @brief SensorHeartRate::getLastData
+ * @return posledni data
+ */
+float SensorHeartRate::getLastData() {
+    float data = this->lastData;
+    this->lastData = std::numeric_limits<float>::quiet_NaN();
+    return data;
 }
 
 /**

@@ -27,7 +27,19 @@ QGraphicsScene* SensorTemp::getSceneGraph() {
  * @param data prijata data
  */
 void SensorTemp::transmitData(float data){
-    this->validateData(data);
+    emit haveData(data);
+    //this->validateData(data);
+}
+
+/**
+ * vrati posledni prijata data
+ * @brief SensorTemp::getLastData
+ * @return posledni data
+ */
+float SensorTemp::getLastData() {
+    float data = this->lastData;
+    this->lastData = std::numeric_limits<float>::quiet_NaN();
+    return data;
 }
 
 /**

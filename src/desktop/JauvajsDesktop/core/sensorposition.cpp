@@ -27,7 +27,19 @@ QGraphicsScene* SensorPosition::getSceneGraph() {
  * @param data prijata data
  */
 void SensorPosition::transmitData(float data){
-   this->validateData(data);
+   emit haveData(data);
+    //this->validateData(data);
+}
+
+/**
+ * vrati posledni prijata data
+ * @brief SensorPosition::getLastData
+ * @return posledni data
+ */
+float SensorPosition::getLastData() {
+    float data = this->lastData;
+    this->lastData = std::numeric_limits<float>::quiet_NaN();
+    return data;
 }
 
 /**

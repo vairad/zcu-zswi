@@ -7,28 +7,85 @@
 #include "core/sensorgsr.h"
 #include "core/sensorheartrate.h"
 #include "core/datamanager.h"
+#include "core/iworking.h"
+#include <QDebug>
+#include <QDir>
 
 /**
   Vytvori okno
  * @brief MainWindow::MainWindow
  * @param parent
  */
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
+MainWindow::MainWindow(DataManager *manager, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), dataManager(manager) {
     ui->setupUi(this);
     ui->verticalLayout_3->setAlignment(Qt::AlignTop);
-    dataManager = new DataManager();
+
+    createToolBar();
     initialWindow = new InitialWindow(dataManager, this);
 
+    // Vytvoreni senzoru
+    SensorEKG *ekg = new SensorEKG();
+    SensorTemp *temp = new SensorTemp();
+    SensorPosition *pos = new SensorPosition();
+    SensorOxy *oxy = new SensorOxy();
+    SensorGSR *gsr = new SensorGSR();
+    SensorHeartRate *hr = new SensorHeartRate();
+
+    // Nastaveni listeneru
+    dataManager->setListenerEKG(ekg);
+    dataManager->setListenerTemp(temp);
+    dataManager->setListenerOxy(oxy);
+    dataManager->setListenerPosition(pos);
+    dataManager->setListenerGSR(gsr);
+    dataManager->setListenerHearthRate(hr);
+
     /* vytvoreni vsech senzoru a jejich pridani do okna */
-    sensors[0] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorEKG(), ui->scrollAreaWidgetContents_2);
-    sensors[1] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorTemp(), ui->scrollAreaWidgetContents_2);
-    sensors[2] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorPosition(), ui->scrollAreaWidgetContents_2);
-    sensors[3] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorOxy(), ui->scrollAreaWidgetContents_2);
-    sensors[4] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorGSR(), ui->scrollAreaWidgetContents_2);
-    sensors[5] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, new SensorHeartRate(), ui->scrollAreaWidgetContents_2);
+    sensors[0] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, ekg, manager, ui->scrollAreaWidgetContents_2);
+    sensors[1] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, temp, manager, ui->scrollAreaWidgetContents_2);
+    sensors[2] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, pos, manager, ui->scrollAreaWidgetContents_2);
+    sensors[3] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, oxy, manager, ui->scrollAreaWidgetContents_2);
+    sensors[4] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, gsr, manager, ui->scrollAreaWidgetContents_2);
+    sensors[5] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, hr, manager, ui->scrollAreaWidgetContents_2);
 
     ui->label->setText("");
     ui->label_2->setText("");
+}
+
+/**
+ * Vytvori listu nastroju
+ * @brief MainWindow::createToolBar
+ */
+void MainWindow::createToolBar() {
+    QToolBar *toolbar = addToolBar("main toolbar");
+
+    // akce pro zahajeni snimani
+    QAction *startA = new QAction(this);
+    startA->setObjectName(QStringLiteral("action"));
+    startA->setText("Zahájit snímání");
+    QPixmap start("start.png");
+    startA->setIcon(QIcon(start));
+    connect(startA, SIGNAL(triggered()), this, SLOT(startScanning()));
+    toolbar->addAction(startA);
+
+    // akce pro ukonceni snimani
+    QAction *stopA = new QAction(this);
+    stopA->setObjectName(QStringLiteral("action"));
+    stopA->setText("Ukončit snímání");
+    QPixmap stop("stop.png");
+    stopA->setIcon(QIcon(stop));
+    connect(stopA, SIGNAL(triggered()), this, SLOT(stopScanning()));
+    toolbar->addAction(stopA);
+
+    // akce pro vycisteni vsech senzoru
+    QAction *cleanAllA = new QAction(this);
+    cleanAllA->setObjectName(QStringLiteral("action"));
+    cleanAllA->setText("Ukončit snímání");
+    QPixmap cleanAll("clean.png");
+    cleanAllA->setIcon(QIcon(cleanAll));
+    connect(cleanAllA, SIGNAL(triggered()), this, SLOT(cleanAll()));
+    toolbar->addAction(cleanAllA);
+
+    this->addToolBar(toolbar);
 }
 
 /**
@@ -48,6 +105,7 @@ void MainWindow::setUp() {
     if (!dataManager->isSetMetadata) {
         ui->actionU_ivatelsk_nastaven->setDisabled(true);
     }
+
 }
 
 /**
@@ -58,6 +116,22 @@ void MainWindow::cleanAll() {
     for (int i = 0; i < NUMBER_OF_SENSORS; i++) {
        sensors[i]->cleanGraph();
     }
+}
+
+/**
+ * Zahaji snimani senzoru
+ * @brief MainWindow::startScanning
+ */
+void MainWindow::startScanning() {
+    dataManager->draw = true;
+}
+
+/**
+ * Ukonci snimani senzoru
+ * @brief MainWindow::stopScanning
+ */
+void MainWindow::stopScanning() {
+    dataManager->draw = false;
 }
 
 MainWindow::~MainWindow() {
