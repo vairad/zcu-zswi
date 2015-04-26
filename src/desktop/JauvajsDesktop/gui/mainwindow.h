@@ -1,12 +1,12 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QMainWindow>
+
 #include "gui/ui_mainwindow.h"
-#include "gui/guiloop.h"
 #include "gui/sensorwidget.h"
 #include "gui/metadialog.h"
 #include "gui/initialwindow.h"
-#include <QMainWindow>
 
 namespace Ui {
 class MainWindow;

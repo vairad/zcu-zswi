@@ -1,9 +1,10 @@
-#include "ArduinoMiner.h"
 #include <Winsock2.h>
 #include <Windows.h>
 #include <BluetoothAPIs.h>
 #include <Ws2bth.h>
 #include <QtCore>
+
+#include "ArduinoMiner.h"
 
 ArduinoMiner::ArduinoMiner(QObject *parent): QThread(parent) {
     this->btSearchParams.dwSize = sizeof(BLUETOOTH_DEVICE_SEARCH_PARAMS);

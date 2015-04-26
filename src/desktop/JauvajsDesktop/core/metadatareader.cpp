@@ -1,6 +1,7 @@
 #include <QDir>
 #include <QFile>
 #include <QTextStream>
+
 #include "metadatareader.h"
 
 MetadataReader::MetadataReader(QString fileName) {

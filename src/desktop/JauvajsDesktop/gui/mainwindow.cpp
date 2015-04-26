@@ -1,4 +1,6 @@
 #include <QtWidgets>
+#include <QDir>
+
 #include "gui/mainwindow.h"
 #include "core/sensorekg.h"
 #include "core/sensortemp.h"
@@ -8,8 +10,6 @@
 #include "core/sensorheartrate.h"
 #include "core/datamanager.h"
 #include "core/iworking.h"
-#include <QDebug>
-#include <QDir>
 
 /**
   Vytvori okno
@@ -19,6 +19,7 @@
 MainWindow::MainWindow(DataManager *manager, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), dataManager(manager) {
     ui->setupUi(this);
     ui->verticalLayout_3->setAlignment(Qt::AlignTop);
+    this->showMaximized();
 
     createToolBar();
     initialWindow = new InitialWindow(dataManager, this);
@@ -40,12 +41,12 @@ MainWindow::MainWindow(DataManager *manager, QWidget *parent) : QMainWindow(pare
     dataManager->setListenerHearthRate(hr);
 
     /* vytvoreni vsech senzoru a jejich pridani do okna */
-    sensors[0] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, ekg, manager, ui->scrollAreaWidgetContents_2);
-    sensors[1] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, temp, manager, ui->scrollAreaWidgetContents_2);
-    sensors[2] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, pos, manager, ui->scrollAreaWidgetContents_2);
-    sensors[3] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, oxy, manager, ui->scrollAreaWidgetContents_2);
-    sensors[4] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, gsr, manager, ui->scrollAreaWidgetContents_2);
-    sensors[5] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, hr, manager, ui->scrollAreaWidgetContents_2);
+    sensors[0] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, ekg, ui->scrollAreaWidgetContents_2);
+    sensors[1] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, temp, ui->scrollAreaWidgetContents_2);
+    sensors[2] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, pos, ui->scrollAreaWidgetContents_2);
+    sensors[3] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, oxy, ui->scrollAreaWidgetContents_2);
+    sensors[4] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, gsr, ui->scrollAreaWidgetContents_2);
+    sensors[5] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, hr, ui->scrollAreaWidgetContents_2);
 
     ui->label->setText("");
     ui->label_2->setText("");

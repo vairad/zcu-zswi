@@ -1,13 +1,13 @@
-#include "datamanager.h"
-#include "filesaver.h"
-#include "fileminer.h"
-
 #include <QList>
 #include <QDir>
 #include <QRegExp>
 #include <QStringList>
 #include <QDebug>
 #include <QCoreApplication>
+
+#include "datamanager.h"
+#include "filesaver.h"
+#include "fileminer.h"
 
 DataManager::DataManager() {
     FOLDER_NAME = "data";

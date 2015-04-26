@@ -1,6 +1,7 @@
-#include "detailedwindow.h"
 #include <QHBoxLayout>
 #include <QGraphicsView>
+
+#include "detailedwindow.h"
 
 /**
  * Vytvori detailni okno senzoru

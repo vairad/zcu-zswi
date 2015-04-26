@@ -17,7 +17,6 @@ LIBS += -lBTHPROPS
 @
 
 SOURCES += main.cpp\
-    loadfile.cpp \
     core/idisplayable.cpp \
     core/sensorekg.cpp \
     core/sensorgsr.cpp \
@@ -37,11 +36,9 @@ SOURCES += main.cpp\
     core/fileminer.cpp \
     core/arduinominer.cpp \
     core/metadatareader.cpp \
-    gui/initialwindow.cpp \
-    gui/guiloop.cpp
+    gui/initialwindow.cpp
 
 HEADERS  += main.h\
-    loadfile.h \
     core/idisplayable.h \
     core/sensorekg.h \
     core/sensorgsr.h \
@@ -67,7 +64,6 @@ HEADERS  += main.h\
     core/arduinominer.h \
 	core/iworking.h \
     core/metadatareader.h \
-    gui/initialwindow.h \
-    gui/guiloop.h
+    gui/initialwindow.h
 
 FORMS    += gui/mainwindow.ui

@@ -1,5 +1,4 @@
 #include "core/datamanager.h"
-#include "gui/guiloop.h"
 #include "gui/mainwindow.h"
 #include <QApplication>
 

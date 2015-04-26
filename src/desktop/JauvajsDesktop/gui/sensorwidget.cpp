@@ -1,12 +1,11 @@
-#include "gui/sensorwidget.h"
 #include <QApplication>
-#include "loadfile.h"
 #include <QGraphicsTextItem>
 #include <QDebug>
 
-SensorWidget::SensorWidget(QVBoxLayout *vLayout, QMenu *menuZobrazit, IDisplayable *sensor, DataManager *manager, QWidget *parent) : menuZobrazit(menuZobrazit), QWidget(parent) {
+#include "gui/sensorwidget.h"
+
+SensorWidget::SensorWidget(QVBoxLayout *vLayout, QMenu *menuZobrazit, IDisplayable *sensor, QWidget *parent) : menuZobrazit(menuZobrazit), QWidget(parent) {
     this->sensor = sensor;
-    this->manager = manager;
 
     this->setObjectName(QStringLiteral("widget"));
     this->setEnabled(true);

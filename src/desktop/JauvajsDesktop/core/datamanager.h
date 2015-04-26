@@ -1,13 +1,13 @@
 #ifndef DATAMANAGER_H
 #define DATAMANAGER_H
 
-#include "core/metadatareader.h"
-#include "core/istorable.h"
-#include "core/iworking.h"
-
 #include <QString>
 #include <QObject>
 #include <QThread>
+
+#include "core/metadatareader.h"
+#include "core/istorable.h"
+#include "core/iworking.h"
 
 /**
  * Sprava dat ziskanych z IMiner a IStorable, predani dat konkretnim senzorum

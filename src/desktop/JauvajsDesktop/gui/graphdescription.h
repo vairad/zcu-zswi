@@ -1,10 +1,10 @@
 #ifndef GRAPHDESCRIPTION_H
 #define GRAPHDESCRIPTION_H
 
-#include "core/idisplayable.h"
-
 #include <QGraphicsView>
 #include <QGraphicsLineItem>
+
+#include "core/idisplayable.h"
 
 /**
  * Zajistuje vykresleni popisu a mrizky grafu
@@ -49,7 +49,7 @@ protected:
     /** interval vertikalnich tucnych car */
     int verticalLinesBoldInterval;
     /** sirka grafu */
-    static const int WIDTH = 1500;
+    static const int WIDTH = 2000;
     /** minimalni pocet horizontalnich car v grafu */
     int minNumberOfHorizontalLines;
     /** maximalni pocet horizontalnich car v grafu */

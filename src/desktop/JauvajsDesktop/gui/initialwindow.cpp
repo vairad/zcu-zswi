@@ -1,6 +1,7 @@
-#include "initialwindow.h"
 #include <QApplication>
 #include <QButtonGroup>
+
+#include "initialwindow.h"
 #include "mainwindow.h"
 
 /**

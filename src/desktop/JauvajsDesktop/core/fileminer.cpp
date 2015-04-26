@@ -1,12 +1,10 @@
-#include "fileminer.h"
-
 #include <QString>
 #include <QFile>
 #include <QTextStream>
 #include <QException>
-
 //#include <QDebug>
 
+#include "fileminer.h"
 
 FileMiner::FileMiner(QString fileName){
     sourceFile.setFileName(fileName);

@@ -1,13 +1,13 @@
 #ifndef INITIALWINDOW_H
 #define INITIALWINDOW_H
 
-#include "core/datamanager.h"
-
 #include <QDialog>
 #include <QWidget>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QVBoxLayout>
 #include <QListWidget>
+
+#include "core/datamanager.h"
 
 /**
  * Reprezentace labelu, ktery narozdil od QLabel umoznuje signal clicked
