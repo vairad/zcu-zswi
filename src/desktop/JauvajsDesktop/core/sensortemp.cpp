@@ -10,6 +10,7 @@ SensorTemp::SensorTemp() {
 
     name = "Teplota";
     unit = "°C";
+    isAnalysable = false;
 }
 
 /**

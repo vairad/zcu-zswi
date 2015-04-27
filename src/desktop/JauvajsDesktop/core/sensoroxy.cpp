@@ -10,6 +10,7 @@ SensorOxy::SensorOxy() {
 
     name = "Okysličení";
     unit = "%";
+    isAnalysable = false;
 }
 
 /**

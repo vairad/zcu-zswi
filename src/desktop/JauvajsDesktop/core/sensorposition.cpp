@@ -10,6 +10,7 @@ SensorPosition::SensorPosition() {
 
     name = "Poloha";
     unit = "";
+    isAnalysable = false;
 }
 
 /**

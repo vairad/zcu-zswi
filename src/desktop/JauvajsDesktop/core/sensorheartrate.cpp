@@ -10,6 +10,7 @@ SensorHeartRate::SensorHeartRate() {
 
     name = "Puls";
     unit = "PPM";
+    isAnalysable = false;
 }
 
 /**

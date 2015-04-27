@@ -12,6 +12,7 @@ SensorEKG::SensorEKG() {
 
     name = "EKG";
     unit = "mV";
+    isAnalysable = true;
 }
 
 /**

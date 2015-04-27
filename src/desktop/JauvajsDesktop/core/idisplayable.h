@@ -35,6 +35,8 @@ public:
     double timeInterval;
     /** jednotka zobrazovane veliciny na ose Y */
     QString unit;
+    /** true pokud je senzor analyzovatelny */
+    bool isAnalysable;
 
 protected:
     /** nazev senzoru */
