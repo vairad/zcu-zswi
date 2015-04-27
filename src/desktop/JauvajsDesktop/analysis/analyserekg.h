@@ -15,21 +15,28 @@ class AnalyserEKG {
 
 public:
     explicit AnalyserEKG(vector<float> data);
-    void setFlag(char flag[]);
-    void monitorFrequency();
-    char* identifyDeviation();
+    unsigned int getNumberOfCycles();
+    float getAverageCycleDuration();
+    float getNormalityPercentage();
+    void analyse();
     ~AnalyserEKG();
 
 private:
-    vector<float> getRRInterval();
-    vector<float> getPWave();
+    vector<float> getRRIntervalDuration();
+    vector<int> getPWaveDuration();
     vector<int> getQWaveDuration();
+    vector<int> getPRIntervalDuration();
+    vector<int> getQRSDuration();
 
     vector<bool> analyseQWave();
     vector<bool> analysePRInterval();
+    vector<bool> analysePWave();
+
+    float normalityPercentage;
 
     TranscriberEKG *transcriber;
     vector<char> string;
+    vector<float> differences;
 };
 
 #endif // ANALYSEREKG_H
