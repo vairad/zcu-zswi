@@ -1,3 +1,5 @@
+#include <limits>
+
 #include "core/sensorposition.h"
 
 SensorPosition::SensorPosition() {

@@ -1,3 +1,5 @@
+#include <limits>
+
 #include "core/sensoroxy.h"
 
 SensorOxy::SensorOxy() {

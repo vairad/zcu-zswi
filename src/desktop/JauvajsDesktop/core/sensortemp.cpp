@@ -1,3 +1,5 @@
+#include <limits>
+
 #include "core/sensortemp.h"
 
 SensorTemp::SensorTemp() {

@@ -1,3 +1,5 @@
+#include <limits>
+
 #include "core/sensorgsr.h"
 
 SensorGSR::SensorGSR() {

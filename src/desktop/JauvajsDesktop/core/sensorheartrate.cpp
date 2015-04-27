@@ -1,3 +1,5 @@
+#include <limits>
+
 #include "core/sensorheartrate.h"
 
 SensorHeartRate::SensorHeartRate() {
