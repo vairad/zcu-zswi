@@ -39,7 +39,7 @@ public:
     bool isVisible;
 
 public slots:
-    //void on_button_clicked();
+    void on_button_clicked();
     void on_button2_clicked();
     void on_action_toggled(bool arg1);
     void update2(float value);

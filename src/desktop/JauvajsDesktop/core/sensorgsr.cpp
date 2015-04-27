@@ -10,6 +10,7 @@ SensorGSR::SensorGSR() {
 
     name = "GSR";
     unit = "S";
+    isAnalysable = false;
 }
 
 /**

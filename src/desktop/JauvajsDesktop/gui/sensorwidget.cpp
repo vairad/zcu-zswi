@@ -3,6 +3,7 @@
 #include <QDebug>
 
 #include "gui/sensorwidget.h"
+#include "gui/analysiswindow.h"
 
 SensorWidget::SensorWidget(QVBoxLayout *vLayout, QMenu *menuZobrazit, IDisplayable *sensor, QWidget *parent) : menuZobrazit(menuZobrazit), QWidget(parent) {
     this->sensor = sensor;
@@ -57,10 +58,16 @@ void SensorWidget::createLeftBox() {
     widget->setMinimumSize(QSize(150, 0));
     widget->setMaximumSize(QSize(150, 16777215));
 
-    //button = new QPushButton(widget);
-    //button->setObjectName(QStringLiteral("button"));
-    //button->setGeometry(QRect(10, 50, 131, 23));
-    //button->setText(QApplication::translate("MainWindow", "Zah\303\241jit z\303\241znam", 0));
+    button = new QPushButton(widget);
+    button->setObjectName(QStringLiteral("button"));
+    button->setGeometry(QRect(10, 50, 131, 23));
+    button->setText(QApplication::translate("MainWindow", "Analyzuj", 0));
+    if (sensor->isAnalysable) {
+        button->setVisible(true);
+    }
+    else {
+        button->setVisible(false);
+    }
 
     button2 = new QPushButton(widget);
     button2->setObjectName(QStringLiteral("button2"));
@@ -316,12 +323,12 @@ void SensorWidget::cleanGraph() {
 }
 
 /**
- * Udalost na stisk Zahajit zaznam
+ * Udalost na stisk Analyzuj
  * @brief SensorWidget::on_button_clicked
  */
-//void SensorWidget::on_button_clicked() {
-//    manager->draw = true;
-//}
+void SensorWidget::on_button_clicked() {
+    new AnalysisWindow(this);
+}
 
 /**
  * Udalost na stisk Vyčisti
