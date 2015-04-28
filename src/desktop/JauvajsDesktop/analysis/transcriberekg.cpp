@@ -102,11 +102,7 @@ void TranscriberEKG::transcribeData() {
  * @param data data, ktera se maji prepsat
  */
 void TranscriberEKG::setData(vector<float> data) {
-    int i;
-
-    for (i = 0; i < data.size(); i++) {
-        this->data[i] = data[i];
-    }
+   this->data = data;
 }
 
 vector<char> TranscriberEKG::getString() {
