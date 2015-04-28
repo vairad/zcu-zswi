@@ -38,7 +38,7 @@ SOURCES += main.cpp\
     core/metadatareader.cpp \
     gui/initialwindow.cpp \
     gui/analysiswindow.cpp \
-    gui/connectionwindow.cpp
+    gui/connectionwindow.cpp \
     core/fileproblemexception.cpp
 
 HEADERS  += main.h\
@@ -69,7 +69,7 @@ HEADERS  += main.h\
     core/metadatareader.h \
     gui/initialwindow.h \
     gui/analysiswindow.h \
-    core/fileproblemexception.h
+    core/fileproblemexception.h \
     gui/connectionwindow.h
 
 FORMS    += gui/mainwindow.ui
