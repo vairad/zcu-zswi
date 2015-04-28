@@ -22,17 +22,26 @@ public:
     ~AnalyserEKG();
 
 private:
-    vector<float> getRRIntervalDuration();
+    vector<int> getRWaveIndex();
+    int getLeftRWaveDuration(int index);
+    float getRWaveAmplitude(int index);
+    int getRightRWaveDuration(int index);
+    int getSDuration(int index);
+
+    vector<int> getRRIntervalDuration();
     vector<int> getPWaveDuration();
     vector<int> getQWaveDuration();
     vector<int> getPRIntervalDuration();
     vector<int> getQRSDuration();
 
+
     vector<bool> analyseQWave();
+    vector<bool> analyseQRS();
     vector<bool> analysePRInterval();
     vector<bool> analysePWave();
 
     float normalityPercentage;
+    int firstRWaveIndex;
 
     TranscriberEKG *transcriber;
     vector<char> string;
