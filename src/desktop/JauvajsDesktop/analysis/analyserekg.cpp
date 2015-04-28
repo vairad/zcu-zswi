@@ -1,5 +1,4 @@
 #include <math.h>
-#include <QDebug>
 
 #include "analyserekg.h"
 
@@ -24,12 +23,37 @@ vector<float> AnalyserEKG::getRRIntervalDuration() {
 
     for (i = 0; i < string.size(); i++) {
         if (string[i] == 'S' && isIn == false) {
-            counter = 0;
+            if (i + 2 < differences.size() && differences[i + 1] > 0 && differences[i + 2] > 0) {
+              /* strme stoupani by nemelo trvat dlouho, nesmi se splest s jinou vlnou */
+              continue;
+            }
+            if (i + 1 < differences.size() && differences[i + 1] > 0) {
+                i++; /* nekdy R vlna ma delsi trvani, tzn. pocita, dokud se stale stoupa */
+            }
+
             isIn = true;
         } else if (string[i] == 'S' && isIn == true) {
-            interval.push_back((float)(counter / DATA_SEC));
+            if (i + 2 < differences.size() && differences[i + 1] > 0 && differences[i + 2] > 0) {
+              counter++; /* strme stoupani by nemelo trvat dlouho, nesmi se splest s jinou vlnou */
+              continue;
+            }
+            if (i + 1 < differences.size() && differences[i + 1] > 0) {
+                counter++;
+                i++; /* nekdy R vlna ma delsi trvani, tzn. pocita, dokud se stale stoupa */
+            }
+            interval.push_back((counter / (float)DATA_SEC));
             counter = 0;
 
+        } else if (string[i] == 'V' && isIn == false) {
+            if (i - 2 > 0 && string[i - 1] == 'U' && string[i - 2] == 'U') {
+                counter = 0; /* nekdy velkemu spadu nepredchazi kratke prudke stoupani, ale delsi stredni */
+                isIn = true;
+            }
+        } else if (string[i] == 'V' && isIn == true) {
+            if (i - 2 > 0 && string[i - 1] == 'U' && string[i - 2] == 'U') {
+                interval.push_back(((counter - 1) / (float)DATA_SEC));
+                counter = 0;
+            }
         }
         counter++;
     }
@@ -61,7 +85,7 @@ float AnalyserEKG::getAverageCycleDuration() {
         duration += interval[i];
     }
 
-    duration /= interval.size();
+    duration = duration / (float)interval.size();
     return duration;
 }
 
