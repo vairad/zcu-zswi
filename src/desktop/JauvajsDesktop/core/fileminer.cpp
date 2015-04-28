@@ -2,9 +2,11 @@
 #include <QFile>
 #include <QTextStream>
 #include <QException>
+
 //#include <QDebug>
 
-#include "fileminer.h"
+#include "core/fileminer.h"
+#include "core/fileproblemexception.h"
 
 FileMiner::FileMiner(QString fileName){
     sourceFile.setFileName(fileName);
@@ -13,7 +15,7 @@ FileMiner::FileMiner(QString fileName){
     if(opened){
         in = new QTextStream(&sourceFile);
     }else{
-        throw QException();
+        throw FileOpenProblemException(fileName);
     }
 }
 

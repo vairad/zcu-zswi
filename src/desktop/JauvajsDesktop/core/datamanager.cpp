@@ -9,6 +9,8 @@
 #include <QDebug>
 
 #include "datamanager.h"
+
+#include "fileproblemexception.h"
 #include "filesaver.h"
 #include "fileminer.h"
 
@@ -259,8 +261,8 @@ void DataManager::run() {
     FileMiner *fileMiner = NULL;
     try{
        fileMiner = new FileMiner("ekg.dat");
-    }catch (QException &e){
-        qDebug() << "No File ekg.dat";
+    }catch (FileOpenProblemException &e){
+        qDebug() << e.getMessage();
     }
 
     //qDebug() << "run";
