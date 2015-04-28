@@ -45,6 +45,8 @@ char recv[RECV_SIZE];
 uint8_t cont = 0;
 uint8_t pulsCount = 0;
 
+unsigned short seconds_online = 0;
+unsigned short millis_state = 0;
 
 char verification_key = 0;
 short check_delayer = 0;
@@ -115,6 +117,9 @@ void loop() {
   int i;
   float vals[SENSOR_COUNT];
   
+  // printing timestamp
+  Serial.print(seconds_online); Serial.print(':');
+  Serial.print(millis_state);   Serial.print('\t');
   
   for (i = 0; i < SENSOR_COUNT; i++) {
     vals[i] = get_sensor_value(i);
@@ -132,6 +137,13 @@ void loop() {
   if (true || check_delayer != 0) {
     delay(CYCLE_DELAY);
   }
+  
+  millis_state += CYCLE_DELAY;
+  if(millis_state >= 1000){
+    seconds_online++;
+    millis_state -= 1000;
+  }
+  
 }
 
 float get_sensor_value(int S) {
@@ -322,3 +334,4 @@ void readPulsioximeter() {
     pulsCount = 0;
   }
 }
+
