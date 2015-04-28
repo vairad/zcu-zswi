@@ -39,6 +39,7 @@ SOURCES += main.cpp\
     gui/initialwindow.cpp \
     gui/analysiswindow.cpp \
     gui/connectionwindow.cpp
+    core/fileproblemexception.cpp
 
 HEADERS  += main.h\
     core/idisplayable.h \
@@ -64,10 +65,11 @@ HEADERS  += main.h\
     core/filesaver.h \
     core/fileminer.h \
     core/arduinominer.h \
-	core/iworking.h \
+    core/iworking.h \
     core/metadatareader.h \
     gui/initialwindow.h \
     gui/analysiswindow.h \
+    core/fileproblemexception.h
     gui/connectionwindow.h
 
 FORMS    += gui/mainwindow.ui
