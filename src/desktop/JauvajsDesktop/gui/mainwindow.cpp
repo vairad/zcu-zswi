@@ -105,6 +105,10 @@ void MainWindow::setUp() {
 
     if (!dataManager->isSetMetadata) {
         ui->actionU_ivatelsk_nastaven->setDisabled(true);
+        ui->widget_nast->hide();
+    }
+    else {
+        ui->widget_nast->show();
     }
 
 }

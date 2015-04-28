@@ -95,8 +95,11 @@
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
         <widget class="QGroupBox" name="groupBox">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
          <property name="title">
-          <string>Nastavení</string>
+          <string>Uživatel</string>
          </property>
          <widget class="QLabel" name="label">
           <property name="geometry">

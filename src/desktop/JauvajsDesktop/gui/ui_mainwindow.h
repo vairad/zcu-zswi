@@ -114,6 +114,7 @@ public:
         widget_nast->setSizePolicy(sizePolicy1);
         widget_nast->setMinimumSize(QSize(200, 0));
         widget_nast->setMaximumSize(QSize(200, 16777215));
+        widget_nast->hide();
         verticalLayout_2 = new QVBoxLayout(widget_nast);
         verticalLayout_2->setSpacing(6);
         verticalLayout_2->setContentsMargins(11, 11, 11, 11);
@@ -181,7 +182,7 @@ public:
         actionU_ivatelsk_nastaven->setText(QApplication::translate("MainWindow", "U\305\276ivatelsk\303\251 nastaven\303\255", 0));
         actionZm_na_u_ivatele->setText(QApplication::translate("MainWindow", "Zm\304\233na u\305\276ivatele", 0));
         actionVy_istit_v_e->setText(QApplication::translate("MainWindow", "Vy\304\215istit v\305\241e", 0));
-        groupBox->setTitle(QApplication::translate("MainWindow", "Nastaven\303\255", 0));
+        groupBox->setTitle(QApplication::translate("MainWindow", "U\305\276ivatel", 0));
         label->setText(QApplication::translate("MainWindow", "TextLabel", 0));
         label_2->setText(QApplication::translate("MainWindow", "TextLabel", 0));
         label_3->setText(QApplication::translate("MainWindow", "Jm\303\251no:", 0));
