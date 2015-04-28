@@ -4,6 +4,9 @@
 #include <QStringList>
 #include <QDebug>
 #include <QCoreApplication>
+#include <QException>
+
+#include <QDebug>
 
 #include "datamanager.h"
 #include "filesaver.h"
@@ -253,11 +256,17 @@ void DataManager::setListenerTemp(IWorking *senzorTemp){
 
 
 void DataManager::run() {
-    FileMiner *fileMiner = new FileMiner("ekg.dat");
+    FileMiner *fileMiner = NULL;
+    try{
+       fileMiner = new FileMiner("ekg.dat");
+    }catch (QException &e){
+        qDebug() << "No File ekg.dat";
+    }
+
     //qDebug() << "run";
     int count = 0;
     while (true) {
-        if (listenEKG != NULL) {
+        if (listenEKG != NULL && fileMiner != NULL) {
             if (count == 50) {
                 if (draw) {
                     QCoreApplication::processEvents();
@@ -281,7 +290,7 @@ void DataManager::run() {
             }
             //qDebug() << "transmit" << (count % 25);
         } else {
-            qDebug() << "NULL";
+           // qDebug() << "NULL";
         }
 
         for(int i=0; i < 100000; i++) {}
