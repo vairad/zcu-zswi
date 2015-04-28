@@ -30,7 +30,11 @@ QGraphicsScene* SensorGSR::getSceneGraph() {
  * @param data prijata data
  */
 void SensorGSR::transmitData(float data){
-    emit haveData(data);
+    if(this->validateData(data)){
+        emit haveData(data);
+    }else{
+       emit haveData(minY+((maxY-minY)/2));
+    }
     //this->validateData(data);
 }
 
@@ -49,8 +53,12 @@ float SensorGSR::getLastData() {
  * Validuje prijata data a odesila je k vykresleni
  * @param data data k zvalidovani
  */
-void SensorGSR::validateData(float data) {
-
+bool SensorGSR::validateData(float data) {
+    if(data < MINIMAL_CORRECT_VALUE || data > MAXIMAL_CORRECT_VALUE){
+        return false;
+    }else{
+        return true;
+    }
 }
 
 SensorGSR::~SensorGSR() {

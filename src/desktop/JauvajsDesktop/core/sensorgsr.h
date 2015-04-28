@@ -5,6 +5,11 @@
 #include "core/idisplayable.h"
 
 class SensorGSR : public IDisplayable, public IWorking {
+    const float MINIMAL_CORRECT_VALUE = 0.0;
+    const float MAXIMAL_CORRECT_VALUE = 10.0;
+
+    bool validateData(float);
+
 public:
     SensorGSR();
     QGraphicsScene* getSceneGraph();
@@ -13,8 +18,6 @@ public:
 
     ~SensorGSR();
 
-private:
-    void validateData(float);
 };
 
 #endif // SENSORGSR_H

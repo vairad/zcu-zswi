@@ -7,6 +7,10 @@
 #include "gui/sensorwidget.h"
 
 class SensorEKG : public IDisplayable, public IWorking {
+    const float MINIMAL_CORRECT_VALUE = 0.0;
+    const float MAXIMAL_CORRECT_VALUE = 6.0;
+
+    bool validateData(float);
 public:
     SensorEKG();
     QGraphicsScene* getSceneGraph();
@@ -15,8 +19,6 @@ public:
 
     ~SensorEKG();
 
-private:
-    void validateData(float);
 };
 
 #endif // EKGSENSOR_H

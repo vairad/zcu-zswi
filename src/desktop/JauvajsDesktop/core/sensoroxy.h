@@ -5,6 +5,11 @@
 #include "core/idisplayable.h"
 
 class SensorOxy : public IDisplayable, public IWorking {
+    const float MINIMAL_CORRECT_VALUE = 75.0;
+    const float MAXIMAL_CORRECT_VALUE = 100.0;
+
+    bool validateData(float data);
+
 public:
     SensorOxy();
     QGraphicsScene* getSceneGraph();
@@ -13,8 +18,6 @@ public:
 
     ~SensorOxy();
 
-private:
-    void validateData(float);
 };
 
 #endif // SENSOROXY_H

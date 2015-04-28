@@ -32,8 +32,12 @@ QGraphicsScene* SensorEKG::getSceneGraph() {
  * @param data prijata data
  */
 void SensorEKG::transmitData(float data){
-    this->lastData = data;
-    emit haveData(data);
+    if(this->validateData(data)){
+        //this->lastData = data;
+        emit haveData(data);
+    }else{
+        emit haveData((maxY+minY)/2.0);
+    }
     // this->validateData(data);
     //qDebug() << "přijatá data" << data ;
 }
@@ -53,8 +57,12 @@ float SensorEKG::getLastData() {
  * Validuje prijata data a odesila je k vykresleni
  * @param data data k zvalidovani
  */
-void SensorEKG::validateData(float data) {
-
+bool SensorEKG::validateData(float data) {
+    if(data < MINIMAL_CORRECT_VALUE || data > MAXIMAL_CORRECT_VALUE){
+        return false;
+    }else{
+        return true;
+    }
 }
 
 SensorEKG::~SensorEKG() {
