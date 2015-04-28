@@ -37,7 +37,8 @@ SOURCES += main.cpp\
     core/arduinominer.cpp \
     core/metadatareader.cpp \
     gui/initialwindow.cpp \
-    gui/analysiswindow.cpp
+    gui/analysiswindow.cpp \
+    gui/connectionwindow.cpp
 
 HEADERS  += main.h\
     core/idisplayable.h \
@@ -66,6 +67,7 @@ HEADERS  += main.h\
 	core/iworking.h \
     core/metadatareader.h \
     gui/initialwindow.h \
-    gui/analysiswindow.h
+    gui/analysiswindow.h \
+    gui/connectionwindow.h
 
 FORMS    += gui/mainwindow.ui
