@@ -1,5 +1,6 @@
 #include <QApplication>
 #include <QButtonGroup>
+#include <QtAlgorithms>
 
 #include "initialwindow.h"
 #include "mainwindow.h"
@@ -22,6 +23,7 @@ InitialWindow::InitialWindow(DataManager *dataManager, QWidget *parent) : QDialo
 
     createTitle();
     createListOfNames();
+    createListOfNames2();
     createButtons();
 
     QMetaObject::connectSlotsByName(this);
@@ -100,17 +102,15 @@ void InitialWindow::listsOfNames() {
         name = dataManager->getNameFromMetadata(s);
         if (!name.isNull()) {
             isExistName = true;
-            UserLabel *label = new UserLabel(s);
+            UserLabel *label = new UserLabel(s, dataManager->getDateTimeFromMetadata(s));
             label->setObjectName(QStringLiteral("label_2"));
             label->setGeometry(QRect(20, 20, 461, 13));
             label->setFont(font1);
             label->setCursor(Qt::PointingHandCursor);
             label->setText(name);
-            listOfLabels.append(label);
 
-            widgetLayout->addWidget(label);
-            // propojeni udalosti na kliknuti s setUser
-            connect(label, SIGNAL(clicked(QString)), this, SLOT(setUser(QString)));
+            addToUserLabels(label);
+
         }
     }
     // ve slozce neni slozka s metadata.txt
@@ -121,6 +121,59 @@ void InitialWindow::listsOfNames() {
         label->setText("V této složce nemá žádný uživatel data");
         listOfLabels.append(label);
         widgetLayout->addWidget(label);
+    }
+
+    foreach (UserLabel *label, listOfUserLabels) {
+       listOfLabels.append(label);
+       widgetLayout->addWidget(label);
+       // propojeni udalosti na kliknuti s setUser
+       connect(label, SIGNAL(clicked(QString)), this, SLOT(setUser(QString)));
+    }
+}
+
+/**
+ * Vytvori list pro zobrazeni uzivatelu abecedne
+ * @brief InitialWindow::createListOfNames2
+ */
+void InitialWindow::createListOfNames2() {
+    listWidget = new QListWidget();
+    listWidget->setCursor(Qt::PointingHandCursor);
+
+    listsOfNamesAlphabetically();
+
+    connect(listWidget, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(itemClickedSetUser(QListWidgetItem *)));
+
+    listWidget->sortItems();
+
+    verticalLayout->addWidget(listWidget/*, 1, Qt::AlignTop*/);
+}
+
+/**
+ * Vypise jmena vsech ulozenych uzivatelu
+ * @brief InitialWindow::listsOfNames
+ */
+void InitialWindow::listsOfNamesAlphabetically() {
+    QString name;
+    // indikuje, zda je ve slozce nejaka slozka s metadata.txt
+    bool isExistName = false;
+    // ziska list uzivatelskych jmen v datove slozce
+    QStringList list = dataManager->listOfFolders();
+    QFont font1;
+    font1.setUnderline(true);
+
+    foreach (QString s, list) {
+        name = dataManager->getNameFromMetadata(s);
+        if (!name.isNull()) {
+            isExistName = true;
+
+            UserItem *item = new UserItem(s);
+            item->setText(name);
+            listWidget->addItem(item);
+        }
+    }
+    // ve slozce neni slozka s metadata.txt
+    if (!isExistName) {
+
     }
 }
 
@@ -165,6 +218,7 @@ void InitialWindow::changeWorkspace() {
     // odebrani starych labelu
     deleteLabels();
     listsOfNames();
+    listsOfNamesAlphabetically();
 }
 
 /**
@@ -177,6 +231,8 @@ void InitialWindow::deleteLabels() {
         listOfLabels.removeOne(l);
         delete l;
     }
+    listOfUserLabels.clear();
+    listWidget->clear();
 }
 
 /**
@@ -187,6 +243,7 @@ void InitialWindow::showEvent(QShowEvent *) {
     // odebrani starych labelu
     deleteLabels();
     listsOfNames();
+    listsOfNamesAlphabetically();
 }
 
 /**
@@ -220,6 +277,24 @@ void InitialWindow::createNewUser() {
     ((MainWindow *)mainWindow)->metaDialog->show();
     this->hide();
 }
+/*
+bool InitialWindow::compareUserLabels(QWidget* left, QWidget *right) {
+    return ((UserLabel *)left)->getDateTime() < ((UserLabel *)right)->getDateTime();
+}
+*/
+void InitialWindow::addToUserLabels(UserLabel *label) {
+    listOfUserLabels.append(label);
+
+    if (listOfUserLabels.size() > 3) {
+        UserLabel* min = listOfUserLabels.first();
+        foreach (UserLabel *l, listOfUserLabels) {
+            if (l->getDateTime() < min->getDateTime()) {
+               min = l;
+            }
+        }
+        listOfUserLabels.removeOne(min);
+    }
+}
 
 /**
  * Reakce na zavreni okna krizkem
@@ -227,6 +302,14 @@ void InitialWindow::createNewUser() {
  */
 void InitialWindow::closeEvent(QCloseEvent *) {
     closeWithoutLogin();
+}
+
+/**
+ * Zavola setUser() po stisknuti polozky listu
+ * @brief InitialWindow::itemClickedSetUser
+ */
+void InitialWindow::itemClickedSetUser(QListWidgetItem *item) {
+    setUser(((UserItem *)item)->username);
 }
 
 InitialWindow::~InitialWindow() {
@@ -237,7 +320,7 @@ InitialWindow::~InitialWindow() {
  * @brief UserLabel::UserLabel
  * @param parent
  */
-UserLabel::UserLabel(QString username, QWidget *parent) : QLabel(parent), username(username) {}
+UserLabel::UserLabel(QString username, QDateTime time, QWidget *parent) : QLabel(parent), username(username), dateTime(time) {}
 
 /**
  * Reakce na stisk labelu vola signal clicked
@@ -248,4 +331,21 @@ void UserLabel::mousePressEvent(QMouseEvent *) {
     emit clicked(username);
 }
 
+/**
+ * Vraci ulozeny datum a cas posledni navstevy
+ * @brief UserLabel::getDateTime
+ */
+QDateTime UserLabel::getDateTime() {
+    return dateTime;
+}
+
 UserLabel::~UserLabel() {}
+
+/**
+ * Vytvori uzivatelskou polozku listu
+ * @brief UserItem::UserItem
+ * @param parent
+ */
+UserItem::UserItem(QString username, QListWidget *parent) : QListWidgetItem(parent), username(username) {}
+
+UserItem::~UserItem() {}

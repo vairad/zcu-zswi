@@ -4,6 +4,7 @@
 #include <QString>
 #include <QObject>
 #include <QThread>
+#include <QDateTime>
 
 #include "core/metadatareader.h"
 #include "core/istorable.h"
@@ -34,6 +35,7 @@ public:
     void transmitMetadata();    
     void getMetadata(QString username);
     QString getNameFromMetadata(QString username);
+    QDateTime getDateTimeFromMetadata(QString username);
     QStringList listOfFolders();
     void logoutUser();
     /** ukladac dat */

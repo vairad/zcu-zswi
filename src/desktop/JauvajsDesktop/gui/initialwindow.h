@@ -6,6 +6,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QVBoxLayout>
 #include <QListWidget>
+#include <QListWidgetItem>
 
 #include "core/datamanager.h"
 
@@ -16,8 +17,9 @@
 class UserLabel : public QLabel {
     Q_OBJECT
 public:
-    UserLabel(QString username, QWidget *parent = 0);
+    UserLabel(QString username, QDateTime time, QWidget *parent = 0);
     ~UserLabel();
+    QDateTime getDateTime();
 
 signals:
     void clicked(QString username);
@@ -25,8 +27,24 @@ signals:
 protected:
     void mousePressEvent(QMouseEvent *);
 
-private:
+/*private:*/
+public:
     /** uzivatelske jmeno prislusici labelu */
+    QString username;
+    /** datum a cas posledni navstevy */
+    QDateTime dateTime;
+};
+
+/**
+ * Reprezentace polozky listu
+ * @brief The UserLabel class
+ */
+class UserItem : public QListWidgetItem {
+    //Q_OBJECT
+public:
+    UserItem(QString username, QListWidget *parent = 0);
+    ~UserItem();
+    /** uzivatelske jmeno prislusici polozce */
     QString username;
 };
 
@@ -42,9 +60,13 @@ public:
     ~InitialWindow();
     void createTitle();
     void createListOfNames();
+    void createListOfNames2();
     void listsOfNames();
+    void listsOfNamesAlphabetically();
     void createButtons();
     void deleteLabels();
+    //bool compareUserLabels(QWidget *left, QWidget *right);
+    void addToUserLabels(UserLabel *label);
     void closeEvent(QCloseEvent *);
     void showEvent(QShowEvent *);
 
@@ -53,6 +75,7 @@ public slots:
     void setUser(QString username);
     void closeWithoutLogin();
     void createNewUser();
+    void itemClickedSetUser(QListWidgetItem *item);
 
 private:
     /** spravce dat */
@@ -63,10 +86,14 @@ private:
     QWidget *mainWindow;
     /** list vytvorenych labelu jmen uzivatelu */
     QList<QWidget *> listOfLabels;
+    /** list 3 uzivatelu, kteri pouzivali aplikaci naposledy */
+    QList<UserLabel *> listOfUserLabels;
     /** layout pro widget na zobrazeni jmen uzivatelu */
     QVBoxLayout *widgetLayout;
     /** label pro cestu k workspace */
     QLineEdit *workspacePathE;
+    /** list pro zobrazeni uzivatelu abecedne */
+    QListWidget *listWidget;
 };
 
 #endif // INITIALWINDOW_H

@@ -51,6 +51,8 @@ void DataManager::transmitMetadata() {
         list.push_back(QString::number(sensors[i]));
     }
 
+    list.push_back(QDateTime::currentDateTime().toString());
+
     saver->saveMetadata(FOLDER_NAME, list);
 }
 
@@ -140,13 +142,33 @@ QString DataManager::getNameFromMetadata(QString username) {
 
     QString name;
     if (!list.isEmpty()) {
-        name = list[0]+" "+list[1];
+        name = list[1]+" "+list[0];
     }
     else {
         name = QString();
     }
 
     return name;
+}
+
+/**
+ * Vrati jmeno uzivatele nactenim se souboru metadat dle uživatelskeho jmena
+ * @brief DataManager::getNameFromMetadata
+ * @param username uzivatelske jmeno
+ * @return cele jmeno
+ */
+QDateTime DataManager::getDateTimeFromMetadata(QString username) {
+    QList<QString> list = metadataReader->loadMetadata(FOLDER_NAME, username);
+
+    QDateTime dateTime;
+    if (!list.isEmpty()) {
+        dateTime = QDateTime::fromString(list[8]);
+    }
+    else {
+        dateTime = QDateTime();
+    }
+
+    return dateTime;
 }
 
 /**
