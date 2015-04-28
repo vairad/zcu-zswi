@@ -45,14 +45,26 @@ void InitialWindow::createTitle() {
 
     verticalLayout->addWidget(label);
 
+    // workspace radek
+    QWidget *widgetWS = new QWidget();
+    QHBoxLayout *group = new QHBoxLayout(widgetWS);
+
+    // cesta k aktualnimu workspace
+    QFileInfo pathInfo(dataManager->FOLDER_NAME);
+    workspacePathE = new QLineEdit(pathInfo.absoluteFilePath());
+    workspacePathE->setReadOnly(true);
+    group->addWidget(workspacePathE);
+
     // tlacitko zmenit workspace
     QPushButton *selectBT = new QPushButton();
     selectBT->setObjectName(QStringLiteral("button"));
     selectBT->setGeometry(QRect(10, 50, 131, 23));
     selectBT->setText("Změnit workspace");
-    verticalLayout->addWidget(selectBT);
+    group->addWidget(selectBT);
     // propojeni udalosti na kliknuti
     connect(selectBT, SIGNAL(clicked()), this, SLOT(changeWorkspace()));
+
+    verticalLayout->addWidget(widgetWS, 0, Qt::AlignTop);
 }
 
 /**
@@ -68,7 +80,7 @@ void InitialWindow::createListOfNames() {
 
     listsOfNames();
 
-    verticalLayout->addWidget(widget);
+    verticalLayout->addWidget(widget, 1, Qt::AlignTop);
 }
 
 /**
@@ -148,6 +160,7 @@ void InitialWindow::createButtons() {
 void InitialWindow::changeWorkspace() {
     QString dir = QFileDialog::getExistingDirectory(this, tr("Otevřít workspace"), QDir::homePath(), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     dataManager->FOLDER_NAME = dir;
+    workspacePathE->setText(dir);
 
     // odebrani starych labelu
     deleteLabels();

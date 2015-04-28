@@ -65,6 +65,8 @@ private:
     QList<QWidget *> listOfLabels;
     /** layout pro widget na zobrazeni jmen uzivatelu */
     QVBoxLayout *widgetLayout;
+    /** label pro cestu k workspace */
+    QLineEdit *workspacePathE;
 };
 
 #endif // INITIALWINDOW_H
