@@ -7,6 +7,7 @@
 #include "gui/sensorwidget.h"
 #include "gui/metadialog.h"
 #include "gui/initialwindow.h"
+#include "gui/connectionwindow.h"
 
 namespace Ui {
 class MainWindow;
@@ -27,6 +28,8 @@ public:
     void closeEvent(QCloseEvent *event);
     /** uvodni okno */
     InitialWindow *initialWindow;
+    /**Okno se spojenim */
+    ConnectionWindow *connectionWindow;
     static const int NUMBER_OF_SENSORS = 6;
     /** senzory */
     SensorWidget *sensors[NUMBER_OF_SENSORS];
@@ -47,6 +50,7 @@ private slots:
     void startScanning();
     void stopScanning();
     void cleanAll();
+ //   void on_connection_changed();
 
 private:
     Ui::MainWindow *ui;

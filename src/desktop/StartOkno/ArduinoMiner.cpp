@@ -26,28 +26,28 @@ void ArduinoMiner::run(){
     switch (this->stav)
     {
     case STATUS_HLEDEJ:
-        this->findDevices();
+        this->hledejOkolniZarizeni();
         break;
     case STATUS_SPOJENI:
-        this->beginConnection();
+        this->navazSpojeni();
         break;
     }
 }
 
-void ArduinoMiner::findDevices()
+void ArduinoMiner::hledejOkolniZarizeni()
 {
     QTime time;
     time.start();
-    emit changeStatus("Hledám zařízení...");
+    emit ZmenaStavu("Hledám zařízení...");
 
     this->deviceHandle = BluetoothFindFirstDevice(&this->btSearchParams, &this->btDeviceInfo);
     while (true || BluetoothFindNextDevice(&this->deviceHandle, &this->btDeviceInfo))
     {
-       QString foundDevices = QString::fromWCharArray(this->btDeviceInfo.szName);
-       emit changeStatus("Nalezeno: "+foundDevices);
-       if(foundDevices != "")
-        this->ListFoundDevices.append(foundDevices);
-       emit ListChanged(&this->ListFoundDevices);
+       QString nalezeneZarizeni = QString::fromWCharArray(this->btDeviceInfo.szName);
+       emit ZmenaStavu("Nalezeno: "+nalezeneZarizeni);
+       if(nalezeneZarizeni != "")
+        this->ListNalezenychZarizeni.append(nalezeneZarizeni);
+       emit SeznamChanged(&this->ListNalezenychZarizeni);
        msleep(250);
        if(!BluetoothFindNextDevice(deviceHandle, &btDeviceInfo)){ break; }
     }
@@ -57,11 +57,28 @@ void ArduinoMiner::findDevices()
     if(rozdil < 1000) BTerror = ", problém se zařízením Bluetooth";
     else BTerror = "";
 
-    emit changeStatus("Konec hledání" );
-    emit ListChanged(&this->ListFoundDevices);
+    emit ZmenaStavu("Konec hledání" );
+    emit SeznamChanged(&this->ListNalezenychZarizeni);
 }
 
-void ArduinoMiner::beginConnection()
+void ArduinoMiner::otevreniSoketu(){
+    WSADATA wsaData;
+    err = WSAStartup(MAKEWORD(2, 2), &wsaData);
+    if (err)
+     emit ZmenaSpojeni("WSAStartup error = "+ err);// << endl;
+
+     emit ZmenaSpojeni("Vytvářím soket");// << endl;
+    // vytvoření BT socketu
+    soket = socket(AF_BTH, SOCK_STREAM, BTHPROTO_RFCOMM);
+    SOCKADDR_BTH btSockAddr;
+    btSockAddr.addressFamily = AF_BTH;
+    btSockAddr.btAddr = btDeviceInfo.Address.ullLong;
+    btSockAddr.serviceClassId = RFCOMM_PROTOCOL_UUID; //SerialPortServiceClass_UUID (no difference)
+    btSockAddr.port = BT_PORT_ANY;
+    err = ::connect(soket, reinterpret_cast<SOCKADDR*>(&btSockAddr), sizeof(SOCKADDR_BTH));
+}
+
+void ArduinoMiner::navazSpojeni()
 {
     this->deviceHandle = BluetoothFindFirstDevice(&this->btSearchParams, &this->btDeviceInfo);
     while (true || BluetoothFindNextDevice(&this->deviceHandle, &this->btDeviceInfo))
@@ -74,103 +91,97 @@ void ArduinoMiner::beginConnection()
 
     if (this->deviceHandle)
     {
-        int res = BluetoothAuthenticateDeviceEx(NULL, NULL, &btDeviceInfo, NULL, MITMProtectionRequiredBonding);
-
-        if (res == ERROR_CANCELLED)
-           emit ConnectionChanged("The user aborted the operation.");// << endl;
-        if (res == ERROR_INVALID_PARAMETER)
-           emit ConnectionChanged("The device structure specified in pbdti is invalid."); // << endl;
-        if (res == ERROR_NO_MORE_ITEMS)
-           emit ConnectionChanged("Zařízení je spárované, navazuji spojení...");//
-        if (res == ERROR_NOT_AUTHENTICATED)
-           emit ConnectionChanged("The operation being requested was not performed because the user has not been authenticated.");//endl;
-        if (res == ERROR_SUCCESS)
-           emit ConnectionChanged("Spojeni úspěšně navázáno");
-
-
-       err = 0;
-
-        if (err != ERROR_SUCCESS)
-        {
-            err = GetLastError();
-            emit ConnectionChanged("BluetoothRegisterForAuthentication Error");// << err << endl;
-        }
-        WSADATA wsaData;
-        err = WSAStartup(MAKEWORD(2, 2), &wsaData);
-        if (err)
-            emit ConnectionChanged("WSAStartup error = "+ err);
-
-         emit ConnectionChanged("Vytvářím soket");
-        // vytvoření BT socketu
-        soket = socket(AF_BTH, SOCK_STREAM, BTHPROTO_RFCOMM);
-
-        SOCKADDR_BTH btSockAddr;
-        btSockAddr.addressFamily = AF_BTH;
-        btSockAddr.btAddr = btDeviceInfo.Address.ullLong;
-        btSockAddr.serviceClassId = SerialPortServiceClass_UUID; //SerialPortServiceClass_UUID (no difference)
-        btSockAddr.port = BT_PORT_ANY;
-
-        err = ::connect(soket, reinterpret_cast<SOCKADDR*>(&btSockAddr), sizeof(SOCKADDR_BTH));
-
-        if (err)
-        {
-            DWORD wsaErr = WSAGetLastError();
-            emit ConnectionChanged("connect error = "+ wsaErr );//<< std::endl;
-        }
-        else
-        {
-            emit ConnectionChanged("Připojeno");
-
-            int recvbuflen = 2048;
-            char recvbuf[2048] = "";
-            int iResult;
-
-            do{ // smyčka pro příjem dat
-              iResult = recv(soket, recvbuf, recvbuflen, 0);
-
-              if (iResult > 0)
-                  emit ReceiveData((QString)recvbuf);
-              else if ( iResult == 0 )
-                  emit changeStatus("Spojení uzavřeno");
-              else
-                   emit changeStatus("Chyba příjmu dat, "+WSAGetLastError());
-
-              if(this->stav != STATUS_SPOJENI)
-                 break;
-
-            } while( iResult > 0); // konec smyčky pro příjem dat
-
-            this->CloseConnection();
-
-            if (err){
-                emit changeStatus("Chyba při zavírání soketu: " + err );//<< std::endl;
-            }
-            emit ConnectionChanged("Nepřipojeno");
-        }
-        WSACleanup();
+        this->navazaniSoketu();
+        this->otevreniSoketu();
+        this->navazaniSoketu();
+        this->zacniNaslouchat();
     }
     else
     {
        DWORD err = GetLastError();
-       emit changeStatus("Chyba při hledání zařízení, Error" + err);
+       emit ZmenaStavu("Chyba při hledání zařízení, Error" + err);
+    }
+}
+void ArduinoMiner::navazaniSoketu(){
+    int res = BluetoothAuthenticateDeviceEx(NULL, NULL, &btDeviceInfo, NULL, MITMProtectionRequiredBonding);
+
+    if (res == ERROR_CANCELLED)
+       emit ZmenaSpojeni("The user aborted the operation.");// << endl;
+    if (res == ERROR_INVALID_PARAMETER)
+       emit ZmenaSpojeni("The device structure specified in pbdti is invalid."); // << endl;
+    if (res == ERROR_NO_MORE_ITEMS)
+       emit ZmenaSpojeni("Zařízení je spárované, navazuji spojení...");//
+    if (res == ERROR_NOT_AUTHENTICATED)
+       emit ZmenaSpojeni("The operation being requested was not performed because the user has not been authenticated.");//endl;
+    if (res == ERROR_SUCCESS)
+       emit ZmenaSpojeni("Spojeni úspěšně navázáno");
+
+
+   err = 0;
+
+    if (err != ERROR_SUCCESS)
+    {
+        err = GetLastError();
+        emit ZmenaSpojeni("BluetoothRegisterForAuthentication Error");// << err << endl;
     }
 }
 
-int ArduinoMiner::SendData(QString data){
+void ArduinoMiner::zacniNaslouchat(){
+    if (err)
+    {
+        DWORD wsaErr = WSAGetLastError();
+        emit ZmenaSpojeni("connect error = "+ wsaErr );//<< std::endl;
+    }
+    else
+    {
+
+        emit ZmenaSpojeni("Připojeno");
+
+        int recvbuflen = 100;
+        char recvbuf[100] = "";
+        int iResult;
+
+        do{ // smyčka pro příjem dat
+          //emit PrijmiData("Test naslouchání je úspěšný");
+          iResult = recv(soket, recvbuf, recvbuflen, 0);
+
+          if (iResult > 0)
+              emit PrijmiData((QString)recvbuf);
+          else if ( iResult == 0 )
+              emit ZmenaStavu("Spojení uzavřeno");
+          else
+               emit ZmenaStavu("Chyba příjmu dat, "+WSAGetLastError());
+
+          if(this->stav != STATUS_SPOJENI)
+             break;
+
+        } while( iResult > 0); // konec smyčky pro příjem dat
+
+        this->UkonciSpojeni();
+
+        if (err){
+            emit ZmenaStavu("Chyba při zavírání soketu: " + err );//<< std::endl;
+        }
+        emit ZmenaSpojeni("Nepřipojeno");
+    }
+    WSACleanup();
+}
+
+int ArduinoMiner::OdesliData(QString data){
 
    const char* sendbuf = data.toLatin1().data();
    int iResult = send( this->soket, sendbuf, (int)strlen(sendbuf), 0 );
    if (iResult == SOCKET_ERROR) {
-      emit changeStatus("Odesílání selhalo, error: "+QString::number(WSAGetLastError()));
+      emit ZmenaStavu("Odesílání selhalo, error: "+QString::number(WSAGetLastError()));
       ::closesocket(this->soket);
       WSACleanup();
       return 1;
    }
-   emit changeStatus("Odesláno: "+data);
+   emit ZmenaStavu("Odesláno: "+data);
    return 0;
 }
 
-void ArduinoMiner::CloseConnection(){
+void ArduinoMiner::UkonciSpojeni(){
     this->stav = STATUS_KLID;
     this->err = shutdown(this->soket, SD_BOTH);
 }

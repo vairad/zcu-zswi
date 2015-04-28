@@ -1,6 +1,7 @@
 #include <QtWidgets>
 #include <QDir>
 
+
 #include "gui/mainwindow.h"
 #include "core/sensorekg.h"
 #include "core/sensortemp.h"
@@ -23,6 +24,12 @@ MainWindow::MainWindow(DataManager *manager, QWidget *parent) : QMainWindow(pare
 
     createToolBar();
     initialWindow = new InitialWindow(dataManager, this);
+
+
+  //  ArduinoMiner arduinoMiner = new ArduinoMiner();
+    connectionWindow = new ConnectionWindow();
+   // connect(arduinoMiner, SIGNAL(ZmenaStavu(QString)), this, SLOT(on_connection_changed());
+
 
     // Vytvoreni senzoru
     SensorEKG *ekg = new SensorEKG();
@@ -208,3 +215,4 @@ void MainWindow::closeEvent(QCloseEvent *event) {
         event->ignore();
     }
 }
+
