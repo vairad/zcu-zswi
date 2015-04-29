@@ -11,10 +11,12 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = gui_arduino
 TEMPLATE = app
 
-@win32:
-LIBS += -lWS2_32
-LIBS += -lBTHPROPS
-@
+win32{
+    LIBS += -lWS2_32
+    LIBS += -lBTHPROPS
+
+    DEFINES += WIN32_LEAN_AND_MEAN
+}
 
 SOURCES += main.cpp\
     core/idisplayable.cpp \
