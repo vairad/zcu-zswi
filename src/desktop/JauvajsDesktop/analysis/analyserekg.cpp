@@ -21,23 +21,23 @@ vector<int> AnalyserEKG::getRRIntervalDuration() {
     int i, counter = 0;
     bool isIn = false;
 
-    for (i = 0; i < string.size(); i++) {
+    for (i = 0; i < (int)string.size(); i++) {
         if (string[i] == 'S' && isIn == false) {
-            if (i + 2 < differences.size() && differences[i + 1] > 0 && differences[i + 2] > 0) {
+            if (i + 2 < (int)differences.size() && differences[i + 1] > 0 && differences[i + 2] > 0) {
               /* strme stoupani by nemelo trvat dlouho, nesmi se splest s jinou vlnou */
               continue;
             }
-            if (i + 1 < differences.size() && differences[i + 1] > 0) {
+            if (i + 1 < (int)differences.size() && differences[i + 1] > 0) {
                 i++; /* nekdy R vlna ma delsi trvani, tzn. pocita, dokud se stale stoupa */
             }
             firstRWaveIndex = i;
             isIn = true;
         } else if (string[i] == 'S' && isIn == true) {
-            if (i + 2 < differences.size() && differences[i + 1] > 0 && differences[i + 2] > 0) {
+            if (i + 2 < (int)differences.size() && differences[i + 1] > 0 && differences[i + 2] > 0) {
               counter++; /* strme stoupani by nemelo trvat dlouho, nesmi se splest s jinou vlnou */
               continue;
             }
-            if (i + 1 < differences.size() && differences[i + 1] > 0) {
+            if (i + 1 < (int)differences.size() && differences[i + 1] > 0) {
                 counter++;
                 i++; /* nekdy R vlna ma delsi trvani, tzn. pocita, dokud se stale stoupa */
             }
@@ -73,7 +73,7 @@ vector<int> AnalyserEKG::getRWaveIndex() {
 
     index.push_back(firstRWaveIndex);
 
-    for (i = 0; i < interval.size(); i++) {
+    for (i = 0; i < (int)interval.size(); i++) {
         tmp = index.back();
         index.push_back(tmp + interval[i]);
     }
@@ -103,7 +103,7 @@ int AnalyserEKG::getLeftRWaveDuration(int index) {
  */
 int AnalyserEKG::getRightRWaveDuration(int index) {
     int i, counter = 0;
-    for (i = index; i < string.size() && differences[i] < 0; i++) {
+    for (i = index; i < (int)string.size() && differences[i] < 0; i++) {
         counter++;
     }
     return counter;
@@ -141,7 +141,7 @@ float AnalyserEKG::getAverageCycleDuration() {
     int i;
     float duration = 0;
 
-    for (i = 0; i < interval.size(); i++) {
+    for (i = 0; i < (int)interval.size(); i++) {
         duration += interval[i] / (float)DATA_SEC;
     }
 
@@ -159,7 +159,7 @@ vector<int> AnalyserEKG::getQWaveDuration() {
     vector<int> rWaveIndex = getRWaveIndex();
     int i, j, counterQ, counterR = 0;
 
-    for (i = 0; i < string.size(); i++) {
+    for (i = 0; i < (int)string.size(); i++) {
         counterQ = 0;
         if (i == rWaveIndex[counterR]) {
             j = i - getLeftRWaveDuration(i);
@@ -191,7 +191,7 @@ vector<bool> AnalyserEKG::analyseQWave() {
     int i, j, counter = 0;
 
 
-    for (i = 0; i < string.size(); i++) {
+    for (i = 0; i < (int)string.size(); i++) {
         if (i == rWaveIndex[counter]) {
             j = i - getLeftRWaveDuration(i);
             if (j >= 0 && getQWaveDuration()[counter] == 1 && /* amplituda musi byt mensi nez 1/4 R vlny */
@@ -217,7 +217,7 @@ vector<bool> AnalyserEKG::analyseQWave() {
  */
 int AnalyserEKG::getSDuration(int index) {
     int i, counter = 0;
-    for (i = index + getRightRWaveDuration(index); i < string.size() && differences[i] > 0 && string[i] != 'C'; i++) {
+    for (i = index + getRightRWaveDuration(index); i < (int)string.size() && differences[i] > 0 && string[i] != 'C'; i++) {
         counter++;
     }
     return counter;
@@ -228,7 +228,7 @@ vector<int> AnalyserEKG::getQRSDuration() {
     vector<int> rWave = getRWaveIndex();
     int i, countDuration = 0, counterR = 0;
 
-    for (i = 0; i < string.size(); i++) {
+    for (i = 0; i < (int)string.size(); i++) {
         if (i == rWave[counterR]) {
             countDuration = getLeftRWaveDuration(i) + getQWaveDuration()[counterR]
                     + getRightRWaveDuration(i) + getSDuration(i);
@@ -247,12 +247,13 @@ vector<int> AnalyserEKG::getQRSDuration() {
 vector<bool> AnalyserEKG::analyseQRS() {
     vector<bool> qrs;
     vector<int> duration = getQRSDuration();
+    vector<int> rWaveIndex = getRWaveIndex();
     int i, counter = 0;
 
-    for (i = 0; i < string.size(); i++) {
-        if (getRWaveIndex()[counter] == i) {
-            if (duration[counter] >= 0.11 * DATA_SEC ||
-                    getRWaveAmplitude(i) < 1) {
+    for (i = 0; i < (int)string.size(); i++) {
+        if (i == rWaveIndex[counter]) {
+            if (duration[counter] > 0.12 * DATA_SEC ||
+                    getRWaveAmplitude(i) < 0.5) {
                 qrs.push_back(false);
             } else {
                 qrs.push_back(true);
@@ -272,7 +273,7 @@ vector<int> AnalyserEKG::getPRIntervalDuration() {
     int i, j, qLength, counter = 0;
     vector<int> prInterval;
 
-    for (i = 0; i < string.size(); i++) {
+    for (i = 0; i < (int)string.size(); i++) {
         if (string[i] == 'S') {
            qLength = getQWaveDuration()[counter];
            prInterval.push_back(0);
@@ -296,7 +297,7 @@ vector<int> AnalyserEKG::getPWaveDuration() {
     int i, j, qLength, counter = 0;
     vector<int> pr;
 
-    for (i = 0; i < string.size(); i++) {
+    for (i = 0; i < (int)string.size(); i++) {
         if (string[i] == 'S') {
            qLength = getQWaveDuration()[counter];
            pr.push_back(0);
@@ -327,7 +328,7 @@ vector<bool> AnalyserEKG::analysePWave() {
     vector<bool> pWave;
     int i, counter = 0;
 
-    for (i = 0; i < string.size(); i++) {
+    for (i = 0; i < (int)string.size(); i++) {
         if (string[i] == 'S') {
             if (i - getQWaveDuration()[counter] - getPRIntervalDuration()[counter] > 0) {
                 if (getPWaveDuration()[counter] > 0.11 * DATA_SEC) {
@@ -356,7 +357,7 @@ vector<bool> AnalyserEKG::analysePRInterval() {
     vector<bool> pr;
     int i;
 
-    for (i = 0; i < getPRIntervalDuration().size(); i++) {
+    for (i = 0; i < (int)getPRIntervalDuration().size(); i++) {
         if (getPRIntervalDuration()[i] < 0.12 * DATA_SEC ||
                 getPRIntervalDuration()[i] > 0.20 * DATA_SEC) {
             pr.push_back(false); /* interval je moc dlouhy, nebo moc kratky */
@@ -383,13 +384,13 @@ void AnalyserEKG::analyse() {
     vector<bool> qrs = analyseQRS();
     int i, countTrue = 0;
 
-    for (i = 0; i < qrs.size(); i++) {
+    for (i = 0; i < (int)qrs.size(); i++) {
         if (qrs[i] == true) {
             countTrue++;
         }
     }
 
-    normalityPercentage = 100 * qrs.size() /(float)countTrue;
+    normalityPercentage = 100 * (int)qrs.size() /(float)countTrue;
 }
 
 AnalyserEKG::~AnalyserEKG() {
