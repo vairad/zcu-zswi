@@ -5,11 +5,9 @@
 #include <QDebug>
 #include <QCoreApplication>
 #include <QException>
-
 #include <QDebug>
 
 #include "datamanager.h"
-
 #include "fileproblemexception.h"
 #include "filesaver.h"
 
@@ -24,13 +22,6 @@ DataManager::DataManager() {
     draw = false;
 
     initSenzorListeners(); //všechny listenery nastaví na NULL
-
-   /* Touto cestou ne... Nastavit pomocí setSenzorXX(&senzor) ... v  místě kde se vytvoří */
-   /* this->sensorEKG = new SensorEKG();
-    this->sensorGSR = new SensorGSR();
-    this->sensorHeartRate = new SensorHeartRate();
-    this->sensorOxy = new SensorOxy();
-    this->sensorPosition = new SensorPosition();*/
 
     // vyprazdneni metadat
     logoutUser();
@@ -83,6 +74,8 @@ void DataManager::getMetadata(QString username) {
         list.pop_front();
     }
     isSetMetadata = true;
+
+    transmitMetadata();
 }
 
 /**
@@ -256,12 +249,15 @@ void DataManager::setListenerTemp(IWorking *senzorTemp){
     listenTemp = senzorTemp;
 }
 
+/**
+ * Nacte soubor
+ * @brief DataManager::loadFile
+ */
 void DataManager::loadFile() {
     fileMiner = NULL;
-    try{
+    try {
        fileMiner = new FileMiner(FILE_NAME);
-       qDebug() << FILE_NAME;
-    }catch (FileOpenProblemException &e){
+    } catch (FileOpenProblemException &e) {
         qDebug() << e.getMessage();
     }
 }

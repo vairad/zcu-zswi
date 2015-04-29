@@ -222,8 +222,6 @@ void MainWindow::closeEvent(QCloseEvent *event) {
  */
 void MainWindow::on_actionOtev_t_triggered() {
     QString file = QFileDialog::getOpenFileName(this, tr("Otevřít soubor"), QDir::homePath());
-    qDebug() << file;
     dataManager->FILE_NAME = file;
     dataManager->loadFile();
-
 }

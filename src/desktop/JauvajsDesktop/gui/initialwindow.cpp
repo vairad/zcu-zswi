@@ -123,11 +123,14 @@ void InitialWindow::listsOfNames() {
         widgetLayout->addWidget(label);
     }
 
+    int i = 0;
     foreach (UserLabel *label, listOfUserLabels) {
-       listOfLabels.append(label);
+       if (i == 3) break;
+        listOfLabels.append(label);
        widgetLayout->addWidget(label);
        // propojeni udalosti na kliknuti s setUser
        connect(label, SIGNAL(clicked(QString)), this, SLOT(setUser(QString)));
+       i++;
     }
 }
 
@@ -142,7 +145,7 @@ void InitialWindow::createListOfNames2() {
     listsOfNamesAlphabetically();
 
     connect(listWidget, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(itemClickedSetUser(QListWidgetItem *)));
-
+    listWidget->setSortingEnabled(true);
     listWidget->sortItems();
 
     verticalLayout->addWidget(listWidget/*, 1, Qt::AlignTop*/);
@@ -173,7 +176,10 @@ void InitialWindow::listsOfNamesAlphabetically() {
     }
     // ve slozce neni slozka s metadata.txt
     if (!isExistName) {
-
+        listWidget->setEnabled(false);
+    }
+    else {
+        listWidget->setEnabled(true);
     }
 }
 
@@ -277,22 +283,29 @@ void InitialWindow::createNewUser() {
     ((MainWindow *)mainWindow)->metaDialog->show();
     this->hide();
 }
-/*
-bool InitialWindow::compareUserLabels(QWidget* left, QWidget *right) {
-    return ((UserLabel *)left)->getDateTime() < ((UserLabel *)right)->getDateTime();
-}
-*/
-void InitialWindow::addToUserLabels(UserLabel *label) {
-    listOfUserLabels.append(label);
 
-    if (listOfUserLabels.size() > 3) {
-        UserLabel* min = listOfUserLabels.first();
+/**
+ * Prida uzivatelsky label do listu, udrzuje pocet 3 nejnovejsich, radi dle nejnovejsiho
+ * @brief InitialWindow::addToUserLabels
+ * @param label
+ */
+void InitialWindow::addToUserLabels(UserLabel *label) {
+    int i = 0;
+    bool isInserted = false;
+    // kdyz neni seznam labelu prazdny, prochazime ho a hledame spravne misto
+    if (!listOfUserLabels.isEmpty()) {
         foreach (UserLabel *l, listOfUserLabels) {
-            if (l->getDateTime() < min->getDateTime()) {
-               min = l;
+            if (l->getDateTime() < label->getDateTime()) {
+               listOfUserLabels.insert(i, label);
+               isInserted = true;
+               break;
             }
+            i++;
         }
-        listOfUserLabels.removeOne(min);
+    }
+    // kdyz neni zadny prvek v teto metode vlozen, vlozime na konec
+    if (!isInserted) {
+        listOfUserLabels.append(label);
     }
 }
 

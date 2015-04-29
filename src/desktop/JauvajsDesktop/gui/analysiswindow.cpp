@@ -47,7 +47,6 @@ void AnalysisWindow::createLabels() {
     int numberOfCycles = analyser->getNumberOfCycles();
     float averageCycleDuratio = analyser->getAverageCycleDuration();
     float normalityPercentage = analyser->getNormalityPercentage();
-    qDebug() << numberOfCycles;
 
     // label - pocet namerenych cyklu
     QLabel *label = new QLabel(this);
