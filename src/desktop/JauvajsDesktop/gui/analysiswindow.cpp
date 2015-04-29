@@ -30,6 +30,19 @@ AnalysisWindow::AnalysisWindow(QList<float> values, QWidget *parent) : QDialog(p
  * @brief InitialWindow::createTitle
  */
 void AnalysisWindow::createLabels() {
+    QLabel *label1 = new QLabel(this);
+    label1->setObjectName(QStringLiteral("label"));
+    label1->setMaximumSize(QSize(16777215, 20));
+    QFont font;
+    font.setFamily(QStringLiteral("Calibri"));
+    font.setPointSize(16);
+    font.setBold(true);
+    font.setWeight(75);
+    label1->setFont(font);
+    label1->setText("Výsledek analýzy EKG");
+
+    verticalLayout->addWidget(label1);
+
     AnalyserEKG *analyser = new AnalyserEKG(values.toVector().toStdVector());
     int numberOfCycles = analyser->getNumberOfCycles();
     float averageCycleDuratio = analyser->getAverageCycleDuration();
@@ -54,7 +67,7 @@ void AnalysisWindow::createLabels() {
     QLabel *label3 = new QLabel(this);
     label3->setObjectName(QStringLiteral("label"));
     label3->setMaximumSize(QSize(16777215, 20));
-    label3->setText("Vaše EKG je normální z " + QString::number(normalityPercentage));
+    label3->setText("Vaše EKG je z " + QString::number(normalityPercentage) + " % normální");
     verticalLayout->addWidget(label3);
 }
 
