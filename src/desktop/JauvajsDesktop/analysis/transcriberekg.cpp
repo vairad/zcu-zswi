@@ -77,8 +77,8 @@ void TranscriberEKG::transcribeData() {
         return;
     }
 
-    for (i = 0; i < data.size(); i++) {
-        if (i + 1 < data.size()) {
+    for (i = 0; i < (int)data.size(); i++) {
+        if (i + 1 < (int)data.size()) {
             valueDifferences.push_back(data[i + 1] - data[i]);
             section = isSection(from, i);
             if (section == true) {
