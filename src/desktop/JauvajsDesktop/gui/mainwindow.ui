@@ -173,6 +173,7 @@
     <property name="title">
      <string>Soubor</string>
     </property>
+    <addaction name="actionOtev_t"/>
     <addaction name="actionZav_t"/>
    </widget>
    <widget class="QMenu" name="menuN_pov_da">
@@ -232,6 +233,11 @@
   <action name="actionVy_istit_v_e">
    <property name="text">
     <string>Vyčistit vše</string>
+   </property>
+  </action>
+  <action name="actionOtev_t">
+   <property name="text">
+    <string>Otevřít</string>
    </property>
   </action>
  </widget>

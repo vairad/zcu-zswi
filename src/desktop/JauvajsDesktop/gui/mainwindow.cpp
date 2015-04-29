@@ -1,7 +1,6 @@
 #include <QtWidgets>
 #include <QDir>
 
-
 #include "gui/mainwindow.h"
 #include "core/sensorekg.h"
 #include "core/sensortemp.h"
@@ -181,6 +180,7 @@ void MainWindow::on_actionU_ivatelsk_nastaven_triggered() {
  */
 void MainWindow::setMetadata() {
     ui->actionU_ivatelsk_nastaven->setDisabled(false);
+    ui->widget_nast->show();
     ui->label->setText(metaDialog->mainTab->nameE->text());
     ui->label_2->setText(metaDialog->mainTab->surnameE->text());
 }
@@ -216,3 +216,14 @@ void MainWindow::closeEvent(QCloseEvent *event) {
     }
 }
 
+/**
+ * Otevre dialog pro vyber souboru
+ * @brief MainWindow::on_actionOtev_t_triggered
+ */
+void MainWindow::on_actionOtev_t_triggered() {
+    QString file = QFileDialog::getOpenFileName(this, tr("Otevřít soubor"), QDir::homePath());
+    qDebug() << file;
+    dataManager->FILE_NAME = file;
+    dataManager->loadFile();
+
+}

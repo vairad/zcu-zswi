@@ -52,6 +52,8 @@ private slots:
     void cleanAll();
  //   void on_connection_changed();
 
+    void on_actionOtev_t_triggered();
+
 private:
     Ui::MainWindow *ui;
 };

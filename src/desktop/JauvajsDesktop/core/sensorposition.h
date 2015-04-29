@@ -5,8 +5,8 @@
 #include "core/idisplayable.h"
 
 class SensorPosition : public IDisplayable, public IWorking {
-    const float MINIMAL_CORRECT_VALUE = 1.0;
-    const float MAXIMAL_CORRECT_VALUE = 5.0;
+   const float MINIMAL_CORRECT_VALUE = 1.0;
+   const float MAXIMAL_CORRECT_VALUE = 5.0;
 
     /*  1 == Supine position / na zádech
         2 == Left lateral decubitus / leží na levém boku

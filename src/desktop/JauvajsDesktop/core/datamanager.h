@@ -9,6 +9,7 @@
 #include "core/metadatareader.h"
 #include "core/istorable.h"
 #include "core/iworking.h"
+#include "core/fileminer.h"
 
 /**
  * Sprava dat ziskanych z IMiner a IStorable, predani dat konkretnim senzorum
@@ -46,6 +47,8 @@ public:
     QString FILE_METADATA_NAME;
     /** nazev slozky pro ukladani dat */
     QString FOLDER_NAME;
+    /** nazev souboru dat */
+    QString FILE_NAME;
     /** pocet senzoru */
     static const int NUMBER_OF_SENSORS = 6;
     /** Metadata - jmeno a prijmeni pacienta */
@@ -67,7 +70,11 @@ public:
     void setListenerOxy(IWorking *senzorOxy);
     void setListenerPosition(IWorking *senzorPosition);
     void setListenerTemp(IWorking *senzorTemp);
+    void loadFile();
 
+private:
+    /**  */
+    FileMiner *fileMiner;
 };
 
 #endif // DATAMANAGER_H

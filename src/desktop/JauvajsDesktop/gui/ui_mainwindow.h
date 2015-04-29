@@ -35,6 +35,7 @@ public:
     QAction *actionU_ivatelsk_nastaven;
     QAction *actionZm_na_u_ivatele;
     QAction *actionVy_istit_v_e;
+    QAction *actionOtev_t;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout;
     QScrollArea *scrollArea;
@@ -71,6 +72,8 @@ public:
         actionZm_na_u_ivatele->setObjectName(QStringLiteral("actionZm_na_u_ivatele"));
         actionVy_istit_v_e = new QAction(MainWindow);
         actionVy_istit_v_e->setObjectName(QStringLiteral("actionVy_istit_v_e"));
+        actionOtev_t = new QAction(MainWindow);
+        actionOtev_t->setObjectName(QStringLiteral("actionOtev_t"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         horizontalLayout = new QHBoxLayout(centralWidget);
@@ -121,6 +124,7 @@ public:
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
         groupBox = new QGroupBox(widget_nast);
         groupBox->setObjectName(QStringLiteral("groupBox"));
+        groupBox->setEnabled(true);
         label = new QLabel(groupBox);
         label->setObjectName(QStringLiteral("label"));
         label->setGeometry(QRect(70, 30, 91, 20));
@@ -163,6 +167,7 @@ public:
         menuBar->addAction(menuZobrazit->menuAction());
         menuBar->addAction(menuNastaven->menuAction());
         menuBar->addAction(menuN_pov_da->menuAction());
+        menuSoubor->addAction(actionOtev_t);
         menuSoubor->addAction(actionZav_t);
         menuN_pov_da->addAction(actionO_aplikaci);
         menuNastaven->addAction(actionU_ivatelsk_nastaven);
@@ -182,6 +187,7 @@ public:
         actionU_ivatelsk_nastaven->setText(QApplication::translate("MainWindow", "U\305\276ivatelsk\303\251 nastaven\303\255", 0));
         actionZm_na_u_ivatele->setText(QApplication::translate("MainWindow", "Zm\304\233na u\305\276ivatele", 0));
         actionVy_istit_v_e->setText(QApplication::translate("MainWindow", "Vy\304\215istit v\305\241e", 0));
+        actionOtev_t->setText(QApplication::translate("MainWindow", "Otev\305\231\303\255t", 0));
         groupBox->setTitle(QApplication::translate("MainWindow", "U\305\276ivatel", 0));
         label->setText(QApplication::translate("MainWindow", "TextLabel", 0));
         label_2->setText(QApplication::translate("MainWindow", "TextLabel", 0));

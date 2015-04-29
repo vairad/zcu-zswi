@@ -12,11 +12,11 @@
 
 #include "fileproblemexception.h"
 #include "filesaver.h"
-#include "fileminer.h"
 
 DataManager::DataManager() {
     FOLDER_NAME = "data";
     FILE_METADATA_NAME = "metadata.txt";
+    FILE_NAME = "ekg.dat";
 
     saver = new FileSaver(FILE_METADATA_NAME);
     metadataReader = new MetadataReader(FILE_METADATA_NAME);
@@ -256,26 +256,27 @@ void DataManager::setListenerTemp(IWorking *senzorTemp){
     listenTemp = senzorTemp;
 }
 
-
-void DataManager::run() {
-    FileMiner *fileMiner = NULL;
+void DataManager::loadFile() {
+    fileMiner = NULL;
     try{
-       fileMiner = new FileMiner("ekg.dat");
+       fileMiner = new FileMiner(FILE_NAME);
+       qDebug() << FILE_NAME;
     }catch (FileOpenProblemException &e){
         qDebug() << e.getMessage();
     }
+}
 
+void DataManager::run() {
+    loadFile();
     //qDebug() << "run";
     int count = 0;
     while (true) {
         if (listenEKG != NULL && fileMiner != NULL) {
-            if (count == 50) {
+            if (count % 50 == 0) {
                 if (draw) {
                     QCoreApplication::processEvents();
                     QString data = fileMiner->getLastIncoming();
                     if (data != NULL) {
-                        //if (count % 10 == 0)
-                        //qDebug() << "data: " << (data.toFloat());
                         listenEKG->transmitData(data.toFloat());
                         listenTemp->transmitData(data.toFloat());
                         listenOxy->transmitData(data.toFloat());
@@ -288,14 +289,14 @@ void DataManager::run() {
                     }
 
                 }
-                count = 0;
             }
-            //qDebug() << "transmit" << (count % 25);
         } else {
-           // qDebug() << "NULL";
+           if (fileMiner == NULL) {
+               draw = false;
+           }
         }
 
-        for(int i=0; i < 100000; i++) {}
+        for (int i=0; i < 100000; i++) {}
         count++;
     }
 
