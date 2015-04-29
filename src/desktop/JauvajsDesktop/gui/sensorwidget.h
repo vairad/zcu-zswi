@@ -69,7 +69,7 @@ private:
     /** krivka kreslena do grafu */
     QPainterPath *path;
     /** list hodnot v grafu */
-    QList<double> values;
+    QList<float> values;
     /** polozka krivky kreslena do sceny */
     QGraphicsPathItem *curve;
     /** polozka krivky z minuleho zaznamu kreslena do sceny */

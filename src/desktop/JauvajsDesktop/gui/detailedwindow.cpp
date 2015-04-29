@@ -9,7 +9,7 @@
  * @param sensor senzor pro detalni zobrazeni
  * @param parent
  */
-DetailedWindow::DetailedWindow(IDisplayable *sensor, QList<double> *values, QWidget *parent) : QDialog(parent) {
+DetailedWindow::DetailedWindow(IDisplayable *sensor, QList<float> *values, QWidget *parent) : QDialog(parent) {
     this->sensor = sensor;
     this->values = values;
 

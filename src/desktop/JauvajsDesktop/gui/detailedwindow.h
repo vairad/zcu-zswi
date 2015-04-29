@@ -16,7 +16,7 @@
 class DetailedWindow : public QDialog, public GraphDescription {
     Q_OBJECT
 public:
-    explicit DetailedWindow(IDisplayable *sensor, QList<double> *values, QWidget *parent = 0);
+    explicit DetailedWindow(IDisplayable *sensor, QList<float> *values, QWidget *parent = 0);
     void update(double value);
     void resizeEvent(QResizeEvent *);
     void setUp();
@@ -27,7 +27,7 @@ public:
     /** krivka kreslena do grafu */
     QPainterPath *path;
     /** ukazatel na list hodnot v grafu */
-    QList<double> *values;
+    QList<float> *values;
     /** polozka krivky kreslena do sceny */
     QGraphicsPathItem *curve;
     /** polozka krivky z minuleho zaznamu kreslena do sceny */

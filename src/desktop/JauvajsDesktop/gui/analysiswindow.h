@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QVBoxLayout>
+#include <QList>
 
 /**
  * Okno pro zobrazeni vysledku analyzy
@@ -10,13 +11,15 @@
  */
 class AnalysisWindow : public QDialog {
 public:
-    AnalysisWindow(QWidget *parent);
+    AnalysisWindow(QList<float> values, QWidget *parent);
     ~AnalysisWindow();
     void createLabels();
 
 private:
     /** vertikalni layout */
     QVBoxLayout *verticalLayout;
+
+    QList<float> values;
 };
 
 #endif // ANALYSISWINDOW_H

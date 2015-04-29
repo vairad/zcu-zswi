@@ -327,7 +327,7 @@ void SensorWidget::cleanGraph() {
  * @brief SensorWidget::on_button_clicked
  */
 void SensorWidget::on_button_clicked() {
-    new AnalysisWindow(this);
+    new AnalysisWindow(values, this);
 }
 
 /**
