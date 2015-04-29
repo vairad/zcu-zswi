@@ -226,16 +226,16 @@ int AnalyserEKG::getSDuration(int index) {
 vector<int> AnalyserEKG::getQRSDuration() {
     vector<int> duration;
     vector<int> rWave = getRWaveIndex();
-    int i, counterDuration = 0, counterR = 0;
+    int i, countDuration = 0, counterR = 0;
 
     for (i = 0; i < string.size(); i++) {
         if (i == rWave[counterR]) {
-            counterDuration = getLeftRWaveDuration(i) + getQWaveDuration()[counterR]
+            countDuration = getLeftRWaveDuration(i) + getQWaveDuration()[counterR]
                     + getRightRWaveDuration(i) + getSDuration(i);
             counterR++;
+            duration.push_back(countDuration);
         }
     }
-
     return duration;
 }
 
