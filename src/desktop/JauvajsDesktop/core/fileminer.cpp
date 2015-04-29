@@ -3,7 +3,7 @@
 #include <QTextStream>
 #include <QException>
 
-//#include <QDebug>
+#include <QDebug>
 
 #include "core/fileminer.h"
 #include "core/fileproblemexception.h"
@@ -20,7 +20,6 @@ FileMiner::FileMiner(QString fileName){
 }
 
 FileMiner::~FileMiner(){
-    sourceFile.close();
 }
 
 void FileMiner::sendMessage(QString line){
@@ -35,7 +34,13 @@ QString FileMiner::getLastIncoming(){
         QString line = in->readLine();
        // qDebug() << line;
         return line;
+    }
 
+    if(opened && in->atEnd()){
+        qDebug() << "close file";
+        opened = false;
+        delete in; // free memory of data stream
+        sourceFile.close();
     }
    // qDebug() << "read NOline";
     return NULL;
