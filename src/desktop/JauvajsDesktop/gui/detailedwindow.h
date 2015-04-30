@@ -21,7 +21,7 @@ public:
     void resizeEvent(QResizeEvent *);
     void setUp();
     void repaintGraph();
-    void resetGraph();
+    void restartGraph();
     void cleanGraph();
     ~DetailedWindow();
     /** krivka kreslena do grafu */

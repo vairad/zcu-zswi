@@ -30,7 +30,7 @@ public:
     void zobrazit();
     void setUp();
     void repaintGraph();
-    void resetGraph();
+    void restartGraph();
     void cleanGraph();
     IDisplayable *getSensor();
     ~SensorWidget();

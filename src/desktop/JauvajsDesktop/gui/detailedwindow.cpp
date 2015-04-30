@@ -138,7 +138,7 @@ void DetailedWindow::repaintGraph() {
  * Odstraneni vykreslene krivky a resetovani hodnot
  * @brief SensorWidget::resetGraph
  */
-void DetailedWindow::resetGraph() {
+void DetailedWindow::restartGraph() {
     transcription = true;
     transcriptionIndex = 0;
 
