@@ -109,6 +109,8 @@ void MainWindow::setUp() {
        sensors[i]->setUp();
     }
 
+    cleanAll();
+
     if (!dataManager->isSetMetadata) {
         ui->actionU_ivatelsk_nastaven->setDisabled(true);
         ui->widget_nast->hide();
