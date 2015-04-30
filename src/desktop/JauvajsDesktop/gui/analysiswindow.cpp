@@ -1,6 +1,7 @@
 #include <QLabel>
-#include <QDebug>
 #include <QVector>
+
+#include <QDebug>
 
 #include "analysiswindow.h"
 #include "analysis/analyserekg.h"
@@ -44,6 +45,11 @@ void AnalysisWindow::createLabels() {
     verticalLayout->addWidget(label1);
 
     AnalyserEKG *analyser = new AnalyserEKG(values.toVector().toStdVector());
+
+   // qDebug() << "Analyzator vytvořen";
+
+    analyser->analyse();
+
     int numberOfCycles = analyser->getNumberOfCycles();
     float averageCycleDuratio = analyser->getAverageCycleDuration();
     float normalityPercentage = analyser->getNormalityPercentage();
