@@ -283,7 +283,7 @@ void SensorWidget::update2(float value) {
     // pokud graf dobehne do konce platna, je zapnuto prepisovani od zacatku platna
     if (sensor->time > sensor->maxX) {
         restartGraph();
-        detailedWindow->resetGraph();
+        detailedWindow->restartGraph();
         transcription = true;
         transcriptionIndex = 0;
     }
