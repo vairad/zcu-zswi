@@ -42,11 +42,18 @@ void DataManager::transmitMetadata() {
         list.push_back(name[i]);
     }
 
+    // vlozeni dalsich metadat
+    list.push_back(QString::number(sex));
+    list.push_back(age);
+    list.push_back(weight);
+    list.push_back(height);
+
     // vlozeni nastavenych senzoru do listu
     for (int i = 0; i < NUMBER_OF_SENSORS; i++) {
         list.push_back(QString::number(sensors[i]));
     }
 
+    // vlozeni aktualniho casu
     list.push_back(QDateTime::currentDateTime().toString());
 
     saver->saveMetadata(FOLDER_NAME, list);
@@ -67,6 +74,12 @@ void DataManager::getMetadata(QString username) {
         name[i] = list.front();
         list.pop_front();
     }
+
+    // ziskani dalsich metadat
+    sex = list.takeFirst().toInt();
+    age = list.takeFirst();
+    weight = list.takeFirst();
+    height = list.takeFirst();
 
     // ziskani nastavenych senzoru z listu
     for (int i = 0; i < NUMBER_OF_SENSORS; i++) {
@@ -160,7 +173,7 @@ QDateTime DataManager::getDateTimeFromMetadata(QString username) {
 
     QDateTime dateTime;
     if (!list.isEmpty()) {
-        dateTime = QDateTime::fromString(list[8]);
+        dateTime = QDateTime::fromString(list[12]);
     }
     else {
         dateTime = QDateTime();
@@ -177,6 +190,10 @@ void DataManager::logoutUser() {
     name[0] = "";
     name[1] = "";
     username = "";
+    sex = "";
+    age = "";
+    weight = "";
+    height = "";
     isSetMetadata = false;
 
     for (int i = 0; i < NUMBER_OF_SENSORS; i++) {

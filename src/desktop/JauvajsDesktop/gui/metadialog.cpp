@@ -70,14 +70,18 @@ void MetaDialog::updateMetadata() {
         dataManager->name[1] = mainTab->surnameE->text();
 
         dataManager->username = mainTab->usernameE->text();
+        dataManager->sex = !mainTab->femaleR->isChecked();
+        dataManager->age = mainTab->ageE->text();
+        dataManager->weight = mainTab->weightE->text();
+        dataManager->height = mainTab->heightE->text();
 
         dataManager->transmitMetadata();
 
         // aktualizace cesty k souboru
         QFileInfo fileInfo(dataManager->FOLDER_NAME+"/"+dataManager->username+"/metadata.txt");
-        mainTab->pathVL->setText(fileInfo.absoluteFilePath());
+        mainTab->pathE->setText(fileInfo.absoluteFilePath());
         mainTab->pathL->show();
-        mainTab->pathVL->show();
+        mainTab->pathE->show();
     }
 }
 
@@ -99,9 +103,31 @@ MainTab::MainTab(DataManager *dataManager, QWidget *parent) : QWidget(parent) {
     QLabel *usernameL = new QLabel(tr("Uživatelské jméno:"));
     usernameE = new QLineEdit(dataManager->username);
 
+    QLabel *sexL = new QLabel(tr("Pohlaví:"));
+
+    maleR = new QRadioButton(tr("Muž"));
+    maleR->setChecked(dataManager->sex);
+    femaleR = new QRadioButton(tr("Žena"));
+    femaleR->setChecked(!dataManager->sex);
+
+    QWidget *radioBox = new QWidget();
+    QHBoxLayout *hBox = new QHBoxLayout(radioBox);
+    hBox->addWidget(maleR);
+    hBox->addWidget(femaleR);
+    hBox->addStretch(1);
+
+    QLabel *ageL = new QLabel(tr("Věk:"));
+    ageE = new QLineEdit(dataManager->age);
+
+    QLabel *weightL = new QLabel(tr("Hmotnost [kg]:"));
+    weightE = new QLineEdit(dataManager->weight);
+
+    QLabel *heightL = new QLabel(tr("Výška [cm]:"));
+    heightE = new QLineEdit(dataManager->height);
+
     pathL = new QLabel(tr("Cesta k úložišti dat:"));
-    pathVL = new QLabel(fileInfo.absoluteFilePath());
-    pathVL->setFrameStyle(QFrame::Panel | QFrame::Sunken);
+    pathE = new QLineEdit(fileInfo.absoluteFilePath());
+    pathE->setReadOnly(true);
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addWidget(nameL);
@@ -110,13 +136,21 @@ MainTab::MainTab(DataManager *dataManager, QWidget *parent) : QWidget(parent) {
     mainLayout->addWidget(surnameE);
     mainLayout->addWidget(usernameL);
     mainLayout->addWidget(usernameE);
+    mainLayout->addWidget(sexL);
+    mainLayout->addWidget(radioBox);
+    mainLayout->addWidget(ageL);
+    mainLayout->addWidget(ageE);
+    mainLayout->addWidget(weightL);
+    mainLayout->addWidget(weightE);
+    mainLayout->addWidget(heightL);
+    mainLayout->addWidget(heightE);
 
     mainLayout->addWidget(pathL);
-    mainLayout->addWidget(pathVL);
+    mainLayout->addWidget(pathE);
     // pokud se username v dataManageru rovna "", potom skryt cestu k metadatum
     if (!QString::compare(dataManager->username, "")) {
         pathL->hide();
-        pathVL->hide();
+        pathE->hide();
     }
 
     mainLayout->addStretch(1);

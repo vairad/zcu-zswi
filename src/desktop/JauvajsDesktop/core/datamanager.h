@@ -56,7 +56,15 @@ public:
     /** Metadata - senzory nastavene danemu pacientovi */
     bool sensors[NUMBER_OF_SENSORS];
     /** Metadata - uzivatelske jmeno (pacienta), slouzi k nazvu slozky */
-    QString username;
+    QString username;   
+    /** Metadata - pohlavi pacienta */
+    bool sex;
+    /** Metadata - vek pacienta */
+    QString age;
+    /** Metadata - hmotnost pacienta */
+    QString weight;
+    /** Metadata - vyska pacienta */
+    QString height;
     /** zda jsou nacetena metadata */
     bool isSetMetadata;
 

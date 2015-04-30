@@ -25,9 +25,19 @@ public:
     /** textove pole pro prijmeni */
     QLineEdit *surnameE;
     /** textove pole pro uzivatelske jmeno */
-    QLineEdit *usernameE;
+    QLineEdit *usernameE;  
+    /** radio button pro pohlavi - muz */
+    QRadioButton *maleR;
+    /** radio button pro pohlavi - zena */
+    QRadioButton *femaleR;
+    /** textove pole pro vek */
+    QLineEdit *ageE;
+    /** textove pole pro hmotnost */
+    QLineEdit *weightE;
+    /** textove pole pro vysku */
+    QLineEdit *heightE;
     /** pole pro informaci o umisteni metadat */
-    QLabel *pathVL;
+    QLineEdit *pathE;
     /** label pro pole pro informaci o umisteni metadat */
     QLabel *pathL;
 };
