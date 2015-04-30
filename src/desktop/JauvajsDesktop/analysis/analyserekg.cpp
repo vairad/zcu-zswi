@@ -1,4 +1,5 @@
 #include <math.h>
+#include <QDebug>
 
 #include "analyserekg.h"
 
@@ -247,6 +248,7 @@ vector<int> AnalyserEKG::getQRSDuration() {
 vector<bool> AnalyserEKG::analyseQRS() {
     vector<bool> qrs;
     vector<int> duration = getQRSDuration();
+
     vector<int> rWaveIndex = getRWaveIndex();
     int i, counter = 0;
 
@@ -381,16 +383,20 @@ float AnalyserEKG::getNormalityPercentage() {
 }
 
 void AnalyserEKG::analyse() {
+  //  qDebug() << "Metoda analyze";
     vector<bool> qrs = analyseQRS();
+  //  qDebug() << "vektor připraven";
+
     int i, countTrue = 0;
 
-    for (i = 0; i < (int)qrs.size(); i++) {
+    int size = qrs.size();
+    for (i = 0; i < size; i++) {
         if (qrs[i] == true) {
             countTrue++;
         }
     }
 
-    normalityPercentage = 100 * (int)qrs.size() /(float)countTrue;
+    normalityPercentage = 100 * (float)countTrue / (int)qrs.size();
 }
 
 AnalyserEKG::~AnalyserEKG() {
