@@ -24,12 +24,15 @@ public:
     explicit MainWindow(DataManager *manager, QWidget *parent = 0);
     ~MainWindow();
     void createToolBar();
+    void createUserPanel();
+    void addMetadataToUserPanel();
     void setUp();
     void closeEvent(QCloseEvent *event);
     /** uvodni okno */
     InitialWindow *initialWindow;
-    /**Okno se spojenim */
+    /** Okno se spojenim */
     ConnectionWindow *connectionWindow;
+    /** pocet sensoru */
     static const int NUMBER_OF_SENSORS = 6;
     /** senzory */
     SensorWidget *sensors[NUMBER_OF_SENSORS];
@@ -50,12 +53,27 @@ private slots:
     void startScanning();
     void stopScanning();
     void cleanAll();
- //   void on_connection_changed();
-
+    // void on_connection_changed();
     void on_actionOtev_t_triggered();
 
 private:
     Ui::MainWindow *ui;
+    /** Panel uzivatel s informacemi o uzivateli */
+    QWidget *userPanel;
+    /** grid layout pro groupBox v user panelu */
+    QGridLayout *layout;
+    /** Panel uzivatel - label pro jmeno */
+    QLabel *nameL;
+    /** Panel uzivatel - label pro prijmeni */
+    QLabel *surnameL;
+    /** Panel uzivatel - label pro pohlavi */
+    QLabel *sexL;
+    /** Panel uzivatel - label pro vek */
+    QLabel *ageL;
+    /** Panel uzivatel - label pro hmotnost */
+    QLabel *weightL;
+    /** Panel uzivatel - label pro vyska */
+    QLabel *heightL;
 };
 
 #endif // MAINWINDOW_H

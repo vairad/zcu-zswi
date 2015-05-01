@@ -22,12 +22,13 @@ MainWindow::MainWindow(DataManager *manager, QWidget *parent) : QMainWindow(pare
     this->showMaximized();
 
     createToolBar();
+    createUserPanel();
     initialWindow = new InitialWindow(dataManager, this);
 
 
-  //  ArduinoMiner arduinoMiner = new ArduinoMiner();
+    //  ArduinoMiner arduinoMiner = new ArduinoMiner();
     connectionWindow = new ConnectionWindow();
-   // connect(arduinoMiner, SIGNAL(ZmenaStavu(QString)), this, SLOT(on_connection_changed());
+    // connect(arduinoMiner, SIGNAL(ZmenaStavu(QString)), this, SLOT(on_connection_changed());
 
 
     // Vytvoreni senzoru
@@ -54,8 +55,12 @@ MainWindow::MainWindow(DataManager *manager, QWidget *parent) : QMainWindow(pare
     sensors[4] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, gsr, ui->scrollAreaWidgetContents_2);
     sensors[5] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, hr, ui->scrollAreaWidgetContents_2);
 
-    ui->label->setText("");
-    ui->label_2->setText("");
+    nameL->setText("");
+    surnameL->setText("");
+    sexL->setText("");
+    ageL->setText("");
+    weightL->setText("");
+    heightL->setText("");
 }
 
 /**
@@ -96,6 +101,92 @@ void MainWindow::createToolBar() {
 }
 
 /**
+ * Vytvori pravy panel s informacemi o uzivateli
+ * @brief MainWindow::createUserPanel
+ */
+void MainWindow::createUserPanel() {
+    // vytvoreni panelu
+    userPanel = new QWidget(ui->centralWidget);
+    userPanel->setObjectName(QStringLiteral("widget_nast"));
+    userPanel->setMinimumSize(QSize(200, 0));
+    userPanel->setMaximumSize(QSize(200, 16777215));
+    userPanel->hide();
+    ui->horizontalLayout->addWidget(userPanel);
+
+    // layout pro panel
+    QVBoxLayout *verticalLayout = new QVBoxLayout(userPanel);
+
+    // skupina pro cely panel umistena do verticalLayout
+    QGroupBox *groupBox = new QGroupBox(userPanel);
+    groupBox->setObjectName(QStringLiteral("groupBox"));
+    groupBox->setEnabled(true);
+    groupBox->setTitle("Uživatel");
+    verticalLayout->addWidget(groupBox);
+
+    // grid layout pro groupBox
+    layout = new QGridLayout(groupBox);
+    layout->setAlignment(Qt::AlignTop);
+
+    addMetadataToUserPanel();
+}
+
+/**
+ * Vytvori labely pro metadata v user panelu
+ * @brief MainWindow::addMetadataToUserPanel
+ */
+void MainWindow::addMetadataToUserPanel() {
+    // tucne pismo pro jmeno a prijmeni
+    QFont font;
+    font.setBold(true);
+
+    // labely metadat uzivatele
+    nameL = new QLabel();
+    nameL->setFont(font);
+    layout->addWidget(nameL, 0, 1);
+
+    surnameL = new QLabel();
+    surnameL->setFont(font);
+    layout->addWidget(surnameL, 1, 1);
+
+    sexL = new QLabel();
+    layout->addWidget(sexL, 2, 1);
+
+    ageL = new QLabel();
+    layout->addWidget(ageL, 3, 1);
+
+    weightL = new QLabel();
+    layout->addWidget(weightL, 4, 1);
+
+    heightL = new QLabel();
+    layout->addWidget(heightL, 5, 1);
+
+    // labely popisujici metadata uzivatele
+    QLabel *labelNameL = new QLabel();
+    labelNameL->setText("Jméno:");
+    layout->addWidget(labelNameL, 0, 0);
+
+    QLabel *labelSurnameL = new QLabel();
+    labelSurnameL->setText("Příjmení:");
+    layout->addWidget(labelSurnameL, 1, 0);
+
+    QLabel *labelSexL = new QLabel();
+    labelSexL->setText("Pohlaví:");
+    layout->addWidget(labelSexL, 2, 0);
+
+    QLabel *labelAgeL = new QLabel();
+    labelAgeL->setText("Věk:");
+    layout->addWidget(labelAgeL, 3, 0);
+
+    QLabel *labelWeightL = new QLabel();
+    labelWeightL->setText("Hmotnost:");
+    layout->addWidget(labelWeightL, 4, 0);
+
+    QLabel *labelHeightL = new QLabel();
+    labelHeightL->setText("Výška:");
+    layout->addWidget(labelHeightL, 5, 0);
+}
+
+/**
  * Pocatecni nastaveni senzoru
  * @brief MainWindow::setUp
  */
@@ -113,10 +204,10 @@ void MainWindow::setUp() {
 
     if (!dataManager->isSetMetadata) {
         ui->actionU_ivatelsk_nastaven->setDisabled(true);
-        ui->widget_nast->hide();
+        userPanel->hide();
     }
     else {
-        ui->widget_nast->show();
+        userPanel->show();
     }
 
 }
@@ -182,9 +273,19 @@ void MainWindow::on_actionU_ivatelsk_nastaven_triggered() {
  */
 void MainWindow::setMetadata() {
     ui->actionU_ivatelsk_nastaven->setDisabled(false);
-    ui->widget_nast->show();
-    ui->label->setText(metaDialog->mainTab->nameE->text());
-    ui->label_2->setText(metaDialog->mainTab->surnameE->text());
+    userPanel->show();
+    nameL->setText(metaDialog->mainTab->nameE->text());
+    surnameL->setText(metaDialog->mainTab->surnameE->text());
+
+    if (metaDialog->mainTab->maleR->isChecked()) {
+        sexL->setText("Muž");
+    }
+    else {
+        sexL->setText("Žena");
+    }
+    ageL->setText(metaDialog->mainTab->ageE->text() + " let");
+    weightL->setText(metaDialog->mainTab->weightE->text() + " kg");
+    heightL->setText(metaDialog->mainTab->heightE->text() + " cm");
 }
 
 /**

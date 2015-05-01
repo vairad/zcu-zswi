@@ -13,10 +13,8 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
-#include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
-#include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
@@ -41,13 +39,6 @@ public:
     QScrollArea *scrollArea;
     QWidget *scrollAreaWidgetContents_2;
     QVBoxLayout *verticalLayout_3;
-    QWidget *widget_nast;
-    QVBoxLayout *verticalLayout_2;
-    QGroupBox *groupBox;
-    QLabel *label;
-    QLabel *label_2;
-    QLabel *label_3;
-    QLabel *label_4;
     QMenuBar *menuBar;
     QMenu *menuSoubor;
     QMenu *menuN_pov_da;
@@ -96,7 +87,7 @@ public:
         scrollAreaWidgetContents_2 = new QWidget();
         scrollAreaWidgetContents_2->setObjectName(QStringLiteral("scrollAreaWidgetContents_2"));
         scrollAreaWidgetContents_2->setEnabled(true);
-        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 532, 349));
+        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 738, 349));
         QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Preferred);
         sizePolicy1.setHorizontalStretch(0);
         sizePolicy1.setVerticalStretch(0);
@@ -110,38 +101,6 @@ public:
         scrollArea->setWidget(scrollAreaWidgetContents_2);
 
         horizontalLayout->addWidget(scrollArea);
-
-        widget_nast = new QWidget(centralWidget);
-        widget_nast->setObjectName(QStringLiteral("widget_nast"));
-        sizePolicy1.setHeightForWidth(widget_nast->sizePolicy().hasHeightForWidth());
-        widget_nast->setSizePolicy(sizePolicy1);
-        widget_nast->setMinimumSize(QSize(200, 0));
-        widget_nast->setMaximumSize(QSize(200, 16777215));
-        widget_nast->hide();
-        verticalLayout_2 = new QVBoxLayout(widget_nast);
-        verticalLayout_2->setSpacing(6);
-        verticalLayout_2->setContentsMargins(11, 11, 11, 11);
-        verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
-        groupBox = new QGroupBox(widget_nast);
-        groupBox->setObjectName(QStringLiteral("groupBox"));
-        groupBox->setEnabled(true);
-        label = new QLabel(groupBox);
-        label->setObjectName(QStringLiteral("label"));
-        label->setGeometry(QRect(70, 30, 91, 20));
-        label_2 = new QLabel(groupBox);
-        label_2->setObjectName(QStringLiteral("label_2"));
-        label_2->setGeometry(QRect(70, 50, 91, 20));
-        label_3 = new QLabel(groupBox);
-        label_3->setObjectName(QStringLiteral("label_3"));
-        label_3->setGeometry(QRect(20, 30, 47, 20));
-        label_4 = new QLabel(groupBox);
-        label_4->setObjectName(QStringLiteral("label_4"));
-        label_4->setGeometry(QRect(20, 50, 47, 20));
-
-        verticalLayout_2->addWidget(groupBox);
-
-
-        horizontalLayout->addWidget(widget_nast);
 
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
@@ -188,11 +147,6 @@ public:
         actionZm_na_u_ivatele->setText(QApplication::translate("MainWindow", "Zm\304\233na u\305\276ivatele", 0));
         actionVy_istit_v_e->setText(QApplication::translate("MainWindow", "Vy\304\215istit v\305\241e", 0));
         actionOtev_t->setText(QApplication::translate("MainWindow", "Otev\305\231\303\255t", 0));
-        groupBox->setTitle(QApplication::translate("MainWindow", "U\305\276ivatel", 0));
-        label->setText(QApplication::translate("MainWindow", "TextLabel", 0));
-        label_2->setText(QApplication::translate("MainWindow", "TextLabel", 0));
-        label_3->setText(QApplication::translate("MainWindow", "Jm\303\251no:", 0));
-        label_4->setText(QApplication::translate("MainWindow", "P\305\231\303\255jmen\303\255:", 0));
         menuSoubor->setTitle(QApplication::translate("MainWindow", "Soubor", 0));
         menuN_pov_da->setTitle(QApplication::translate("MainWindow", "N\303\241pov\304\233da", 0));
         menuZobrazit->setTitle(QApplication::translate("MainWindow", "Zobrazit", 0));
