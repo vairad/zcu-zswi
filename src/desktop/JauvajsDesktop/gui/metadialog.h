@@ -36,6 +36,8 @@ public:
     QLineEdit *weightE;
     /** textove pole pro vysku */
     QLineEdit *heightE;
+    /** textove pole pro poznamku */
+    QTextEdit *noteTE;
     /** pole pro informaci o umisteni metadat */
     QLineEdit *pathE;
     /** label pro pole pro informaci o umisteni metadat */

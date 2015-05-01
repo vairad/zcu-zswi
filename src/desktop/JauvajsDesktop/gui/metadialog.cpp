@@ -74,6 +74,7 @@ void MetaDialog::updateMetadata() {
         dataManager->age = mainTab->ageE->text();
         dataManager->weight = mainTab->weightE->text();
         dataManager->height = mainTab->heightE->text();
+        dataManager->note = mainTab->noteTE->toPlainText();
 
         dataManager->transmitMetadata();
 
@@ -125,6 +126,9 @@ MainTab::MainTab(DataManager *dataManager, QWidget *parent) : QWidget(parent) {
     QLabel *heightL = new QLabel(tr("Výška [cm]:"));
     heightE = new QLineEdit(dataManager->height);
 
+    QLabel *noteL = new QLabel(tr("Poznámka:"));
+    noteTE = new QTextEdit(dataManager->note);
+
     pathL = new QLabel(tr("Cesta k úložišti dat:"));
     pathE = new QLineEdit(fileInfo.absoluteFilePath());
     pathE->setReadOnly(true);
@@ -143,7 +147,9 @@ MainTab::MainTab(DataManager *dataManager, QWidget *parent) : QWidget(parent) {
     mainLayout->addWidget(weightL);
     mainLayout->addWidget(weightE);
     mainLayout->addWidget(heightL);
-    mainLayout->addWidget(heightE);
+    mainLayout->addWidget(heightE);    
+    mainLayout->addWidget(noteL);
+    mainLayout->addWidget(noteTE);
 
     mainLayout->addWidget(pathL);
     mainLayout->addWidget(pathE);

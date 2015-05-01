@@ -19,7 +19,7 @@ QList<QString> MetadataReader::loadMetadata(QString folderName, QString username
     // nalezeni slozky
     QDir dir(FOLDER_NAME + "/" + username);
     if (!dir.exists()) {
-      return QList<QString>();
+        return QList<QString>();
     }
 
     QFile *file = new QFile(FOLDER_NAME + "/" + username + "/" + FILENAME);
@@ -31,9 +31,17 @@ QList<QString> MetadataReader::loadMetadata(QString folderName, QString username
     QTextStream in(file);
     in.setCodec("UTF-8");
     QString line = in.readLine();
-    return line.split(';');
-
     file->close();
+
+    // vysledny list metadat
+    QList<QString> listOfMetadata;
+    listOfMetadata = line.split(';');
+    if (listOfMetadata.size() != NUMBER_OF_METADATA) {
+        return QList<QString>();
+    }
+    else {
+        return listOfMetadata;
+    }
 }
 
 MetadataReader::~MetadataReader() {

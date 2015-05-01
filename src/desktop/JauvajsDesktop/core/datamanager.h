@@ -65,6 +65,8 @@ public:
     QString weight;
     /** Metadata - vyska pacienta */
     QString height;
+    /** Metadata - poznamka */
+    QString note;
     /** zda jsou nacetena metadata */
     bool isSetMetadata;
 
