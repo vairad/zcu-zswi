@@ -29,6 +29,7 @@ private:
     float getRWaveAmplitude(int index);
     int getRightRWaveDuration(int index);
     int getSDuration(int index);
+    int getQWaveDuration(int index);
 
     vector<int> getRRIntervalDuration();
     vector<int> getQWaveDuration();

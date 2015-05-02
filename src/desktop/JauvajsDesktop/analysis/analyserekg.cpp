@@ -75,7 +75,7 @@ vector<int> AnalyserEKG::getRWaveIndex() {
     index.push_back(firstRWaveIndex);
 
     for (i = 0; i < (int)interval.size(); i++) {
-        tmp = index.back();
+        tmp = index.back();       
         index.push_back(tmp + interval[i]);
     }
 
@@ -122,6 +122,25 @@ float AnalyserEKG::getRWaveAmplitude(int index) {
     return amplitude;
 }
 
+
+/**
+ * Zjisti trvani Q vlny v cyklu dle zadaneho indexu.
+ * @brief AnalyserEKG::getQWaveDuration
+ * @param index R vlny, kde se ma trvani Q vlny pocitat
+ * @return trvani Q vlny (pocet znaku)
+ */
+int AnalyserEKG::getQWaveDuration(int index) {
+    int duration = 0;
+    int i;
+
+    for (i = index - getLeftRWaveDuration(index); i >= 0 && differences[i] < 0 && string[i] != 'C'; i--) {
+         duration++;
+    }
+
+    return duration;
+}
+
+
 /**
  * Zjisti trvani Q vlny ve vsech srdecnich cyklech.
  * @brief AnalyserEKG::getQWaveDuration
@@ -131,24 +150,30 @@ vector<int> AnalyserEKG::getQWaveDuration() {
     vector<int> duration;
     vector<int> rWaveIndex = getRWaveIndex();
     int i, j, counterQ, counterR = 0;
-
+    qDebug() << "metoda getQWaveDuration";
     for (i = 0; i < (int)string.size(); i++) {
         counterQ = 0;
-        if (i == rWaveIndex[counterR]) {
-            j = i - getLeftRWaveDuration(i);
-            while (j >= 0) {
-                if (differences[j] < 0 && string[j] != 'C') { /* pocita, dokud vlna klesa */
-                    counterQ++;
-                } else {
-                    break;
+        qDebug() << "zacal cyklus qWaveDuration";
+        if (i < (int)rWaveIndex.size()) {
+            if (i == rWaveIndex[counterR]) {
+                j = i - getLeftRWaveDuration(i);
+                qDebug() << "j = " << j;
+                while (j >= 0) {
+                    if (differences[j] < 0 && string[j] != 'C') { /* pocita, dokud vlna klesa */
+                        counterQ++;
+                        qDebug() << "counterQ = " << counterQ;
+                    } else {
+                        break;
+                    }
+                    j--;
                 }
-                j--;
+                duration.push_back(counterQ);
+                counterR++;
+                qDebug() << "counterR = " << counterR;
             }
-            duration.push_back(counterQ);
-            counterR++;
         }
     }
-
+    qDebug() << "skoncil cyklus qWaveDuration";
     return duration;
 }
 
@@ -199,16 +224,21 @@ int AnalyserEKG::getSDuration(int index) {
 vector<int> AnalyserEKG::getQRSDuration() {
     vector<int> duration;
     vector<int> rWave = getRWaveIndex();
+    qDebug() << "Metoda getQRSDuration";
     int i, countDuration = 0, counterR = 0;
 
     for (i = 0; i < (int)string.size(); i++) {
-        if (i == rWave[counterR]) {
-            countDuration = getLeftRWaveDuration(i) + getQWaveDuration()[counterR]
-                    + getRightRWaveDuration(i) + getSDuration(i);
-            counterR++;
-            duration.push_back(countDuration);
+        if (counterR < (int)rWave.size()) {
+            if (i == rWave[counterR]) {
+                countDuration = getLeftRWaveDuration(i) + getQWaveDuration(i)
+                        + getRightRWaveDuration(i) + getSDuration(i);
+                counterR++;
+                duration.push_back(countDuration);
+                qDebug() << "duration QRS = " << countDuration;
+            }
         }
     }
+
     return duration;
 }
 
@@ -219,22 +249,26 @@ vector<int> AnalyserEKG::getQRSDuration() {
  */
 vector<bool> AnalyserEKG::analyseQRS() {
     vector<bool> qrs;
+    qDebug() << "Metoda analyseQRS";
     vector<int> duration = getQRSDuration();
-    //qDebug() << "Metoda analyseQRS";
+    qDebug() << "QRSDuration vypoctena";
     vector<int> rWaveIndex = getRWaveIndex();
+    qDebug() << "rWaveIndex vypocten";
     int i, counter = 0;
 
     for (i = 0; i < (int)string.size(); i++) {
-        if (i == rWaveIndex[counter]) {
-            if (duration[counter] > 0.12 * DATA_SEC ||
-                    getRWaveAmplitude(i) < 0.5) {
-                qrs.push_back(false);
-            } else {
-                qrs.push_back(true);
+        if (counter < (int)rWaveIndex.size()) {
+            if (i == rWaveIndex[counter]) {
+                if (duration[counter] > 0.12 * DATA_SEC || getRWaveAmplitude(i) < 0.5) {
+                    qrs.push_back(false);
+                } else {
+                    qrs.push_back(true);
+                }
+                counter++;
             }
-            counter++;
         }
     }
+
     return qrs;
 }
 
@@ -276,9 +310,9 @@ float AnalyserEKG::getNormalityPercentage() {
 }
 
 void AnalyserEKG::analyse() {
-  //  qDebug() << "Metoda analyze";
+    qDebug() << "Metoda analyze";
     vector<bool> qrs = analyseQRS();
-  //  qDebug() << "vektor připraven";
+    qDebug() << "vektor připraven";
 
     int i, countTrue = 0;
 
@@ -293,6 +327,5 @@ void AnalyserEKG::analyse() {
 }
 
 AnalyserEKG::~AnalyserEKG() {
-
 }
 
