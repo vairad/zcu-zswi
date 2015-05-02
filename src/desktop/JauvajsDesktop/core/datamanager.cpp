@@ -53,6 +53,9 @@ void DataManager::transmitMetadata() {
         list.push_back(QString::number(sensors[i]));
     }
 
+    // vlozeni nastaveni ukladani
+    list.push_back(QString::number(isSaveData));
+
     // vlozeni aktualniho casu
     list.push_back(QDateTime::currentDateTime().toString());
 
@@ -87,6 +90,9 @@ void DataManager::getMetadata(QString username) {
     for (int i = 0; i < NUMBER_OF_SENSORS; i++) {
         sensors[i] = list.takeFirst().toInt();
     }
+
+    // ziskani nastaveni ukladani dat
+    isSaveData = list.takeFirst().toInt();
 
     // ziskani poznamky
     list.pop_front();
@@ -141,15 +147,17 @@ void DataManager::transmitData(QString row) {
  * @brief DataManager::connectSensorToSaver
  */
 void DataManager::connectSensorToSaver() {
-    connect(listenEKG, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int, float)));
-    connect(listenTemp, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int, float)));
-    connect(listenPosition, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int, float)));
-    connect(listenOxy, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int, float)));
-    connect(listenGSR, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int, float)));
-    connect(listenHeartRate, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int, float)));
+    if (isSaveData) {
+        connect(listenEKG, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int, float)));
+        connect(listenTemp, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int, float)));
+        connect(listenPosition, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int, float)));
+        connect(listenOxy, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int, float)));
+        connect(listenGSR, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int, float)));
+        connect(listenHeartRate, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int, float)));
 
-    saver->createFileForData(username);
-    numberOfData = 0;
+        saver->createFileForData(username);
+        numberOfData = 0;
+    }
 }
 
 /**
@@ -157,13 +165,15 @@ void DataManager::connectSensorToSaver() {
  * @brief DataManager::transmitDataToSaver
  */
 void DataManager::transmitDataToSaver(int id, float data) {
-    numberOfData++;
+    if (isSaveData) {
+        numberOfData++;
 
-    listToFile[id] = data;
+        listToFile[id] = data;
 
-    if (numberOfData == NUMBER_OF_SENSORS) {
-        saver->saveData(listToFile);
-        numberOfData = 0;
+        if (numberOfData == NUMBER_OF_SENSORS) {
+            saver->saveData(listToFile);
+            numberOfData = 0;
+        }
     }
 }
 
@@ -172,14 +182,16 @@ void DataManager::transmitDataToSaver(int id, float data) {
  * @brief DataManager::connectSensorToSaver
  */
 void DataManager::disconnectSensorToSaver() {
-    disconnect(listenEKG, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int,float)));
-    disconnect(listenTemp, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int,float)));
-    disconnect(listenPosition, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int,float)));
-    disconnect(listenOxy, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int,float)));
-    disconnect(listenGSR, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int,float)));
-    disconnect(listenHeartRate, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int,float)));
+    if (isSaveData) {
+        disconnect(listenEKG, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int,float)));
+        disconnect(listenTemp, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int,float)));
+        disconnect(listenPosition, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int,float)));
+        disconnect(listenOxy, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int,float)));
+        disconnect(listenGSR, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int,float)));
+        disconnect(listenHeartRate, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int,float)));
 
-    saver->closeFileForData();
+        saver->closeFileForData();
+    }
 }
 
 /**
@@ -246,6 +258,7 @@ void DataManager::logoutUser() {
     weight = "";
     height = "";
     note = "";
+    isSaveData = false;
     isSetMetadata = false;
 
     for (int i = 0; i < NUMBER_OF_SENSORS; i++) {

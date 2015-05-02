@@ -68,6 +68,8 @@ public:
     QString height;
     /** Metadata - poznamka */
     QString note;
+    /** Metadata - zda je nastaveno ukladani dat */
+    bool isSaveData;
     /** zda jsou nacetena metadata */
     bool isSetMetadata;
 

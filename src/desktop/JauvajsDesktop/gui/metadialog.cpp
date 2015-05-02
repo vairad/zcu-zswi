@@ -10,8 +10,9 @@
 MetaDialog::MetaDialog(DataManager *dataManager, SensorWidget *sensors[], int numberOfSensors, QWidget *parent) : QDialog(parent), dataManager(dataManager) {
     tabWidget = new QTabWidget;
     mainTab = new MainTab(dataManager);
+    sensorsTab = new SensorsTab(sensors, numberOfSensors, sensorCB, dataManager);
     tabWidget->addTab(mainTab, tr("Hlavní"));
-    tabWidget->addTab(new SensorsTab(sensors, numberOfSensors, sensorCB, dataManager), tr("Senzory"));
+    tabWidget->addTab(sensorsTab, tr("Senzory"));
 
     buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
 
@@ -200,8 +201,8 @@ SensorsTab::SensorsTab(SensorWidget *sensors[], int numberOfSensors, QCheckBox *
     // ----------------- skupina ukladani
     QGroupBox *saveGroup = new QGroupBox(tr("Ukládání dat"));
 
-    QCheckBox *saveCB;
     saveCB = new QCheckBox("Ukládat naměřená data do formátu csv pro další zpracování");
+    saveCB->setChecked(dataManager->isSaveData);
 
     QVBoxLayout *saveLayout = new QVBoxLayout;
     saveLayout->addWidget(saveCB);

@@ -53,6 +53,8 @@ class SensorsTab : public QWidget {
 
 public:
     explicit SensorsTab(SensorWidget *sensors[], int numberOfSensors, QCheckBox *sensorCB[], DataManager *dataManager, QWidget *parent = 0);
+    /** checkbox pro nastaveni ukladani */
+    QCheckBox *saveCB;
 };
 
 /**
@@ -66,6 +68,9 @@ public:
     explicit MetaDialog(DataManager *dataManager, SensorWidget *sensors[], int numberOfSensors, QWidget *parent = 0);
     /** hlavni list */
     MainTab *mainTab;
+    /** list senzory */
+    SensorsTab *sensorsTab;
+
     /** spravce dat */
     DataManager *dataManager;
 

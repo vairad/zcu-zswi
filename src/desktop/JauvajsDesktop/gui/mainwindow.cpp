@@ -97,6 +97,11 @@ void MainWindow::createToolBar() {
     connect(cleanAllA, SIGNAL(triggered()), this, SLOT(cleanAll()));
     toolbar->addAction(cleanAllA);
 
+    toolbar->addSeparator();
+
+    saveCB = new QCheckBox("Ukládat data");
+    toolbar->addWidget(saveCB);
+
     this->addToolBar(toolbar);
 }
 
@@ -192,6 +197,16 @@ void MainWindow::addMetadataToUserPanel() {
  */
 void MainWindow::setUp() {
     metaDialog = new MetaDialog(dataManager, sensors, NUMBER_OF_SENSORS);
+
+    // propojeni zmen s checkboxem pro ulozeni dat v metadialogu oboustrane
+    connect(saveCB, SIGNAL(clicked(bool)), metaDialog->sensorsTab->saveCB, SLOT(setChecked(bool)));
+    connect(metaDialog->sensorsTab->saveCB, SIGNAL(clicked(bool)), saveCB, SLOT(setChecked(bool)));
+    // propoji zmeny checkboxu s dataManagerem
+    connect(saveCB, SIGNAL(clicked(bool)), this, SLOT(setSaveData(bool)));
+    connect(metaDialog->sensorsTab->saveCB, SIGNAL(clicked(bool)), this, SLOT(setSaveData(bool)));
+
+    saveCB->setChecked(dataManager->isSaveData);
+
     setMetadata();
     // propojeni zmeny udaju v metaDialogu s pravym sloupcem
     QObject::connect(metaDialog, SIGNAL(accepted()), this, SLOT(setMetadata()));
@@ -238,6 +253,10 @@ void MainWindow::startScanning() {
 void MainWindow::stopScanning() {
     dataManager->disconnectSensorToSaver();
     dataManager->draw = false;
+}
+
+void MainWindow::setSaveData(bool save) {
+    dataManager->isSaveData = save;
 }
 
 MainWindow::~MainWindow() {

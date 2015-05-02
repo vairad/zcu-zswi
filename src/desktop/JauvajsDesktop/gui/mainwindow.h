@@ -53,6 +53,7 @@ private slots:
     void startScanning();
     void stopScanning();
     void cleanAll();
+    void setSaveData(bool save);
     // void on_connection_changed();
     void on_actionOtev_t_triggered();
 
@@ -74,6 +75,8 @@ private:
     QLabel *weightL;
     /** Panel uzivatel - label pro vyska */
     QLabel *heightL;
+    /** Checkbox pro nastaveni ukladani metadat */
+    QCheckBox *saveCB;
 };
 
 #endif // MAINWINDOW_H
