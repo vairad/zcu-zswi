@@ -29,11 +29,13 @@ QGraphicsScene* SensorTemp::getSceneGraph() {
  * Pracuje s predanymi daty
  * @param data prijata data
  */
-void SensorTemp::transmitData(float data){
-    if(this->validateData(data)){
+void SensorTemp::transmitData(float data) {
+    if (this->validateData(data)) {
         emit haveData(data);
-    }else{
+        emit haveDataToSave(ID, data);
+    } else {
         emit haveData((maxY+minY)/2.0);
+        emit haveDataToSave(ID, (maxY+minY)/2.0);
     }
 }
 

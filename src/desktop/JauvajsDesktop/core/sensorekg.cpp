@@ -31,15 +31,16 @@ QGraphicsScene* SensorEKG::getSceneGraph() {
  * Pracuje s predanymi daty
  * @param data prijata data
  */
-void SensorEKG::transmitData(float data){
-    if(this->validateData(data)){
+void SensorEKG::transmitData(float data) {
+    if (this->validateData(data)) {
         //this->lastData = data;
         emit haveData(data);
-    }else{
+        emit haveDataToSave(ID, data);
+    } else {
         emit haveData((maxY+minY)/2.0);
+        emit haveDataToSave(ID, (maxY+minY)/2.0);
     }
     // this->validateData(data);
-    //qDebug() << "přijatá data" << data ;
 }
 
 /**

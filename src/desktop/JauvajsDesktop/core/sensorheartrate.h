@@ -5,6 +5,7 @@
 #include "core/idisplayable.h"
 
 class SensorHeartRate : public IDisplayable, public IWorking {
+    static const int ID = 5;
     const float MINIMAL_CORRECT_VALUE = 70.0;
     const float MAXIMAL_CORRECT_VALUE = 220.0;
 

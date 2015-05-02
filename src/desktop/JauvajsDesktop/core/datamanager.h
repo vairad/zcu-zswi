@@ -16,29 +16,30 @@
  * @brief The DataManager class
  */
 class DataManager : public QThread {
-
-    /** Privátní odkazy na senzory */
-     IWorking *listenEKG;
-     IWorking *listenGSR;
-     IWorking *listenHeartRate;
-     IWorking *listenOxy;
-     IWorking *listenPosition;
-     IWorking *listenTemp;
-
-     void initSenzorListeners();
-
+Q_OBJECT
 public:
     DataManager();
     ~DataManager();
-
     /** predani dat jednotlivym senzorum */
     void transmitData(QString row);
-    void transmitMetadata();    
+    void transmitMetadata();
+    void connectSensorToSaver();
+    void disconnectSensorToSaver();
     void getMetadata(QString username);
     QString getNameFromMetadata(QString username);
     QDateTime getDateTimeFromMetadata(QString username);
     QStringList listOfFolders();
     void logoutUser();
+    void initSenzorListeners();
+
+    /** Privátní odkazy na senzory */
+    IWorking *listenEKG;
+    IWorking *listenGSR;
+    IWorking *listenHeartRate;
+    IWorking *listenOxy;
+    IWorking *listenPosition;
+    IWorking *listenTemp;
+
     /** ukladac dat */
     IStorable *saver;
     /** cteni metadat */
@@ -85,6 +86,13 @@ public:
 private:
     /**  */
     FileMiner *fileMiner;
+
+    int numberOfData;
+
+    float listToFile[NUMBER_OF_SENSORS];
+
+public slots:
+    void transmitDataToSaver(int, float);
 };
 
 #endif // DATAMANAGER_H

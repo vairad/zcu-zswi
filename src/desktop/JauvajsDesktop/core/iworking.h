@@ -3,8 +3,8 @@
 
 #include <QGraphicsScene>
 
-class IWorking
-{
+class IWorking : public QObject {
+Q_OBJECT
 public:
 
     /** Predavani dat senzorum */
@@ -13,6 +13,9 @@ public:
     float lastData;
 
 private:
+
+signals:
+    void haveDataToSave(int, float);
 
 };
 

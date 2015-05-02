@@ -5,6 +5,7 @@
 #include "core/idisplayable.h"
 
 class SensorTemp : public IDisplayable, public IWorking {
+    static const int ID = 1;
     const float MINIMAL_CORRECT_VALUE = 33.0;
     const float MAXIMAL_CORRECT_VALUE = 43.0;
 

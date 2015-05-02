@@ -227,6 +227,7 @@ void MainWindow::cleanAll() {
  * @brief MainWindow::startScanning
  */
 void MainWindow::startScanning() {
+    dataManager->connectSensorToSaver();
     dataManager->draw = true;
 }
 
@@ -235,6 +236,7 @@ void MainWindow::startScanning() {
  * @brief MainWindow::stopScanning
  */
 void MainWindow::stopScanning() {
+    dataManager->disconnectSensorToSaver();
     dataManager->draw = false;
 }
 

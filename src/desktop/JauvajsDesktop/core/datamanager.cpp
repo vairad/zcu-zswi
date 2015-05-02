@@ -137,6 +137,52 @@ void DataManager::transmitData(QString row) {
 }
 
 /**
+ * Propoji senzory IWorking s transmitDataToSaver
+ * @brief DataManager::connectSensorToSaver
+ */
+void DataManager::connectSensorToSaver() {
+    connect(listenEKG, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int, float)));
+    connect(listenTemp, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int, float)));
+    connect(listenPosition, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int, float)));
+    connect(listenOxy, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int, float)));
+    connect(listenGSR, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int, float)));
+    connect(listenHeartRate, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int, float)));
+
+    saver->createFileForData(username);
+    numberOfData = 0;
+}
+
+/**
+ * Predani dat saveru
+ * @brief DataManager::transmitDataToSaver
+ */
+void DataManager::transmitDataToSaver(int id, float data) {
+    numberOfData++;
+
+    listToFile[id] = data;
+
+    if (numberOfData == NUMBER_OF_SENSORS) {
+        saver->saveData(listToFile);
+        numberOfData = 0;
+    }
+}
+
+/**
+ * Odpoji senzory IWorking s transmitDataToSaver
+ * @brief DataManager::connectSensorToSaver
+ */
+void DataManager::disconnectSensorToSaver() {
+    disconnect(listenEKG, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int,float)));
+    disconnect(listenTemp, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int,float)));
+    disconnect(listenPosition, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int,float)));
+    disconnect(listenOxy, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int,float)));
+    disconnect(listenGSR, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int,float)));
+    disconnect(listenHeartRate, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int,float)));
+
+    saver->closeFileForData();
+}
+
+/**
  * Vypise seznam slozek umistenych v datove slozce data/
  * @brief DataManager::listOfFolders
  * @return  seznam slozek

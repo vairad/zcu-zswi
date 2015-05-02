@@ -29,11 +29,13 @@ QGraphicsScene* SensorGSR::getSceneGraph() {
  * Pracuje s predanymi daty
  * @param data prijata data
  */
-void SensorGSR::transmitData(float data){
-    if(this->validateData(data)){
+void SensorGSR::transmitData(float data) {
+    if (this->validateData(data)) {
         emit haveData(data);
-    }else{
-       emit haveData(minY+((maxY-minY)/2));
+        emit haveDataToSave(ID, data);
+    } else {
+        emit haveData(minY+((maxY-minY)/2));
+        emit haveDataToSave(ID, minY+((maxY-minY)/2));
     }
     //this->validateData(data);
 }

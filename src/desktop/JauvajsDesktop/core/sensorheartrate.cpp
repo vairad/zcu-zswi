@@ -29,11 +29,13 @@ QGraphicsScene* SensorHeartRate::getSceneGraph() {
  * Pracuje s predanymi daty
  * @param data prijata data
  */
-void SensorHeartRate::transmitData(float data){
-    if(this->validateData(data)){
+void SensorHeartRate::transmitData(float data) {
+    if (this->validateData(data)) {
         emit haveData(data);
-    }else{
+        emit haveDataToSave(ID, data);
+    } else {
         emit haveData((maxY+minY)/2.0);
+        emit haveDataToSave(ID, (maxY+minY)/2.0);
     }
 }
 
@@ -55,7 +57,7 @@ float SensorHeartRate::getLastData() {
 bool SensorHeartRate::validateData(float data) {
     if(data < MINIMAL_CORRECT_VALUE || data > MAXIMAL_CORRECT_VALUE){
         return false;
-    }else{
+    } else {
         return true;
     }
 }

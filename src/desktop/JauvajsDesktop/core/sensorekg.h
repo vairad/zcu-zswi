@@ -7,6 +7,7 @@
 #include "gui/sensorwidget.h"
 
 class SensorEKG : public IDisplayable, public IWorking {
+    static const int ID = 0;
     const float MINIMAL_CORRECT_VALUE = 0.0;
     const float MAXIMAL_CORRECT_VALUE = 6.0;
 
