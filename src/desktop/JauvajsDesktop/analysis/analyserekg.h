@@ -25,17 +25,17 @@ public:
 
 private:
     vector<int> getRWaveIndex();
-    int getLeftRWaveDuration(int index);
+
     float getRWaveAmplitude(int index);
+
+    int getLeftRWaveDuration(int index);
     int getRightRWaveDuration(int index);
-    int getSDuration(int index);
+    int getSWaveDuration(int index);
     int getQWaveDuration(int index);
 
     vector<int> getRRIntervalDuration();
-    vector<int> getQWaveDuration();
     vector<int> getQRSDuration();
 
-    vector<bool> analyseQWave();
     vector<bool> analyseQRS();
 
     float normalityPercentage;

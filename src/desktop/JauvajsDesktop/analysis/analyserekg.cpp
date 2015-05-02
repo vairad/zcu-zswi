@@ -3,7 +3,11 @@
 
 #include "analyserekg.h"
 
-
+/**
+ * V konstruktoru se pripravi hodnoty potrebne k analyze.
+ * @brief AnalyserEKG::AnalyserEKG
+ * @param data namerena data EKG
+ */
 AnalyserEKG::AnalyserEKG(vector<float> data) {
     this->transcriber = new TranscriberEKG(data);
     this->transcriber->transcribeData();
@@ -28,17 +32,18 @@ vector<int> AnalyserEKG::getRRIntervalDuration() {
               /* strme stoupani by nemelo trvat dlouho, nesmi se splest s jinou vlnou */
               continue;
             }
-            if (i + 1 < (int)differences.size() && differences[i + 1] > 0) {
+            if (i + 2 < (int)differences.size() && differences[i + 1] > 0 && string[i + 2] != 'C') {
                 i++; /* nekdy R vlna ma delsi trvani, tzn. pocita, dokud se stale stoupa */
             }
             firstRWaveIndex = i;
             isIn = true;
+            counter = 0;
         } else if (string[i] == 'S' && isIn == true) {
             if (i + 2 < (int)differences.size() && differences[i + 1] > 0 && differences[i + 2] > 0) {
               counter++; /* strme stoupani by nemelo trvat dlouho, nesmi se splest s jinou vlnou */
               continue;
             }
-            if (i + 1 < (int)differences.size() && differences[i + 1] > 0) {
+            if (i + 2 < (int)differences.size() && differences[i + 1] > 0 && string[i + 2] != 'C') {
                 counter++;
                 i++; /* nekdy R vlna ma delsi trvani, tzn. pocita, dokud se stale stoupa */
             }
@@ -104,7 +109,7 @@ int AnalyserEKG::getLeftRWaveDuration(int index) {
  */
 int AnalyserEKG::getRightRWaveDuration(int index) {
     int i, counter = 0;
-    for (i = index; i < (int)string.size() && differences[i] < 0; i++) {
+    for (i = index + 1; i < (int)string.size() && differences[i] < 0; i++) {
         counter++;
     }
     return counter;
@@ -140,101 +145,38 @@ int AnalyserEKG::getQWaveDuration(int index) {
     return duration;
 }
 
-
-/**
- * Zjisti trvani Q vlny ve vsech srdecnich cyklech.
- * @brief AnalyserEKG::getQWaveDuration
- * @return vektor trvani Q vlny ve vsech cyklech (v poctech znaku)
- */
-vector<int> AnalyserEKG::getQWaveDuration() {
-    vector<int> duration;
-    vector<int> rWaveIndex = getRWaveIndex();
-    int i, j, counterQ, counterR = 0;
-    qDebug() << "metoda getQWaveDuration";
-    for (i = 0; i < (int)string.size(); i++) {
-        counterQ = 0;
-        qDebug() << "zacal cyklus qWaveDuration";
-        if (i < (int)rWaveIndex.size()) {
-            if (i == rWaveIndex[counterR]) {
-                j = i - getLeftRWaveDuration(i);
-                qDebug() << "j = " << j;
-                while (j >= 0) {
-                    if (differences[j] < 0 && string[j] != 'C') { /* pocita, dokud vlna klesa */
-                        counterQ++;
-                        qDebug() << "counterQ = " << counterQ;
-                    } else {
-                        break;
-                    }
-                    j--;
-                }
-                duration.push_back(counterQ);
-                counterR++;
-                qDebug() << "counterR = " << counterR;
-            }
-        }
-    }
-    qDebug() << "skoncil cyklus qWaveDuration";
-    return duration;
-}
-
-/**
- * Analyzuje vlnu Q. Ulozi do vektoru pravdivostni hodnoty
- * dle toho, zda je vlna v danem cyklu normalni.
- * @brief AnalyserEKG::analyseQWave
- * @return vektor pravdivostnich hodnot, zda je vlna v danych cyklech normalni
- */
-vector<bool> AnalyserEKG::analyseQWave() {
-    vector<bool> qWave;
-    vector<int> rWaveIndex = getRWaveIndex();
-    int i, j, counter = 0;
-
-
-    for (i = 0; i < (int)string.size(); i++) {
-        if (i == rWaveIndex[counter]) {
-            j = i - getLeftRWaveDuration(i);
-            if (j >= 0 && getQWaveDuration()[counter] == 1 && /* amplituda musi byt mensi nez 1/4 R vlny */
-                    fabs(differences[j]) < fabs (0.25 * getRWaveAmplitude(i))) {
-                qWave.push_back(true); /* vlna je OK */
-            } else if (j > 0 && getQWaveDuration()[counter] == 2 &&
-                    fabs(differences[j] + differences[j - 1]) < fabs(0.25 * getRWaveAmplitude(i))) {
-                qWave.push_back(true); /* vlna je OK */
-            } else { /* klesani nesmi byt delsi nez 2 pismenka (0,04 s) */
-                qWave.push_back(false); /* vlna neni OK */
-            }
-            counter++;
-        }
-    }
-    return qWave;
-}
-
 /**
  * Spocita delku S vlny na zadanem indexu
  * @brief AnalyserEKG::getSDuration
  * @param index index vrcholu R vlny
  * @return delka trvani (pocet pismenek) S vlny
  */
-int AnalyserEKG::getSDuration(int index) {
+int AnalyserEKG::getSWaveDuration(int index) {
     int i, counter = 0;
-    for (i = index + getRightRWaveDuration(index); i < (int)string.size() && differences[i] > 0 && string[i] != 'C'; i++) {
+    for (i = index + getRightRWaveDuration(index) + 1; i < (int)string.size() && differences[i] > 0
+         && string[i] != 'C' && string[i] != 'L'; i++) {
         counter++;
     }
     return counter;
 }
 
+/**
+ * Spocita delku trvani QRS komplexu pro vsechny srdecni cykly.
+ * @brief AnalyserEKG::getQRSDuration
+ * @return vektor delek trvani vsech QRS komplexu
+ */
 vector<int> AnalyserEKG::getQRSDuration() {
     vector<int> duration;
     vector<int> rWave = getRWaveIndex();
-    qDebug() << "Metoda getQRSDuration";
     int i, countDuration = 0, counterR = 0;
 
     for (i = 0; i < (int)string.size(); i++) {
         if (counterR < (int)rWave.size()) {
             if (i == rWave[counterR]) {
                 countDuration = getLeftRWaveDuration(i) + getQWaveDuration(i)
-                        + getRightRWaveDuration(i) + getSDuration(i);
+                        + getRightRWaveDuration(i) + getSWaveDuration(i);
                 counterR++;
                 duration.push_back(countDuration);
-                qDebug() << "duration QRS = " << countDuration;
             }
         }
     }
@@ -249,11 +191,8 @@ vector<int> AnalyserEKG::getQRSDuration() {
  */
 vector<bool> AnalyserEKG::analyseQRS() {
     vector<bool> qrs;
-    qDebug() << "Metoda analyseQRS";
     vector<int> duration = getQRSDuration();
-    qDebug() << "QRSDuration vypoctena";
     vector<int> rWaveIndex = getRWaveIndex();
-    qDebug() << "rWaveIndex vypocten";
     int i, counter = 0;
 
     for (i = 0; i < (int)string.size(); i++) {
@@ -309,12 +248,14 @@ float AnalyserEKG::getNormalityPercentage() {
     return normalityPercentage;
 }
 
+/**
+ * Analyzuje EKG z hlediska delky trvani QRS komplexu
+ * a jeho amplitudy.
+ * @brief AnalyserEKG::analyse
+ */
 void AnalyserEKG::analyse() {
-    qDebug() << "Metoda analyze";
-    vector<bool> qrs = analyseQRS();
-    qDebug() << "vektor připraven";
-
     int i, countTrue = 0;
+    vector<bool> qrs = analyseQRS();
 
     int size = (int)qrs.size();
     for (i = 0; i < size; i++) {
