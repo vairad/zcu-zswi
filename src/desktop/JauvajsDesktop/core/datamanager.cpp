@@ -195,7 +195,7 @@ void DataManager::disconnectSensorToSaver() {
 }
 
 /**
- * Vypise seznam slozek umistenych v datove slozce data/
+ * Vypise seznam slozek umistenych v datove slozce (workspace)
  * @brief DataManager::listOfFolders
  * @return  seznam slozek
  */
@@ -203,6 +203,18 @@ QStringList DataManager::listOfFolders() {
     QDir path(FOLDER_NAME + "/");
     QStringList folders = path.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
     return folders;
+}
+
+/**
+ * Vypise seznam ulozenych csv souboru v slozce uzivatele
+ * @brief DataManager::listOfFiles
+ * @return
+ */
+QStringList DataManager::listOfFiles() {
+    QDir path(FOLDER_NAME + "/" + username + "/");
+    path.setNameFilters(QStringList() << "*.csv");
+    QStringList files = path.entryList(QDir::Files);
+    return files;
 }
 
 /**

@@ -133,6 +133,19 @@ void MainWindow::createUserPanel() {
     layout->setAlignment(Qt::AlignTop);
 
     addMetadataToUserPanel();
+
+    // label popisujici ulozena data
+    QLabel *labelListOfFiles = new QLabel();
+    labelListOfFiles->setText("Uložená data tohoto uživatele: ");
+    layout->addWidget(labelListOfFiles, 7, 0, 1, 2);
+
+    // widget pro ulozena data
+    listWidget = new QListWidget();
+    listWidget->setCursor(Qt::PointingHandCursor);
+
+    //connect(listWidget, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(itemClickedSetUser(QListWidgetItem *)));
+
+    layout->addWidget(listWidget, 8, 0, 1, 2);
 }
 
 /**
@@ -189,6 +202,11 @@ void MainWindow::addMetadataToUserPanel() {
     QLabel *labelHeightL = new QLabel();
     labelHeightL->setText("Výška:");
     layout->addWidget(labelHeightL, 5, 0);
+
+    QFrame* myFrame = new QFrame();
+    myFrame->setFrameShape(QFrame::HLine);
+
+    layout->addWidget(myFrame, 6, 0, 1, 2);
 }
 
 /**
@@ -223,8 +241,37 @@ void MainWindow::setUp() {
     }
     else {
         userPanel->show();
+        addItemsToListWidget();
     }
+}
 
+/**
+ * Prida data do listWidgetu v pravem sloupci
+ * @brief MainWindow::addItemsToListWidget
+ */
+void MainWindow::addItemsToListWidget() {
+    QStringList list = dataManager->listOfFiles();
+    listWidget->clear();
+
+    if (!list.isEmpty()) {
+        listWidget->setEnabled(true);
+        // reverze listu
+        QStringList listR;
+        listR.reserve(list.size());
+        std::reverse_copy(list.begin(), list.end(), std::back_inserter(listR));
+        list = listR;
+
+        foreach (QString s, list) {
+            QFileInfo fileInfo(s);
+            QDateTime dateTime = QDateTime::fromString(fileInfo.completeBaseName(), "yyyyMMddhhmmss");
+
+            QListWidgetItem *item = new QListWidgetItem(dateTime.toString("d. M. yyyy, h:m:s"));
+            listWidget->addItem(item);
+        }
+    }
+    else {
+        listWidget->setEnabled(false);
+    }
 }
 
 /**
@@ -253,6 +300,7 @@ void MainWindow::startScanning() {
 void MainWindow::stopScanning() {
     dataManager->disconnectSensorToSaver();
     dataManager->draw = false;
+    addItemsToListWidget();
 }
 
 void MainWindow::setSaveData(bool save) {

@@ -26,6 +26,7 @@ public:
     void createToolBar();
     void createUserPanel();
     void addMetadataToUserPanel();
+    void addItemsToListWidget();
     void setUp();
     void closeEvent(QCloseEvent *event);
     /** uvodni okno */
@@ -77,6 +78,8 @@ private:
     QLabel *heightL;
     /** Checkbox pro nastaveni ukladani metadat */
     QCheckBox *saveCB;
+    /** widget pro vypis ulozenych dat v pravem sloupci */
+    QListWidget *listWidget;
 };
 
 #endif // MAINWINDOW_H

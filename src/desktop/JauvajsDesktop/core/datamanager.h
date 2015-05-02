@@ -29,6 +29,7 @@ public:
     QString getNameFromMetadata(QString username);
     QDateTime getDateTimeFromMetadata(QString username);
     QStringList listOfFolders();
+    QStringList listOfFiles();
     void logoutUser();
     void initSenzorListeners();
 
