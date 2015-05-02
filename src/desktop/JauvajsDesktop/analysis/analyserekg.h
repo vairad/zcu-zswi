@@ -1,9 +1,11 @@
 #ifndef ANALYSEREKG_H
 #define ANALYSEREKG_H
 #include <vector>
+
 #include "analysis/transcriberekg.h"
 
-#define DATA_SEC 50 /* pocet prijatych hodnot za sekundu */
+/* pocet prijatych hodnot za sekundu */
+#define DATA_SEC 50
 
 using namespace std;
 
@@ -29,16 +31,11 @@ private:
     int getSDuration(int index);
 
     vector<int> getRRIntervalDuration();
-    vector<int> getPWaveDuration();
     vector<int> getQWaveDuration();
-    vector<int> getPRIntervalDuration();
     vector<int> getQRSDuration();
-
 
     vector<bool> analyseQWave();
     vector<bool> analyseQRS();
-    vector<bool> analysePRInterval();
-    vector<bool> analysePWave();
 
     float normalityPercentage;
     int firstRWaveIndex;

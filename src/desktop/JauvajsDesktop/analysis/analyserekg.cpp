@@ -123,34 +123,6 @@ float AnalyserEKG::getRWaveAmplitude(int index) {
 }
 
 /**
- * Vrati pocet celych namerenych srdecnich cyklu (R-R)
- * @brief AnalyserEKG::getNumberOfCycles
- * @return pocet celych namerenych srdecnich cyklu
- */
-unsigned int AnalyserEKG::getNumberOfCycles() {
-    unsigned int number = (unsigned int)getRRIntervalDuration().size();
-    return number;
-}
-
-/**
- * Vypocita prumernou delku srdecniho cyklu
- * @brief AnalyserEKG::getAverageCycleDuration
- * @return prumerna delka srdecniho cyklu v sekundach
- */
-float AnalyserEKG::getAverageCycleDuration() {
-    vector<int> interval = getRRIntervalDuration();
-    int i;
-    float duration = 0;
-
-    for (i = 0; i < (int)interval.size(); i++) {
-        duration += interval[i] / (float)DATA_SEC;
-    }
-
-    duration = duration / (float)interval.size();
-    return duration;
-}
-
-/**
  * Zjisti trvani Q vlny ve vsech srdecnich cyklech.
  * @brief AnalyserEKG::getQWaveDuration
  * @return vektor trvani Q vlny ve vsech cyklech (v poctech znaku)
@@ -248,7 +220,7 @@ vector<int> AnalyserEKG::getQRSDuration() {
 vector<bool> AnalyserEKG::analyseQRS() {
     vector<bool> qrs;
     vector<int> duration = getQRSDuration();
-
+    //qDebug() << "Metoda analyseQRS";
     vector<int> rWaveIndex = getRWaveIndex();
     int i, counter = 0;
 
@@ -267,111 +239,32 @@ vector<bool> AnalyserEKG::analyseQRS() {
 }
 
 /**
- * Zjisti trvani PR intervalu ve vsech cyklech
- * @brief AnalyserEKG::getPRIntervalDuration
- * @return vektor trvani PR intervalu ve vsech cyklech (v poctech znaku)
+ * Vrati pocet celych namerenych srdecnich cyklu (R-R)
+ * @brief AnalyserEKG::getNumberOfCycles
+ * @return pocet celych namerenych srdecnich cyklu
  */
-vector<int> AnalyserEKG::getPRIntervalDuration() {
-    int i, j, qLength, counter = 0;
-    vector<int> prInterval;
-
-    for (i = 0; i < (int)string.size(); i++) {
-        if (string[i] == 'S') {
-           qLength = getQWaveDuration()[counter];
-           prInterval.push_back(0);
-           for (j = i - qLength - 1; j >= 0 && string[j] == 'C'; j--) {
-               prInterval[counter]++;
-           }
-           prInterval[counter] += getPWaveDuration()[counter];
-           counter++;
-        }
-    }
-
-    return prInterval;
+unsigned int AnalyserEKG::getNumberOfCycles() {
+    unsigned int number = (unsigned int)getRRIntervalDuration().size();
+    return number;
 }
 
 /**
- * Zjisti trvani P vlny ve vsech cyklech.
- * @brief AnalyserEKG::getPWaveDuration
- * @return vektor trvani P vlny ve vsech cyklech (v poctech znaku)
+ * Vypocita prumernou delku srdecniho cyklu
+ * @brief AnalyserEKG::getAverageCycleDuration
+ * @return prumerna delka srdecniho cyklu v sekundach
  */
-vector<int> AnalyserEKG::getPWaveDuration() {
-    int i, j, qLength, counter = 0;
-    vector<int> pr;
-
-    for (i = 0; i < (int)string.size(); i++) {
-        if (string[i] == 'S') {
-           qLength = getQWaveDuration()[counter];
-           pr.push_back(0);
-           j = i - qLength - 1;
-           while (j >= 0 && string[j] == 'C') {
-              j--;
-           }
-           while (j >= 0 && differences[j] < 0) {
-               pr[counter]++;
-               j--;
-           }
-           while (j >= 0 && string[j] == 'C') {
-               pr[counter]++;
-               j--;
-           }
-           while (j >= 0 && differences[j] > 0 && string[j] != 'C') {
-               pr[counter]++;
-               j--;
-           }
-           counter++;
-        }
-    }
-
-    return pr;
-}
-
-vector<bool> AnalyserEKG::analysePWave() {
-    vector<bool> pWave;
-    int i, counter = 0;
-
-    for (i = 0; i < (int)string.size(); i++) {
-        if (string[i] == 'S') {
-            if (i - getQWaveDuration()[counter] - getPRIntervalDuration()[counter] > 0) {
-                if (getPWaveDuration()[counter] > 0.11 * DATA_SEC) {
-                    pWave.push_back(false);
-                }  /* amplituda musi byt 0.5 - 2.5 mV */
-
-                //for (j = i - 1; j >= getPWaveDuration; j--) { // zjistit nejvyšší a nejnižší hodnotu v intervalu P vlny, spočítat rozdíl
-
-//qDebug() << "zprava" << j;
-                    //}
-                //}
-
-            }
-        }
-    }
-
-    return pWave;
-}
-
-/**
- * Analyzuje PR interval v každém cyklu.
- * @brief AnalyserEKG::analysePRInterval
- * @return vektor pravdivostních hodnot, zda je PR interval normální
- */
-vector<bool> AnalyserEKG::analysePRInterval() {
-    vector<bool> pr;
+float AnalyserEKG::getAverageCycleDuration() {
+    vector<int> interval = getRRIntervalDuration();
     int i;
+    float duration = 0;
 
-    for (i = 0; i < (int)getPRIntervalDuration().size(); i++) {
-        if (getPRIntervalDuration()[i] < 0.12 * DATA_SEC ||
-                getPRIntervalDuration()[i] > 0.20 * DATA_SEC) {
-            pr.push_back(false); /* interval je moc dlouhy, nebo moc kratky */
-        } else {
-            pr.push_back(true); /* interval je OK */
-        }
+    for (i = 0; i < (int)interval.size(); i++) {
+        duration += interval[i] / (float)DATA_SEC;
     }
 
-    return pr;
+    duration = duration / (float)interval.size();
+    return duration;
 }
-
-
 
 /**
  * Vrati procento normalnich srdecnich cyklu.
@@ -389,7 +282,7 @@ void AnalyserEKG::analyse() {
 
     int i, countTrue = 0;
 
-    int size = qrs.size();
+    int size = (int)qrs.size();
     for (i = 0; i < size; i++) {
         if (qrs[i] == true) {
             countTrue++;
