@@ -6,6 +6,10 @@
 
 /* pocet prijatych hodnot za sekundu */
 #define DATA_SEC 50
+/* maximum normalniho trvani QRS komplexu */
+#define QRS_DURATION 0.12
+/* minimalni normalni amplituda R vlny */
+#define R_AMPLITUDE 1
 
 using namespace std;
 

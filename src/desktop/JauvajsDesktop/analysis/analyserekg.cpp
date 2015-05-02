@@ -198,7 +198,7 @@ vector<bool> AnalyserEKG::analyseQRS() {
     for (i = 0; i < (int)string.size(); i++) {
         if (counter < (int)rWaveIndex.size()) {
             if (i == rWaveIndex[counter]) {
-                if (duration[counter] > 0.12 * DATA_SEC || getRWaveAmplitude(i) < 0.5) {
+                if (duration[counter] > QRS_DURATION * DATA_SEC || getRWaveAmplitude(i) < R_AMPLITUDE) {
                     qrs.push_back(false);
                 } else {
                     qrs.push_back(true);
