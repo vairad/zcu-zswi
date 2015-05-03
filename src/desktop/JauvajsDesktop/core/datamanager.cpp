@@ -246,10 +246,11 @@ QString DataManager::getNameFromMetadata(QString username) {
  */
 QDateTime DataManager::getDateTimeFromMetadata(QString username) {
     QList<QString> list = metadataReader->loadMetadata(FOLDER_NAME, username);
+    int indexOfDate = 13;
 
     QDateTime dateTime;
     if (!list.isEmpty()) {
-        dateTime = QDateTime::fromString(list[12]);
+        dateTime = QDateTime::fromString(list[indexOfDate]);
     }
     else {
         dateTime = QDateTime();
