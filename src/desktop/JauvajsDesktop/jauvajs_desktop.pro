@@ -43,8 +43,7 @@ SOURCES += main.cpp\
     gui/connectionwindow.cpp \
     core/fileproblemexception.cpp
 
-HEADERS  += main.h\
-    core/idisplayable.h \
+HEADERS  += core/idisplayable.h \
     core/sensorekg.h \
     core/sensorgsr.h \
     core/sensorheartrate.h \
