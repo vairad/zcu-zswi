@@ -94,6 +94,37 @@ void DetailedWindow::update(double value) {
 }
 
 /**
+ * Vykresli zadanou hodnotu do grafu (sceny) v danem case bez okamziteho kresleni
+ * @brief SensorWidget::updateFromFile
+ * @param value
+ */
+void DetailedWindow::updateFromFile(float value) {
+    time = sensor->time;
+
+    int height = graphicsView->viewport()->height() - BOTTOM_OFFSET;
+    int width = sensor->maxX - sensor->minX; // skutecna sirka (v jednotkach)
+
+    int x = (sensor->time / (double) width) * (graphicsView->viewport()->width() - LEFT_OFFSET) + LEFT_OFFSET;
+    int y = graphicsView->viewport()->height() - ((value - sensor->minY) / (sensor->maxY - sensor->minY) * height + BOTTOM_OFFSET);
+
+    if (path != NULL) {
+        path->lineTo(x, y); //  pridani dalsi hodnoty do path
+    }
+    else {
+        path = new QPainterPath(QPoint(LEFT_OFFSET, y)); // vytvoreni path s pocatecnim bodem
+    }
+}
+
+/**
+ * Zrusi rezim vykreslovani ze souboru a vykresli vytvorenou cestu
+ * @brief DetailedWindow::cancelLoadData
+ */
+void DetailedWindow::cancelLoadData() {
+    curve = scene->addPath(*path, QPen(Qt::white)); // pridani aktualni krivky do grafu
+    graphicsView->viewport()->repaint(); // prekresleni
+}
+
+/**
  * Zmena velikosti sceny pri zmene velikosti okna
  * @brief SensorWidget::resizeEvent
  * @param e

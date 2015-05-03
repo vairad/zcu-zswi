@@ -4,6 +4,7 @@
 
 #include "gui/sensorwidget.h"
 #include "gui/analysiswindow.h"
+#include "core/iworking.h"
 
 SensorWidget::SensorWidget(QVBoxLayout *vLayout, QMenu *menuZobrazit, IDisplayable *sensor, QWidget *parent) : menuZobrazit(menuZobrazit), QWidget(parent) {
     this->sensor = sensor;
@@ -34,6 +35,9 @@ SensorWidget::SensorWidget(QVBoxLayout *vLayout, QMenu *menuZobrazit, IDisplayab
 
     // propojeni signalu indikujici ziskani dat z Arduina s metodou update2 pro vykresleni
     connect(sensor, SIGNAL(haveData(float)), this, SLOT(update2(float)));
+
+    // propojeni signalu indikujici konec nacitani souboru s metodou, ktera pripravi widget na ziskani dat z Arduina
+    //connect(((IWorking *)sensor), SIGNAL(notHaveData()), this, SLOT(cancelLoadData()));
 }
 
 /**
@@ -290,6 +294,31 @@ void SensorWidget::update2(float value) {
 }
 
 /**
+ * Vykresli zadanou hodnotu do grafu (sceny) v danem case bez okamziteho kresleni
+ * @brief SensorWidget::updateFromFile
+ * @param value
+ */
+void SensorWidget::updateFromFile(float value) {
+    int height = graphicsView->viewport()->height() - BOTTOM_OFFSET;
+    int width = sensor->maxX - sensor->minX; // skutecna sirka (v jednotkach)
+
+    int x = (sensor->time / (double) width) * (graphicsView->viewport()->width() - LEFT_OFFSET) + LEFT_OFFSET;
+    int y = graphicsView->viewport()->height() - ((value - sensor->minY) / (sensor->maxY - sensor->minY) * height + BOTTOM_OFFSET);
+
+    if (path != NULL) {
+        path->lineTo(x, y); //  pridani dalsi hodnoty do path
+    }
+    else {
+        path = new QPainterPath(QPoint(LEFT_OFFSET, y)); // vytvoreni path s pocatecnim bodem
+    }
+
+    values.push_back(value); // pridani hodnoty y do listu
+
+    detailedWindow->updateFromFile(value);
+    sensor->time += sensor->timeInterval; // pricteni casu pro dalsi hodnotu
+}
+
+/**
  * Resetovani hodnot
  * @brief SensorWidget::resetGraph
  */
@@ -320,6 +349,39 @@ void SensorWidget::cleanGraph() {
     transcription = false;
     values.clear();
     detailedWindow->cleanGraph();
+}
+
+/**
+ * Pripravi widget na nacteni a vykresleni dat ze souboru
+ * Odpoji signal haveData a prepoji ke spravne metode
+ * @brief SensorWidget::prepareToLoadData
+ */
+void SensorWidget::prepareToLoadData() {
+    // odpojeni signalu indikujici ziskani dat z Arduina s metodou update2 pro vykresleni
+    disconnect(sensor, SIGNAL(haveData(float)), this, SLOT(update2(float)));
+
+    // propojeni signalu indikujici ziskani dat ze souboru s metodou updateFromFile
+    connect(sensor, SIGNAL(haveData(float)), this, SLOT(updateFromFile(float)));
+
+    cleanGraph();
+}
+
+/**
+ * Zrusi rezim vykreslovani ze souboru a vykresli vytvorenou cestu
+ * Odpoji signal haveData a prepoji ke spravne metode
+ * @brief SensorWidget::cancelLoadData
+ */
+void SensorWidget::cancelLoadData() {
+    // odpojeni signalu indikujici ziskani dat ze souboru s metodou updateFromFile
+    disconnect(sensor, SIGNAL(haveData(float)), this, SLOT(updateFromFile(float)));
+
+    // propojeni signalu indikujici ziskani dat z Arduina s metodou update2 pro vykresleni
+    connect(sensor, SIGNAL(haveData(float)), this, SLOT(update2(float)));
+
+    curve = scene->addPath(*path, QPen(Qt::white)); // pridani aktualni krivky do grafu
+    graphicsView->viewport()->repaint(); // prekresleni
+
+    detailedWindow->cancelLoadData();
 }
 
 /**

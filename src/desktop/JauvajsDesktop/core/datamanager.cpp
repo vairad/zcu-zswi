@@ -10,6 +10,7 @@
 #include "datamanager.h"
 #include "fileproblemexception.h"
 #include "filesaver.h"
+#include "idisplayable.h"
 
 DataManager::DataManager() {
     FOLDER_NAME = "data";
@@ -347,17 +348,49 @@ void DataManager::setListenerTemp(IWorking *senzorTemp){
  * Nacte soubor
  * @brief DataManager::loadFile
  */
-void DataManager::loadFile() {
+void DataManager::loadFile(QString filename) {
     fileMiner = NULL;
     try {
-       fileMiner = new FileMiner(FILE_NAME);
+       fileMiner = new FileMiner(filename);
     } catch (FileOpenProblemException &e) {
         qDebug() << e.getMessage();
     }
 }
 
+/**
+ * Nacte vsechna data ze souboru a posle jednotlivym senzorum
+ * @brief DataManager::loadDataFromFile
+ * @param filename nazev souboru
+ */
+void DataManager::loadDataFromFile(QString filename) {
+    loadFile(FOLDER_NAME + "/" + username + "/" + filename);
+    QString data = fileMiner->getLastIncoming();
+    QStringList listOfData;
+
+    while (data != NULL) {
+        listOfData = data.split(';');
+
+        listenEKG->transmitData(listOfData[0].toFloat());
+        listenTemp->transmitData(listOfData[1].toFloat());
+        listenOxy->transmitData(listOfData[2].toFloat());
+        listenPosition->transmitData(listOfData[3].toFloat());
+        listenGSR->transmitData(listOfData[4].toFloat());
+        listenHeartRate->transmitData(listOfData[5].toFloat());
+
+
+        data = fileMiner->getLastIncoming();
+    }
+
+    //emit ((IDisplayable *)listenEKG)->notHaveData();
+    //emit ((IDisplayable *)listenTemp)->notHaveData();
+    //emit ((IDisplayable *)listenOxy)->notHaveData();
+    //emit ((IDisplayable *)listenPosition)->notHaveData();
+    //emit ((IDisplayable *)listenGSR)->notHaveData();
+    //emit ((IDisplayable *)listenHeartRate)->notHaveData();
+}
+
 void DataManager::run() {
-    loadFile();
+    loadFile(FILE_NAME);
     //qDebug() << "run";
     int count = 0;
     while (true) {

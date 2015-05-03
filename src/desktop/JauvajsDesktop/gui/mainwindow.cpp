@@ -143,7 +143,7 @@ void MainWindow::createUserPanel() {
     listWidget = new QListWidget();
     listWidget->setCursor(Qt::PointingHandCursor);
 
-    //connect(listWidget, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(itemClickedSetUser(QListWidgetItem *)));
+    connect(listWidget, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(itemClickedLoadFile(QListWidgetItem *)));
 
     layout->addWidget(listWidget, 8, 0, 1, 2);
 }
@@ -357,6 +357,20 @@ void MainWindow::setMetadata() {
     heightL->setText(metaDialog->mainTab->heightE->text() + " cm");
 }
 
+void MainWindow::itemClickedLoadFile(QListWidgetItem *item) {
+    for (int i = 0; i < NUMBER_OF_SENSORS; i++) {
+       sensors[i]->prepareToLoadData();
+    }
+    QDateTime dateTime = QDateTime::fromString(item->text(), "d. M. yyyy, h:m:s");
+    QString filename = dateTime.toString("yyyyMMddhhmmss") + ".csv";
+
+    dataManager->loadDataFromFile(filename);
+
+    for (int i = 0; i < NUMBER_OF_SENSORS; i++) {
+       sensors[i]->cancelLoadData();
+    }
+}
+
 /**
  * Zobrazi uvodni okno ke zmene uzivatele
  * @brief MainWindow::on_actionZm_na_u_ivatele_triggered
@@ -394,6 +408,5 @@ void MainWindow::closeEvent(QCloseEvent *event) {
  */
 void MainWindow::on_actionOtev_t_triggered() {
     QString file = QFileDialog::getOpenFileName(this, tr("Otevřít soubor"), QDir::homePath());
-    dataManager->FILE_NAME = file;
-    dataManager->loadFile();
+    dataManager->loadFile(file);
 }

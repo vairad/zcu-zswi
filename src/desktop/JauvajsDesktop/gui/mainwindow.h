@@ -55,6 +55,7 @@ private slots:
     void stopScanning();
     void cleanAll();
     void setSaveData(bool save);
+    void itemClickedLoadFile(QListWidgetItem *item);
     // void on_connection_changed();
     void on_actionOtev_t_triggered();
 

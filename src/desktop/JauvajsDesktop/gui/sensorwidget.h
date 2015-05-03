@@ -32,6 +32,7 @@ public:
     void repaintGraph();
     void restartGraph();
     void cleanGraph();
+    void prepareToLoadData();
     IDisplayable *getSensor();
     ~SensorWidget();
     QAction *action1;
@@ -43,6 +44,8 @@ public slots:
     void on_button2_clicked();
     void on_action_toggled(bool arg1);
     void update2(float value);
+    void updateFromFile(float value);
+    void cancelLoadData();
 
 signals:
     void visible(bool arg1);

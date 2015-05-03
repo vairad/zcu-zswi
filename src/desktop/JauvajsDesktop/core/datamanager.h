@@ -84,7 +84,8 @@ public:
     void setListenerOxy(IWorking *senzorOxy);
     void setListenerPosition(IWorking *senzorPosition);
     void setListenerTemp(IWorking *senzorTemp);
-    void loadFile();
+    void loadFile(QString filename);
+    void loadDataFromFile(QString filename);
 
 private:
     /**  */

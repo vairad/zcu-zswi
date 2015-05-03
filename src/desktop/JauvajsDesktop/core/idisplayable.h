@@ -44,6 +44,7 @@ protected:
 
 signals:
     void haveData(float);
+    //void notHaveData();
 
 };
 

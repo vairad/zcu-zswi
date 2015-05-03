@@ -18,6 +18,8 @@ class DetailedWindow : public QDialog, public GraphDescription {
 public:
     explicit DetailedWindow(IDisplayable *sensor, QList<float> *values, QWidget *parent = 0);
     void update(double value);
+    void updateFromFile(float value);
+    void cancelLoadData();
     void resizeEvent(QResizeEvent *);
     void setUp();
     void repaintGraph();
