@@ -99,7 +99,9 @@ void ArduinoMiner::navazSpojeni()
     else
     {
        DWORD err = GetLastError();
-       emit ZmenaStavu("Chyba při hledání zařízení, Error" + err);
+       //emit ZmenaStavu("Chyba při hledání zařízení, Error" + err);
+       emit ZmenaStavu("Chyba při hledání zařízení");
+
     }
 }
 void ArduinoMiner::navazaniSoketu(){

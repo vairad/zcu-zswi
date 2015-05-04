@@ -2,8 +2,10 @@
 #include <QPushButton>
 
 #include "connectionwindow.h"
+#include "core/arduinominer.h"
 
-ConnectionWindow::ConnectionWindow() {
+ConnectionWindow::ConnectionWindow(ArduinoMiner *arduinoMiner, QWidget *parent) : QDialog(parent) {
+    this->arduinoMiner = arduinoMiner;
     this->resize(501, 313);
 
     setWindowTitle("Okno");
@@ -20,7 +22,7 @@ ConnectionWindow::ConnectionWindow() {
 }
 
 void ConnectionWindow::createTextEdit() {
-    QTextEdit *textEdit = new QTextEdit;
+    textEdit = new QTextEdit;
     verticalLayout->addWidget(textEdit);
 }
 
@@ -35,16 +37,27 @@ void ConnectionWindow::createButtons() {
     // tlacitko vytvorit noveho uzivatele
     QPushButton *bt1 = new QPushButton();
     bt1->setObjectName(QStringLiteral("button"));
-    bt1->setText("Button 1");
+    bt1->setText("Připojit");
     group->addWidget(bt1);
+    connect(bt1, SIGNAL (clicked()), this, SLOT (connectArduino()));
 
-    // tlacitko pokracovat bez prihlaseni
+    // tlacitko pro odpojeni
     QPushButton *bt2 = new QPushButton();
     bt2->setObjectName(QStringLiteral("button_2"));
-    bt2->setText("button 2");
+    bt2->setText("Odpojit");
     group->addWidget(bt2);
+    connect(bt2, SIGNAL (clicked()), this, SLOT (connectArduino()));
 
     verticalLayout->addWidget(widgetBT, 0, Qt::AlignBottom);
+}
+
+void ConnectionWindow::connectArduino() {
+   this->arduinoMiner->vybraneZarizeni = "JauvaisIno";
+   this->arduinoMiner->navazSpojeni();
+}
+
+void ConnectionWindow::disconnectArduino() {
+   this->arduinoMiner->UkonciSpojeni();
 }
 
 ConnectionWindow::~ConnectionWindow() {

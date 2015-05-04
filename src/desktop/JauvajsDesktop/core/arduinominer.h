@@ -31,6 +31,7 @@ public:
     QString vybraneZarizeni;
     typedef enum {STATUS_KLID, STATUS_HLEDEJ, STATUS_SPOJENI } STATUS;
     STATUS stav;
+    void navazSpojeni();
 
 signals:
     void SeznamChanged(QStringList*);
@@ -43,7 +44,6 @@ private:
    HBLUETOOTH_DEVICE_FIND deviceHandle;
    BLUETOOTH_DEVICE_INFO btDeviceInfo;
    void hledejOkolniZarizeni();
-   void navazSpojeni();
    SOCKET soket;
    int err;
    void navazaniSoketu();

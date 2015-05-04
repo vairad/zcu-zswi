@@ -2,12 +2,12 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
 #include "gui/ui_mainwindow.h"
 #include "gui/sensorwidget.h"
 #include "gui/metadialog.h"
 #include "gui/initialwindow.h"
 #include "gui/connectionwindow.h"
+#include "core/arduinominer.h"
 
 namespace Ui {
 class MainWindow;
@@ -42,6 +42,7 @@ public:
     /** dialog metadat */
     MetaDialog *metaDialog;
 
+    ArduinoMiner *arduinoMiner;
 public slots:
     void setMetadata();
 
@@ -58,6 +59,7 @@ private slots:
     void itemClickedLoadFile(QListWidgetItem *item);
     // void on_connection_changed();
     void on_actionOtev_t_triggered();
+    void on_ZmenaStavu(QString data);
 
 private:
     Ui::MainWindow *ui;

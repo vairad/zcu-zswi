@@ -10,6 +10,7 @@
 #include "core/sensorheartrate.h"
 #include "core/datamanager.h"
 #include "core/iworking.h"
+#include "core/arduinominer.h"
 
 /**
   Vytvori okno
@@ -26,9 +27,9 @@ MainWindow::MainWindow(DataManager *manager, QWidget *parent) : QMainWindow(pare
     initialWindow = new InitialWindow(dataManager, this);
 
 
-    //  ArduinoMiner arduinoMiner = new ArduinoMiner();
-    connectionWindow = new ConnectionWindow();
-    // connect(arduinoMiner, SIGNAL(ZmenaStavu(QString)), this, SLOT(on_connection_changed());
+    arduinoMiner = new ArduinoMiner();
+    connectionWindow = new ConnectionWindow(arduinoMiner, this);
+    connect(arduinoMiner, SIGNAL(ZmenaStavu(QString)), this, SLOT(on_ZmenaStavu(QString)));
 
 
     // Vytvoreni senzoru
@@ -409,4 +410,8 @@ void MainWindow::closeEvent(QCloseEvent *event) {
 void MainWindow::on_actionOtev_t_triggered() {
     QString file = QFileDialog::getOpenFileName(this, tr("Otevřít soubor"), QDir::homePath());
     dataManager->loadFile(file);
+}
+
+void MainWindow::on_ZmenaStavu(QString data) {
+    connectionWindow->textEdit->append(data);
 }
