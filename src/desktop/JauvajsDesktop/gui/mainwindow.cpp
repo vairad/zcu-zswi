@@ -226,7 +226,6 @@ void MainWindow::setUp() {
 
     saveCB->setChecked(dataManager->isSaveData);
 
-    setMetadata();
     // propojeni zmeny udaju v metaDialogu s pravym sloupcem
     QObject::connect(metaDialog, SIGNAL(accepted()), this, SLOT(setMetadata()));
 
@@ -236,13 +235,13 @@ void MainWindow::setUp() {
 
     cleanAll();
 
-    if (!dataManager->isSetMetadata) {
-        ui->actionU_ivatelsk_nastaven->setDisabled(true);
-        userPanel->hide();
+    if (dataManager->isSetMetadata) {
+        setMetadata();
     }
     else {
-        userPanel->show();
-        addItemsToListWidget();
+        ui->actionU_ivatelsk_nastaven->setDisabled(true);
+        userPanel->hide();
+        saveCB->setDisabled(true);
     }
 }
 
@@ -292,6 +291,7 @@ void MainWindow::cleanAll() {
 void MainWindow::startScanning() {
     dataManager->connectSensorToSaver();
     dataManager->draw = true;
+    saveCB->setDisabled(true);
 }
 
 /**
@@ -302,6 +302,9 @@ void MainWindow::stopScanning() {
     dataManager->disconnectSensorToSaver();
     dataManager->draw = false;
     addItemsToListWidget();
+    if (dataManager->isSetMetadata) {
+        saveCB->setDisabled(false);
+    }
 }
 
 void MainWindow::setSaveData(bool save) {
@@ -344,6 +347,8 @@ void MainWindow::on_actionU_ivatelsk_nastaven_triggered() {
 void MainWindow::setMetadata() {
     ui->actionU_ivatelsk_nastaven->setDisabled(false);
     userPanel->show();
+    saveCB->setDisabled(false);
+    addItemsToListWidget();
     nameL->setText(metaDialog->mainTab->nameE->text());
     surnameL->setText(metaDialog->mainTab->surnameE->text());
 

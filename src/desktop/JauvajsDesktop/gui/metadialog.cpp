@@ -76,6 +76,7 @@ void MetaDialog::updateMetadata() {
         dataManager->weight = mainTab->weightE->text();
         dataManager->height = mainTab->heightE->text();
         dataManager->note = mainTab->noteTE->toPlainText();
+        dataManager->isSetMetadata = true;
 
         dataManager->transmitMetadata();
 
