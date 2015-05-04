@@ -20,6 +20,10 @@ FileMiner::FileMiner(QString fileName){
 }
 
 FileMiner::~FileMiner(){
+    if(opened){
+        sourceFile.close();
+        delete in;
+    }
 }
 
 void FileMiner::sendMessage(QString line){
