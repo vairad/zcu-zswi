@@ -5,11 +5,12 @@
 #include <QStringListModel>
 #include <QAbstractItemView>
 #include <QtCore>
-
 #include <Winsock2.h>
 #include <Windows.h>
 #include <BluetoothAPIs.h>
 #include <Ws2bth.h>
+#include <QtSerialPort/QSerialPort>
+
 
 DEFINE_GUID(RFCOMM_PROTOCOL_UUID, 0x00000003, 0x0000, 0x1000, 0x80, 0x00, 0x00, 0x80, 0x5F, 0x9B, 0x34, 0xFB);
 
@@ -39,7 +40,11 @@ signals:
     void ZmenaSpojeni(QString);
     void PrijmiData(QString);
 
+private slots:
+    void serialReceived();
+
 private:
+   QSerialPort *serial;
    BLUETOOTH_DEVICE_SEARCH_PARAMS btSearchParams;
    HBLUETOOTH_DEVICE_FIND deviceHandle;
    BLUETOOTH_DEVICE_INFO btDeviceInfo;

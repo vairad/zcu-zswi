@@ -52,12 +52,15 @@ void ConnectionWindow::createButtons() {
 }
 
 void ConnectionWindow::connectArduino() {
-   this->arduinoMiner->vybraneZarizeni = "JauvaisIno";
    this->arduinoMiner->navazSpojeni();
 }
 
 void ConnectionWindow::disconnectArduino() {
    this->arduinoMiner->UkonciSpojeni();
+}
+
+void ConnectionWindow::serialReceived(QString data) {
+    this->textEdit->append(data);
 }
 
 ConnectionWindow::~ConnectionWindow() {

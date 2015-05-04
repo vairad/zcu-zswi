@@ -4,9 +4,12 @@
 #include <BluetoothAPIs.h>
 #include <Ws2bth.h>
 #include <QtCore>
+#include <QtSerialPort/QSerialPort>
+
 
 ArduinoMiner::ArduinoMiner(QObject *parent): QThread(parent){
 
+    /*
     this->btSearchParams.dwSize = sizeof(BLUETOOTH_DEVICE_SEARCH_PARAMS);
     this->btSearchParams.cTimeoutMultiplier = 5;  //5*1.28s search timeout
     this->btSearchParams.fIssueInquiry = true;
@@ -18,7 +21,21 @@ ArduinoMiner::ArduinoMiner(QObject *parent): QThread(parent){
     this->btSearchParams.hRadio = NULL;
     ZeroMemory(&this->btDeviceInfo, sizeof(BLUETOOTH_DEVICE_INFO));   //"initialize" (&btDeviceInfo)
     this->btDeviceInfo.dwSize = sizeof(BLUETOOTH_DEVICE_INFO);
+    */
+    serial = new QSerialPort(this);
+    serial->setPortName("com4");
+    serial->setBaudRate(QSerialPort::Baud9600);
+    serial->setDataBits(QSerialPort::Data8);
+    serial->setParity(QSerialPort::NoParity);
+    serial->setStopBits(QSerialPort::OneStop);
+    serial->setFlowControl(QSerialPort::NoFlowControl);
+    connect(serial,SIGNAL(readyRead()),this,SLOT(serialReceived()));
 
+}
+
+void ArduinoMiner::serialReceived(){
+
+    emit ZmenaSpojeni(this->serial->readAll());
 }
 
 void ArduinoMiner::run(){
@@ -79,7 +96,10 @@ void ArduinoMiner::otevreniSoketu(){
 }
 
 void ArduinoMiner::navazSpojeni()
+
 {
+    serial->open(QIODevice::ReadWrite);
+    /*
     this->deviceHandle = BluetoothFindFirstDevice(&this->btSearchParams, &this->btDeviceInfo);
     while (true || BluetoothFindNextDevice(&this->deviceHandle, &this->btDeviceInfo))
     {
@@ -101,8 +121,8 @@ void ArduinoMiner::navazSpojeni()
        DWORD err = GetLastError();
        //emit ZmenaStavu("Chyba při hledání zařízení, Error" + err);
        emit ZmenaStavu("Chyba při hledání zařízení");
-
     }
+    */
 }
 void ArduinoMiner::navazaniSoketu(){
     int res = BluetoothAuthenticateDeviceEx(NULL, NULL, &btDeviceInfo, NULL, MITMProtectionRequiredBonding);
@@ -184,8 +204,10 @@ int ArduinoMiner::OdesliData(QString data){
 }
 
 void ArduinoMiner::UkonciSpojeni(){
+    serial->close();
+    /*
     this->stav = STATUS_KLID;
-    this->err = shutdown(this->soket, SD_BOTH);
+    this->err = shutdown(this->soket, SD_BOTH);*/
 }
 
 ArduinoMiner::~ArduinoMiner(){

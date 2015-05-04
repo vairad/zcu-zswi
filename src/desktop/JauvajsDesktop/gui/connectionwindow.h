@@ -18,6 +18,7 @@ public:
 public slots:
     void connectArduino();
     void disconnectArduino();
+    void serialReceived(QString);
 
 private:
     /** vertikalni layout */
