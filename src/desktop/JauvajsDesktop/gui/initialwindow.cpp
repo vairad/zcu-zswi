@@ -314,7 +314,9 @@ void InitialWindow::addToUserLabels(UserLabel *label) {
  * @brief InitialWindow::closeEvent
  */
 void InitialWindow::closeEvent(QCloseEvent *) {
-    closeWithoutLogin();
+    if (!dataManager->isSetMetadata) {
+        closeWithoutLogin();
+    }
 }
 
 /**
