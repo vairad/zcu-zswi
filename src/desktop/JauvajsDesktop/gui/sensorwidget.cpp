@@ -160,16 +160,16 @@ void SensorWidget::repaintGraph() {
         int width = sensor->maxX - sensor->minX; // skutecna sirka (v jednotkach)
         int height = graphicsView->viewport()->height() - BOTTOM_OFFSET;
         int x, y;
-        QPainterPath path(QPoint(LEFT_OFFSET, 0));
+        path = new QPainterPath(QPoint(LEFT_OFFSET, 0));
 
         foreach (double value, values) {
             x = (sensor->time / (double) width) * (graphicsView->viewport()->width() - LEFT_OFFSET) + LEFT_OFFSET;
             y = graphicsView->viewport()->height() - ((value - sensor->minY) / (sensor->maxY - sensor->minY) * height + BOTTOM_OFFSET);
-            path.lineTo(x, y); //  pridani dalsi hodnoty do path
+            path->lineTo(x, y); //  pridani dalsi hodnoty do path
             sensor->time += sensor->timeInterval; // pricteni casu pro dalsi hodnotu
         }
 
-       curve = scene->addPath(path, QPen(Qt::white));
+       curve = scene->addPath(*path, QPen(Qt::white));
        graphicsView->viewport()->repaint();
     }
 }
