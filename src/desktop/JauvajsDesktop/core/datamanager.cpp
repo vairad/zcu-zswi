@@ -22,6 +22,8 @@ DataManager::DataManager() {
 
     draw = false;
 
+    fileMiner = NULL;
+
     initSenzorListeners(); //všechny listenery nastaví na NULL
 
     // vyprazdneni metadat
@@ -350,9 +352,15 @@ void DataManager::setListenerTemp(IWorking *senzorTemp){
  * @brief DataManager::loadFile
  */
 void DataManager::loadFile(QString filename) {
-    fileMiner = NULL;
+
+    if(fileMiner != NULL){ // pokud je otevřený jiý soubor, zavři ho
+        delete fileMiner;
+    }
+
+    fileMiner = NULL; // není žádný otevřený soubor
+
     try {
-       fileMiner = new FileMiner(filename);
+       fileMiner = new FileMiner(filename); // zkus otevřít soubo
     } catch (FileOpenProblemException &e) {
         qDebug() << e.getMessage();
     }
