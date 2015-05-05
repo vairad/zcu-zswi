@@ -13,12 +13,14 @@ class AnalysisWindow : public QDialog {
 public:
     AnalysisWindow(QList<float> values, QWidget *parent);
     ~AnalysisWindow();
-    void createLabels();
+    void createTitle();
+    void createLabelsForDescriptionOfResults();
+    void createLabelsForResults();
 
 private:
-    /** vertikalni layout */
-    QVBoxLayout *verticalLayout;
-
+    /** grid layout */
+    QGridLayout *layout;
+    /** list hodnot pro analyzu */
     QList<float> values;
 };
 
