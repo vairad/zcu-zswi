@@ -10,6 +10,7 @@
 #include <QAction>
 #include <QMenu>
 #include <QGraphicsLineItem>
+#include <QMainWindow>
 
 #include "core/idisplayable.h"
 #include "gui/detailedwindow.h"
@@ -80,7 +81,7 @@ private:
     /** zda je zapnuto prepisovani */
     bool transcription;
     /** prepisovaci index, kde je zrovna provaden */
-    int transcriptionIndex;   
+    int transcriptionIndex;
 };
 
 #endif // SENSORWIDGET_H

@@ -104,7 +104,7 @@ void SensorWidget::createGraphicsView() {
     graphicsView->setRubberBandSelectionMode(Qt::ContainsItemShape);
 
     scene = new QGraphicsScene(this);
-    scene->setSceneRect(QRectF(QPointF(0, 0), QPointF(this->graphicsView->width(), this->graphicsView->height())));
+    scene->setSceneRect(QRectF(QPointF(0, 0), QPointF(this->graphicsView->width() * ratioOfTheWith, this->graphicsView->height())));
 
     graphicsView->setScene(scene);
     graphicsView->setBackgroundBrush(QBrush(QColor(1, 51, 50), Qt::SolidPattern));
@@ -139,7 +139,7 @@ void SensorWidget::zobrazit() {
  * @param e
  */
 void SensorWidget::resizeEvent(QResizeEvent *) {
-    graphicsView->scene()->setSceneRect(QRectF(QPointF(0, 0), QPointF(graphicsView->viewport()->width(), graphicsView->viewport()->height())));
+    graphicsView->scene()->setSceneRect(QRectF(QPointF(0, 0), QPointF(graphicsView->viewport()->width() * ratioOfTheWith, graphicsView->viewport()->height())));
     drawVerticalLines();
     drawNumbers();
     repaintGraph(); // prekresleni grafu dle sirky widgetu
@@ -359,6 +359,8 @@ void SensorWidget::cleanGraph() {
     path = NULL;
     transcription = false;
     values.clear();
+    ratioOfTheWith = 1;
+    resizeEvent(NULL);
     detailedWindow->cleanGraph();
 }
 
@@ -389,8 +391,12 @@ void SensorWidget::cancelLoadData() {
     // propojeni signalu indikujici ziskani dat z Arduina s metodou update2 pro vykresleni
     connect(sensor, SIGNAL(haveData(float)), this, SLOT(update2(float)));
 
-    curve = scene->addPath(*path, QPen(Qt::white)); // pridani aktualni krivky do grafu
-    graphicsView->viewport()->repaint(); // prekresleni
+    ratioOfTheWith = (values.size() * sensor->timeInterval) / sensor->maxX;
+    if (ratioOfTheWith < 1) ratioOfTheWith = 1;
+    resizeEvent(NULL);
+
+    //curve = scene->addPath(*path, QPen(Qt::white)); // pridani aktualni krivky do grafu
+    //graphicsView->viewport()->repaint(); // prekresleni
 
     detailedWindow->cancelLoadData();
 }
