@@ -203,7 +203,8 @@ void DetailedWindow::cleanGraph() {
         delete curve2;
         curve2 = NULL;
     }
-    sensor->time = 0;
+    sensor->time = 0;    
+    delete path;
     path = NULL;
     transcription = false;
 }
