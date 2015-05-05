@@ -84,6 +84,8 @@ vector<int> AnalyserEKG::getRWaveIndex() {
         index.push_back(tmp + interval[i]);
     }
 
+    vector<int>().swap(interval);
+
     return index;
 }
 
@@ -181,6 +183,8 @@ vector<int> AnalyserEKG::getQRSDuration() {
         }
     }
 
+    vector<int>().swap(rWave);
+
     return duration;
 }
 
@@ -208,6 +212,9 @@ vector<bool> AnalyserEKG::analyseQRS() {
         }
     }
 
+    vector<int>().swap(duration);
+    vector<int>().swap(rWaveIndex);
+
     return qrs;
 }
 
@@ -217,7 +224,10 @@ vector<bool> AnalyserEKG::analyseQRS() {
  * @return pocet celych namerenych srdecnich cyklu
  */
 unsigned int AnalyserEKG::getNumberOfCycles() {
-    unsigned int number = (unsigned int)getRRIntervalDuration().size();
+    vector<int> duration = getRRIntervalDuration();
+    unsigned int number = (unsigned int)duration.size();
+    vector<int>().swap(duration);
+
     return number;
 }
 
@@ -236,6 +246,9 @@ float AnalyserEKG::getAverageCycleDuration() {
     }
 
     duration = duration / (float)interval.size();
+
+    vector<int>().swap(interval);
+
     return duration;
 }
 
@@ -246,6 +259,30 @@ float AnalyserEKG::getAverageCycleDuration() {
  */
 float AnalyserEKG::getNormalityPercentage() {
     return normalityPercentage;
+}
+
+/**
+ * Vrati procento pravidelnych srdecnich cyklu.
+ * @brief AnalyserEKG::getRegularityPercentage
+ * @return procento pravidelnych srdecnich cyklu
+ */
+float AnalyserEKG::getRegularityPercentage() {
+    vector<int> duration = getRRIntervalDuration();
+    int i;
+    int counter = 0;
+    float percentage;
+
+    for (i = 0; i < (int)duration.size(); i++) {
+        if ((duration[i] / (float)DATA_SEC) * 60.0 < 60.0 ||
+                (duration[i] / (float)DATA_SEC) * 60.0 > 100.0) {
+            counter++;
+        }
+    }
+
+    percentage = 100.0 * (float)counter / (int)duration.size();
+    vector<int>().swap(duration);
+
+    return percentage;
 }
 
 /**
@@ -265,8 +302,11 @@ void AnalyserEKG::analyse() {
     }
 
     normalityPercentage = 100 * (float)countTrue / (int)qrs.size();
+
+    vector<bool>().swap(qrs);
 }
 
 AnalyserEKG::~AnalyserEKG() {
+    delete transcriber;
 }
 

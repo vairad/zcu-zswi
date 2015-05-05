@@ -44,33 +44,11 @@ char TranscriberEKG::valuesToScale(float value) {
 }
 
 /**
- * Zjisti, zda se nezmenilo znamenko v useku.
- * Pokud ano, usek uzavre, ulozi jeho delku
- * a rozdil krajnich hodnot do vektoru a vrati true.
- * Pokud se znamenko nezmenilo, vrati false
- * @brief TranscriberEKG::isSection
- * @param from index, kde usek zacina
- * @param to index, kde by eventualne mohl usek koncit
- * @return true, byl-li usek ukoncen
- *         false, nebyl-li usek ukoncen
- */
-bool TranscriberEKG::isSection(int from, int to) {
-    if ((valueDifferences[from] > 0 && valueDifferences[to] < 0) ||
-            (valueDifferences[from] < 0 && valueDifferences[to] > 0)) {
-        sectionLengths.push_back(to - from);
-        sectionDifferences.push_back(data[to] - data[from]);
-        return true;
-    }
-    return false;
-}
-
-/**
  * "Prepise" data na charakteristicky retezec znaku.
  * @brief TranscriberEKG::transcribeData
  */
 void TranscriberEKG::transcribeData() {
-    int i, from = 0;
-    bool section;
+    int i;
     char character;
 
     if (data.empty()) {
@@ -80,19 +58,10 @@ void TranscriberEKG::transcribeData() {
     for (i = 0; i < (int)data.size(); i++) {
         if (i + 1 < (int)data.size()) {
             valueDifferences.push_back(data[i + 1] - data[i]);
-            section = isSection(from, i);
-            if (section == true) {
-                from = i;
-            }
 
             character = valuesToScale(valueDifferences[i]);
             transcribedData.push_back(character);
         }
-    }
-
-    if (from < (i - 1) && i > 0) {
-        sectionLengths.push_back((i - 1) - from);
-        sectionDifferences.push_back(data[i - 1] - data[from]);
     }
 }
 
@@ -117,14 +86,7 @@ vector<float> TranscriberEKG::getValueDifferences() {
     return valueDifferences;
 }
 
-vector<float> TranscriberEKG::getSectionDifferences() {
-    return sectionDifferences;
-}
-
-vector<int> TranscriberEKG::getSectionLengths() {
-    return sectionLengths;
-}
-
 TranscriberEKG::~TranscriberEKG() {
-
+    vector<float>().swap(valueDifferences);
+    vector<char>().swap(transcribedData);
 }

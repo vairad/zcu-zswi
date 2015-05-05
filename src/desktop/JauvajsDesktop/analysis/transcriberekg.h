@@ -30,8 +30,6 @@ public:
     vector<char> getString();
     vector<float> getData();
     vector<float> getValueDifferences();
-    vector<float> getSectionDifferences();
-    vector<int> getSectionLengths();
     ~TranscriberEKG();
 
 private:
@@ -40,10 +38,6 @@ private:
 
     /** Vektor rozdilu mezi dvema sousednimi hodnotami */
     vector<float> valueDifferences;
-    /** Vektor rozdilu pocatecnich a koncovych hodnot jednotlivych useku */
-    vector<float> sectionDifferences;
-    /** Vektor delek jednotlivych useku */
-    vector<int> sectionLengths;
     /** Prijata neprepsana data */
     vector<float> data;
     /** Charakteristicky retezec znaku (prepsana data, kde kazde pismeno znamena urcitou zmenu krivky) */

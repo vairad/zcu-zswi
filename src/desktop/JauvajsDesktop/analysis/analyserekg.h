@@ -24,6 +24,7 @@ public:
     unsigned int getNumberOfCycles();
     float getAverageCycleDuration();
     float getNormalityPercentage();
+    float getRegularityPercentage();
     void analyse();
     ~AnalyserEKG();
 
