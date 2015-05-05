@@ -12,22 +12,32 @@
 #include "filesaver.h"
 #include "idisplayable.h"
 
-DataManager::DataManager() {
+DataManager::DataManager() {    
     FOLDER_NAME = "data";
     FILE_METADATA_NAME = "metadata.txt";
     FILE_NAME = "ekg.dat";
+
+    initPointers(); //nastavi pointery na NULL
 
     saver = new FileSaver(FILE_METADATA_NAME);
     metadataReader = new MetadataReader(FILE_METADATA_NAME);
 
     draw = false;
 
-    fileMiner = NULL;
-
     initSenzorListeners(); //všechny listenery nastaví na NULL
 
     // vyprazdneni metadat
     logoutUser();
+}
+
+/**
+ * Nastaví všechny pointery struktury na NULL
+ * @brief DataManager::initPointers
+ */
+void DataManager::initPointers(){
+    fileMiner = NULL;
+    saver = NULL;
+    metadataReader = NULL;
 }
 
 /**
@@ -435,6 +445,17 @@ void DataManager::run() {
 }
 
 DataManager::~DataManager() {
+    //qDebug() << "destructor od DataManager";
+    if(fileMiner != NULL) {
+        delete fileMiner;
+        fileMiner = NULL;
+    }
+    if(saver != NULL) {
+        delete saver;
+    }
+    if(metadataReader != NULL) {
+        delete metadataReader;
+    }
 
 }
 

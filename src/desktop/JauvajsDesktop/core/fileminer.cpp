@@ -20,6 +20,7 @@ FileMiner::FileMiner(QString fileName){
 }
 
 FileMiner::~FileMiner(){
+   // qDebug() << "destructor of FileMiner";
     if(opened){
         sourceFile.close();
         delete in;

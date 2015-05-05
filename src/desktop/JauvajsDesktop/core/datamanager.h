@@ -88,12 +88,14 @@ public:
     void loadDataFromFile(QString filename);
 
 private:
-    /**  */
+    /** Ukazatel na načítač datového souboru */
     FileMiner *fileMiner;
-
     int numberOfData;
 
     float listToFile[NUMBER_OF_SENSORS];
+
+    /** Nastaví námi ovládané pointery na NULL*/
+    void initPointers();
 
 public slots:
     void transmitDataToSaver(int, float);
