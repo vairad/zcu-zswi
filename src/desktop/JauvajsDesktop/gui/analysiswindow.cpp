@@ -65,14 +65,14 @@ void AnalysisWindow::createLabels() {
     QLabel *label2 = new QLabel(this);
     label2->setObjectName(QStringLiteral("label"));
     label2->setMaximumSize(QSize(16777215, 20));
-    label2->setText("Průměrná délka cyklů: " + QString::number(averageCycleDuratio));
+    label2->setText("Průměrná délka cyklu: " + QString::number(averageCycleDuratio) + " s");
     verticalLayout->addWidget(label2);
 
     // label - anomalie EKG
     QLabel *label3 = new QLabel(this);
     label3->setObjectName(QStringLiteral("label"));
     label3->setMaximumSize(QSize(16777215, 20));
-    label3->setText("Vaše EKG je z " + QString::number(normalityPercentage) + " % normální");
+    label3->setText("Z naměřených srdečních cyklů je " + QString::number(normalityPercentage) + "% v normě.");
     verticalLayout->addWidget(label3);
 }
 
