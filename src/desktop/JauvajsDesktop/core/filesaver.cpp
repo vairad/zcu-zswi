@@ -7,7 +7,7 @@
 #include "filesaver.h"
 
 FileSaver::FileSaver(QString fileName) {
-    FILENAME = fileName;
+    FILE_NAME = fileName;
 }
 
 /**
@@ -30,7 +30,7 @@ void FileSaver::saveMetadata(QString folderName, QList<QString> data) {
       dir2.mkdir(".");
     }
 
-    QFile *file = new QFile(FOLDER_NAME + "/" + data[0] + "/" + FILENAME);
+    QFile *file = new QFile(FOLDER_NAME + "/" + data[0] + "/" + FILE_NAME);
     file->open(QIODevice::WriteOnly);
 
     for (int i = 1; i < data.size(); i++) {
@@ -39,6 +39,7 @@ void FileSaver::saveMetadata(QString folderName, QList<QString> data) {
     }
 
     file->close();
+    delete file;
 }
 
 /**
@@ -76,6 +77,9 @@ void FileSaver::closeFileForData() {
 }
 
 FileSaver::~FileSaver() {
-
+    if(file->isOpen()){
+        file->close();
+    }
+    delete file;
 }
 

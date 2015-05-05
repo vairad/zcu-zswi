@@ -20,7 +20,7 @@ public:
     /** nazev slozky pro ukladani dat */
     QString FOLDER_NAME;
     /** nazev souboru pro ulozeni metadat */
-    QString FILENAME;
+    QString FILE_NAME;
 
 private:
     /** soubor pro data */
