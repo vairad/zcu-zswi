@@ -164,6 +164,7 @@ void SensorWidget::repaintGraph() {
         int width = sensor->maxX - sensor->minX; // skutecna sirka (v jednotkach)
         int height = graphicsView->viewport()->height() - BOTTOM_OFFSET;
         int x, y;
+        delete path;
         path = new QPainterPath(QPoint(LEFT_OFFSET, 0));
 
         foreach (double value, values) {
