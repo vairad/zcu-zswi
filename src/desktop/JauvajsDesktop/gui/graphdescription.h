@@ -56,6 +56,8 @@ protected:
     int maxNumberOfHorizontalLines;
     /** list vertikalnich car */
     QList<QGraphicsLineItem*> lineList;
+    /** pomer k sirce sceny (z duvodu rozsireni oken pri nacteni ze souboru) */
+    double ratioOfTheWith;
 };
 
 #endif // GRAPHDESCRIPTION_H

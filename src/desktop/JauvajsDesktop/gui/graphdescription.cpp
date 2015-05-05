@@ -2,6 +2,7 @@
 
 GraphDescription::GraphDescription() {
     itemsExist = false;
+    ratioOfTheWith = 1;
 }
 
 /**

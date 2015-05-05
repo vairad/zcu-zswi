@@ -29,7 +29,7 @@ DetailedWindow::DetailedWindow(IDisplayable *sensor, QList<float> *values, QWidg
     graphicsView->setRubberBandSelectionMode(Qt::ContainsItemShape);
 
     scene = new QGraphicsScene(this);
-    scene->setSceneRect(QRectF(QPointF(0, 0), QPointF(this->graphicsView->viewport()->width(), this->graphicsView->viewport()->height())));
+    scene->setSceneRect(QRectF(QPointF(0, 0), QPointF(this->graphicsView->viewport()->width() * ratioOfTheWith, this->graphicsView->viewport()->height())));
 
     graphicsView->setScene(scene);
     graphicsView->setBackgroundBrush(QBrush(QColor(1, 51, 50), Qt::SolidPattern));
@@ -126,8 +126,12 @@ void DetailedWindow::updateFromFile(float value) {
  * @brief DetailedWindow::cancelLoadData
  */
 void DetailedWindow::cancelLoadData() {
-    curve = scene->addPath(*path, QPen(Qt::white)); // pridani aktualni krivky do grafu
-    graphicsView->viewport()->repaint(); // prekresleni
+    //curve = scene->addPath(*path, QPen(Qt::white)); // pridani aktualni krivky do grafu
+    //graphicsView->viewport()->repaint(); // prekresleni
+
+    ratioOfTheWith = (values->size() * sensor->timeInterval) / sensor->maxX;
+    if (ratioOfTheWith < 1) ratioOfTheWith = 1;
+    resizeEvent(NULL);
 }
 
 /**
@@ -136,7 +140,7 @@ void DetailedWindow::cancelLoadData() {
  * @param e
  */
 void DetailedWindow::resizeEvent(QResizeEvent *) {
-    scene->setSceneRect(QRectF(QPointF(0, 0), QPointF(graphicsView->viewport()->width(), graphicsView->viewport()->height())));
+    scene->setSceneRect(QRectF(QPointF(0, 0), QPointF(graphicsView->viewport()->width() * ratioOfTheWith, graphicsView->viewport()->height())));
     drawVerticalLines();
     drawNumbers();
     repaintGraph();
