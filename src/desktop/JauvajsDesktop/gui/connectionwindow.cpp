@@ -14,10 +14,8 @@ ConnectionWindow::ConnectionWindow(ArduinoMiner *arduinoMiner, QWidget *parent) 
     verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
     verticalLayout->setContentsMargins(20, 20, 20, 20);
     verticalLayout->setAlignment(Qt::AlignTop);
-
     createTextEdit();
     createButtons();
-
     this->show();
 }
 
@@ -46,12 +44,13 @@ void ConnectionWindow::createButtons() {
     bt2->setObjectName(QStringLiteral("button_2"));
     bt2->setText("Odpojit");
     group->addWidget(bt2);
-    connect(bt2, SIGNAL (clicked()), this, SLOT (connectArduino()));
+    connect(bt2, SIGNAL (clicked()), this, SLOT (disconnectArduino()));
 
     verticalLayout->addWidget(widgetBT, 0, Qt::AlignBottom);
 }
 
 void ConnectionWindow::connectArduino() {
+   this->arduinoMiner->init();
    this->arduinoMiner->navazSpojeni();
 }
 

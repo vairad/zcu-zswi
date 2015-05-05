@@ -33,6 +33,7 @@ public:
     typedef enum {STATUS_KLID, STATUS_HLEDEJ, STATUS_SPOJENI } STATUS;
     STATUS stav;
     void navazSpojeni();
+    void init();
 
 signals:
     void SeznamChanged(QStringList*);
@@ -41,7 +42,8 @@ signals:
     void PrijmiData(QString);
 
 private slots:
-    void serialReceived();
+    void readSerial();
+    void handleError(QSerialPort::SerialPortError);
 
 private:
    QSerialPort *serial;
@@ -55,6 +57,5 @@ private:
    void otevreniSoketu();
    void zacniNaslouchat();
 };
-
 #endif // ARDUINOMINER_H
 

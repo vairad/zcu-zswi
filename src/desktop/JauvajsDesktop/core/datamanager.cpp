@@ -125,32 +125,34 @@ void DataManager::transmitData(QString row) {
     QStringList leftBracket = row.split('[');
     if(leftBracket.size() == 2) {
         // leva je nalezena, pracuji s pravou stranou
-
         QStringList rightBracket = leftBracket[1].split(']');
         if(rightBracket.size() == 2) {
+           //split dle tabulatoru "1.769306	F2"
+           QStringList cellData = rightBracket[0].split('\t');
+           float EKGvalue = cellData.at(0).toFloat();
+           this->listenEKG->transmitData(EKGvalue);
 
-            //split dle tabulatoru: [T&28	C&-1.00	R&6017652.50	H&1.241447	P&0	O&0.00	F&7]
-            QStringList cellData = rightBracket[0].split('\t');
-            foreach (const QString &cell, cellData) {
-                //mam data ve formatu (senzor)&(hodnota)
-                QStringList sensorData = cell.split('&');
-                char sensorFlag = sensorData.at(0)[0].toLatin1(); // funkce .toAscii je zastaralá
-                float sensorValue = sensorData.at(1).toFloat();// hodnota za ampersandem
+           if(cellData.size() > 1) {
+            QString sensorFlag = cellData.at(1).left(1);
+            QString sensorValue = cellData.at(1);
+            sensorValue.replace(sensorFlag, QString(""));
 
-                switch(sensorFlag)
-                {
-                    case 'T': this->listenTemp->transmitData(sensorValue);break;
-                    case 'P': this->listenHeartRate->transmitData(sensorValue);break;
-                    case 'O': this->listenOxy->transmitData(sensorValue);break;
-                    case 'V': this->listenGSR->transmitData(sensorValue);break;
-                    case 'H': this->listenEKG->transmitData(sensorValue);break;
-                    case 'A': this->listenPosition->transmitData(sensorValue);break;
-                    case 'F': this->listenOxy->transmitData(sensorValue);break;
-                default:
-                    // neznamy sensor
-                    break;
-                }
+            if(sensorFlag == "T")
+               this->listenTemp->transmitData(sensorValue.toFloat());
+            else if(sensorFlag == "P")
+               this->listenHeartRate->transmitData(sensorValue.toFloat());
+            else if(sensorFlag == "O")
+               this->listenOxy->transmitData(sensorValue.toFloat());
+            else if(sensorFlag == "V")
+               this->listenGSR->transmitData(sensorValue.toFloat());
+            else if(sensorFlag == "A")
+               this->listenPosition->transmitData(sensorValue.toFloat());
+            else if(sensorFlag == "F")
+               this->listenOxy->transmitData(sensorValue.toFloat());
+            else {
+             //neznamy senzor
             }
+          }
         }
   }
 }

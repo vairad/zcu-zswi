@@ -9,33 +9,49 @@
 
 ArduinoMiner::ArduinoMiner(QObject *parent): QThread(parent){
 
-    /*
-    this->btSearchParams.dwSize = sizeof(BLUETOOTH_DEVICE_SEARCH_PARAMS);
-    this->btSearchParams.cTimeoutMultiplier = 5;  //5*1.28s search timeout
-    this->btSearchParams.fIssueInquiry = true;
-    //vyhledání všech známých i neznámých zařízení
-    this->btSearchParams.fReturnAuthenticated = true;
-    this->btSearchParams.fReturnConnected = true;
-    this->btSearchParams.fReturnRemembered = true;
-    this->btSearchParams.fReturnUnknown = true;
-    this->btSearchParams.hRadio = NULL;
-    ZeroMemory(&this->btDeviceInfo, sizeof(BLUETOOTH_DEVICE_INFO));   //"initialize" (&btDeviceInfo)
-    this->btDeviceInfo.dwSize = sizeof(BLUETOOTH_DEVICE_INFO);
-    */
+}
+
+void ArduinoMiner::init(){
     serial = new QSerialPort(this);
-    serial->setPortName("com4");
-    serial->setBaudRate(QSerialPort::Baud9600);
+    serial->setPortName("COM21");
+    serial->open(QIODevice::ReadOnly);
+    serial->setBaudRate(QSerialPort::Baud115200);
     serial->setDataBits(QSerialPort::Data8);
+    serial->setFlowControl(QSerialPort::NoFlowControl);
     serial->setParity(QSerialPort::NoParity);
     serial->setStopBits(QSerialPort::OneStop);
-    serial->setFlowControl(QSerialPort::NoFlowControl);
-    connect(serial,SIGNAL(readyRead()),this,SLOT(serialReceived()));
+    QObject::connect(serial,SIGNAL(readyRead()),this,SLOT(readSerial()));
+    //connect(serial, SIGNAL(error(QSerialPort::SerialPortError)), SLOT(handleError(QSerialPort::SerialPortError)));
+    emit ZmenaStavu("Port otevřený");
+}
+
+void ArduinoMiner::readSerial(){
+
+    qDebug() << "###"+serial->readAll()+"###";
+
+   // QByteArray byteArray =
+   //     emit ZmenaStavu(QString(byteArray.length()));
+   // else
+       // emit ZmenaStavu("nic");
+}
+
+void ArduinoMiner::navazSpojeni()
+{
 
 }
 
-void ArduinoMiner::serialReceived(){
+void ArduinoMiner::UkonciSpojeni(){
+    serial->close();
+    emit ZmenaStavu("Port uzavřen");
+}
 
-    emit ZmenaSpojeni(this->serial->readAll());
+void ArduinoMiner::handleError(QSerialPort::SerialPortError serialPortError)
+{
+    if (serialPortError == QSerialPort::ReadError) {
+       // m_standardOutput << QObject::tr("An I/O error: %2").arg(m_serialPort->portName()).arg(m_serialPort->errorString()) << endl;
+       emit ZmenaStavu("Chyba");
+       QCoreApplication::exit(1);
+    }
 }
 
 void ArduinoMiner::run(){
@@ -95,35 +111,7 @@ void ArduinoMiner::otevreniSoketu(){
     err = ::connect(soket, reinterpret_cast<SOCKADDR*>(&btSockAddr), sizeof(SOCKADDR_BTH));
 }
 
-void ArduinoMiner::navazSpojeni()
 
-{
-    serial->open(QIODevice::ReadWrite);
-    /*
-    this->deviceHandle = BluetoothFindFirstDevice(&this->btSearchParams, &this->btDeviceInfo);
-    while (true || BluetoothFindNextDevice(&this->deviceHandle, &this->btDeviceInfo))
-    {
-       if(QString::fromWCharArray(this->btDeviceInfo.szName) == this->vybraneZarizeni){
-         break;
-       }
-       if(!BluetoothFindNextDevice(deviceHandle, &btDeviceInfo)){ break; }
-    }
-
-    if (this->deviceHandle)
-    {
-        this->navazaniSoketu();
-        this->otevreniSoketu();
-        this->navazaniSoketu();
-        this->zacniNaslouchat();
-    }
-    else
-    {
-       DWORD err = GetLastError();
-       //emit ZmenaStavu("Chyba při hledání zařízení, Error" + err);
-       emit ZmenaStavu("Chyba při hledání zařízení");
-    }
-    */
-}
 void ArduinoMiner::navazaniSoketu(){
     int res = BluetoothAuthenticateDeviceEx(NULL, NULL, &btDeviceInfo, NULL, MITMProtectionRequiredBonding);
 
@@ -203,12 +191,7 @@ int ArduinoMiner::OdesliData(QString data){
    return 0;
 }
 
-void ArduinoMiner::UkonciSpojeni(){
-    serial->close();
-    /*
-    this->stav = STATUS_KLID;
-    this->err = shutdown(this->soket, SD_BOTH);*/
-}
+
 
 ArduinoMiner::~ArduinoMiner(){
 
