@@ -151,9 +151,13 @@ void SensorWidget::resizeEvent(QResizeEvent *) {
  */
 void SensorWidget::repaintGraph() {
     if (path != NULL) {
-        if (curve != NULL) scene->removeItem(curve); // odstaneni stare krivky z grafu
+        if (curve != NULL) {
+            scene->removeItem(curve); // odstaneni stare krivky z grafu
+            delete curve;
+        }
         if (curve2 != NULL){
             scene->removeItem(curve2); // odstaneni stare krivky z grafu
+            delete curve2;
             curve2 = NULL;
         }
         sensor->time = 0;
@@ -247,7 +251,10 @@ void SensorWidget::update2(float value) {
         path->lineTo(x, y); //  pridani dalsi hodnoty do path
 
         if (x % 3 == 0) {
-            if (curve != NULL) scene->removeItem(curve); // odstaneni stare krivky z grafu
+            if (curve != NULL) {
+                scene->removeItem(curve); // odstaneni stare krivky z grafu
+                delete curve;
+            }
             curve = scene->addPath(*path, QPen(Qt::white)); // pridani aktualni krivky do grafu
             //graphicsView->viewport()->repaint(); // prekresleni
         }
@@ -259,7 +266,10 @@ void SensorWidget::update2(float value) {
 
     // pokud je zapnuto prepisovani, hodnota se prida do values na misto transcriptionIndex
     if (transcription) {
-        if (curve2 != NULL) scene->removeItem(curve2); // odstaneni stare krivky z grafu
+        if (curve2 != NULL) {
+            scene->removeItem(curve2); // odstaneni stare krivky z grafu
+            delete curve2;
+        }
         QPainterPath path2(QPoint(x, y));
         values.replace(transcriptionIndex, value); // pridani hodnoty na misto transcriptionIndex
         transcriptionIndex++;

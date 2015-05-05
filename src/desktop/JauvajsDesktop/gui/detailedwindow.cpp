@@ -65,7 +65,10 @@ void DetailedWindow::update(double value) {
         path->lineTo(x, y); //  pridani dalsi hodnoty do path
 
         if (x % 3 == 0) {
-            if (curve != NULL) {scene->removeItem(curve); /*printf("odstranena\n");*/} // odstaneni stare krivky z grafu
+            if (curve != NULL) {
+                scene->removeItem(curve); // odstaneni stare krivky z grafu
+                delete curve;
+            }
             curve = scene->addPath(*path, QPen(Qt::white)); // pridani aktualni krivky do grafu
             //graphicsView->viewport()->repaint(); // prekresleni
         }
@@ -75,7 +78,10 @@ void DetailedWindow::update(double value) {
     }
 
     if (transcription) {
-        if (curve2 != NULL) scene->removeItem(curve2); // odstaneni stare krivky z grafu
+        if (curve2 != NULL) {
+           scene->removeItem(curve2); // odstaneni stare krivky z grafu
+           delete curve2;
+        }
         QPainterPath path2(QPoint(x, y));
         transcriptionIndex++;
         // vykresleni krivky z minuleho zobrazeni od transcriptionIndex do konce
@@ -142,9 +148,13 @@ void DetailedWindow::resizeEvent(QResizeEvent *) {
  */
 void DetailedWindow::repaintGraph() {
     if (path != NULL) {
-        if (curve != NULL) scene->removeItem(curve); // odstaneni stare krivky z grafu
+        if (curve != NULL) {
+            scene->removeItem(curve); // odstaneni stare krivky z grafu
+            delete curve;
+        }
         if (curve2 != NULL){
             scene->removeItem(curve2); // odstaneni stare krivky z grafu
+            delete curve2;
             curve2 = NULL;
         }
         time = 0;
@@ -184,10 +194,12 @@ void DetailedWindow::restartGraph() {
 void DetailedWindow::cleanGraph() {
     if (curve != NULL) {
         scene->removeItem(curve); // odstaneni stare krivky z grafu
+        delete curve;
         curve = NULL;
     }
     if (curve2 != NULL){
         scene->removeItem(curve2); // odstaneni stare krivky z grafu
+        delete curve2;
         curve2 = NULL;
     }
     sensor->time = 0;

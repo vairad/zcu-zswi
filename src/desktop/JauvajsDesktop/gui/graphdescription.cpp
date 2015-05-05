@@ -16,6 +16,14 @@ void GraphDescription::drawNumbers() {
         scene->removeItem(textMaxX);
         scene->removeItem(textMinX);
         scene->removeItem(horizontalLine);
+        scene->removeItem(verticalLine);
+
+        delete textMaxY;
+        delete textMinY;
+        delete textMaxX;
+        delete textMinX;
+        delete horizontalLine;
+        delete verticalLine;
     }
 
     horizontalLine = scene->addLine(0, graphicsView->viewport()->height() - BOTTOM_OFFSET, graphicsView->viewport()->width(), graphicsView->viewport()->height() - BOTTOM_OFFSET, QPen(Qt::white));
@@ -53,6 +61,7 @@ void GraphDescription::drawVerticalLines() {
     // odebrani starych hodnot
     foreach (QGraphicsLineItem *item, lineList) {
         scene->removeItem(item);
+        delete item;
     }
     lineList.clear();
 
