@@ -59,7 +59,7 @@ private slots:
     void itemClickedLoadFile(QListWidgetItem *item);
     // void on_connection_changed();
     void on_actionOtev_t_triggered();
-    void on_ZmenaStavu(QString data);
+    void on_statusChanged(QString data);
 
 private:
     Ui::MainWindow *ui;

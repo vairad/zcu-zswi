@@ -26,9 +26,9 @@ MainWindow::MainWindow(DataManager *manager, QWidget *parent) : QMainWindow(pare
     createUserPanel();
     initialWindow = new InitialWindow(dataManager, this);
 
-    arduinoMiner = new ArduinoMiner();
+    arduinoMiner = manager->arduino;
     connectionWindow = new ConnectionWindow(arduinoMiner, this);
-    connect(arduinoMiner, SIGNAL(ZmenaStavu(QString)), this, SLOT(on_ZmenaStavu(QString)));
+    connect(arduinoMiner, SIGNAL(statusChanged(QString)), this, SLOT(on_statusChanged(QString)));
 
     // Vytvoreni senzoru
     SensorEKG *ekg = new SensorEKG();
@@ -416,6 +416,6 @@ void MainWindow::on_actionOtev_t_triggered() {
     dataManager->loadFile(file);
 }
 
-void MainWindow::on_ZmenaStavu(QString data) {
+void MainWindow::on_statusChanged(QString data) {
     connectionWindow->textEdit->append(data);
 }

@@ -10,6 +10,7 @@
 #include "core/istorable.h"
 #include "core/iworking.h"
 #include "core/fileminer.h"
+#include "core/arduinominer.h"
 
 /**
  * Sprava dat ziskanych z IMiner a IStorable, predani dat konkretnim senzorum
@@ -32,6 +33,8 @@ public:
     QStringList listOfFiles();
     void logoutUser();
     void initSenzorListeners();
+
+    ArduinoMiner *arduino;
 
     /** Privátní odkazy na senzory */
     IWorking *listenEKG;

@@ -50,12 +50,12 @@ void ConnectionWindow::createButtons() {
 }
 
 void ConnectionWindow::connectArduino() {
-   this->arduinoMiner->init();
-   this->arduinoMiner->navazSpojeni();
+  // this->arduinoMiner->init();
+   //this->arduinoMiner->navazSpojeni();
 }
 
 void ConnectionWindow::disconnectArduino() {
-   this->arduinoMiner->UkonciSpojeni();
+   //this->arduinoMiner->closeSerial();
 }
 
 void ConnectionWindow::serialReceived(QString data) {
