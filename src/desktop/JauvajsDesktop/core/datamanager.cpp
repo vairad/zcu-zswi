@@ -30,6 +30,8 @@ DataManager::DataManager() {
 
     // vyprazdneni metadat
     logoutUser();
+
+     loadFile(FILE_NAME);
 }
 
 /**
@@ -413,7 +415,6 @@ void DataManager::loadDataFromFile(QString filename) {
 }
 
 void DataManager::run() {
-    loadFile(FILE_NAME);
     qDebug() << "run";
     int count = 0;
 
