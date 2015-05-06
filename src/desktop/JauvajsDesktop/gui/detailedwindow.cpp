@@ -29,7 +29,7 @@ DetailedWindow::DetailedWindow(IDisplayable *sensor, QList<float> *values, QWidg
     graphicsView->setRubberBandSelectionMode(Qt::ContainsItemShape);
 
     scene = new QGraphicsScene(this);
-    scene->setSceneRect(QRectF(QPointF(0, 0), QPointF(this->graphicsView->viewport()->width() * ratioOfTheWith, this->graphicsView->viewport()->height())));
+    scene->setSceneRect(QRectF(QPointF(0, 0), QPointF((this->graphicsView->viewport()->width() - LEFT_OFFSET) * ratioOfTheWith + LEFT_OFFSET, this->graphicsView->viewport()->height())));
 
     graphicsView->setScene(scene);
     graphicsView->setBackgroundBrush(QBrush(QColor(1, 51, 50), Qt::SolidPattern));
@@ -132,6 +132,7 @@ void DetailedWindow::cancelLoadData() {
     ratioOfTheWith = (values->size() * sensor->timeInterval) / sensor->maxX;
     if (ratioOfTheWith < 1) ratioOfTheWith = 1;
     resizeEvent(NULL);
+    repaint = true;
 }
 
 /**
@@ -140,8 +141,9 @@ void DetailedWindow::cancelLoadData() {
  * @param e
  */
 void DetailedWindow::resizeEvent(QResizeEvent *) {
-    scene->setSceneRect(QRectF(QPointF(0, 0), QPointF(graphicsView->viewport()->width() * ratioOfTheWith, graphicsView->viewport()->height())));
+    scene->setSceneRect(QRectF(QPointF(0, 0), QPointF((graphicsView->viewport()->width() - LEFT_OFFSET) * ratioOfTheWith + LEFT_OFFSET, graphicsView->viewport()->height())));
     drawVerticalLines();
+    drawHorizontalLines();
     drawNumbers();
     repaintGraph();
 }
@@ -222,6 +224,14 @@ void DetailedWindow::setUp() {
     drawVerticalLines();
     drawHorizontalLines();
     drawNumbers();
+}
+
+void DetailedWindow::paintEvent(QPaintEvent *) {
+    if (repaint) {
+        resizeEvent(NULL);
+        repaint = false;
+    }
+
 }
 
 DetailedWindow::~DetailedWindow() {

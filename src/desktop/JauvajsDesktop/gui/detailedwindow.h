@@ -21,6 +21,7 @@ public:
     void updateFromFile(float value);
     void cancelLoadData();
     void resizeEvent(QResizeEvent *);
+    void paintEvent(QPaintEvent *);
     void setUp();
     void repaintGraph();
     void restartGraph();
@@ -40,6 +41,8 @@ public:
     int transcriptionIndex;
     /** vlastni cas detailniho okna */
     double time;
+    /** vlajka prekrsleni */
+    bool repaint;
 };
 
 #endif // DETAILEDWINDOW_H

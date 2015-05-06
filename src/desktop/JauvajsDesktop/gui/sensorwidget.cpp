@@ -108,7 +108,7 @@ void SensorWidget::createGraphicsView() {
     graphicsView->setRubberBandSelectionMode(Qt::ContainsItemShape);
 
     scene = new QGraphicsScene(this);
-    scene->setSceneRect(QRectF(QPointF(0, 0), QPointF(this->graphicsView->width() * ratioOfTheWith, this->graphicsView->height())));
+    scene->setSceneRect(QRectF(QPointF(0, 0), QPointF((this->graphicsView->width() - LEFT_OFFSET) * ratioOfTheWith + LEFT_OFFSET, this->graphicsView->height())));
 
     graphicsView->setScene(scene);
     graphicsView->setBackgroundBrush(QBrush(QColor(1, 51, 50), Qt::SolidPattern));
@@ -143,8 +143,9 @@ void SensorWidget::zobrazit() {
  * @param e
  */
 void SensorWidget::resizeEvent(QResizeEvent *) {
-    graphicsView->scene()->setSceneRect(QRectF(QPointF(0, 0), QPointF(graphicsView->viewport()->width() * ratioOfTheWith, graphicsView->viewport()->height())));
+    graphicsView->scene()->setSceneRect(QRectF(QPointF(0, 0), QPointF((graphicsView->viewport()->width() - LEFT_OFFSET) * ratioOfTheWith + LEFT_OFFSET, graphicsView->viewport()->height())));
     drawVerticalLines();
+    drawHorizontalLines();
     drawNumbers();
     repaintGraph(); // prekresleni grafu dle sirky widgetu
 }
@@ -398,6 +399,10 @@ void SensorWidget::cancelLoadData() {
     ratioOfTheWith = (values.size() * sensor->timeInterval) / sensor->maxX;
     if (ratioOfTheWith < 1) ratioOfTheWith = 1;
     resizeEvent(NULL);
+    repaint = true;
+    graphicsView->update();
+    graphicsView->updateGeometry();
+    graphicsView->viewport()->update();
 
     //curve = scene->addPath(*path, QPen(Qt::white)); // pridani aktualni krivky do grafu
     //graphicsView->viewport()->repaint(); // prekresleni
@@ -428,6 +433,13 @@ void SensorWidget::on_button2_clicked() {
  */
 IDisplayable *SensorWidget::getSensor() {
     return sensor;
+}
+
+void SensorWidget::paintEvent(QPaintEvent *) {
+    if (repaint) {
+        resizeEvent(NULL);
+        repaint = false;
+    }
 }
 
 SensorWidget::~SensorWidget() {
