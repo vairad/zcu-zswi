@@ -414,34 +414,36 @@ void DataManager::run() {
     loadFile(FILE_NAME);
     //qDebug() << "run";
     int count = 0;
-    while (true) {
-        if (listenEKG != NULL && fileMiner != NULL) {
-            if (count % 50 == 0) {
-                if (draw) {
-                    QCoreApplication::processEvents();
-                    QString data = fileMiner->getLastIncoming();
-                    if (data != NULL) {
-                        listenEKG->transmitData(data.toFloat());
-                        listenTemp->transmitData(data.toFloat());
-                        listenOxy->transmitData(data.toFloat());
-                        listenPosition->transmitData(data.toFloat());
-                        listenGSR->transmitData(data.toFloat());
-                        listenHeartRate->transmitData(data.toFloat());
-                    }
-                    else {
-                        draw = false;
-                    }
+    while (draw) {
+        //if (draw) {
+            if (listenEKG != NULL && fileMiner != NULL) {
+                if (count % 50 == 0) {
+
+                        QCoreApplication::processEvents();
+                        QString data = fileMiner->getLastIncoming();
+                        if (data != NULL) {
+                            listenEKG->transmitData(data.toFloat());
+                            listenTemp->transmitData(data.toFloat());
+                            listenOxy->transmitData(data.toFloat());
+                            listenPosition->transmitData(data.toFloat());
+                            listenGSR->transmitData(data.toFloat());
+                            listenHeartRate->transmitData(data.toFloat());
+                        }
+                        else {
+                            draw = false;
+                        }
+
 
                 }
+            } else {
+               if (fileMiner == NULL) {
+                   draw = false;
+               }
             }
-        } else {
-           if (fileMiner == NULL) {
-               draw = false;
-           }
-        }
 
-        for (int i=0; i < 100000; i++) {}
-        count++;
+            for (int i=0; i < 100000; i++) {}
+            count++;
+        //}
     }
 
 }

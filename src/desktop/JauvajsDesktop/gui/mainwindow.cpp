@@ -289,6 +289,7 @@ void MainWindow::cleanAll() {
 void MainWindow::startScanning() {
     dataManager->connectSensorToSaver();
     dataManager->draw = true;
+    dataManager->start();
     saveCB->setDisabled(true);
 }
 
