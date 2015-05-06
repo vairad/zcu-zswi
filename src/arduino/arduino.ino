@@ -8,14 +8,15 @@
  *  Allows selection of individual sensors to scan and send via commands scanned on
  *  serial port.
  *
- *  Version 0.7
+ *  Version 0.9
  *  Author: Stepan Sevcik @ SEJDREm
  */
  
 #include <PinChangeInt.h>
 #include <eHealth.h>
 
-#define BT 
+//#define BT
+//#define PRINT_TIMESTAMPS
 
 // sensor indexes
 #define S_INVALID -1
@@ -39,8 +40,8 @@
 #define CYCLE_DELAY 20
 
 // sensor organisation
-//                                EKG  TEMP COND RESI BPM  SPO2 ACCE AIRF
-char sensor_labels[]           = {'E', 'F', 'C', 'R', 'P', 'O', 'A', 'T'};
+//                                EKG  AIRF COND RESI BPM  SPO2 TEMP ACCE
+char sensor_labels[]           = {'E', 'F', 'C', 'R', 'P', 'O', 'T', 'A'};
 unsigned char dec_positions[]  = { 6 ,  0 ,  2 ,  2 ,  0 ,  0 ,  0 ,  0 };
 // number of measures to be made per second / 1000 millis    later to be used
 // as number of millis to be waited between measures
@@ -83,9 +84,10 @@ void loop() {
   int other_sensor;
   
   // printing timestamp
+  #ifdef PRINT_TIMESTAMP
   Serial.print(seconds_online); Serial.print(':');
   Serial.print(millis_state);   Serial.print('\t');
-  
+  #endif
   
   other_sensor = (cycle_state % 2 == 1) ? S_AIRF : get_other_sensor();
   if (++cycle_state > max_state) { cycle_state = 0; }
@@ -103,6 +105,7 @@ void loop() {
   }
   
   Serial.println("]");
+  Serial.flush();
   
   // Reduce this delay for more data rate
   delay(CYCLE_DELAY);
