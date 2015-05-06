@@ -99,6 +99,8 @@ private:
 
     /** Nastaví námi ovládané pointery na NULL*/
     void initPointers();
+    /** počet sloupců očekávaných v souboru .csv*/
+    const int CSV_COLUMN_COUNT = 6;
 
 public slots:
     void transmitDataToSaver(int, float);

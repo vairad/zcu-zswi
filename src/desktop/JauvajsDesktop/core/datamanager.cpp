@@ -395,6 +395,13 @@ void DataManager::loadDataFromFile(QString filename) {
     while (data != NULL) {
         listOfData = data.split(';');
 
+        if(CSV_COLUMN_COUNT > listOfData.size()) {
+            //qDebug() << "spatna radka";
+            //qDebug() << listOfData.size();
+            data = fileMiner->getLastIncoming();
+            continue;
+        }
+
         listenEKG->transmitData(listOfData[0].toFloat());
         listenTemp->transmitData(listOfData[1].toFloat());
         listenOxy->transmitData(listOfData[2].toFloat());
