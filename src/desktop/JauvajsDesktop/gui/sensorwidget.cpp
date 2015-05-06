@@ -62,9 +62,13 @@ void SensorWidget::createLeftBox() {
     widget->setMinimumSize(QSize(150, 0));
     widget->setMaximumSize(QSize(150, 16777215));
 
+    widget->setStyleSheet("QWidget#widget {background-image: url(./images/1.png);"
+                          "background-repeat: no-repeat;"
+                          "background-position: center top;}");
+
     button = new QPushButton(widget);
     button->setObjectName(QStringLiteral("button"));
-    button->setGeometry(QRect(10, 50, 131, 23));
+    button->setGeometry(QRect(50, 77, 50, 23));
     button->setText(QApplication::translate("MainWindow", "Analyzuj", 0));
     if (sensor->isAnalysable) {
         button->setVisible(true);
@@ -75,7 +79,7 @@ void SensorWidget::createLeftBox() {
 
     button2 = new QPushButton(widget);
     button2->setObjectName(QStringLiteral("button2"));
-    button2->setGeometry(QRect(10, 75, 131, 23));
+    button2->setGeometry(QRect(100, 77, 50, 23));
     button2->setText(QApplication::translate("MainWindow", "Vyčisti", 0));
 
     label = new QLabel(widget);

@@ -420,7 +420,7 @@ void DataManager::loadDataFromFile(QString filename) {
     //emit ((IDisplayable *)listenGSR)->notHaveData();
     //emit ((IDisplayable *)listenHeartRate)->notHaveData();
 }
-
+/*
 void DataManager::run() {
     qDebug() << "run";
     int count = 0;
@@ -436,13 +436,13 @@ void DataManager::run() {
                     QString data = arduino->getLastIncoming();
                    // qDebug() << "data" << data;
                         if (data != NULL) {
-                        transmitData(data);
-                        /*listenEKG->transmitData(data.toFloat());
-                            listenTemp->transmitData(data.toFloat());
-                            listenOxy->transmitData(data.toFloat());
-                            listenPosition->transmitData(data.toFloat());
-                            listenGSR->transmitData(data.toFloat());
-                        listenHeartRate->transmitData(data.toFloat());*/
+                            transmitData(data);
+                            //listenEKG->transmitData(data.toFloat());
+                            //listenTemp->transmitData(data.toFloat());
+                            //listenOxy->transmitData(data.toFloat());
+                            //listenPosition->transmitData(data.toFloat());
+                            //listenGSR->transmitData(data.toFloat());
+                            //listenHeartRate->transmitData(data.toFloat());
                         }
                         else {
                       //  draw = false;
@@ -455,6 +455,37 @@ void DataManager::run() {
         //}
     }
 
+}
+*/
+void DataManager::run() {
+//qDebug() << "run";
+    int count = 0;
+    while (draw) {
+        if (listenEKG != NULL && fileMiner != NULL) {
+            if (count % 50 == 0) {
+                QCoreApplication::processEvents();
+                QString data = fileMiner->getLastIncoming();
+                if (data != NULL) {
+                    listenEKG->transmitData(data.toFloat());
+                    listenTemp->transmitData(data.toFloat());
+                    listenOxy->transmitData(data.toFloat());
+                    listenPosition->transmitData(data.toFloat());
+                    listenGSR->transmitData(data.toFloat());
+                    listenHeartRate->transmitData(data.toFloat());
+                }
+                else {
+                    draw = false;
+                }
+            }
+        } else {
+           if (fileMiner == NULL) {
+               draw = false;
+           }
+        }
+
+        for (int i=0; i < 100000; i++) {}
+        count++;
+    }
 }
 
 DataManager::~DataManager() {
