@@ -245,8 +245,9 @@ float AnalyserEKG::getAverageCycleDuration() {
         duration += interval[i] / (float)DATA_SEC;
     }
 
-    duration = duration / (float)interval.size();
-
+    if ((int)interval.size() != 0) {
+        duration = duration / (float)interval.size();
+    }
     vector<int>().swap(interval);
 
     return duration;
@@ -279,7 +280,11 @@ float AnalyserEKG::getRegularityPercentage() {
         }
     }
 
-    percentage = 100.0 * (float)counter / (int)duration.size();
+    if ((int)duration.size() == 0) {
+        percentage = 0;
+    } else {
+        percentage = 100.0 * (float)counter / (int)duration.size();
+    }
     vector<int>().swap(duration);
 
     return percentage;
@@ -301,7 +306,11 @@ void AnalyserEKG::analyse() {
         }
     }
 
-    normalityPercentage = 100 * (float)countTrue / (int)qrs.size();
+    if (size == 0) {
+        normalityPercentage = 0.0;
+    } else {
+        normalityPercentage = 100.0 * (float)countTrue / (float)size;
+    }
 
     vector<bool>().swap(qrs);
 }

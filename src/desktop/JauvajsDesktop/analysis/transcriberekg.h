@@ -34,7 +34,6 @@ public:
 
 private:
     char valuesToScale(float value);
-    bool isSection(int from, int to);
 
     /** Vektor rozdilu mezi dvema sousednimi hodnotami */
     vector<float> valueDifferences;
