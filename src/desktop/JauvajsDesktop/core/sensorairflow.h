@@ -4,10 +4,10 @@
 #include "core/iworking.h"
 #include "core/idisplayable.h"
 
-class SensorPosition : public IDisplayable, public IWorking {
+class SensorAirFlow : public IDisplayable, public IWorking {
    static const int ID = 2;
-   const float MINIMAL_CORRECT_VALUE = 1.0;
-   const float MAXIMAL_CORRECT_VALUE = 5.0;
+   const float MINIMAL_CORRECT_VALUE = 0.0;
+   const float MAXIMAL_CORRECT_VALUE = 512.0;
 
     /*  1 == Supine position / na zádech
         2 == Left lateral decubitus / leží na levém boku
@@ -23,12 +23,12 @@ class SensorPosition : public IDisplayable, public IWorking {
 
     bool validateData(int data);
 public:
-    SensorPosition();
+    SensorAirFlow();
     QGraphicsScene* getSceneGraph();
     void transmitData(float data);
     float getLastData();
 
-    ~SensorPosition();
+    ~SensorAirFlow();
 
 };
 

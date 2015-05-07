@@ -4,7 +4,7 @@
 #include "gui/mainwindow.h"
 #include "core/sensorekg.h"
 #include "core/sensortemp.h"
-#include "core/sensorposition.h"
+#include "core/sensorairflow.h"
 #include "core/sensoroxy.h"
 #include "core/sensorgsr.h"
 #include "core/sensorheartrate.h"
@@ -33,7 +33,7 @@ MainWindow::MainWindow(DataManager *manager, QWidget *parent) : QMainWindow(pare
     // Vytvoreni senzoru
     SensorEKG *ekg = new SensorEKG();
     SensorTemp *temp = new SensorTemp();
-    SensorPosition *pos = new SensorPosition();
+    SensorAirFlow *pos = new SensorAirFlow();
     SensorOxy *oxy = new SensorOxy();
     SensorGSR *gsr = new SensorGSR();
     SensorHeartRate *hr = new SensorHeartRate();

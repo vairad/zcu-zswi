@@ -1,16 +1,18 @@
 #include <limits>
 
-#include "core/sensorposition.h"
+#include <QDebug>
 
-SensorPosition::SensorPosition() {
-    minY = 1;
-    maxY = 5;
+#include "core/sensorairflow.h"
+
+SensorAirFlow::SensorAirFlow() {
+    minY = 0;
+    maxY = 512;
     minX = 0;
     maxX = 60;
     time = 0;
     timeInterval = 0.02;
 
-    name = "Poloha";
+    name = "Dech";
     unit = "";
     isAnalysable = false;
 }
@@ -20,7 +22,7 @@ SensorPosition::SensorPosition() {
  * @brief SensorPosition::getSceneGraph
  * @return
  */
-QGraphicsScene* SensorPosition::getSceneGraph() {
+QGraphicsScene* SensorAirFlow::getSceneGraph() {
     return NULL;
     //return this->scene;
 }
@@ -29,7 +31,8 @@ QGraphicsScene* SensorPosition::getSceneGraph() {
  * Pracuje s predanymi daty
  * @param data prijata data
  */
-void SensorPosition::transmitData(float data) {
+void SensorAirFlow::transmitData(float data) {
+    qDebug() << data << "Senzor";
     if (this->validateData(data)) {
         emit haveData(data);
         emit haveDataToSave(ID, data);
@@ -44,7 +47,7 @@ void SensorPosition::transmitData(float data) {
  * @brief SensorPosition::getLastData
  * @return posledni data
  */
-float SensorPosition::getLastData() {
+float SensorAirFlow::getLastData() {
     float data = this->lastData;
     this->lastData = std::numeric_limits<float>::quiet_NaN();
     return data;
@@ -54,7 +57,7 @@ float SensorPosition::getLastData() {
  * Validuje prijata data a odesila je k vykresleni
  * @param data data k zvalidovani
  */
-bool SensorPosition::validateData(int data) {
+bool SensorAirFlow::validateData(int data) {
     if(data < MINIMAL_CORRECT_VALUE || data > MAXIMAL_CORRECT_VALUE){
         return false;
     }else{
@@ -62,7 +65,7 @@ bool SensorPosition::validateData(int data) {
     }
 }
 
-SensorPosition::~SensorPosition() {
+SensorAirFlow::~SensorAirFlow() {
 
 }
 

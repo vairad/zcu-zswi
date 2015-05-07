@@ -24,7 +24,6 @@ SOURCES += main.cpp\
     core/sensorgsr.cpp \
     core/sensorheartrate.cpp \
     core/sensoroxy.cpp \
-    core/sensorposition.cpp \
     core/sensortemp.cpp \
     gui/mainwindow.cpp \
     gui/metadialog.cpp \
@@ -41,14 +40,14 @@ SOURCES += main.cpp\
     gui/initialwindow.cpp \
     gui/analysiswindow.cpp \
     gui/connectionwindow.cpp \
-    core/fileproblemexception.cpp
+    core/fileproblemexception.cpp \
+    core/sensorairflow.cpp
 
 HEADERS  += core/idisplayable.h \
     core/sensorekg.h \
     core/sensorgsr.h \
     core/sensorheartrate.h \
     core/sensoroxy.h \
-    core/sensorposition.h \
     core/sensortemp.h \
     gui/mainwindow.h \
     gui/metadialog.h \
@@ -71,6 +70,7 @@ HEADERS  += core/idisplayable.h \
     gui/initialwindow.h \
     gui/analysiswindow.h \
     core/fileproblemexception.h \
-    gui/connectionwindow.h
+    gui/connectionwindow.h \
+    core/sensorairflow.h
 
 FORMS    += gui/mainwindow.ui
