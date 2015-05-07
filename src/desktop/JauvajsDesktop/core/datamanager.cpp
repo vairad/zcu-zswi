@@ -155,10 +155,10 @@ void DataManager::transmitData(QString row) {
                this->listenOxy->transmitData(sensorValue.toFloat());
             else if(sensorFlag == "V")
                this->listenGSR->transmitData(sensorValue.toFloat());
-            else if(sensorFlag == "A")
-               this->listenPosition->transmitData(sensorValue.toFloat());
+            else if(sensorFlag == "A") ;
+              // this->listenPosition->transmitData(sensorValue.toFloat());
             else if(sensorFlag == "F")
-               this->listenOxy->transmitData(sensorValue.toFloat());
+               this->listenPosition->transmitData(sensorValue.toFloat());
             else {
              //neznamy senzor
             }
