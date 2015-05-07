@@ -68,8 +68,9 @@ void SensorWidget::createLeftBox() {
 
     button = new QPushButton(widget);
     button->setObjectName(QStringLiteral("button"));
-    button->setGeometry(QRect(50, 77, 50, 23));
-    button->setText(QApplication::translate("MainWindow", "Analyzuj", 0));
+    button->setGeometry(QRect(100, 77, 23, 23));
+    button->setText("A");
+    button->setToolTip("Analyzuj");
     if (sensor->isAnalysable) {
         button->setVisible(true);
     }
@@ -79,8 +80,12 @@ void SensorWidget::createLeftBox() {
 
     button2 = new QPushButton(widget);
     button2->setObjectName(QStringLiteral("button2"));
-    button2->setGeometry(QRect(100, 77, 50, 23));
-    button2->setText(QApplication::translate("MainWindow", "Vyčisti", 0));
+    button2->setGeometry(QRect(127, 77, 23, 23));
+    //button2->setText(QApplication::translate("MainWindow", "Vyčisti", 0));
+
+    QPixmap pixmap("./clean.png");
+    button2->setIcon(QIcon(pixmap));
+    button2->setToolTip("Vyčisti");
 
     label = new QLabel(widget);
     label->setObjectName(QStringLiteral("label"));
