@@ -12,11 +12,11 @@ public:
     ArduinoMiner();
     ~ArduinoMiner();
 
-    /** Ukonceni BT komunikace */
+    /** Uzavreni serioveho portu */
     void closeSerial();
-
+    /** inicializace serioveho portu */
     void init();
-
+    /** posilani zprav pres eriovy port */
     void sendMessage(QString line);
     QString getLastIncoming();
 

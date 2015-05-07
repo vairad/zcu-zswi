@@ -421,45 +421,35 @@ void DataManager::loadDataFromFile(QString filename) {
     //emit ((IDisplayable *)listenGSR)->notHaveData();
     //emit ((IDisplayable *)listenHeartRate)->notHaveData();
 }
-/*
+
 void DataManager::run() {
-    qDebug() << "run";
     int count = 0;
-
-    qDebug() << "before init";
     arduino->init();
-    qDebug() << "after init";
-
     while (true) {
-                if (count % 50 == 0) {
+            if (count % 80 == 0) {
 
-                        QCoreApplication::processEvents();
-                    QString data = arduino->getLastIncoming();
-                   // qDebug() << "data" << data;
-                        if (data != NULL) {
-                            transmitData(data);
-                            //listenEKG->transmitData(data.toFloat());
-                            //listenTemp->transmitData(data.toFloat());
-                            //listenOxy->transmitData(data.toFloat());
-                            //listenPosition->transmitData(data.toFloat());
-                            //listenGSR->transmitData(data.toFloat());
-                            //listenHeartRate->transmitData(data.toFloat());
-                        }
-                        else {
-                      //  draw = false;
-                        }
-
-
-                }
+                QCoreApplication::processEvents();
+                QString data = arduino->getLastIncoming();
+               // qDebug() << "data" << data;
+                    if (data != NULL) {
+                        transmitData(data);
+                    }
+                    else {
+                  //  draw = false;
+                    }
+            }
             for (int i=0; i < 100000; i++) {}
             count++;
         //}
     }
 
 }
-*/
+
+
+/*
 void DataManager::run() {
-//qDebug() << "run";
+    qDebug() << "run";
+
     int count = 0;
     while (draw) {
         if (listenEKG != NULL && fileMiner != NULL) {
@@ -486,9 +476,8 @@ void DataManager::run() {
 
         for (int i=0; i < 100000; i++) {}
         count++;
-    }
 }
-
+*/
 bool DataManager::validateLineCSV(QString &line){
    // QRegularExpression expression(CSV_REG_EXP);
     QRegularExpressionMatch match = CSV_COMPARER.match(line);

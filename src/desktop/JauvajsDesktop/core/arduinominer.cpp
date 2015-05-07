@@ -10,6 +10,10 @@ ArduinoMiner::ArduinoMiner() {
     list = new QStringList();
 }
 
+/**
+ * Inicializace sériového portu
+ * @brief ArduinoMiner::readSerial
+ */
 void ArduinoMiner::init() {
     serial = new QSerialPort();
     serial->setPortName("COM21");
@@ -20,20 +24,25 @@ void ArduinoMiner::init() {
     serial->setParity(QSerialPort::NoParity);
     serial->setStopBits(QSerialPort::OneStop);
     QObject::connect(serial,SIGNAL(readyRead()),this,SLOT(readSerial()));
-    qDebug() << "initialoization of serial";
+   // qDebug() << "initialoization of serial";
     emit statusChanged("Port otevřený");
 }
 
+/**
+ * Čte data ze sériového portu
+ * @brief ArduinoMiner::readSerial
+ */
 void ArduinoMiner::readSerial(){
-    int i = 10000000;
-    while(--i>0){} // wait loop
-
+    int i = 1000000;
+    while(--i>0){} // cekaci smycka
     QString line = serial->readLine();
-    qDebug() << line;
     list->push_back(line);
 }
 
-
+/**
+ * Uzavře sériový port
+ * @brief ArduinoMiner::closeSerial
+ */
 void ArduinoMiner::closeSerial(){
     serial->close();
     emit statusChanged("Port uzavřen");
@@ -49,6 +58,7 @@ void ArduinoMiner::closeSerial(){
 void ArduinoMiner::sendMessage(QString line){
 
 }
+
 /**
  * Metoda, která vrátí poslední zprávu datového zdroje nebo nic, pokud není nová zpráva k dispozici.
  *
@@ -61,6 +71,10 @@ QString ArduinoMiner::getLastIncoming() {
     return list->takeFirst();
 }
 
+/**
+ * Destruktor arduinomineru
+ *
+ */
 ArduinoMiner::~ArduinoMiner(){
     delete list;
     delete serial;
