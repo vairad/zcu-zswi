@@ -5,6 +5,7 @@
 #include <QObject>
 #include <QThread>
 #include <QDateTime>
+#include <QRegularExpression>
 
 #include "core/metadatareader.h"
 #include "core/istorable.h"
@@ -32,7 +33,6 @@ public:
     QStringList listOfFolders();
     QStringList listOfFiles();
     void logoutUser();
-    void initSenzorListeners();
 
     ArduinoMiner *arduino;
 
@@ -93,14 +93,29 @@ public:
 private:
     /** Ukazatel na načítač datového souboru */
     FileMiner *fileMiner;
+    /** porovnávač dle regularního výrazu csv */
+    QRegularExpression CSV_COMPARER;
+
     int numberOfData;
 
     float listToFile[NUMBER_OF_SENSORS];
 
     /** Nastaví námi ovládané pointery na NULL*/
     void initPointers();
+    /** Nastaví posluchače senzorů na NULL */
+    void initSenzorListeners();
+    /** Kontroluje zda QString odpovídá patternu CSV_REG_EXP */
+    bool validateLineCSV(QString &line);
+
+//Privátní konstanty
     /** počet sloupců očekávaných v souboru .csv*/
     const int CSV_COLUMN_COUNT = 6;
+    /** regulární výraz popisující řádek csv. souboru
+     *  krajní vzhled akceptované řádky:
+     *  d.dddddd;ddd;d.dddddd;ddd.dddddd;d.dddddd;ddd
+     */
+    const QString CSV_REG_EXP = "^\\d[.]{0,1}[\\d]{0,6};[\\d]{1,3};\\d[.]{0,1}[\\d]{0,6};\\d{1,3}[.]{0,1}[\\d]{0,6};\\d[.]{0,1}[\\d]{0,6};[\\d]{1,3}";
+
 
 public slots:
     void transmitDataToSaver(int, float);

@@ -5,6 +5,9 @@
 #include <QDebug>
 #include <QCoreApplication>
 #include <QException>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
+
 #include <QDebug>
 
 #include "datamanager.h"
@@ -17,7 +20,10 @@ DataManager::DataManager() {
     FILE_METADATA_NAME = "metadata.txt";
     FILE_NAME = "ekg.dat";
 
+    CSV_COMPARER.setPattern(CSV_REG_EXP);
+
     initPointers(); //nastavi pointery na NULL
+    initSenzorListeners(); //všechny listenery nastaví na NULL
 
     saver = new FileSaver(FILE_METADATA_NAME);
     metadataReader = new MetadataReader(FILE_METADATA_NAME);
@@ -26,7 +32,7 @@ DataManager::DataManager() {
 
     arduino = new ArduinoMiner();
 
-    initSenzorListeners(); //všechny listenery nastaví na NULL
+
 
     // vyprazdneni metadat
     logoutUser();
@@ -395,21 +401,16 @@ void DataManager::loadDataFromFile(QString filename) {
     while (data != NULL) {
         listOfData = data.split(';');
 
-        if(CSV_COLUMN_COUNT > listOfData.size()) {
-            //qDebug() << "spatna radka";
-            //qDebug() << listOfData.size();
-            data = fileMiner->getLastIncoming();
-            continue;
+        if(CSV_COLUMN_COUNT < listOfData.size() && validateLineCSV(data)) {
+            listenEKG->transmitData(listOfData[0].toFloat());
+            listenTemp->transmitData(listOfData[1].toFloat());
+            listenOxy->transmitData(listOfData[2].toFloat());
+            listenPosition->transmitData(listOfData[3].toFloat());
+            listenGSR->transmitData(listOfData[4].toFloat());
+            listenHeartRate->transmitData(listOfData[5].toFloat());
+        }else{
+           // qDebug() << "false";
         }
-
-        listenEKG->transmitData(listOfData[0].toFloat());
-        listenTemp->transmitData(listOfData[1].toFloat());
-        listenOxy->transmitData(listOfData[2].toFloat());
-        listenPosition->transmitData(listOfData[3].toFloat());
-        listenGSR->transmitData(listOfData[4].toFloat());
-        listenHeartRate->transmitData(listOfData[5].toFloat());
-
-
         data = fileMiner->getLastIncoming();
     }
 
@@ -485,6 +486,16 @@ void DataManager::run() {
 
         for (int i=0; i < 100000; i++) {}
         count++;
+    }
+}
+
+bool DataManager::validateLineCSV(QString &line){
+   // QRegularExpression expression(CSV_REG_EXP);
+    QRegularExpressionMatch match = CSV_COMPARER.match(line);
+    if(match.hasMatch()) {
+        return true;
+    }else{
+        return false;
     }
 }
 
