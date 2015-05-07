@@ -139,30 +139,38 @@ void DataManager::transmitData(QString row) {
         if(rightBracket.size() == 2) {
            //split dle tabulatoru "1.769306	F2"
            QStringList cellData = rightBracket[0].split('\t');
-           float EKGvalue = cellData.at(0).toFloat();
-           this->listenEKG->transmitData(EKGvalue);
+           ekgLastValue = cellData.at(0).toFloat(); // priprava ekg hodnoty
 
-           if(cellData.size() > 1) {
+           if(cellData.size() > 1) { //pokud mam neco za
             QString sensorFlag = cellData.at(1).left(1);
             QString sensorValue = cellData.at(1);
             sensorValue.replace(sensorFlag, QString(""));
 
             if(sensorFlag == "T")
-               this->listenTemp->transmitData(sensorValue.toFloat());
+               tempLastValue = sensorValue.toFloat();
             else if(sensorFlag == "P")
-               this->listenHeartRate->transmitData(sensorValue.toFloat());
+               heartValue = sensorValue.toFloat();
             else if(sensorFlag == "O")
-               this->listenOxy->transmitData(sensorValue.toFloat());
+               oxyLastValue = sensorValue.toFloat();
             else if(sensorFlag == "V")
-               this->listenGSR->transmitData(sensorValue.toFloat());
-            else if(sensorFlag == "A") ;
-              // this->listenPosition->transmitData(sensorValue.toFloat());
-            else if(sensorFlag == "F")
-               this->listenPosition->transmitData(sensorValue.toFloat());
+               gsrLastValue = sensorValue.toFloat();
+            else if(sensorFlag == "A"){}
+            else if(sensorFlag == "F"){
+                qDebug() << "Flow transmit";
+                positionLastValue = sensorValue.toFloat();
+                qDebug() << "Flow transmit::" << positionLastValue;
+            }
             else {
              //neznamy senzor
             }
+
           }
+          this->listenEKG->transmitData(ekgLastValue);
+          this->listenTemp->transmitData(tempLastValue);
+          this->listenHeartRate->transmitData(heartValue);
+          this->listenOxy->transmitData(oxyLastValue);
+          this->listenGSR->transmitData(gsrLastValue);
+          this->listenPosition->transmitData(positionLastValue);
         }
   }
 }

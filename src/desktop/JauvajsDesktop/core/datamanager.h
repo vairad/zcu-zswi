@@ -96,6 +96,14 @@ private:
     /** porovnávač dle regularního výrazu csv */
     QRegularExpression CSV_COMPARER;
 
+    /** Poslední hodnota na senzoru */
+    float tempLastValue = 0;
+    float heartValue = 0;
+    float oxyLastValue = 0;
+    float gsrLastValue = 0;
+    float positionLastValue = 0;
+    float ekgLastValue = 0;
+
     int numberOfData;
 
     float listToFile[NUMBER_OF_SENSORS];
