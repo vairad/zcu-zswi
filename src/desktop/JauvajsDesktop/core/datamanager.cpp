@@ -422,6 +422,7 @@ void DataManager::loadDataFromFile(QString filename) {
     //emit ((IDisplayable *)listenHeartRate)->notHaveData();
 }
 
+/*
 void DataManager::run() {
     int count = 0;
     arduino->init();
@@ -445,8 +446,8 @@ void DataManager::run() {
 
 }
 
+*/
 
-/*
 void DataManager::run() {
     qDebug() << "run";
 
@@ -476,8 +477,9 @@ void DataManager::run() {
 
         for (int i=0; i < 100000; i++) {}
         count++;
+    }
 }
-*/
+
 bool DataManager::validateLineCSV(QString &line){
    // QRegularExpression expression(CSV_REG_EXP);
     QRegularExpressionMatch match = CSV_COMPARER.match(line);
