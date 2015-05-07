@@ -95,6 +95,8 @@ private:
     FileMiner *fileMiner;
     /** porovnávač dle regularního výrazu csv */
     QRegularExpression CSV_COMPARER;
+    /** porovnávač dle regularního výrazu arduina */
+    QRegularExpression ARDUINO_COMPARER;
 
     /** Poslední hodnota na senzoru */
     float tempLastValue = 0;
@@ -114,6 +116,8 @@ private:
     void initSenzorListeners();
     /** Kontroluje zda QString odpovídá patternu CSV_REG_EXP */
     bool validateLineCSV(QString &line);
+    /** Kontroluje zda QString odpovídá patternu ARDUINO_REG_EXP */
+    bool validateLineArduino(QString &line);
 
 //Privátní konstanty
     /** počet sloupců očekávaných v souboru .csv*/
@@ -123,6 +127,13 @@ private:
      *  d.dddddd;ddd;d.dddddd;ddd.dddddd;d.dddddd;ddd
      */
     const QString CSV_REG_EXP = "^\\d[.]{0,1}[\\d]{0,6};[\\d]{1,3};\\d[.]{0,1}[\\d]{0,6};\\d{1,3}[.]{0,1}[\\d]{0,6};\\d[.]{0,1}[\\d]{0,6};[\\d]{1,3}";
+    /**
+     * Regulární výraz, který akceptuje zprávy z arduina dle specifikace
+     * [X.XXXXXX]\n [X.XXXXXX\tA####]\n
+     * Minimální rozsah delší zprávy [X.XXXXXX\tA1]\n
+     * Maximální rozdah delší zprávy [X.XXXXXX\tA123.123]\n
+     */
+    const QString ARDUINO_REG_EXP = "^\\[\\d[.]{0,1}[\\d]{0,6}[\\t]{0,1}[\\w]{0,1}[\\d]{0,}[.]{0,1}[\\d]{0,}\\]";
 
 
 public slots:

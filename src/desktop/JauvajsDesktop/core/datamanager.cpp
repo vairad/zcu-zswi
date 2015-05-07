@@ -20,7 +20,9 @@ DataManager::DataManager() {
     FILE_METADATA_NAME = "metadata.txt";
     FILE_NAME = "ekg.dat";
 
+    // inicializace comparátorů zpráv
     CSV_COMPARER.setPattern(CSV_REG_EXP);
+    ARDUINO_COMPARER.setPattern(ARDUINO_REG_EXP);
 
     initPointers(); //nastavi pointery na NULL
     initSenzorListeners(); //všechny listenery nastaví na NULL
@@ -497,8 +499,16 @@ void DataManager::run() {
 */
 
 bool DataManager::validateLineCSV(QString &line){
-   // QRegularExpression expression(CSV_REG_EXP);
     QRegularExpressionMatch match = CSV_COMPARER.match(line);
+    if(match.hasMatch()) {
+        return true;
+    }else{
+        return false;
+    }
+}
+
+bool DataManager::validateLineArduino(QString &line){
+    QRegularExpressionMatch match = ARDUINO_COMPARER.match(line);
     if(match.hasMatch()) {
         return true;
     }else{
