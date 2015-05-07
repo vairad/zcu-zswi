@@ -1,5 +1,6 @@
 #include <QtWidgets>
 #include <QDir>
+#include <QSerialPortInfo>
 
 #include "gui/mainwindow.h"
 #include "core/sensorekg.h"
@@ -100,6 +101,23 @@ void MainWindow::createToolBar() {
 
     saveCB = new QCheckBox("Ukládat data");
     toolbar->addWidget(saveCB);
+
+    toolbar->addSeparator();
+
+    // combo box na vyber portu
+    QComboBox *comboBox = new QComboBox();
+    QList<QSerialPortInfo> listOfPorts = QSerialPortInfo::availablePorts();
+
+    foreach (QSerialPortInfo port, listOfPorts) {
+        comboBox->addItem(port.portName());
+    }
+    toolbar->addWidget(comboBox);
+
+    // akce pro volbu portu
+    QAction *choosePort = new QAction(this);
+    choosePort->setText("Zvolit port");
+    //connect(choosePort, SIGNAL(triggered()), this, SLOT(cleanAll()));
+    toolbar->addAction(choosePort);
 
     this->addToolBar(toolbar);
 }
