@@ -5,6 +5,7 @@
 #include "core/sensorairflow.h"
 
 SensorAirFlow::SensorAirFlow() {
+    ID = 2;
     minY = 0;
     maxY = 512;
     minX = 0;

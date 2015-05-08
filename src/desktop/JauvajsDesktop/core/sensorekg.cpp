@@ -5,6 +5,7 @@
 #include <QDebug>
 
 SensorEKG::SensorEKG() {
+    ID = 0;
     minY = 0;
     maxY = 5;
     minX = 0;

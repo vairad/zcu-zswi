@@ -76,7 +76,7 @@ void MainWindow::createToolBar() {
     QAction *startA = new QAction(this);
     startA->setObjectName(QStringLiteral("action"));
     startA->setText("Zahájit snímání");
-    QPixmap start("start.png");
+    QPixmap start("images/start.png");
     startA->setIcon(QIcon(start));
     connect(startA, SIGNAL(triggered()), this, SLOT(startScanning()));
     toolbar->addAction(startA);
@@ -85,7 +85,7 @@ void MainWindow::createToolBar() {
     QAction *stopA = new QAction(this);
     stopA->setObjectName(QStringLiteral("action"));
     stopA->setText("Ukončit snímání");
-    QPixmap stop("stop.png");
+    QPixmap stop("images/stop.png");
     stopA->setIcon(QIcon(stop));
     connect(stopA, SIGNAL(triggered()), this, SLOT(stopScanning()));
     toolbar->addAction(stopA);
@@ -94,7 +94,7 @@ void MainWindow::createToolBar() {
     QAction *cleanAllA = new QAction(this);
     cleanAllA->setObjectName(QStringLiteral("action"));
     cleanAllA->setText("Vyčistit vše");
-    QPixmap cleanAll("clean.png");
+    QPixmap cleanAll("images/clean.png");
     cleanAllA->setIcon(QIcon(cleanAll));
     connect(cleanAllA, SIGNAL(triggered()), this, SLOT(cleanAll()));
     toolbar->addAction(cleanAllA);

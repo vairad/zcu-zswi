@@ -62,7 +62,7 @@ void SensorWidget::createLeftBox() {
     widget->setMinimumSize(QSize(150, 0));
     widget->setMaximumSize(QSize(150, 16777215));
 
-    widget->setStyleSheet("QWidget#widget {background-image: url(./images/1.png);"
+    widget->setStyleSheet("QWidget#widget {background-image: url(./images/" + QString::number(sensor->ID) + ".png);"
                           "background-repeat: no-repeat;"
                           "background-position: center top;}");
 
@@ -83,16 +83,17 @@ void SensorWidget::createLeftBox() {
     button2->setGeometry(QRect(127, 77, 23, 23));
     //button2->setText(QApplication::translate("MainWindow", "Vyčisti", 0));
 
-    QPixmap pixmap("./clean.png");
+    QPixmap pixmap("./images/clean.png");
     button2->setIcon(QIcon(pixmap));
     button2->setToolTip("Vyčisti");
 
     label = new QLabel(widget);
     label->setObjectName(QStringLiteral("label"));
-    label->setGeometry(QRect(50, 20, 47, 13));
+    label->setGeometry(QRect(50, 20, 65, 20));
     label->setScaledContents(false);
     label->setAlignment(Qt::AlignCenter);
-    label->setText(QApplication::translate("MainWindow", sensor->getName().toStdString().c_str(), 0));
+    label->setText(sensor->getName().toStdString().c_str());
+    label->setStyleSheet("QLabel {color: #330099; font-size: 15px;}");
 
     layout->addWidget(widget);
 }

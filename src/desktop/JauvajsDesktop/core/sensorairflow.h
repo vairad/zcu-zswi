@@ -5,7 +5,6 @@
 #include "core/idisplayable.h"
 
 class SensorAirFlow : public IDisplayable, public IWorking {
-   static const int ID = 2;
    const float MINIMAL_CORRECT_VALUE = 0.0;
    const float MAXIMAL_CORRECT_VALUE = 512.0;
 

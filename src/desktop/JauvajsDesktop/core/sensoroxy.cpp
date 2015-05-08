@@ -3,6 +3,7 @@
 #include "core/sensoroxy.h"
 
 SensorOxy::SensorOxy() {
+    ID = 3;
     minY = 75;
     maxY = 100;
     minX = 0;

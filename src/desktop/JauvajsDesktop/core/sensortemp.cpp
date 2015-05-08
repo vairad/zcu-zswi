@@ -3,6 +3,7 @@
 #include "core/sensortemp.h"
 
 SensorTemp::SensorTemp() {
+    ID = 1;
     minY = 32;
     maxY = 42;
     minX = 0;

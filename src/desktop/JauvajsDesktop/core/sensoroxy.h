@@ -4,8 +4,7 @@
 #include "core/iworking.h"
 #include "core/idisplayable.h"
 
-class SensorOxy : public IDisplayable, public IWorking {
-    static const int ID = 3;
+class SensorOxy : public IDisplayable, public IWorking {   
     const float MINIMAL_CORRECT_VALUE = 75.0;
     const float MAXIMAL_CORRECT_VALUE = 100.0;
 

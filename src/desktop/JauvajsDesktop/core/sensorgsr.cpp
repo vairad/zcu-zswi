@@ -3,6 +3,7 @@
 #include "core/sensorgsr.h"
 
 SensorGSR::SensorGSR() {
+    ID = 4;
     minY = 0;
     maxY = 10;
     minX = 0;

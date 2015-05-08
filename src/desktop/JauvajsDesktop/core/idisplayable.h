@@ -37,6 +37,8 @@ public:
     QString unit;
     /** true pokud je senzor analyzovatelny */
     bool isAnalysable;
+    /** id senzoru */
+    int ID;
 
 protected:
     /** nazev senzoru */
