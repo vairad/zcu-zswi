@@ -22,16 +22,23 @@ public:
     QString getLastIncoming();
     /** provedeni inicializace*/
     bool initialization;
+    /** komunikacni COM port */
+    QString portNumber;
+    /** pristupnost kanalu */
+    bool checkYourCOM();
+    QSerialPort *serial;
 
 signals:
     void statusChanged(QString, QString);
 
 private slots:
     void readSerial();
+    void handleError(QSerialPort::SerialPortError error);
 
 private:
-   QSerialPort *serial;
+
    QStringList *list;
+   QList<QSerialPortInfo> list_Of_Ports;
 };
 #endif // ARDUINOMINER_H
 

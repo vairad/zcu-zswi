@@ -30,12 +30,16 @@ DataManager::DataManager() {
 
     draw = false;
 
-    arduino = new ArduinoMiner();
+   createMiner();
 
     // vyprazdneni metadat
     logoutUser();
 
      loadFile(FILE_NAME);
+}
+
+void DataManager::createMiner() {
+     this->arduino = new ArduinoMiner();
 }
 
 /**
@@ -324,7 +328,6 @@ void DataManager::initSenzorListeners(){
     listenTemp = NULL;
 }
 
-
 /**
  * Nastaví EKG listener
  * @brief DataManager::setListenerEKG
@@ -431,28 +434,25 @@ void DataManager::loadDataFromFile(QString filename) {
 
 void DataManager::run() {
     int count = 0;
-
     while (true) {
         if(arduino->initialization == true) {
-
              if (count % 80 == 0) {
-
                 QCoreApplication::processEvents();
                 QString data = arduino->getLastIncoming();
-               // qDebug() << "data" << data;
                     if (data != NULL) {  
                         emit dataStatusChanged("Přijímám data ✓", "green");
+                        emit statusChanged("Připojeno ✓", "green");
                         if(draw) {
                           transmitData(data);
                         }
                     }
                     else {
                         emit dataStatusChanged("Žádná data", "red");
+                        emit checkPort();
                     }
             }// count
             for (int i=0; i < 100000; i++) {}
             count++;
-
        }
         else {
             //inicializace portu neprobehla

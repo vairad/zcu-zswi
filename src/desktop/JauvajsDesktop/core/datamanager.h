@@ -33,7 +33,7 @@ public:
     QStringList listOfFolders();
     QStringList listOfFiles();
     void logoutUser();
-
+    void createMiner();
     ArduinoMiner *arduino;
 
     /** Privátní odkazy na senzory */
@@ -130,6 +130,9 @@ public slots:
 
 signals:
     void dataStatusChanged(QString, QString);
+    void statusChanged(QString, QString);
+
+    void checkPort();
 };
 
 #endif // DATAMANAGER_H

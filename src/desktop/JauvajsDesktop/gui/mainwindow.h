@@ -62,7 +62,8 @@ private slots:
     void portChoosed();
     void on_indicatorChanged(QString status, QString color);
     void on_indicatorDataChanged(QString status, QString color);
-
+    void on_checkPort();
+    void refeshComboBox();
 
 private:
     Ui::MainWindow *ui;
@@ -92,7 +93,8 @@ private:
     QListWidget *listWidget;
     /** vybrany seriovy port */
     QString choosedPort;
-
+    /** vyberovy seznam COM portu*/
+    QComboBox *comboBox;
 
 };
 

@@ -2,6 +2,7 @@
 #include <QStringList>
 
 #include <QDebug>
+#include <QSerialPortInfo>
 
 #include "core/arduinominer.h"
 
@@ -25,9 +26,9 @@ void ArduinoMiner::init(QString port) {
     serial->setFlowControl(QSerialPort::NoFlowControl);
     serial->setParity(QSerialPort::NoParity);
     serial->setStopBits(QSerialPort::OneStop);
-    QObject::connect(serial,SIGNAL(readyRead()),this,SLOT(readSerial()));
+    connect(serial, SIGNAL(error(QSerialPort::SerialPortError)), this, SLOT(handleError(QSerialPort::SerialPortError)));
+    connect(serial,SIGNAL(readyRead()),this,SLOT(readSerial()));
     initialization = true;
-    qDebug() << "probehla inicializace";
 }
 
 /**
@@ -50,6 +51,9 @@ void ArduinoMiner::closeSerial(){
     serial->close();
 }
 
+void ArduinoMiner::handleError(QSerialPort::SerialPortError error) {
+    qDebug() << error;
+}
 
 /**
  * Metoda, která zaručuje odeslání zprávy směrem do zařízení pro získání dat.
@@ -71,6 +75,25 @@ QString ArduinoMiner::getLastIncoming() {
         return NULL;
     }
     return list->takeFirst();
+}
+
+bool ArduinoMiner::checkYourCOM() {
+
+    list_Of_Ports = QSerialPortInfo::availablePorts();
+
+    foreach (QSerialPortInfo port, list_Of_Ports) {
+       if(port.portName() == this->portNumber) {
+           if(port.description() == ""){
+           // zarizeni odpojeno
+               this->serial->close();
+               emit statusChanged("Odpojeno", "red");
+           }
+           else {
+              return true;
+           }
+       }
+    }
+    return false;
 }
 
 /**

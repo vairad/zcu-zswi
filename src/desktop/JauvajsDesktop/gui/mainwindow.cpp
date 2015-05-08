@@ -31,7 +31,7 @@ MainWindow::MainWindow(DataManager *manager, QWidget *parent) : QMainWindow(pare
     //connectionWindow = new ConnectionWindow(arduinoMiner, this);
     connect(arduinoMiner, SIGNAL(statusChanged(QString, QString)), this, SLOT(on_indicatorChanged(QString, QString)));
     connect(manager, SIGNAL(dataStatusChanged(QString, QString)), this, SLOT(on_indicatorDataChanged(QString, QString)));
-
+    connect(manager, SIGNAL(checkPort()), this, SLOT(on_checkPort()));
 
     // Vytvoreni senzoru
     SensorEKG *ekg = new SensorEKG();
@@ -106,25 +106,23 @@ void MainWindow::createToolBar() {
 
     toolbar->addSeparator();
 
+    // akce pro obnoveni portu
+    QAction *refreshNow = new QAction(this);
+    refreshNow->setObjectName(QStringLiteral("action"));
+    refreshNow->setText("Obnovit dostupné porty");
+    QPixmap refre("refresh.png");
+    refreshNow->setIcon(QIcon(refre));
+    connect(refreshNow, SIGNAL(triggered()), this, SLOT(refeshComboBox()));
+    toolbar->addAction(refreshNow);
+
     // combo box na vyber portu
-    QComboBox *comboBox = new QComboBox();
-    QList<QSerialPortInfo> listOfPorts = QSerialPortInfo::availablePorts();
-    foreach (QSerialPortInfo port, listOfPorts) {
-        // nazev portu + nazev pripojeneho zarizeni
-        comboBox->addItem(port.portName()+ " ["+port.description()+"] ");
-    }
+    comboBox = new QComboBox();
+    this->refeshComboBox();
     toolbar->addWidget(comboBox);
 
-    // akce pro volbu portu
-    /*QAction *choosePort = new QAction(this);
-    choosePort->setText("Zvolit port");
-    this->choosedPort = comboBox->currentText();
-    connect(choosePort, SIGNAL(triggered()), this, SLOT(portChoosed()));
-    toolbar->addAction(choosePort);
-    this->addToolBar(toolbar);*/
+    // tlacitko pro potvzeni vybraneho portu
     QPushButton *choosePort = new QPushButton(this);
     choosePort->setText("Zvolit port");
-    this->choosedPort = comboBox->currentText();
     connect(choosePort, SIGNAL(clicked()), this, SLOT(portChoosed()));
     toolbar->addWidget(choosePort);
     this->addToolBar(toolbar);
@@ -152,6 +150,15 @@ void MainWindow::createToolBar() {
     labelArduData->setMargin(10);
     labelArduData->setStyleSheet("QLabel { color: red; font-size: 15px;}");
     toolbar->addWidget(labelArduData);
+}
+
+void MainWindow::refeshComboBox() {
+    comboBox->clear();
+    QList<QSerialPortInfo> listOfPorts = QSerialPortInfo::availablePorts();
+    foreach (QSerialPortInfo port, listOfPorts) {
+        // nazev portu + nazev pripojeneho zarizeni
+        comboBox->addItem(port.portName()+ " ["+port.description()+"] ");
+    }
 }
 
 /**
@@ -471,10 +478,16 @@ void MainWindow::on_actionOtev_t_triggered() {
  * @brief MainWindow::on_portChoosed
  */
 void MainWindow::portChoosed() {
+    qDebug() << "Vybral jsi port";
+    this->choosedPort = comboBox->currentText();
     QStringList portInfo = this->choosedPort.split(' ');
     QString portNumber = portInfo[0];
-    dataManager->arduino->init(portNumber);
-    dataManager->start();
+    if(portNumber != NULL) { // pokud je vybrany nejaky port
+         qDebug() << "ches" <<portNumber;
+        dataManager->arduino->portNumber = portNumber;
+        dataManager->arduino->init(portNumber);
+        dataManager->start();
+    }
 }
 
 /**
@@ -484,6 +497,7 @@ void MainWindow::portChoosed() {
 void MainWindow::on_indicatorChanged(QString status, QString color) {
     labelStatConn->setStyleSheet("QLabel { color : "+color+"; font-size: 15px;}");
     labelStatConn->setText(status);
+    this->refeshComboBox();
 }
 
 /**
@@ -495,5 +509,19 @@ void MainWindow::on_indicatorDataChanged(QString status, QString color) {
     labelArduData->setText(status);
 }
 
+/**
+ * Volani arduinomineru pro kontrolu komunikacniho oprtu
+ * @brief MainWindow::on_checkPort
+ */
+void MainWindow::on_checkPort() {
+
+   if(arduinoMiner->checkYourCOM()) {
+       // kanal je v poradku, jednalo se o kratky vypadek
+   }
+   else {
+       // kanal neni pristupny, zarizeni bylo odpojeno
+       dataManager->arduino->serial->close();
+   }
+}
 
 
