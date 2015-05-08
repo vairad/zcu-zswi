@@ -24,7 +24,7 @@ public:
     bool initialization;
 
 signals:
-    void statusChanged(QString);
+    void statusChanged(QString, QString);
 
 private slots:
     void readSerial();

@@ -127,6 +127,9 @@ private:
 
 public slots:
     void transmitDataToSaver(int, float);
+
+signals:
+    void dataStatusChanged(QString, QString);
 };
 
 #endif // DATAMANAGER_H

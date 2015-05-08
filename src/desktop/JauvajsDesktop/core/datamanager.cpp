@@ -32,8 +32,6 @@ DataManager::DataManager() {
 
     arduino = new ArduinoMiner();
 
-
-
     // vyprazdneni metadat
     logoutUser();
 
@@ -171,8 +169,9 @@ void DataManager::transmitData(QString row) {
           this->listenOxy->transmitData(oxyLastValue);
           this->listenGSR->transmitData(gsrLastValue);
           this->listenPosition->transmitData(positionLastValue);
-        }
+        } 
   }
+
 }
 
 /**
@@ -432,25 +431,28 @@ void DataManager::loadDataFromFile(QString filename) {
 
 void DataManager::run() {
     int count = 0;
-    qDebug() << "bezi run";
 
     while (true) {
         if(arduino->initialization == true) {
-            if (count % 80 == 0) {
+
+             if (count % 80 == 0) {
 
                 QCoreApplication::processEvents();
                 QString data = arduino->getLastIncoming();
                // qDebug() << "data" << data;
-                    if (data != NULL) {
-                        transmitData(data);
+                    if (data != NULL) {  
+                        emit dataStatusChanged("Přijímám data ✓", "green");
+                        if(draw) {
+                          transmitData(data);
+                        }
                     }
                     else {
-                  //  draw = false;
+                        emit dataStatusChanged("Žádná data", "red");
                     }
-            }
+            }// count
             for (int i=0; i < 100000; i++) {}
             count++;
-        //}
+
        }
         else {
             //inicializace portu neprobehla

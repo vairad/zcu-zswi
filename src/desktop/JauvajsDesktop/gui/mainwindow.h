@@ -58,10 +58,10 @@ private slots:
     void cleanAll();
     void setSaveData(bool save);
     void itemClickedLoadFile(QListWidgetItem *item);
-    // void on_connection_changed();
     void on_actionOtev_t_triggered();
-    void on_statusChanged(QString data);
     void portChoosed();
+    void on_indicatorChanged(QString status, QString color);
+    void on_indicatorDataChanged(QString status, QString color);
 
 
 private:
@@ -82,12 +82,18 @@ private:
     QLabel *weightL;
     /** Panel uzivatel - label pro vyska */
     QLabel *heightL;
+    /** Indikator stavu spojeni */
+    QLabel *labelStatConn;
+    /** stav prichozich dat */
+    QLabel *labelArduData;
     /** Checkbox pro nastaveni ukladani metadat */
     QCheckBox *saveCB;
     /** widget pro vypis ulozenych dat v pravem sloupci */
     QListWidget *listWidget;
     /** vybrany seriovy port */
     QString choosedPort;
+
+
 };
 
 #endif // MAINWINDOW_H

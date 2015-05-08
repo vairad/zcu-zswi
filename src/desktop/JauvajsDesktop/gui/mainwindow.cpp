@@ -29,7 +29,9 @@ MainWindow::MainWindow(DataManager *manager, QWidget *parent) : QMainWindow(pare
 
     arduinoMiner = manager->arduino;
     //connectionWindow = new ConnectionWindow(arduinoMiner, this);
-    connect(arduinoMiner, SIGNAL(statusChanged(QString)), this, SLOT(on_statusChanged(QString)));
+    connect(arduinoMiner, SIGNAL(statusChanged(QString, QString)), this, SLOT(on_indicatorChanged(QString, QString)));
+    connect(manager, SIGNAL(dataStatusChanged(QString, QString)), this, SLOT(on_indicatorDataChanged(QString, QString)));
+
 
     // Vytvoreni senzoru
     SensorEKG *ekg = new SensorEKG();
@@ -114,12 +116,42 @@ void MainWindow::createToolBar() {
     toolbar->addWidget(comboBox);
 
     // akce pro volbu portu
-    QAction *choosePort = new QAction(this);
+    /*QAction *choosePort = new QAction(this);
     choosePort->setText("Zvolit port");
     this->choosedPort = comboBox->currentText();
     connect(choosePort, SIGNAL(triggered()), this, SLOT(portChoosed()));
     toolbar->addAction(choosePort);
+    this->addToolBar(toolbar);*/
+    QPushButton *choosePort = new QPushButton(this);
+    choosePort->setText("Zvolit port");
+    this->choosedPort = comboBox->currentText();
+    connect(choosePort, SIGNAL(clicked()), this, SLOT(portChoosed()));
+    toolbar->addWidget(choosePort);
     this->addToolBar(toolbar);
+
+    QLabel *labelStatusDevice = new QLabel();
+    labelStatusDevice->setText("Stav zařízení: ");
+    labelStatusDevice->setStyleSheet("QLabel {margin-left:10px; color: gray; font-size: 15px;}");
+    toolbar->addWidget(labelStatusDevice);
+
+    // label zobrazujici stav spojeni
+    labelStatConn = new QLabel();
+    labelStatConn->setText("Nepřipojeno");
+    labelStatConn->setMargin(10);
+    labelStatConn->setStyleSheet("QLabel { color: red; font-size: 15px;}");
+    toolbar->addWidget(labelStatConn);
+
+    QLabel *labelDataStatus = new QLabel();
+    labelDataStatus->setText("Stav příchozích dat: ");
+    labelDataStatus->setStyleSheet("QLabel {margin-left:10px; color: gray; font-size: 15px;}");
+    toolbar->addWidget(labelDataStatus);
+
+    // label znazornujici stav prichozich dat
+    labelArduData = new QLabel();
+    labelArduData->setText("Žádná data");
+    labelArduData->setMargin(10);
+    labelArduData->setStyleSheet("QLabel { color: red; font-size: 15px;}");
+    toolbar->addWidget(labelArduData);
 }
 
 /**
@@ -434,10 +466,6 @@ void MainWindow::on_actionOtev_t_triggered() {
     dataManager->loadFile(file);
 }
 
-void MainWindow::on_statusChanged(QString data) {
-    connectionWindow->textEdit->append(data);
-}
-
 /**
  * Inicializuje spojeni na vybranem portu
  * @brief MainWindow::on_portChoosed
@@ -448,3 +476,24 @@ void MainWindow::portChoosed() {
     dataManager->arduino->init(portNumber);
     dataManager->start();
 }
+
+/**
+ * Indikator zobrazujici stav spojeni
+ * @brief MainWindow::on_portChoosed
+ */
+void MainWindow::on_indicatorChanged(QString status, QString color) {
+    labelStatConn->setStyleSheet("QLabel { color : "+color+"; font-size: 15px;}");
+    labelStatConn->setText(status);
+}
+
+/**
+ * Indikator zobrazujici stav prichozich dat
+ * @brief MainWindow::on_portChoosed
+ */
+void MainWindow::on_indicatorDataChanged(QString status, QString color) {
+    labelArduData->setStyleSheet("QLabel { color : "+color+"; font-size: 15px;}");
+    labelArduData->setText(status);
+}
+
+
+

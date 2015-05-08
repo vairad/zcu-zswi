@@ -35,6 +35,7 @@ void ArduinoMiner::init(QString port) {
  * @brief ArduinoMiner::readSerial
  */
 void ArduinoMiner::readSerial(){
+    emit statusChanged("Připojeno ✓", "green");
     int i = 1000000;
     while(--i>0){} // cekaci smycka
     QString line = serial->readLine();
@@ -47,7 +48,6 @@ void ArduinoMiner::readSerial(){
  */
 void ArduinoMiner::closeSerial(){
     serial->close();
-    emit statusChanged("Port uzavřen");
 }
 
 
