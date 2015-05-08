@@ -15,10 +15,13 @@ public:
     /** Uzavreni serioveho portu */
     void closeSerial();
     /** inicializace serioveho portu */
-    void init();
+    void init(QString port);
     /** posilani zprav pres eriovy port */
     void sendMessage(QString line);
+    /** navrat posledni prichozi zpravy */
     QString getLastIncoming();
+    /** provedeni inicializace*/
+    bool initialization;
 
 signals:
     void statusChanged(QString);

@@ -8,15 +8,17 @@
 
 ArduinoMiner::ArduinoMiner() {
     list = new QStringList();
+    initialization = false;
 }
 
 /**
  * Inicializace sériového portu
  * @brief ArduinoMiner::readSerial
  */
-void ArduinoMiner::init() {
+void ArduinoMiner::init(QString port) {
+
     serial = new QSerialPort();
-    serial->setPortName("COM21");
+    serial->setPortName(port);
     serial->open(QIODevice::ReadOnly);
     serial->setBaudRate(QSerialPort::Baud115200);
     serial->setDataBits(QSerialPort::Data8);
@@ -24,8 +26,8 @@ void ArduinoMiner::init() {
     serial->setParity(QSerialPort::NoParity);
     serial->setStopBits(QSerialPort::OneStop);
     QObject::connect(serial,SIGNAL(readyRead()),this,SLOT(readSerial()));
-   // qDebug() << "initialoization of serial";
-    emit statusChanged("Port otevřený");
+    initialization = true;
+    qDebug() << "probehla inicializace";
 }
 
 /**

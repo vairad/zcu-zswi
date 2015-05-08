@@ -37,7 +37,6 @@ void ConnectionWindow::createButtons() {
     bt1->setObjectName(QStringLiteral("button"));
     bt1->setText("Připojit");
     group->addWidget(bt1);
-    connect(bt1, SIGNAL (clicked()), this, SLOT (connectArduino()));
 
     // tlacitko pro odpojeni
     QPushButton *bt2 = new QPushButton();
@@ -47,11 +46,6 @@ void ConnectionWindow::createButtons() {
     connect(bt2, SIGNAL (clicked()), this, SLOT (disconnectArduino()));
 
     verticalLayout->addWidget(widgetBT, 0, Qt::AlignBottom);
-}
-
-void ConnectionWindow::connectArduino() {
-  // this->arduinoMiner->init();
-   //this->arduinoMiner->navazSpojeni();
 }
 
 void ConnectionWindow::disconnectArduino() {

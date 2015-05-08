@@ -28,7 +28,7 @@ MainWindow::MainWindow(DataManager *manager, QWidget *parent) : QMainWindow(pare
     initialWindow = new InitialWindow(dataManager, this);
 
     arduinoMiner = manager->arduino;
-    connectionWindow = new ConnectionWindow(arduinoMiner, this);
+    //connectionWindow = new ConnectionWindow(arduinoMiner, this);
     connect(arduinoMiner, SIGNAL(statusChanged(QString)), this, SLOT(on_statusChanged(QString)));
 
     // Vytvoreni senzoru
@@ -107,18 +107,18 @@ void MainWindow::createToolBar() {
     // combo box na vyber portu
     QComboBox *comboBox = new QComboBox();
     QList<QSerialPortInfo> listOfPorts = QSerialPortInfo::availablePorts();
-
     foreach (QSerialPortInfo port, listOfPorts) {
-        comboBox->addItem(port.portName());
+        // nazev portu + nazev pripojeneho zarizeni
+        comboBox->addItem(port.portName()+ " ["+port.description()+"] ");
     }
     toolbar->addWidget(comboBox);
 
     // akce pro volbu portu
     QAction *choosePort = new QAction(this);
     choosePort->setText("Zvolit port");
-    //connect(choosePort, SIGNAL(triggered()), this, SLOT(cleanAll()));
+    this->choosedPort = comboBox->currentText();
+    connect(choosePort, SIGNAL(triggered()), this, SLOT(portChoosed()));
     toolbar->addAction(choosePort);
-
     this->addToolBar(toolbar);
 }
 
@@ -436,4 +436,15 @@ void MainWindow::on_actionOtev_t_triggered() {
 
 void MainWindow::on_statusChanged(QString data) {
     connectionWindow->textEdit->append(data);
+}
+
+/**
+ * Inicializuje spojeni na vybranem portu
+ * @brief MainWindow::on_portChoosed
+ */
+void MainWindow::portChoosed() {
+    QStringList portInfo = this->choosedPort.split(' ');
+    QString portNumber = portInfo[0];
+    dataManager->arduino->init(portNumber);
+    dataManager->start();
 }

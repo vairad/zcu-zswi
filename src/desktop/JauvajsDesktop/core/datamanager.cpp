@@ -432,8 +432,10 @@ void DataManager::loadDataFromFile(QString filename) {
 
 void DataManager::run() {
     int count = 0;
-    arduino->init();
+    qDebug() << "bezi run";
+
     while (true) {
+        if(arduino->initialization == true) {
             if (count % 80 == 0) {
 
                 QCoreApplication::processEvents();
@@ -449,6 +451,10 @@ void DataManager::run() {
             for (int i=0; i < 100000; i++) {}
             count++;
         //}
+       }
+        else {
+            //inicializace portu neprobehla
+        }
     }
 
 }

@@ -16,7 +16,6 @@ public:
     QTextEdit *textEdit;
 
 public slots:
-    void connectArduino();
     void disconnectArduino();
     void serialReceived(QString);
 

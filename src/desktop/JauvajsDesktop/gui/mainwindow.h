@@ -41,8 +41,9 @@ public:
     DataManager *dataManager;
     /** dialog metadat */
     MetaDialog *metaDialog;
-
+    /** komunikator s arduinem */
     ArduinoMiner *arduinoMiner;
+
 public slots:
     void setMetadata();
 
@@ -60,6 +61,8 @@ private slots:
     // void on_connection_changed();
     void on_actionOtev_t_triggered();
     void on_statusChanged(QString data);
+    void portChoosed();
+
 
 private:
     Ui::MainWindow *ui;
@@ -83,6 +86,8 @@ private:
     QCheckBox *saveCB;
     /** widget pro vypis ulozenych dat v pravem sloupci */
     QListWidget *listWidget;
+    /** vybrany seriovy port */
+    QString choosedPort;
 };
 
 #endif // MAINWINDOW_H
