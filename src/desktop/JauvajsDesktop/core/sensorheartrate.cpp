@@ -1,9 +1,10 @@
 #include <limits>
 
 #include "core/sensorheartrate.h"
+#include "QDebug"
 
 SensorHeartRate::SensorHeartRate() {
-    minY = 0;
+    minY = -1;
     maxY = 200;
     minX = 0;
     maxX = 60;
@@ -30,6 +31,7 @@ QGraphicsScene* SensorHeartRate::getSceneGraph() {
  * @param data prijata data
  */
 void SensorHeartRate::transmitData(float data) {
+
     if (this->validateData(data)) {
         emit haveData(data);
         emit haveDataToSave(ID, data);
@@ -56,8 +58,10 @@ float SensorHeartRate::getLastData() {
  */
 bool SensorHeartRate::validateData(float data) {
     if(data < MINIMAL_CORRECT_VALUE || data > MAXIMAL_CORRECT_VALUE){
+     //  qDebug() << "false";
         return false;
     } else {
+      //  qDebug() << "true";
         return true;
     }
 }

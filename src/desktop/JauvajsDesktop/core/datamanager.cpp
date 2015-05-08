@@ -156,9 +156,9 @@ void DataManager::transmitData(QString row) {
                gsrLastValue = sensorValue.toFloat();
             else if(sensorFlag == "A"){}
             else if(sensorFlag == "F"){
-                qDebug() << "Flow transmit";
+             //   qDebug() << "Flow transmit";
                 positionLastValue = sensorValue.toFloat();
-                qDebug() << "Flow transmit::" << positionLastValue;
+              //  qDebug() << "Flow transmit::" << positionLastValue;
             }
             else {
              //neznamy senzor
@@ -430,7 +430,6 @@ void DataManager::loadDataFromFile(QString filename) {
     //emit ((IDisplayable *)listenHeartRate)->notHaveData();
 }
 
-/*
 void DataManager::run() {
     int count = 0;
     arduino->init();
@@ -454,7 +453,7 @@ void DataManager::run() {
 
 }
 
-*/
+/*
 
 void DataManager::run() {
     qDebug() << "run";
@@ -487,6 +486,8 @@ void DataManager::run() {
         count++;
     }
 }
+
+*/
 
 bool DataManager::validateLineCSV(QString &line){
    // QRegularExpression expression(CSV_REG_EXP);

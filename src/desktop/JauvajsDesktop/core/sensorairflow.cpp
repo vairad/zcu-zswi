@@ -32,7 +32,7 @@ QGraphicsScene* SensorAirFlow::getSceneGraph() {
  * @param data prijata data
  */
 void SensorAirFlow::transmitData(float data) {
-    qDebug() << data << "Senzor";
+    //qDebug() << data << "Senzor";
     if (this->validateData(data)) {
         emit haveData(data);
         emit haveDataToSave(ID, data);
