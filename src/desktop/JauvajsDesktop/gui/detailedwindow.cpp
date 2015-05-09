@@ -126,13 +126,15 @@ void DetailedWindow::updateFromFile(float value) {
  * @brief DetailedWindow::cancelLoadData
  */
 void DetailedWindow::cancelLoadData() {
-    //curve = scene->addPath(*path, QPen(Qt::white)); // pridani aktualni krivky do grafu
-    //graphicsView->viewport()->repaint(); // prekresleni
-
     ratioOfTheWith = (values->size() * sensor->timeInterval) / sensor->maxX;
-    if (ratioOfTheWith < 1) ratioOfTheWith = 1;
+    if (ratioOfTheWith <= 1) {
+        ratioOfTheWith = 1;
+        graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    }
+    else {
+        graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    }
     resizeEvent(NULL);
-    repaint = true;
 }
 
 /**
@@ -224,14 +226,6 @@ void DetailedWindow::setUp() {
     drawVerticalLines();
     drawHorizontalLines();
     drawNumbers();
-}
-
-void DetailedWindow::paintEvent(QPaintEvent *) {
-    if (repaint) {
-        resizeEvent(NULL);
-        repaint = false;
-    }
-
 }
 
 DetailedWindow::~DetailedWindow() {

@@ -54,7 +54,6 @@ signals:
 protected:
     void mousePressEvent(QMouseEvent *);
     void resizeEvent(QResizeEvent *);
-    void paintEvent(QPaintEvent *);
 
 private:
     /** polozka Zobrazit hlavniho menu */
@@ -83,8 +82,6 @@ private:
     bool transcription;
     /** prepisovaci index, kde je zrovna provaden */
     int transcriptionIndex;
-    /** vlajka prekrsleni */
-    bool repaint;
 };
 
 #endif // SENSORWIDGET_H

@@ -403,15 +403,17 @@ void SensorWidget::cancelLoadData() {
     connect(sensor, SIGNAL(haveData(float)), this, SLOT(update2(float)));
 
     ratioOfTheWith = (values.size() * sensor->timeInterval) / sensor->maxX;
-    if (ratioOfTheWith < 1) ratioOfTheWith = 1;
+    if (ratioOfTheWith <= 1) {
+        ratioOfTheWith = 1;
+        graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    }
+    else {
+        graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    }
     resizeEvent(NULL);
-    repaint = true;
     graphicsView->update();
     graphicsView->updateGeometry();
     graphicsView->viewport()->update();
-
-    //curve = scene->addPath(*path, QPen(Qt::white)); // pridani aktualni krivky do grafu
-    //graphicsView->viewport()->repaint(); // prekresleni
 
     detailedWindow->cancelLoadData();
 }
@@ -439,13 +441,6 @@ void SensorWidget::on_button2_clicked() {
  */
 IDisplayable *SensorWidget::getSensor() {
     return sensor;
-}
-
-void SensorWidget::paintEvent(QPaintEvent *) {
-    if (repaint) {
-        resizeEvent(NULL);
-        repaint = false;
-    }
 }
 
 SensorWidget::~SensorWidget() {
