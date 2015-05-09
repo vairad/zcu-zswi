@@ -37,12 +37,12 @@ MetaDialog::MetaDialog(DataManager *dataManager, SensorWidget *sensors[], int nu
  */
 void MetaDialog::checkingInputs() {
     isValidInputs = true;
+    QList<QString> list;
 
     // overeni, zda neni prazdne pole uzivatelske jmeno
     if (!QString::compare(mainTab->usernameE->text(), "")) {
         this->show();
-        QMessageBox messageBox;
-        messageBox.critical(0,"Chyba", "Uživatelské jméno nesmí být prázdné!");
+        list.append("Uživatelské jméno nesmí být prázdné!");
         isValidInputs = false;
     }
     // overeni, zda upravene uzivatelske jmeno (odlisnost v dataManageru od QLineEdit) neni jiz v datove slozce
@@ -50,11 +50,25 @@ void MetaDialog::checkingInputs() {
         QDir dir(dataManager->FOLDER_NAME + "/" + mainTab->usernameE->text());
         if (dir.exists()) {
             this->show();
-            QMessageBox messageBox;
-            messageBox.critical(0,"Chyba", tr("Zvolené uživatelské jméno už existuje!<br>Zvolte prosím jiné, aby nedošlo k přepsání dat."));
+            list.append("Zvolené uživatelské jméno už existuje!<br>Zvolte prosím jiné, aby nedošlo k přepsání dat.");
             isValidInputs = false;
         }
     }
+
+    if (!QString::compare(mainTab->nameE->text(), "") || !QString::compare(mainTab->surnameE->text(), "")) {
+        list.append("Jméno a příjmení nesmí být prázdné!");
+        isValidInputs = false;
+    }
+
+    if (!isValidInputs) {
+        QString allErrors;
+        foreach (QString err, list) {
+            allErrors.append(err + "<br>");
+        }
+        QMessageBox messageBox;
+        messageBox.critical(0,"Chyba", allErrors);
+    }
+
 }
 
 /**
