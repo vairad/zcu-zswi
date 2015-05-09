@@ -133,7 +133,6 @@ void MainWindow::createMenuBar() {
     connect(actionUserSettings, SIGNAL(triggered()), this, SLOT(openUserSettings()));
     menuSettings->addAction(actionUserSettings);
 
-    QAction *actionChangeUser;
     actionChangeUser = new QAction(this);
     actionChangeUser->setText("Změna uživatele");
     connect(actionChangeUser, SIGNAL(triggered()), this, SLOT(openInitialWindow()));
@@ -268,11 +267,14 @@ void MainWindow::createUserPanel() {
     QVBoxLayout *verticalLayout = new QVBoxLayout(userPanel);
 
     // skupina pro cely panel umistena do verticalLayout
-    QGroupBox *groupBox = new QGroupBox(userPanel);
+    groupBox = new QGroupBox(userPanel);
     groupBox->setObjectName(QStringLiteral("groupBox"));
     groupBox->setEnabled(true);
     groupBox->setTitle("Uživatel");
     verticalLayout->addWidget(groupBox);
+
+    groupBox->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(groupBox, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(userPanelContextMenu(const QPoint &)));
 
     // grid layout pro groupBox
     layout = new QGridLayout(groupBox);
@@ -539,6 +541,19 @@ void MainWindow::openHelp() {
 void MainWindow::aboutApplication() {
     QMessageBox::about(this, tr("O aplikaci"),
              tr("Aplikace pro vizualizaci signálů z E-health. <br> Projekt Šejdrem Arduino"));
+}
+
+/**
+ * Kontextove menu pro pravy sloupec
+ * @brief MainWindow::userPanelContextMenu
+ * @param pos
+ */
+void MainWindow::userPanelContextMenu(const QPoint &pos) {
+    QMenu contextMenu(groupBox);
+    contextMenu.addAction(actionUserSettings);
+    contextMenu.addAction(actionChangeUser);
+
+    contextMenu.exec(groupBox->mapToGlobal(pos));
 }
 
 /**

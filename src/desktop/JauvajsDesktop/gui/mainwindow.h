@@ -64,11 +64,14 @@ private slots:
     void on_indicatorDataChanged(QString status, QString color);
     void on_checkPort();
     void refeshComboBox();
+    void userPanelContextMenu(const QPoint &pos);
 
 private:
     Ui::MainWindow *ui;
     /** Panel uzivatel s informacemi o uzivateli */
     QWidget *userPanel;
+    /** skupina pro panel umistena do verticalLayout */
+    QGroupBox *groupBox;
     /** grid layout pro groupBox v user panelu */
     QGridLayout *layout;
     /** Panel uzivatel - label pro jmeno */
@@ -99,6 +102,8 @@ private:
     QMenu *menuDisplay;
     /** polozka menu - Nastaveni > Uzivatelske nastaveni */
     QAction *actionUserSettings;
+    /** polozka menu - Nastaveni > Zmena uzivatele*/
+    QAction *actionChangeUser;
 
 };
 
