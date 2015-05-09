@@ -108,23 +108,27 @@ void MainWindow::createMenuBar() {
     QAction *actionOpen;
     actionOpen = new QAction(this);
     actionOpen->setText("Otevřít");
+    actionOpen->setShortcut(Qt::Key_O | Qt::CTRL);
     connect(actionOpen, SIGNAL(triggered()), this, SLOT(openFileChooser()));
     menuFile->addAction(actionOpen);
 
     QAction *actionClose;
     actionClose = new QAction(this);
     actionClose->setText("Zavřít");
+    actionClose->setShortcut(Qt::Key_Q | Qt::CTRL);
     connect(actionClose, SIGNAL(triggered()), this, SLOT(close()));
     menuFile->addAction(actionClose);
 
     QAction *actionCleanAll;
     actionCleanAll = new QAction(this);
     actionCleanAll->setText("Vyčistit vše");
+    actionCleanAll->setShortcut(Qt::Key_Delete);
     connect(actionCleanAll, SIGNAL(triggered()), this, SLOT(cleanAll()));
     menuEdit->addAction(actionCleanAll);
 
     actionUserSettings = new QAction(this);
     actionUserSettings->setText("Uživatelské nastavení");
+    actionUserSettings->setShortcut(Qt::Key_P | Qt::ALT);
     connect(actionUserSettings, SIGNAL(triggered()), this, SLOT(openUserSettings()));
     menuSettings->addAction(actionUserSettings);
 
