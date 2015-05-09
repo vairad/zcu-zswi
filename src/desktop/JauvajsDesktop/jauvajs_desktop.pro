@@ -41,7 +41,8 @@ SOURCES += main.cpp\
     gui/analysiswindow.cpp \
     gui/connectionwindow.cpp \
     core/fileproblemexception.cpp \
-    core/sensorairflow.cpp
+    core/sensorairflow.cpp \
+    gui/helpwindow.cpp
 
 HEADERS  += core/idisplayable.h \
     core/sensorekg.h \
@@ -71,6 +72,7 @@ HEADERS  += core/idisplayable.h \
     gui/analysiswindow.h \
     core/fileproblemexception.h \
     gui/connectionwindow.h \
-    core/sensorairflow.h
+    core/sensorairflow.h \
+    gui/helpwindow.h
 
 FORMS    += gui/mainwindow.ui

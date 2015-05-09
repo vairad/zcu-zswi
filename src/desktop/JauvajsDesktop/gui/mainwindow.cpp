@@ -3,6 +3,7 @@
 #include <QSerialPortInfo>
 
 #include "gui/mainwindow.h"
+#include "gui/helpwindow.h"
 #include "core/sensorekg.h"
 #include "core/sensortemp.h"
 #include "core/sensorairflow.h"
@@ -137,6 +138,13 @@ void MainWindow::createMenuBar() {
     actionChangeUser->setText("Změna uživatele");
     connect(actionChangeUser, SIGNAL(triggered()), this, SLOT(openInitialWindow()));
     menuSettings->addAction(actionChangeUser);
+
+    QAction *actionHelp;
+    actionHelp = new QAction(this);
+    actionHelp->setText("Nápověda k aplikaci");
+    actionHelp->setShortcut(Qt::Key_F1);
+    connect(actionHelp, SIGNAL(triggered()), this, SLOT(openHelp()));
+    menuHelp->addAction(actionHelp);
 
     QAction *actionAboutApp;
     actionAboutApp = new QAction(this);
@@ -514,6 +522,14 @@ void MainWindow::openUserSettings() {
  */
 void MainWindow::openInitialWindow() {
     initialWindow->show();
+}
+
+/**
+ * Zobrazi okno s napovedou k aplikaci
+ * @brief MainWindow::openHelp
+ */
+void MainWindow::openHelp() {
+    new HelpWindow();
 }
 
 /**

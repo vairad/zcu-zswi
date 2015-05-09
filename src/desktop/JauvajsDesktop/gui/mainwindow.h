@@ -52,6 +52,7 @@ private slots:
     void aboutApplication();
     void openUserSettings();
     void openInitialWindow();
+    void openHelp();
     void startScanning();
     void stopScanning();
     void cleanAll();

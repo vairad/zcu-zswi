@@ -6,7 +6,7 @@
 #include <QTextEdit>
 #include "core/arduinominer.h"
 
-class ConnectionWindow  : public QDialog {
+class ConnectionWindow : public QDialog {
    Q_OBJECT
 public:
     explicit ConnectionWindow(ArduinoMiner *arduinoMiner, QWidget *parent = 0);
