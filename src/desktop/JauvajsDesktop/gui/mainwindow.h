@@ -95,9 +95,9 @@ private:
     /** vyberovy seznam COM portu*/
     QComboBox *comboBox;
     /** polozka menu - zobrazit */
-    QMenu *menuZobrazit;
+    QMenu *menuDisplay;
     /** polozka menu - Nastaveni > Uzivatelske nastaveni */
-    QAction *actionU_ivatelsk_nastaven;
+    QAction *actionUserSettings;
 
 };
 

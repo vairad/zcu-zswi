@@ -51,12 +51,12 @@ MainWindow::MainWindow(DataManager *manager, QWidget *parent) : QMainWindow(pare
     dataManager->setListenerHearthRate(hr);
 
     /* vytvoreni vsech senzoru a jejich pridani do okna */
-    sensors[0] = new SensorWidget(ui->verticalLayout_3, menuZobrazit, ekg, ui->scrollAreaWidgetContents_2);
-    sensors[1] = new SensorWidget(ui->verticalLayout_3, menuZobrazit, temp, ui->scrollAreaWidgetContents_2);
-    sensors[2] = new SensorWidget(ui->verticalLayout_3, menuZobrazit, pos, ui->scrollAreaWidgetContents_2);
-    sensors[3] = new SensorWidget(ui->verticalLayout_3, menuZobrazit, oxy, ui->scrollAreaWidgetContents_2);
-    sensors[4] = new SensorWidget(ui->verticalLayout_3, menuZobrazit, gsr, ui->scrollAreaWidgetContents_2);
-    sensors[5] = new SensorWidget(ui->verticalLayout_3, menuZobrazit, hr, ui->scrollAreaWidgetContents_2);
+    sensors[0] = new SensorWidget(ui->verticalLayout_3, menuDisplay, ekg, ui->scrollAreaWidgetContents_2);
+    sensors[1] = new SensorWidget(ui->verticalLayout_3, menuDisplay, temp, ui->scrollAreaWidgetContents_2);
+    sensors[2] = new SensorWidget(ui->verticalLayout_3, menuDisplay, pos, ui->scrollAreaWidgetContents_2);
+    sensors[3] = new SensorWidget(ui->verticalLayout_3, menuDisplay, oxy, ui->scrollAreaWidgetContents_2);
+    sensors[4] = new SensorWidget(ui->verticalLayout_3, menuDisplay, gsr, ui->scrollAreaWidgetContents_2);
+    sensors[5] = new SensorWidget(ui->verticalLayout_3, menuDisplay, hr, ui->scrollAreaWidgetContents_2);
 
     nameL->setText("");
     surnameL->setText("");
@@ -73,79 +73,72 @@ MainWindow::MainWindow(DataManager *manager, QWidget *parent) : QMainWindow(pare
 void MainWindow::createMenuBar() {
     QMenuBar *menuBar;
     menuBar = new QMenuBar(this);
-    menuBar->setObjectName(QStringLiteral("menuBar"));
     menuBar->setGeometry(QRect(0, 0, 756, 21));
 
-    QMenu *menuSoubor;
-    menuSoubor = new QMenu(menuBar);
-    menuSoubor->setObjectName(QStringLiteral("menuSoubor"));
-    menuSoubor->setTitle(QApplication::translate("MainWindow", "Soubor", 0));
-    menuBar->addAction(menuSoubor->menuAction());
+    // polozka Soubor
+    QMenu *menuFile;
+    menuFile = new QMenu(menuBar);
+    menuFile->setTitle("Soubor");
+    menuBar->addAction(menuFile->menuAction());
 
-    QMenu *menu_pravy;
-    menu_pravy = new QMenu(menuBar);
-    menu_pravy->setObjectName(QStringLiteral("menu_pravy"));
-    menu_pravy->setTitle(QApplication::translate("MainWindow", "\303\232pravy", 0));
-    menuBar->addAction(menu_pravy->menuAction());
+    // polozka Upravy
+    QMenu *menuEdit;
+    menuEdit = new QMenu(menuBar);
+    menuEdit->setTitle("Úpravy");
+    menuBar->addAction(menuEdit->menuAction());
 
-    menuZobrazit = new QMenu(menuBar);
-    menuZobrazit->setObjectName(QStringLiteral("menuZobrazit"));
-    menuZobrazit->setTitle(QApplication::translate("MainWindow", "Zobrazit", 0));
-    menuBar->addAction(menuZobrazit->menuAction());
+    // polozka Zobrazit
+    menuDisplay = new QMenu(menuBar);
+    menuDisplay->setTitle("Zobrazit");
+    menuBar->addAction(menuDisplay->menuAction());
 
-    QMenu *menuNastaven;
-    menuNastaven = new QMenu(menuBar);
-    menuNastaven->setObjectName(QStringLiteral("menuNastaven"));
-    menuNastaven->setTitle(QApplication::translate("MainWindow", "Nastaven\303\255", 0));
-    menuBar->addAction(menuNastaven->menuAction());
+    // polozka Nastaveni
+    QMenu *menuSettings;
+    menuSettings = new QMenu(menuBar);
+    menuSettings->setTitle("Nastavení");
+    menuBar->addAction(menuSettings->menuAction());
 
-    QMenu *menuN_pov_da;
-    menuN_pov_da = new QMenu(menuBar);
-    menuN_pov_da->setObjectName(QStringLiteral("menuN_pov_da"));
-    menuN_pov_da->setTitle(QApplication::translate("MainWindow", "N\303\241pov\304\233da", 0));
-    menuBar->addAction(menuN_pov_da->menuAction());
+    // polozka Napoveda
+    QMenu *menuHelp;
+    menuHelp = new QMenu(menuBar);
+    menuHelp->setTitle("Nápověda");
+    menuBar->addAction(menuHelp->menuAction());
 
 
-    QAction *actionOtev_t;
-    actionOtev_t = new QAction(this);
-    actionOtev_t->setObjectName(QStringLiteral("actionOtev_t"));
-    actionOtev_t->setText(QApplication::translate("MainWindow", "Otev\305\231\303\255t", 0));
-    connect(actionOtev_t, SIGNAL(triggered()), this, SLOT(openFileChooser()));
-    menuSoubor->addAction(actionOtev_t);
+    QAction *actionOpen;
+    actionOpen = new QAction(this);
+    actionOpen->setText("Otevřít");
+    connect(actionOpen, SIGNAL(triggered()), this, SLOT(openFileChooser()));
+    menuFile->addAction(actionOpen);
 
-    QAction *actionZav_t;
-    actionZav_t = new QAction(this);
-    actionZav_t->setObjectName(QStringLiteral("actionZav_t"));
-    actionZav_t->setText(QApplication::translate("MainWindow", "Zav\305\231\303\255t", 0));
-    connect(actionZav_t, SIGNAL(triggered()), this, SLOT(close()));
-    menuSoubor->addAction(actionZav_t);
+    QAction *actionClose;
+    actionClose = new QAction(this);
+    actionClose->setText("Zavřít");
+    connect(actionClose, SIGNAL(triggered()), this, SLOT(close()));
+    menuFile->addAction(actionClose);
 
-    QAction *actionO_aplikaci;
-    actionO_aplikaci = new QAction(this);
-    actionO_aplikaci->setObjectName(QStringLiteral("actionO_aplikaci"));
-    actionO_aplikaci->setText(QApplication::translate("MainWindow", "O aplikaci", 0));
-    connect(actionO_aplikaci, SIGNAL(triggered()), this, SLOT(aboutApplication()));
-    menuN_pov_da->addAction(actionO_aplikaci);
+    QAction *actionCleanAll;
+    actionCleanAll = new QAction(this);
+    actionCleanAll->setText("Vyčistit vše");
+    connect(actionCleanAll, SIGNAL(triggered()), this, SLOT(cleanAll()));
+    menuEdit->addAction(actionCleanAll);
 
-    actionU_ivatelsk_nastaven = new QAction(this);
-    actionU_ivatelsk_nastaven->setObjectName(QStringLiteral("actionU_ivatelsk_nastaven"));
-    actionU_ivatelsk_nastaven->setText(QApplication::translate("MainWindow", "U\305\276ivatelsk\303\251 nastaven\303\255", 0));
-    connect(actionU_ivatelsk_nastaven, SIGNAL(triggered()), this, SLOT(openUserSettings()));
-    menuNastaven->addAction(actionU_ivatelsk_nastaven);
+    actionUserSettings = new QAction(this);
+    actionUserSettings->setText("Uživatelské nastavení");
+    connect(actionUserSettings, SIGNAL(triggered()), this, SLOT(openUserSettings()));
+    menuSettings->addAction(actionUserSettings);
 
-    QAction *actionZm_na_u_ivatele;
-    actionZm_na_u_ivatele = new QAction(this);
-    actionZm_na_u_ivatele->setObjectName(QStringLiteral("actionZm_na_u_ivatele"));
-    actionZm_na_u_ivatele->setText(QApplication::translate("MainWindow", "Zm\304\233na u\305\276ivatele", 0));
-    connect(actionZm_na_u_ivatele, SIGNAL(triggered()), this, SLOT(openInitialWindow()));
-    menuNastaven->addAction(actionZm_na_u_ivatele);
+    QAction *actionChangeUser;
+    actionChangeUser = new QAction(this);
+    actionChangeUser->setText("Změna uživatele");
+    connect(actionChangeUser, SIGNAL(triggered()), this, SLOT(openInitialWindow()));
+    menuSettings->addAction(actionChangeUser);
 
-    QAction *actionVy_istit_v_e;
-    actionVy_istit_v_e = new QAction(this);
-    actionVy_istit_v_e->setObjectName(QStringLiteral("actionVy_istit_v_e"));
-    actionVy_istit_v_e->setText(QApplication::translate("MainWindow", "Vy\304\215istit v\305\241e", 0));
-    connect(actionVy_istit_v_e, SIGNAL(triggered()), this, SLOT(cleanAll()));
-    menu_pravy->addAction(actionVy_istit_v_e);
+    QAction *actionAboutApp;
+    actionAboutApp = new QAction(this);
+    actionAboutApp->setText("O aplikaci");
+    connect(actionAboutApp, SIGNAL(triggered()), this, SLOT(aboutApplication()));
+    menuHelp->addAction(actionAboutApp);
 
     this->setMenuBar(menuBar);
 }
@@ -379,7 +372,7 @@ void MainWindow::setUp() {
         setMetadata();
     }
     else {
-        actionU_ivatelsk_nastaven->setDisabled(true);
+        actionUserSettings->setDisabled(true);
         userPanel->hide();
         saveCB->setDisabled(true);
     }
@@ -415,16 +408,6 @@ void MainWindow::addItemsToListWidget() {
 }
 
 /**
- * Odstraneni vykreslene krivky a resetovani hodnot v grafech vsech senzoru
- * @brief MainWindow::cleanAll
- */
-void MainWindow::cleanAll() {
-    for (int i = 0; i < NUMBER_OF_SENSORS; i++) {
-       sensors[i]->cleanGraph();
-    }
-}
-
-/**
  * Zahaji snimani senzoru
  * @brief MainWindow::startScanning
  */
@@ -448,37 +431,12 @@ void MainWindow::stopScanning() {
     }
 }
 
-void MainWindow::setSaveData(bool save) {
-    dataManager->isSaveData = save;
-}
-
-MainWindow::~MainWindow() {
-    delete ui;
-}
-
-/**
- * Zobrazi informace o aplikaci
- * @brief MainWindow::on_actionO_aplikaci_triggered
- */
-void MainWindow::aboutApplication() {
-    QMessageBox::about(this, tr("O aplikaci"),
-             tr("Aplikace pro vizualizaci signálů z E-health. <br> Projekt Šejdrem Arduino"));
-}
-
-/**
- * Zobrazi dialog nastaveni metadat
- * @brief MainWindow::on_actionU_ivatelsk_nastaven_triggered
- */
-void MainWindow::openUserSettings() {
-    metaDialog->show();
-}
-
 /**
  * Zmeni data v pravem sloupci na aktualni metadata
  * @brief MainWindow::setMetaData
  */
 void MainWindow::setMetadata() {
-    actionU_ivatelsk_nastaven->setDisabled(false);
+    actionUserSettings->setDisabled(false);
     userPanel->show();
     saveCB->setDisabled(false);
     addItemsToListWidget();
@@ -511,35 +469,56 @@ void MainWindow::itemClickedLoadFile(QListWidgetItem *item) {
 }
 
 /**
+ * Nastavi ukladani dat
+ * @brief MainWindow::setSaveData
+ * @param save
+ */
+void MainWindow::setSaveData(bool save) {
+    dataManager->isSaveData = save;
+}
+
+/**
+ * Otevre dialog pro vyber souboru
+ * @brief MainWindow::openFileChooser
+ */
+void MainWindow::openFileChooser() {
+    QString file = QFileDialog::getOpenFileName(this, tr("Otevřít soubor"), QDir::homePath());
+    dataManager->loadFile(file);
+}
+
+/**
+ * Odstraneni vykreslene krivky a resetovani hodnot v grafech vsech senzoru
+ * @brief MainWindow::cleanAll
+ */
+void MainWindow::cleanAll() {
+    for (int i = 0; i < NUMBER_OF_SENSORS; i++) {
+       sensors[i]->cleanGraph();
+    }
+}
+
+/**
+ * Zobrazi dialog nastaveni metadat
+ * @brief MainWindow::openUserSettings
+ */
+void MainWindow::openUserSettings() {
+    metaDialog->show();
+}
+
+/**
  * Zobrazi uvodni okno ke zmene uzivatele
- * @brief MainWindow::on_actionZm_na_u_ivatele_triggered
+ * @brief MainWindow::openInitialWindow
  */
 void MainWindow::openInitialWindow() {
     initialWindow->show();
 }
 
 /**
- * Dotaz pred zavrenim aplikace
- * @brief MainWindow::closeEvent
- * @param event
+ * Zobrazi informace o aplikaci
+ * @brief MainWindow::aboutApplication
  */
-void MainWindow::closeEvent(QCloseEvent *event) {
-    int reply = QMessageBox::question(this, "Zavřít", "Opravdu chcete ukončit aplikaci?", "Ano", "Ne");
-    if (reply == 0) {
-        QApplication::closeAllWindows();
-        event->accept();
-    } else {
-        event->ignore();
-    }
-}
-
-/**
- * Otevre dialog pro vyber souboru
- * @brief MainWindow::on_actionOtev_t_triggered
- */
-void MainWindow::openFileChooser() {
-    QString file = QFileDialog::getOpenFileName(this, tr("Otevřít soubor"), QDir::homePath());
-    dataManager->loadFile(file);
+void MainWindow::aboutApplication() {
+    QMessageBox::about(this, tr("O aplikaci"),
+             tr("Aplikace pro vizualizaci signálů z E-health. <br> Projekt Šejdrem Arduino"));
 }
 
 /**
@@ -591,6 +570,26 @@ void MainWindow::on_checkPort() {
        // kanal neni pristupny, zarizeni bylo odpojeno
        dataManager->arduino->serial->close();
    }
+}
+
+
+/**
+ * Dotaz pred zavrenim aplikace
+ * @brief MainWindow::closeEvent
+ * @param event
+ */
+void MainWindow::closeEvent(QCloseEvent *event) {
+    int reply = QMessageBox::question(this, "Zavřít", "Opravdu chcete ukončit aplikaci?", "Ano", "Ne");
+    if (reply == 0) {
+        QApplication::closeAllWindows();
+        event->accept();
+    } else {
+        event->ignore();
+    }
+}
+
+MainWindow::~MainWindow() {
+    delete ui;
 }
 
 
