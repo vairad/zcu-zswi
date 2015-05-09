@@ -23,6 +23,7 @@ class MainWindow : public QMainWindow {
 public:
     explicit MainWindow(DataManager *manager, QWidget *parent = 0);
     ~MainWindow();
+    void createMenuBar();
     void createToolBar();
     void createUserPanel();
     void addMetadataToUserPanel();
@@ -48,17 +49,15 @@ public slots:
     void setMetadata();
 
 private slots:
-    void on_actionZav_t_triggered();
-    void on_actionO_aplikaci_triggered();
-    void on_actionU_ivatelsk_nastaven_triggered();
-    void on_actionZm_na_u_ivatele_triggered();
-    void on_actionVy_istit_v_e_triggered();
+    void aboutApplication();
+    void openUserSettings();
+    void openInitialWindow();
     void startScanning();
     void stopScanning();
     void cleanAll();
     void setSaveData(bool save);
     void itemClickedLoadFile(QListWidgetItem *item);
-    void on_actionOtev_t_triggered();
+    void openFileChooser();
     void portChoosed();
     void on_indicatorChanged(QString status, QString color);
     void on_indicatorDataChanged(QString status, QString color);
@@ -95,6 +94,10 @@ private:
     QString choosedPort;
     /** vyberovy seznam COM portu*/
     QComboBox *comboBox;
+    /** polozka menu - zobrazit */
+    QMenu *menuZobrazit;
+    /** polozka menu - Nastaveni > Uzivatelske nastaveni */
+    QAction *actionU_ivatelsk_nastaven;
 
 };
 

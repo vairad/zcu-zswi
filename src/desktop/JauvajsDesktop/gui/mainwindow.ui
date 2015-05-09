@@ -53,7 +53,7 @@
          <x>0</x>
          <y>0</y>
          <width>738</width>
-         <height>349</height>
+         <height>370</height>
         </rect>
        </property>
        <property name="sizePolicy">
@@ -74,86 +74,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QMenuBar" name="menuBar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>756</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menuSoubor">
-    <property name="title">
-     <string>Soubor</string>
-    </property>
-    <addaction name="actionOtev_t"/>
-    <addaction name="actionZav_t"/>
-   </widget>
-   <widget class="QMenu" name="menuN_pov_da">
-    <property name="title">
-     <string>Nápověda</string>
-    </property>
-    <addaction name="actionO_aplikaci"/>
-   </widget>
-   <widget class="QMenu" name="menuZobrazit">
-    <property name="title">
-     <string>Zobrazit</string>
-    </property>
-   </widget>
-   <widget class="QMenu" name="menuNastaven">
-    <property name="title">
-     <string>Nastavení</string>
-    </property>
-    <addaction name="actionU_ivatelsk_nastaven"/>
-    <addaction name="actionZm_na_u_ivatele"/>
-   </widget>
-   <widget class="QMenu" name="menu_pravy">
-    <property name="title">
-     <string>Úpravy</string>
-    </property>
-    <addaction name="actionVy_istit_v_e"/>
-   </widget>
-   <addaction name="menuSoubor"/>
-   <addaction name="menu_pravy"/>
-   <addaction name="menuZobrazit"/>
-   <addaction name="menuNastaven"/>
-   <addaction name="menuN_pov_da"/>
-  </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionO_aplikaci">
-   <property name="text">
-    <string>O aplikaci</string>
-   </property>
-  </action>
-  <action name="actionZav_t">
-   <property name="enabled">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Zavřít</string>
-   </property>
-  </action>
-  <action name="actionU_ivatelsk_nastaven">
-   <property name="text">
-    <string>Uživatelské nastavení</string>
-   </property>
-  </action>
-  <action name="actionZm_na_u_ivatele">
-   <property name="text">
-    <string>Změna uživatele</string>
-   </property>
-  </action>
-  <action name="actionVy_istit_v_e">
-   <property name="text">
-    <string>Vyčistit vše</string>
-   </property>
-  </action>
-  <action name="actionOtev_t">
-   <property name="text">
-    <string>Otevřít</string>
-   </property>
-  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

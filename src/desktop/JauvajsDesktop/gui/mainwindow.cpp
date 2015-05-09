@@ -23,6 +23,7 @@ MainWindow::MainWindow(DataManager *manager, QWidget *parent) : QMainWindow(pare
     ui->verticalLayout_3->setAlignment(Qt::AlignTop);
     this->showMaximized();
 
+    createMenuBar();
     createToolBar();
     createUserPanel();
     initialWindow = new InitialWindow(dataManager, this);
@@ -50,12 +51,12 @@ MainWindow::MainWindow(DataManager *manager, QWidget *parent) : QMainWindow(pare
     dataManager->setListenerHearthRate(hr);
 
     /* vytvoreni vsech senzoru a jejich pridani do okna */
-    sensors[0] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, ekg, ui->scrollAreaWidgetContents_2);
-    sensors[1] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, temp, ui->scrollAreaWidgetContents_2);
-    sensors[2] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, pos, ui->scrollAreaWidgetContents_2);
-    sensors[3] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, oxy, ui->scrollAreaWidgetContents_2);
-    sensors[4] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, gsr, ui->scrollAreaWidgetContents_2);
-    sensors[5] = new SensorWidget(ui->verticalLayout_3, ui->menuZobrazit, hr, ui->scrollAreaWidgetContents_2);
+    sensors[0] = new SensorWidget(ui->verticalLayout_3, menuZobrazit, ekg, ui->scrollAreaWidgetContents_2);
+    sensors[1] = new SensorWidget(ui->verticalLayout_3, menuZobrazit, temp, ui->scrollAreaWidgetContents_2);
+    sensors[2] = new SensorWidget(ui->verticalLayout_3, menuZobrazit, pos, ui->scrollAreaWidgetContents_2);
+    sensors[3] = new SensorWidget(ui->verticalLayout_3, menuZobrazit, oxy, ui->scrollAreaWidgetContents_2);
+    sensors[4] = new SensorWidget(ui->verticalLayout_3, menuZobrazit, gsr, ui->scrollAreaWidgetContents_2);
+    sensors[5] = new SensorWidget(ui->verticalLayout_3, menuZobrazit, hr, ui->scrollAreaWidgetContents_2);
 
     nameL->setText("");
     surnameL->setText("");
@@ -63,6 +64,90 @@ MainWindow::MainWindow(DataManager *manager, QWidget *parent) : QMainWindow(pare
     ageL->setText("");
     weightL->setText("");
     heightL->setText("");
+}
+
+/**
+ * Vytvori menu aplikace
+ * @brief MainWindow::createMenuBar
+ */
+void MainWindow::createMenuBar() {
+    QMenuBar *menuBar;
+    menuBar = new QMenuBar(this);
+    menuBar->setObjectName(QStringLiteral("menuBar"));
+    menuBar->setGeometry(QRect(0, 0, 756, 21));
+
+    QMenu *menuSoubor;
+    menuSoubor = new QMenu(menuBar);
+    menuSoubor->setObjectName(QStringLiteral("menuSoubor"));
+    menuSoubor->setTitle(QApplication::translate("MainWindow", "Soubor", 0));
+    menuBar->addAction(menuSoubor->menuAction());
+
+    QMenu *menu_pravy;
+    menu_pravy = new QMenu(menuBar);
+    menu_pravy->setObjectName(QStringLiteral("menu_pravy"));
+    menu_pravy->setTitle(QApplication::translate("MainWindow", "\303\232pravy", 0));
+    menuBar->addAction(menu_pravy->menuAction());
+
+    menuZobrazit = new QMenu(menuBar);
+    menuZobrazit->setObjectName(QStringLiteral("menuZobrazit"));
+    menuZobrazit->setTitle(QApplication::translate("MainWindow", "Zobrazit", 0));
+    menuBar->addAction(menuZobrazit->menuAction());
+
+    QMenu *menuNastaven;
+    menuNastaven = new QMenu(menuBar);
+    menuNastaven->setObjectName(QStringLiteral("menuNastaven"));
+    menuNastaven->setTitle(QApplication::translate("MainWindow", "Nastaven\303\255", 0));
+    menuBar->addAction(menuNastaven->menuAction());
+
+    QMenu *menuN_pov_da;
+    menuN_pov_da = new QMenu(menuBar);
+    menuN_pov_da->setObjectName(QStringLiteral("menuN_pov_da"));
+    menuN_pov_da->setTitle(QApplication::translate("MainWindow", "N\303\241pov\304\233da", 0));
+    menuBar->addAction(menuN_pov_da->menuAction());
+
+
+    QAction *actionOtev_t;
+    actionOtev_t = new QAction(this);
+    actionOtev_t->setObjectName(QStringLiteral("actionOtev_t"));
+    actionOtev_t->setText(QApplication::translate("MainWindow", "Otev\305\231\303\255t", 0));
+    connect(actionOtev_t, SIGNAL(triggered()), this, SLOT(openFileChooser()));
+    menuSoubor->addAction(actionOtev_t);
+
+    QAction *actionZav_t;
+    actionZav_t = new QAction(this);
+    actionZav_t->setObjectName(QStringLiteral("actionZav_t"));
+    actionZav_t->setText(QApplication::translate("MainWindow", "Zav\305\231\303\255t", 0));
+    connect(actionZav_t, SIGNAL(triggered()), this, SLOT(close()));
+    menuSoubor->addAction(actionZav_t);
+
+    QAction *actionO_aplikaci;
+    actionO_aplikaci = new QAction(this);
+    actionO_aplikaci->setObjectName(QStringLiteral("actionO_aplikaci"));
+    actionO_aplikaci->setText(QApplication::translate("MainWindow", "O aplikaci", 0));
+    connect(actionO_aplikaci, SIGNAL(triggered()), this, SLOT(aboutApplication()));
+    menuN_pov_da->addAction(actionO_aplikaci);
+
+    actionU_ivatelsk_nastaven = new QAction(this);
+    actionU_ivatelsk_nastaven->setObjectName(QStringLiteral("actionU_ivatelsk_nastaven"));
+    actionU_ivatelsk_nastaven->setText(QApplication::translate("MainWindow", "U\305\276ivatelsk\303\251 nastaven\303\255", 0));
+    connect(actionU_ivatelsk_nastaven, SIGNAL(triggered()), this, SLOT(openUserSettings()));
+    menuNastaven->addAction(actionU_ivatelsk_nastaven);
+
+    QAction *actionZm_na_u_ivatele;
+    actionZm_na_u_ivatele = new QAction(this);
+    actionZm_na_u_ivatele->setObjectName(QStringLiteral("actionZm_na_u_ivatele"));
+    actionZm_na_u_ivatele->setText(QApplication::translate("MainWindow", "Zm\304\233na u\305\276ivatele", 0));
+    connect(actionZm_na_u_ivatele, SIGNAL(triggered()), this, SLOT(openInitialWindow()));
+    menuNastaven->addAction(actionZm_na_u_ivatele);
+
+    QAction *actionVy_istit_v_e;
+    actionVy_istit_v_e = new QAction(this);
+    actionVy_istit_v_e->setObjectName(QStringLiteral("actionVy_istit_v_e"));
+    actionVy_istit_v_e->setText(QApplication::translate("MainWindow", "Vy\304\215istit v\305\241e", 0));
+    connect(actionVy_istit_v_e, SIGNAL(triggered()), this, SLOT(cleanAll()));
+    menu_pravy->addAction(actionVy_istit_v_e);
+
+    this->setMenuBar(menuBar);
 }
 
 /**
@@ -294,7 +379,7 @@ void MainWindow::setUp() {
         setMetadata();
     }
     else {
-        ui->actionU_ivatelsk_nastaven->setDisabled(true);
+        actionU_ivatelsk_nastaven->setDisabled(true);
         userPanel->hide();
         saveCB->setDisabled(true);
     }
@@ -372,18 +457,10 @@ MainWindow::~MainWindow() {
 }
 
 /**
- * Zavre aplikaci
- * @brief MainWindow::on_actionZav_t_triggered
- */
-void MainWindow::on_actionZav_t_triggered() {
-    this->close();
-}
-
-/**
  * Zobrazi informace o aplikaci
  * @brief MainWindow::on_actionO_aplikaci_triggered
  */
-void MainWindow::on_actionO_aplikaci_triggered() {
+void MainWindow::aboutApplication() {
     QMessageBox::about(this, tr("O aplikaci"),
              tr("Aplikace pro vizualizaci signálů z E-health. <br> Projekt Šejdrem Arduino"));
 }
@@ -392,7 +469,7 @@ void MainWindow::on_actionO_aplikaci_triggered() {
  * Zobrazi dialog nastaveni metadat
  * @brief MainWindow::on_actionU_ivatelsk_nastaven_triggered
  */
-void MainWindow::on_actionU_ivatelsk_nastaven_triggered() {
+void MainWindow::openUserSettings() {
     metaDialog->show();
 }
 
@@ -401,7 +478,7 @@ void MainWindow::on_actionU_ivatelsk_nastaven_triggered() {
  * @brief MainWindow::setMetaData
  */
 void MainWindow::setMetadata() {
-    ui->actionU_ivatelsk_nastaven->setDisabled(false);
+    actionU_ivatelsk_nastaven->setDisabled(false);
     userPanel->show();
     saveCB->setDisabled(false);
     addItemsToListWidget();
@@ -437,16 +514,8 @@ void MainWindow::itemClickedLoadFile(QListWidgetItem *item) {
  * Zobrazi uvodni okno ke zmene uzivatele
  * @brief MainWindow::on_actionZm_na_u_ivatele_triggered
  */
-void MainWindow::on_actionZm_na_u_ivatele_triggered() {
+void MainWindow::openInitialWindow() {
     initialWindow->show();
-}
-
-/**
- * Volani cleanAll pro vycisteni grafi vsech sensoru
- * @brief MainWindow::on_actionVy_istit_v_e_triggered
- */
-void MainWindow::on_actionVy_istit_v_e_triggered() {
-    cleanAll();
 }
 
 /**
@@ -468,7 +537,7 @@ void MainWindow::closeEvent(QCloseEvent *event) {
  * Otevre dialog pro vyber souboru
  * @brief MainWindow::on_actionOtev_t_triggered
  */
-void MainWindow::on_actionOtev_t_triggered() {
+void MainWindow::openFileChooser() {
     QString file = QFileDialog::getOpenFileName(this, tr("Otevřít soubor"), QDir::homePath());
     dataManager->loadFile(file);
 }
