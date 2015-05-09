@@ -90,7 +90,7 @@ void loop() {
   #endif
   
   other_sensor = (cycle_state % 2 == 1) ? S_AIRF : get_other_sensor();
-  if (++cycle_state > max_state) { cycle_state = 0; }
+  if (++cycle_state >= max_state) { cycle_state = 0; }
   // reading values
   ekg = get_sensor_value(S_EKG);
   
