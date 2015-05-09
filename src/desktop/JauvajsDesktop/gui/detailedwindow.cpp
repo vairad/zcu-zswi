@@ -215,6 +215,7 @@ void DetailedWindow::cleanGraph() {
     delete path;
     path = NULL;
     transcription = false;
+    graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
 
 /**

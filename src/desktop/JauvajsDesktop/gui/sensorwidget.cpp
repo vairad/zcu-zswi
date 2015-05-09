@@ -371,6 +371,7 @@ void SensorWidget::cleanGraph() {
     transcription = false;
     values.clear();
     ratioOfTheWith = 1;
+    graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     resizeEvent(NULL);
     detailedWindow->cleanGraph();
 }
