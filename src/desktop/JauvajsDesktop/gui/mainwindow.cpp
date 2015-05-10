@@ -23,6 +23,7 @@ MainWindow::MainWindow(DataManager *manager, QWidget *parent) : QMainWindow(pare
     ui->setupUi(this);
     ui->verticalLayout_3->setAlignment(Qt::AlignTop);
     this->showMaximized();
+    this->setWindowTitle("Šejdrem sensor");
 
     createMenuBar();
     createToolBar();

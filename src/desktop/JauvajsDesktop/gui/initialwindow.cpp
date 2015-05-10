@@ -15,7 +15,7 @@ InitialWindow::InitialWindow(DataManager *dataManager, QWidget *parent) : QDialo
     this->resize(501, 313);
     this->mainWindow = parent;
 
-    setWindowTitle("Vítejte v aplikaci E-health");
+    setWindowTitle("Vítejte v aplikaci Šejdrem sensor");
 
     verticalLayout = new QVBoxLayout(this);
     verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
@@ -43,7 +43,7 @@ void InitialWindow::createTitle() {
     font.setBold(true);
     font.setWeight(75);
     label->setFont(font);
-    label->setText("Vítejte v aplikaci E-health");
+    label->setText("Vítejte v aplikaci Šejdrem sensor");
 
     verticalLayout->addWidget(label);
 

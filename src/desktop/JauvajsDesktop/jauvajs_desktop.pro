@@ -76,3 +76,4 @@ HEADERS  += core/idisplayable.h \
     gui/helpwindow.h
 
 FORMS    += gui/mainwindow.ui
+RC_FILE = myapp.rc
