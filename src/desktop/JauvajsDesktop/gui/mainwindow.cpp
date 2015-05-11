@@ -207,6 +207,7 @@ void MainWindow::createToolBar() {
 
     // combo box na vyber portu
     comboBox = new QComboBox();
+    comboBox->setMaximumWidth(200);
     this->refeshComboBox();
     toolbar->addWidget(comboBox);
 
@@ -242,8 +243,18 @@ void MainWindow::createToolBar() {
     toolbar->addWidget(labelArduData);
 }
 
+/**
+ * Vypise dostupne seriove porty do combo boxu
+ * @brief MainWindow::refeshComboBox
+ */
 void MainWindow::refeshComboBox() {
     comboBox->clear();
+    comboBox->addItem("-- Zvolte port --");
+    QStandardItemModel* model = qobject_cast<QStandardItemModel*>(comboBox->model());
+    QModelIndex firstIndex = model->index(0, comboBox->modelColumn(), comboBox->rootModelIndex());
+    QStandardItem* firstItem = model->itemFromIndex(firstIndex);
+    firstItem->setSelectable(false);
+
     QList<QSerialPortInfo> listOfPorts = QSerialPortInfo::availablePorts();
     foreach (QSerialPortInfo port, listOfPorts) {
         // nazev portu + nazev pripojeneho zarizeni
