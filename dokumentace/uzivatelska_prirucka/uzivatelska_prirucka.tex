@@ -1,0 +1,65 @@
+\documentclass[12pt, a4paper]{report}
+
+\usepackage[czech]{babel}
+\usepackage[IL2]{fontenc}
+\usepackage[cp1250]{inputenc}
+\usepackage{graphicx}
+\usepackage{indentfirst}
+
+\begin{document}             
+
+\begin{titlepage}
+\title{\includegraphics[width=4cm,natwidth=399,natheight=212]{logoFAV.png}\\[1em]Uživatelská pøíruèka k aplikaci Šejdrem sensor\\[1em]\large{Projekt týmu Šejdrem k pøedmìtùm KIV/ZSWI a KIV/UIR}}
+\author{\textit{VAIS Radek, ŠEVÈÍK Štìpán, TARANTÍKOVÁ Denisa,}\\\textit{JAROŠ David, ZÁRUBA Jakub}}
+\date{11. kvìtna 2015}
+\maketitle
+\end{titlepage}
+
+\section*{Instalace}
+Pøed prvním spuštìním aplikace v systému \textit{Windows} je nutná instalace. Prùvodce uživatele jednoduchými kroky provede instalací a rozbalí potøebné soubory na uživatelem zvolené místo.
+
+\section*{Spuštìní}
+Aplikace se spustí souborem s pøíponou \textit{exe}. Po jejím spuštìní se uživateli zobrazí kromì hlavního aplikaèního okna také okno menší, které uživateli umožòuje se pøihlásit a ukládat díky tomu pøípadná metadata.
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth, natwidth=517px,natheight=352px]{01.png}
+\caption{Úvodní okno po spuštìní aplikace}
+\end{figure}
+
+\section*{Úvodní okno}
+První položkou je pole pro zmìnu \textit{workspace}, neboli prostoru, kde jsou data o uživatelích (pacientech) uložena. Ve výchozím nastavení se tento prostor nachází ve složce data vedle aplikaèních souborù, avšak je na uživateli, zda si data uloží právì tam. Po zvolení \textit{workspace} se pod polem zobrazí pøípadní uživatelé, kteøí už jsou v této složce uloženi aplikací \textit{Šejdrem sensor}. Nejprve jsou zobrazeni tøi uživatelé, kteøí byli naposledy otevøeni (pøihlášeni), následuje abecední seznam všech uživatelù. Ve spodní èásti okna se nacházejí dvì tlaèítka. První pro vytvoøení uživatele nového, druhé pro pokraèování bez pøihlášení. Tímto tlaèítkem se uživatel, podobnì jako po stisknutí køížku v horní èásti okna, dostane do aplikace v módu promotion, tedy v takovém, ve kterém nemùže žádná data ukládat, ale jen vizualizovat právì získaná z \textit{e-Health senzor platform} pro \textit{Arduino}. První zmínìné tlaèítko otevøe dialog pro vložení údajù o uživateli (pacientovi). Mezi pole povinná patøí jméno, pøíjmení a uživatelské jméno. Dalšími metadaty, které je možno uložit, jsou: pohlaví, vìk, hmotnost, výška a pøípadná další poznámka. V druhé záložce dialogu pro vložení údajù je možno zaškrtnout vybrané senzory, které budou registrovaného uživatele zajímat a které chce v aplikaci zobrazit. Dále je možno zaškrtnout, zda chce uživatel všechna pøijímaná data také ukládat do souboru csv a umožnit tak další zpracování.
+
+\begin{figure}
+\centering
+\includegraphics[width=190px, natwidth=390px,natheight=555px]{03.png}
+\includegraphics[width=190px, natwidth=390px,natheight=555px]{04.png}
+\caption{Dialogové okno pro vytvoøení nového uživatele}
+\end{figure}
+
+\section*{Pravý sloupec}
+Pokud se uživatel v úvodním oknì pøihlásí, v hlavním oknì se v pravé èásti zobrazí sloupec, kde jsou zobrazena uživatelská metadata. Metadata je možno kliknutím pravého tlaèítka a zobrazením kontextového menu upravit, pøípadnì i zmìnit uživatele pøepnutím do úvodního okna. Pod vypsanými metadaty je zobrazen list s výpisem uložených souborù csv u konkrétního uživatele v konkrétní složce, ty je nutné vytvoøit aplikací \textit{Šejdrem sensor}. Kliknutím na soubor probìhne vizualizace zaznamenaných dat do widgetù pro jednotlivé senzory. Pro delší záznamy se vytvoøí posuvník, který zobrazí kompletní data.
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth, natwidth=1366px,natheight=728px]{02.png}
+\caption{Zobrazení hlavního okna s pravým sloupcem}
+\end{figure}
+
+\section*{Centrální èást hlavního okna}
+V centrální èásti hlavního okna aplikace se nacházejí widgety pro vizualizaci získaných dat z \textit{Arduina} pro jednotlivé senzory. Zobrazených senzorù mùže být až šest v závislosti na nastavení konkrétního uživatele. V levé èásti se nacházejí obrázky symbolizující konkrétní senzor a usnadòují orientaci. V pravé dolní èásti tìchto obrázkù se nacházejí tlaèítka s køížkem, které umožní smazat všechen vykreslený záznam pro konkrétní senzor. Dále, konkrétnì u EKG, se ještì nachází tlaèítko s písmenem A, které slouží pro zobrazení výsledkù analýzy EKG z dostupného vizualizovaného záznamu v k tomu urèeném oknì. V centrální èásti obrázku se nacházejí názvy konkrétního senzoru. Jednotlivé senzory mají u grafù pro vizualizaci biosignálù nastavené pøíslušné rozsahy osy \textit{x} i \textit{y}. Tìmto rozsahùm se pøizpùsobují i pomocné vertikální a horizontální èáry zobrazené svìtlejší zelenou barvou na tmavším pozadí, které usnadòují orientaci v grafech a zpøehlední vizualizaci. Na osách \textit{y} jsou vyznaèeny velièiny, které odpovídají mìøeným hodnotám daného senzoru. Osa \textit{x} vyznaèuje všude èas, ovšem i ten má u jednotlivých senzorù jiné rozsahy. Zaznamenaný signál je vykreslován bílou barvou. Kliknutím na jednotlivé grafy senzorù se zobrazí detailní okno, které zobrazí biosignál detailnìji ve vìtší velikosti s vìtším množstvím vertikálních a horizontálních èar. Detailních oken mùže být otevøeno i více. Pokud je detailní okno senzoru již otevøeno a klikneme na graf v centrální èásti hlavního okna, detailní okno se posune do popøedí. Získaný signál je standardnì vykreslován po celé délce zobrazeného grafu, pokud dojde k pravému okraji, je køivka pøekreslována od zaèátku grafu.
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth, natwidth=1366px,natheight=728px]{05.png}
+\caption{Centrální èást hlavního okna s otevøeným detailním oknem}
+\end{figure}
+
+\section*{Menu aplikace}
+Pod položkou \textbf{Soubor} je umožnìno uživateli pomocí akce otevøít zvolení i jiného souboru, než který byl vytvoøen v aplikaci \textit{Šejdrem sensor} a který se zobrazí v pravém sloupci u konkrétního uživatele. Další akcí u položky \textbf{Soubor} je \textbf{Zavøít}, kterou standardnì zavøeme aplikaci. Dále se v položce \textbf{Úpravy} nachází akce \textbf{Vyèistit vše}, která vyèistí všechny widgety jednotlivých senzorù. Další položka \textbf{Zobrazit} umožòuje zobrazení a skrytí dostupných senzorù, v podstatì totéž, co je možno provést v nastavení metadat uživatele. V položce \textbf{Nastavení} se nachází akce pro \textbf{zmìnu uživatele}, která otevøe úvodní okno umožòující tuto akci. Dále je zde zmiòovaná akce pro \textbf{nastavení metadat} pøihlášeného uživatele. Tou je zobrazen totožný dialog, jako pro registraci uživatele nového. V pøípadì, že není v aplikaci žádný uživatel pøihlášen, zùstane tato akce logicky nedostupná. Poslední položkou v aplikaèním menu je \textbf{Nápovìda}, pod ní se skrývá jak tento uživatelský manuál, tak i akce pro zobrazení jednoduchého dialogu s informací o aplikaci.
+
+\section*{Zaèínáme}
+Veškeré akce související s hlavní funkèností aplikace jsou dostupné v nástrojové lištì hned pod aplikaèním menu. V levé èásti se nacházejí ikonky pro zahájení a ukonèení snímání, dále je zde akce pro vyèištìní všech oken senzorù. Vpravo od nich se nachází checkbox, pro nastavení ukládání získaného a vykreslovaného biosignálu z \textit{Arduina}. Ovšem aby tohle vše mohlo fungovat, je nutné nejprve provést akce umístìné ještì více vpravo. Tou je výbìr portu, kde je pøipojeno \textit{Arduino} s možností obnovení dostupných portù. Poté je po stisknutí tlaèítka Zvolit port vpravo od výbìrového seznamu pøipojeno zaøízení. Pomocí indikátorù ještì více vpravo zjistíme, jestli je \textit{Arduino s e-Health senzor platform} pøipojeno a jestli získává data. Nyní již mùžeme stisknout zelenou šipku pro spuštìní snímání a aplikace by mìla získaná data vizualizovat v jednotlivých widgetech. Pokud chceme i získaná data ukládat, je nutné pøed touto akcí zaškrtnout zmínìný checkbox. Po ukonèení snímání pomocí tlaèítka s modrým ètvereèkem je zapisování do souboru ukonèeno a ten je hned zobrazen v pravém sloupci. 
+
+
+\end{document}             
