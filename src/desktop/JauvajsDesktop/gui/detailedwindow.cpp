@@ -171,15 +171,27 @@ void DetailedWindow::repaintGraph() {
         int x, y;
         delete path;
         path = new QPainterPath(QPoint(LEFT_OFFSET, 0));
+        QPainterPath path2(QPoint(LEFT_OFFSET, 0));
 
+        int i = 0;
         foreach (double value, *values) {
             x = (time / (double) width) * (graphicsView->viewport()->width() - LEFT_OFFSET) + LEFT_OFFSET;
             y = graphicsView->viewport()->height() - ((value - sensor->minY) / (sensor->maxY - sensor->minY) * height + BOTTOM_OFFSET);
-            path->lineTo(x, y); //  pridani dalsi hodnoty do path
+
+            if ((transcription && i <= transcriptionIndex) || !transcription) {
+                path->lineTo(x, y); //  pridani dalsi hodnoty do path
+            }
+            else {
+                path2.lineTo(x, y); //  pridani dalsi hodnoty do path2
+            }
             time += sensor->timeInterval; // pricteni casu pro dalsi hodnotu
+            i++;
         }
 
        curve = scene->addPath(*path, QPen(Qt::white));
+       if (!path2.isEmpty()) {
+           curve2 = scene->addPath(path2, QPen(Qt::white));
+       }
        graphicsView->viewport()->repaint();
     }
 }

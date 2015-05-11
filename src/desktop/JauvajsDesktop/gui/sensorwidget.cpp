@@ -171,22 +171,39 @@ void SensorWidget::repaintGraph() {
             delete curve2;
             curve2 = NULL;
         }
+        double time = sensor->time;
         sensor->time = 0;
         int width = sensor->maxX - sensor->minX; // skutecna sirka (v jednotkach)
         int height = graphicsView->viewport()->height() - BOTTOM_OFFSET;
         int x, y;
         delete path;
         path = new QPainterPath(QPoint(LEFT_OFFSET, 0));
+        x = (time / (double) width) * (graphicsView->viewport()->width() - LEFT_OFFSET) + LEFT_OFFSET;
+        QPainterPath path2(QPoint(x, 0));
 
+        int i = 0;
         foreach (double value, values) {
             x = (sensor->time / (double) width) * (graphicsView->viewport()->width() - LEFT_OFFSET) + LEFT_OFFSET;
             y = graphicsView->viewport()->height() - ((value - sensor->minY) / (sensor->maxY - sensor->minY) * height + BOTTOM_OFFSET);
-            path->lineTo(x, y); //  pridani dalsi hodnoty do path
+
+            if ((transcription && i <= transcriptionIndex) || !transcription) {
+                path->lineTo(x, y); //  pridani dalsi hodnoty do path
+            }
+            else {
+                path2.lineTo(x, y); //  pridani dalsi hodnoty do path2
+            }
             sensor->time += sensor->timeInterval; // pricteni casu pro dalsi hodnotu
+            i++;
         }
 
        curve = scene->addPath(*path, QPen(Qt::white));
+       if (!path2.isEmpty()) {
+           curve2 = scene->addPath(path2, QPen(Qt::white));
+       }
        graphicsView->viewport()->repaint();
+       if (transcription) {
+           sensor->time = time;
+       }
     }
 }
 
