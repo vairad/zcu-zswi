@@ -15,7 +15,7 @@
 #include <PinChangeInt.h>
 #include <eHealth.h>
 
-//#define BT
+#define BT
 //#define PRINT_TIMESTAMPS
 
 // sensor indexes
@@ -42,7 +42,7 @@
 // sensor organisation
 //                                EKG  AIRF COND RESI BPM  SPO2 TEMP ACCE
 char sensor_labels[]           = {'E', 'F', 'C', 'R', 'P', 'O', 'T', 'A'};
-unsigned char dec_positions[]  = { 6 ,  0 ,  2 ,  2 ,  0 ,  0 ,  0 ,  0 };
+unsigned char dec_positions[]  = { 6 ,  0 ,  2 ,  2 ,  0 ,  0 ,  2 ,  0 };
 // number of measures to be made per second / 1000 millis    later to be used
 // as number of millis to be waited between measures
 
@@ -50,7 +50,7 @@ unsigned short seconds_online = 0;
 unsigned short millis_state = 0;
 
 uint8_t pulsCount = 0;
-int cycle_state = 0, max_state = 100, scanned_sensor = 2;
+int cycle_state = 0, max_state = 50, scanned_sensor = 2;
 
 
 
@@ -125,7 +125,7 @@ void loop() {
 
 void bt_setup() {
   delay(SETUP_WAIT);
-  Serial.print("AT+JSEC=1,1,2,04,0000\r\n"); // Enable security command
+  Serial.print("AT+JSEC=1,1,1,04,0000\r\n"); // Enable security command
   
   delay(SETUP_WAIT);
   Serial.print("AT+JSLN=10,JauvajsIno\r\n"); // Setup name of device
