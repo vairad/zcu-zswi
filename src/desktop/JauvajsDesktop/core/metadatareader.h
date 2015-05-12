@@ -17,7 +17,7 @@ public:
     /** nazev souboru pro nacteni metadat */
     QString FILENAME;
     /** pocet metadat */
-    static const int NUMBER_OF_METADATA = 16;
+    static const int NUMBER_OF_METADATA = 17;
 };
 
 #endif // METADATAREADER_H

@@ -84,7 +84,7 @@ private:
     /** box s tlacitky OK a Cancel */
     QDialogButtonBox *buttonBox;
     /** checkboxy senzoru */
-    QCheckBox *sensorCB[6];
+    QCheckBox *sensorCB[DataManager::NUMBER_OF_SENSORS];
     /** true pokud jsou validni vstupy od uzivatele */
     bool isValidInputs;
 };
