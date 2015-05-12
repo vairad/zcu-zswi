@@ -4,7 +4,7 @@
 #include "QDebug"
 
 SensorHeartRate::SensorHeartRate() {
-    ID = 5;
+    ID = 6;
     minY = 50;
     maxY = 200;
     minX = 0;

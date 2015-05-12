@@ -3,7 +3,7 @@
 #include "core/sensorconductance.h"
 
 SensorConductance::SensorConductance() {
-    ID = 4;
+    ID = 5;
     minY = 0;
     maxY = 10;
     minX = 0;
