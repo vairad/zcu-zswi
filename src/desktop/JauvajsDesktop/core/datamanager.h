@@ -88,7 +88,7 @@ public:
     void setListenerPosition(IWorking *senzorPosition);
     void setListenerTemp(IWorking *senzorTemp);
     void loadFile(QString filename);
-    void loadDataFromFile(QString filename);
+    void loadDataFromFile(QString filename, bool isPath);
 
 private:
     /** Ukazatel na načítač datového souboru */

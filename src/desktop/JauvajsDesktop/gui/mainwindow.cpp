@@ -480,6 +480,11 @@ void MainWindow::setMetadata() {
     heightL->setText(metaDialog->mainTab->heightE->text() + " cm");
 }
 
+/**
+ * Nacteni souboru po kliknuti na polozku v seznamu v pravem sloupci
+ * @brief MainWindow::itemClickedLoadFile
+ * @param item
+ */
 void MainWindow::itemClickedLoadFile(QListWidgetItem *item) {
     for (int i = 0; i < NUMBER_OF_SENSORS; i++) {
        sensors[i]->prepareToLoadData();
@@ -487,7 +492,7 @@ void MainWindow::itemClickedLoadFile(QListWidgetItem *item) {
     QDateTime dateTime = QDateTime::fromString(item->text(), "d. M. yyyy, h:m:s");
     QString filename = dateTime.toString("yyyyMMddhhmmss") + ".csv";
 
-    dataManager->loadDataFromFile(filename);
+    dataManager->loadDataFromFile(filename, false);
 
     for (int i = 0; i < NUMBER_OF_SENSORS; i++) {
        sensors[i]->cancelLoadData();
@@ -509,7 +514,17 @@ void MainWindow::setSaveData(bool save) {
  */
 void MainWindow::openFileChooser() {
     QString file = QFileDialog::getOpenFileName(this, tr("Otevřít soubor"), QDir::homePath());
-    dataManager->loadFile(file);
+    //dataManager->loadFile(file);
+
+    for (int i = 0; i < NUMBER_OF_SENSORS; i++) {
+       sensors[i]->prepareToLoadData();
+    }
+
+    dataManager->loadDataFromFile(file, true);
+
+    for (int i = 0; i < NUMBER_OF_SENSORS; i++) {
+       sensors[i]->cancelLoadData();
+    }
 }
 
 /**

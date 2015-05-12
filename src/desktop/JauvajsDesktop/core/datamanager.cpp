@@ -403,8 +403,14 @@ void DataManager::loadFile(QString filename) {
  * @brief DataManager::loadDataFromFile
  * @param filename nazev souboru
  */
-void DataManager::loadDataFromFile(QString filename) {
-    loadFile(FOLDER_NAME + "/" + username + "/" + filename);
+void DataManager::loadDataFromFile(QString filename, bool isPath) {
+    if (isPath) {
+        loadFile(filename);
+    }
+    else {
+        loadFile(FOLDER_NAME + "/" + username + "/" + filename);
+    }
+
     QString data = fileMiner->getLastIncoming();
     QStringList listOfData;
 
@@ -423,13 +429,6 @@ void DataManager::loadDataFromFile(QString filename) {
         }
         data = fileMiner->getLastIncoming();
     }
-
-    //emit ((IDisplayable *)listenEKG)->notHaveData();
-    //emit ((IDisplayable *)listenTemp)->notHaveData();
-    //emit ((IDisplayable *)listenOxy)->notHaveData();
-    //emit ((IDisplayable *)listenPosition)->notHaveData();
-    //emit ((IDisplayable *)listenGSR)->notHaveData();
-    //emit ((IDisplayable *)listenHeartRate)->notHaveData();
 }
 
 void DataManager::run() {
