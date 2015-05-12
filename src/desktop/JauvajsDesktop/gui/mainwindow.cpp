@@ -8,7 +8,8 @@
 #include "core/sensortemp.h"
 #include "core/sensorairflow.h"
 #include "core/sensoroxy.h"
-#include "core/sensorgsr.h"
+#include "core/sensorresistance.h"
+#include "core/sensorconductance.h"
 #include "core/sensorheartrate.h"
 #include "core/datamanager.h"
 #include "core/iworking.h"
@@ -41,8 +42,9 @@ MainWindow::MainWindow(DataManager *manager, QWidget *parent) : QMainWindow(pare
     SensorTemp *temp = new SensorTemp();
     SensorAirFlow *pos = new SensorAirFlow();
     SensorOxy *oxy = new SensorOxy();
-    SensorGSR *gsr = new SensorGSR();
+    SensorResistance *gsr = new SensorResistance();
     SensorHeartRate *hr = new SensorHeartRate();
+    SensorConductance *con = new SensorConductance();
 
     // Nastaveni listeneru
     dataManager->setListenerEKG(ekg);
@@ -51,6 +53,7 @@ MainWindow::MainWindow(DataManager *manager, QWidget *parent) : QMainWindow(pare
     dataManager->setListenerPosition(pos);
     dataManager->setListenerGSR(gsr);
     dataManager->setListenerHearthRate(hr);
+    dataManager->setListenerConductance(con);
 
     /* vytvoreni vsech senzoru a jejich pridani do okna */
     sensors[0] = new SensorWidget(ui->verticalLayout_3, menuDisplay, ekg, ui->scrollAreaWidgetContents_2);
@@ -58,7 +61,8 @@ MainWindow::MainWindow(DataManager *manager, QWidget *parent) : QMainWindow(pare
     sensors[2] = new SensorWidget(ui->verticalLayout_3, menuDisplay, pos, ui->scrollAreaWidgetContents_2);
     sensors[3] = new SensorWidget(ui->verticalLayout_3, menuDisplay, oxy, ui->scrollAreaWidgetContents_2);
     sensors[4] = new SensorWidget(ui->verticalLayout_3, menuDisplay, gsr, ui->scrollAreaWidgetContents_2);
-    sensors[5] = new SensorWidget(ui->verticalLayout_3, menuDisplay, hr, ui->scrollAreaWidgetContents_2);
+    sensors[5] = new SensorWidget(ui->verticalLayout_3, menuDisplay, con, ui->scrollAreaWidgetContents_2);
+    sensors[6] = new SensorWidget(ui->verticalLayout_3, menuDisplay, hr, ui->scrollAreaWidgetContents_2);
 
     nameL->setText("");
     surnameL->setText("");

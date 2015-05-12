@@ -1,8 +1,8 @@
 #include <limits>
 
-#include "core/sensorgsr.h"
+#include "core/sensorconductance.h"
 
-SensorGSR::SensorGSR() {
+SensorConductance::SensorConductance() {
     ID = 4;
     minY = 0;
     maxY = 10;
@@ -11,8 +11,8 @@ SensorGSR::SensorGSR() {
     time = 0;
     timeInterval = 0.02;
 
-    name = "GSR";
-    unit = "S";
+    name = "Conductance";
+    unit = "V";
     isAnalysable = false;
 }
 
@@ -21,7 +21,7 @@ SensorGSR::SensorGSR() {
  * @brief SensorGSR::getSceneGraph
  * @return
  */
-QGraphicsScene* SensorGSR::getSceneGraph() {
+QGraphicsScene* SensorConductance::getSceneGraph() {
     return NULL;
     //return this->scene;
 }
@@ -30,7 +30,7 @@ QGraphicsScene* SensorGSR::getSceneGraph() {
  * Pracuje s predanymi daty
  * @param data prijata data
  */
-void SensorGSR::transmitData(float data) {
+void SensorConductance::transmitData(float data) {
     if (this->validateData(data)) {
         emit haveData(data);
         emit haveDataToSave(ID, data);
@@ -46,7 +46,7 @@ void SensorGSR::transmitData(float data) {
  * @brief SensorGSR::getLastData
  * @return posledni data
  */
-float SensorGSR::getLastData() {
+float SensorConductance::getLastData() {
     float data = this->lastData;
     this->lastData = std::numeric_limits<float>::quiet_NaN();
     return data;
@@ -56,7 +56,7 @@ float SensorGSR::getLastData() {
  * Validuje prijata data a odesila je k vykresleni
  * @param data data k zvalidovani
  */
-bool SensorGSR::validateData(float data) {
+bool SensorConductance::validateData(float data) {
     if(data < MINIMAL_CORRECT_VALUE || data > MAXIMAL_CORRECT_VALUE){
         return false;
     }else{
@@ -64,7 +64,7 @@ bool SensorGSR::validateData(float data) {
     }
 }
 
-SensorGSR::~SensorGSR() {
+SensorConductance::~SensorConductance() {
 
 }
 

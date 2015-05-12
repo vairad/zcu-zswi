@@ -38,11 +38,12 @@ public:
 
     /** Privátní odkazy na senzory */
     IWorking *listenEKG;
-    IWorking *listenGSR;
+    IWorking *listenResistance;
     IWorking *listenHeartRate;
     IWorking *listenOxy;
-    IWorking *listenPosition;
+    IWorking *listenAirFlow;
     IWorking *listenTemp;
+    IWorking *listenConductance;
 
     /** ukladac dat */
     IStorable *saver;
@@ -55,7 +56,7 @@ public:
     /** nazev souboru dat */
     QString FILE_NAME;
     /** pocet senzoru */
-    static const int NUMBER_OF_SENSORS = 6;
+    static const int NUMBER_OF_SENSORS = 7;
     /** Metadata - jmeno a prijmeni pacienta */
     QString name[2];
     /** Metadata - senzory nastavene danemu pacientovi */
@@ -87,6 +88,7 @@ public:
     void setListenerOxy(IWorking *senzorOxy);
     void setListenerPosition(IWorking *senzorPosition);
     void setListenerTemp(IWorking *senzorTemp);
+    void setListenerConductance(IWorking *senzorCon);
     void loadFile(QString filename);
     void loadDataFromFile(QString filename, bool isPath);
 
@@ -102,9 +104,10 @@ private:
     float tempLastValue = 0;
     float heartValue = 0;
     float oxyLastValue = 0;
-    float gsrLastValue = 0;
-    float positionLastValue = 0;
+    float resLastValue = 0;
+    float airFlowLastValue = 0;
     float ekgLastValue = 0;
+    float conLastValue = 0;
 
     int numberOfData;
 

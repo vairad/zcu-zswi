@@ -21,7 +21,6 @@ win32{
 SOURCES += main.cpp\
     core/idisplayable.cpp \
     core/sensorekg.cpp \
-    core/sensorgsr.cpp \
     core/sensorheartrate.cpp \
     core/sensoroxy.cpp \
     core/sensortemp.cpp \
@@ -42,11 +41,12 @@ SOURCES += main.cpp\
     gui/connectionwindow.cpp \
     core/fileproblemexception.cpp \
     core/sensorairflow.cpp \
-    gui/helpwindow.cpp
+    gui/helpwindow.cpp \
+    core/sensorconductance.cpp \
+    core/sensorresistance.cpp
 
 HEADERS  += core/idisplayable.h \
     core/sensorekg.h \
-    core/sensorgsr.h \
     core/sensorheartrate.h \
     core/sensoroxy.h \
     core/sensortemp.h \
@@ -73,7 +73,9 @@ HEADERS  += core/idisplayable.h \
     core/fileproblemexception.h \
     gui/connectionwindow.h \
     core/sensorairflow.h \
-    gui/helpwindow.h
+    gui/helpwindow.h \
+    core/sensorresistance.h \
+    core/sensorconductance.h
 
 FORMS    += gui/mainwindow.ui
 RC_FILE = myapp.rc

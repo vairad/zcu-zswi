@@ -89,7 +89,7 @@ void SensorWidget::createLeftBox() {
 
     label = new QLabel(widget);
     label->setObjectName(QStringLiteral("label"));
-    label->setGeometry(QRect(50, 20, 65, 20));
+    label->setGeometry(QRect(50, 20, 85, 20));
     label->setScaledContents(false);
     label->setAlignment(Qt::AlignCenter);
     label->setText(sensor->getName().toStdString().c_str());

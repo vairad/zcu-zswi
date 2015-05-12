@@ -4,19 +4,19 @@
 #include "core/iworking.h"
 #include "core/idisplayable.h"
 
-class SensorGSR : public IDisplayable, public IWorking {
+class SensorResistance : public IDisplayable, public IWorking {
     const float MINIMAL_CORRECT_VALUE = 0.0;
     const float MAXIMAL_CORRECT_VALUE = 10.0;
 
     bool validateData(float);
 
 public:
-    SensorGSR();
+    SensorResistance();
     QGraphicsScene* getSceneGraph();
     void transmitData(float data);
     float getLastData();
 
-    ~SensorGSR();
+    ~SensorResistance();
 
 };
 

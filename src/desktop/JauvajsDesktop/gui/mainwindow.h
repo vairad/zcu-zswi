@@ -35,7 +35,7 @@ public:
     /** Okno se spojenim */
     ConnectionWindow *connectionWindow;
     /** pocet sensoru */
-    static const int NUMBER_OF_SENSORS = 6;
+    static const int NUMBER_OF_SENSORS = 7;
     /** senzory */
     SensorWidget *sensors[NUMBER_OF_SENSORS];
     /** spravce dat */

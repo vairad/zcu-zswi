@@ -157,12 +157,14 @@ void DataManager::transmitData(QString row) {
                heartValue = sensorValue.toFloat();
             else if(sensorFlag == "O")
                oxyLastValue = sensorValue.toFloat();
-            else if(sensorFlag == "V")
-               gsrLastValue = sensorValue.toFloat();
-            else if(sensorFlag == "A"){}
+            else if(sensorFlag == "R")
+               resLastValue = sensorValue.toFloat();
+            else if(sensorFlag == "C"){
+               conLastValue = sensorValue.toFloat();
+            }
             else if(sensorFlag == "F"){
              //   qDebug() << "Flow transmit";
-                positionLastValue = sensorValue.toFloat();
+                airFlowLastValue = sensorValue.toFloat();
               //  qDebug() << "Flow transmit::" << positionLastValue;
             }
             else {
@@ -174,8 +176,8 @@ void DataManager::transmitData(QString row) {
           this->listenTemp->transmitData(tempLastValue);
           this->listenHeartRate->transmitData(heartValue);
           this->listenOxy->transmitData(oxyLastValue);
-          this->listenGSR->transmitData(gsrLastValue);
-          this->listenPosition->transmitData(positionLastValue);
+          this->listenResistance->transmitData(resLastValue);
+          this->listenAirFlow->transmitData(airFlowLastValue);
         } 
   }
 
@@ -189,9 +191,9 @@ void DataManager::connectSensorToSaver() {
     if (isSaveData) {
         connect(listenEKG, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int, float)));
         connect(listenTemp, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int, float)));
-        connect(listenPosition, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int, float)));
+        connect(listenAirFlow, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int, float)));
         connect(listenOxy, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int, float)));
-        connect(listenGSR, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int, float)));
+        connect(listenResistance, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int, float)));
         connect(listenHeartRate, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int, float)));
 
         saver->createFileForData(username);
@@ -224,9 +226,9 @@ void DataManager::disconnectSensorToSaver() {
     if (isSaveData) {
         disconnect(listenEKG, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int,float)));
         disconnect(listenTemp, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int,float)));
-        disconnect(listenPosition, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int,float)));
+        disconnect(listenAirFlow, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int,float)));
         disconnect(listenOxy, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int,float)));
-        disconnect(listenGSR, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int,float)));
+        disconnect(listenResistance, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int,float)));
         disconnect(listenHeartRate, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int,float)));
 
         saver->closeFileForData();
@@ -324,11 +326,12 @@ void DataManager::logoutUser() {
  */
 void DataManager::initSenzorListeners(){
     listenEKG = NULL;
-    listenGSR = NULL;
+    listenResistance = NULL;
     listenHeartRate = NULL;
     listenOxy = NULL;
-    listenPosition = NULL;
+    listenAirFlow = NULL;
     listenTemp = NULL;
+    listenConductance = NULL;
 }
 
 /**
@@ -346,7 +349,7 @@ void DataManager::setListenerEKG(IWorking *senzorEKG){
  * @param senzorGSR - IWorking pro předání dat
  */
 void DataManager::setListenerGSR(IWorking *senzorGSR){
-    listenGSR = senzorGSR;
+    listenResistance = senzorGSR;
 }
 
 /**
@@ -371,7 +374,7 @@ void DataManager::setListenerOxy(IWorking *senzorOxy){
  * @param senzorPosition - IWorking pro předání dat
  */
 void DataManager::setListenerPosition(IWorking *senzorPosition){
-    listenPosition = senzorPosition;
+    listenAirFlow = senzorPosition;
 }
 
 /**
@@ -380,6 +383,14 @@ void DataManager::setListenerPosition(IWorking *senzorPosition){
  */
 void DataManager::setListenerTemp(IWorking *senzorTemp){
     listenTemp = senzorTemp;
+}
+
+/**
+ * @brief DataManager::setListenerTemp
+ * @param senzorTemp - IWorking pro předání dat
+ */
+void DataManager::setListenerConductance(IWorking *senzorCon){
+    listenConductance = senzorCon;
 }
 
 /**
@@ -424,8 +435,8 @@ void DataManager::loadDataFromFile(QString filename, bool isPath) {
             listenEKG->transmitData(listOfData[0].toFloat());
             listenTemp->transmitData(listOfData[1].toFloat());
             listenOxy->transmitData(listOfData[2].toFloat());
-            listenPosition->transmitData(listOfData[3].toFloat());
-            listenGSR->transmitData(listOfData[4].toFloat());
+            listenAirFlow->transmitData(listOfData[3].toFloat());
+            listenResistance->transmitData(listOfData[4].toFloat());
             listenHeartRate->transmitData(listOfData[5].toFloat());
         }else{
            // qDebug() << "false";
