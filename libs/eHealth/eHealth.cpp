@@ -513,33 +513,34 @@
 	//!******************************************************************************
  
 	void eHealthClass::readPulsioximeter(void)
-	{
-		uint8_t digito[] = {0,0,0,0,0,0};
+    {
+        uint8_t digito[6];
 
-		uint8_t A = 0;
-		uint8_t B = 0;
-		uint8_t C = 0;
-		uint8_t D = 0;
-		uint8_t E = 0;
-		uint8_t F = 0;
-		uint8_t G = 0;
+        uint8_t A = 0;
+        uint8_t B = 0;
+        uint8_t C = 0;
+        uint8_t D = 0;
+        uint8_t E = 0;
+        uint8_t F = 0;
+        uint8_t G = 0;
 
-		for (int i = 0; i<6 ; i++) { // read all the led's of the module
-			A = !digitalRead(13);
-			B = !digitalRead(12);
-			C = !digitalRead(11);
-			D = !digitalRead(10);
-			E = !digitalRead(9);
-			F = !digitalRead(8);
-			G = !digitalRead(7);
-			
-			digito[i] = segToNumber(A, B, C ,D ,E, F,G);    
-			delayMicroseconds(2800); //2800 microseconds
-		}
+        for (int i = 0; i<6 ; i++) { // read all the led's of the module
+            A = !digitalRead(13);
+            B = !digitalRead(12);
+            C = !digitalRead(11);
+            D = !digitalRead(10);
+            E = !digitalRead(9);
+            F = !digitalRead(8);
+            G = !digitalRead(7);
 
-			SPO2 = 10 * digito[5] + digito[4];
-			BPM  = 100 * digito[2] + 10 * digito[1] + digito[0];
-	}
+            digito[i] = segToNumber(A, B, C ,D ,E, F,G);
+            delayMicroseconds(3100); //3100 microseconds
+
+        }
+
+            SPO2 = 10 * digito[3] + digito[2];
+            BPM  = 100 * digito[5] + 10 * digito[1] + digito[0];
+    }
 	
 
 	//!******************************************************************************
