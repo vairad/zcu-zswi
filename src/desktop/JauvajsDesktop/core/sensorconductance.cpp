@@ -6,14 +6,14 @@
 SensorConductance::SensorConductance() {
     ID = 5;
     minY = 0;
-    maxY = 10;
+    maxY = 20;
     minX = 0;
     maxX = 120;
     time = 0;
     timeInterval = 0.02;
 
     name = "Conductance";
-    unit = "V";
+    unit = "mV";
     isAnalysable = false;
 }
 
@@ -32,7 +32,7 @@ QGraphicsScene* SensorConductance::getSceneGraph() {
  * @param data prijata data
  */
 void SensorConductance::transmitData(float data) {
-   // qDebug() << "C" << data;
+    //qDebug() << "C" << data;
     if (this->validateData(data)) {
         emit haveData(data);
         emit haveDataToSave(ID, data);
