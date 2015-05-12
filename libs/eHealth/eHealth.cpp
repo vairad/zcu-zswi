@@ -198,10 +198,10 @@
 		float Resistance;  //Resistance of sensor.
 		float ganancia=5.0;
 		float Vcc=3.3;
-		float RefTension=3.0; // Voltage Reference of Wheatstone bridge.
-		float Ra=4700.0; //Wheatstone bridge resistance.
-		float Rc=4700.0; //Wheatstone bridge resistance.
-		float Rb=821.0; //Wheatstone bridge resistance.
+		float RefTension=0.4; // Voltage Reference of Wheatstone bridge.
+		float Ra=4620.0; //Wheatstone bridge resistance.
+		float Rc=4690.0; //Wheatstone bridge resistance.
+		float Rb=813.0; //Wheatstone bridge resistance.
 		int sensorValue = analogRead(A3);
 		
 		float voltage2=((float)sensorValue*Vcc)/1023; // binary to voltage conversion  
