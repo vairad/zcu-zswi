@@ -1,4 +1,5 @@
 #include <limits>
+#include <QDebug>
 
 #include "core/sensorconductance.h"
 
@@ -31,11 +32,12 @@ QGraphicsScene* SensorConductance::getSceneGraph() {
  * @param data prijata data
  */
 void SensorConductance::transmitData(float data) {
+   // qDebug() << "C" << data;
     if (this->validateData(data)) {
         emit haveData(data);
         emit haveDataToSave(ID, data);
     } else {
-        emit haveData(minY+((maxY-minY)/2));
+        emit haveData(minY+1);
         emit haveDataToSave(ID, minY+((maxY-minY)/2));
     }
     //this->validateData(data);

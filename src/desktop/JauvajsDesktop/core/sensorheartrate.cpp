@@ -37,7 +37,7 @@ void SensorHeartRate::transmitData(float data) {
         emit haveData(data);
         emit haveDataToSave(ID, data);
     } else {
-        emit haveData(minY);
+        emit haveData(minY+1);
         emit haveDataToSave(ID, (minY));
     }
 }

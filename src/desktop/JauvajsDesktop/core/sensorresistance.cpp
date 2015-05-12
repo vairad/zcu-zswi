@@ -1,4 +1,5 @@
 #include <limits>
+#include <QDebug>
 
 #include <QApplication>
 
@@ -33,11 +34,12 @@ QGraphicsScene* SensorResistance::getSceneGraph() {
  * @param data prijata data
  */
 void SensorResistance::transmitData(float data) {
+   // qDebug() << "R" << data;
     if (this->validateData(data)) {
         emit haveData(data/1000);
         emit haveDataToSave(ID, data/1000);
     } else {
-        emit haveData(minY+((maxY-minY)/2));
+        emit haveData(minY+1);
         emit haveDataToSave(ID, minY+((maxY-minY)/2));
     }
     //this->validateData(data);

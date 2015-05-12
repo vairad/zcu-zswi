@@ -178,6 +178,7 @@ void DataManager::transmitData(QString row) {
           this->listenOxy->transmitData(oxyLastValue);
           this->listenResistance->transmitData(resLastValue);
           this->listenAirFlow->transmitData(airFlowLastValue);
+          this->listenConductance->transmitData(conLastValue);
         } 
   }
 

@@ -38,7 +38,7 @@ void SensorAirFlow::transmitData(float data) {
         emit haveData(data);
         emit haveDataToSave(ID, data);
     } else {
-        emit haveData((maxY+minY)/2.0);
+        emit haveData(minY+1);
         emit haveDataToSave(ID, (maxY+minY)/2.0);
     }
 }
