@@ -4,12 +4,9 @@
  * 
  *  Jauvajs Ino
  *  Bluetooth relayed loop designed for collecting and sending values from sensors.
- *  
- *  Allows selection of individual sensors to scan and send via commands scanned on
- *  serial port.
  *
- *  Version 0.9
- *  Author: Stepan Sevcik @ SEJDREm
+ *  Version 1.0
+ *  Author: Stepan Sevcik, Radek Vais, David Jaros, Denisa Tarantikova, Jakub Zaruba
  */
  
 #include <PinChangeInt.h>
@@ -125,7 +122,7 @@ void loop() {
 
 void bt_setup() {
   delay(SETUP_WAIT);
-  Serial.print("AT+JSEC=1,1,1,04,0000\r\n"); // Enable security command
+  Serial.print("AT+JSEC=1,1,2,04,0000\r\n"); // Enable security command
   
   delay(SETUP_WAIT);
   Serial.print("AT+JSLN=10,JauvajsIno\r\n"); // Setup name of device
