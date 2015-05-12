@@ -5,12 +5,12 @@
 
 SensorHeartRate::SensorHeartRate() {
     ID = 5;
-    minY = -1;
+    minY = 50;
     maxY = 200;
     minX = 0;
-    maxX = 60;
+    maxX = 120;
     time = 0;
-    timeInterval = 0.02;
+    timeInterval = 0.04;
 
     name = "Puls";
     unit = "PPM";
@@ -37,8 +37,8 @@ void SensorHeartRate::transmitData(float data) {
         emit haveData(data);
         emit haveDataToSave(ID, data);
     } else {
-        emit haveData((maxY+minY)/2.0);
-        emit haveDataToSave(ID, (maxY+minY)/2.0);
+        emit haveData(minY);
+        emit haveDataToSave(ID, (minY));
     }
 }
 
