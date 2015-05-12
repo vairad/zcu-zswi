@@ -3,3 +3,14 @@ http://www.arduino.cc/
 
 Atmel Studio (Arduino IDE + Visual Studio)
 http://www.atmel.com/tools/atmelstudio.aspx
+
+QtCreator & framework Qt
+http://www.qt.io/download/
+
+---
+
+Umlet (UML - diagram)
+http://www.umlet.com/
+
+GanntProject (Plánování - Ganntův diagram)
+http://www.ganttproject.biz/
