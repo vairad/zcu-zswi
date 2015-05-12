@@ -10,6 +10,7 @@
 ArduinoMiner::ArduinoMiner() {
     list = new QStringList();
     initialization = false;
+    serial = new QSerialPort();
 }
 
 /**
@@ -18,17 +19,27 @@ ArduinoMiner::ArduinoMiner() {
  */
 void ArduinoMiner::init(QString port) {
 
-    serial = new QSerialPort();
     serial->setPortName(port);
-    serial->open(QIODevice::ReadOnly);
     serial->setBaudRate(QSerialPort::Baud115200);
     serial->setDataBits(QSerialPort::Data8);
     serial->setFlowControl(QSerialPort::NoFlowControl);
     serial->setParity(QSerialPort::NoParity);
     serial->setStopBits(QSerialPort::OneStop);
+
+    initialization = serial->open(QIODevice::ReadOnly);
+
+    if(initialization){
+        emit statusChanged(port+" připojeno ✓", "green");
+        qDebug() << "serial opened";
+    }else{
+        qDebug() << "serial not opened";
+        emit statusChanged("Připojení "+port+" se nezdařilo", "red");
+    }
+
     connect(serial, SIGNAL(error(QSerialPort::SerialPortError)), this, SLOT(handleError(QSerialPort::SerialPortError)));
     connect(serial,SIGNAL(readyRead()),this,SLOT(readSerial()));
-    initialization = true;
+
+    qDebug() << "end of init ardu reader";
 }
 
 /**
@@ -36,11 +47,6 @@ void ArduinoMiner::init(QString port) {
  * @brief ArduinoMiner::readSerial
  */
 void ArduinoMiner::readSerial(){
-    emit statusChanged("Připojeno ✓", "green");
-    int i = 1000000;
-    while(--i>0){} // cekaci smycka
-    QString line = serial->readLine();
-    list->push_back(line);
 }
 
 /**
@@ -48,10 +54,15 @@ void ArduinoMiner::readSerial(){
  * @brief ArduinoMiner::closeSerial
  */
 void ArduinoMiner::closeSerial(){
-    serial->close();
+    if(serial->isOpen()){
+        serial->close();
+    }
+    initialization = false;
+    emit statusChanged("Odpojeno", "red");
 }
 
 void ArduinoMiner::handleError(QSerialPort::SerialPortError error) {
+    closeSerial();
     qDebug() << error;
 }
 
@@ -71,10 +82,11 @@ void ArduinoMiner::sendMessage(QString line){
  * @return řádek poslední zprávy nebo null, pokud není nová zpráva k dispozici.
  */
 QString ArduinoMiner::getLastIncoming() {
-    if(list->isEmpty()){
+   return serial->readLine();
+    /*if(list->isEmpty()){
         return NULL;
     }
-    return list->takeFirst();
+    return list->takeFirst();*/
 }
 
 bool ArduinoMiner::checkYourCOM() {

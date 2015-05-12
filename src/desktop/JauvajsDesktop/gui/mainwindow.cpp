@@ -451,6 +451,8 @@ void MainWindow::startScanning() {
 void MainWindow::stopScanning() {
     dataManager->disconnectSensorToSaver();
     dataManager->draw = false;
+    dataManager->arduino->closeSerial();
+
     addItemsToListWidget();
     if (dataManager->isSetMetadata) {
         saveCB->setDisabled(false);
@@ -589,15 +591,22 @@ void MainWindow::userPanelContextMenu(const QPoint &pos) {
  */
 void MainWindow::portChoosed() {
     qDebug() << "Vybral jsi port";
+
     this->choosedPort = comboBox->currentText();
     QStringList portInfo = this->choosedPort.split(' ');
     QString portNumber = portInfo[0];
     if(portNumber != NULL) { // pokud je vybrany nejaky port
-         qDebug() << "ches" <<portNumber;
+         qDebug() << "choosed" << portNumber;
         dataManager->arduino->portNumber = portNumber;
         dataManager->arduino->init(portNumber);
-        dataManager->start();
     }
+
+    QTime timer;
+    timer.start();
+    while(timer.elapsed() < 500){
+        //loop for 500ms
+    }
+    startScanning();
 }
 
 /**
@@ -624,14 +633,7 @@ void MainWindow::on_indicatorDataChanged(QString status, QString color) {
  * @brief MainWindow::on_checkPort
  */
 void MainWindow::on_checkPort() {
-
-   if(arduinoMiner->checkYourCOM()) {
-       // kanal je v poradku, jednalo se o kratky vypadek
-   }
-   else {
-       // kanal neni pristupny, zarizeni bylo odpojeno
-       dataManager->arduino->serial->close();
-   }
+    arduinoMiner->checkYourCOM();
 }
 
 

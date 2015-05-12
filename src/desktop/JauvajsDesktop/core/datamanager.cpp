@@ -7,6 +7,7 @@
 #include <QException>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
+#include <QTime>
 
 #include <QDebug>
 
@@ -434,32 +435,22 @@ void DataManager::loadDataFromFile(QString filename, bool isPath) {
 }
 
 void DataManager::run() {
-    int count = 0;
-    while (true) {
-        if(arduino->initialization == true) {
-             if (count % 80 == 0) {
-                QCoreApplication::processEvents();
-                QString data = arduino->getLastIncoming();
-                    if (data != NULL) {  
-                        emit dataStatusChanged("Přijímám data ✓", "green");
-                        emit statusChanged("Připojeno ✓", "green");
-                        if(draw) {
-                          transmitData(data);
-                        }
-                    }
-                    else {
-                        emit dataStatusChanged("Žádná data", "red");
-                        emit checkPort();
-                    }
-            }// count
-            for (int i=0; i < 100000; i++) {}
-            count++;
-       }
-        else {
-            //inicializace portu neprobehla
+    while (draw && arduino->initialization) {
+
+        QCoreApplication::processEvents();
+        QString data = arduino->getLastIncoming();
+        if (data != NULL) {
+            transmitData(data);
+        } else {
+            //emit dataStatusChanged("Žádná data", "red");
+            emit checkPort();
+        }
+        QTime timer;
+        timer.start();
+        while(timer.elapsed() < 15){
+            //loop for 15ms
         }
     }
-
 }
 
 /*
