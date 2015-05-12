@@ -7,14 +7,14 @@
 SensorResistance::SensorResistance() {
     ID = 4;
     minY = 0;
-    maxY = 10;
+    maxY = 300;
     minX = 0;
-    maxX = 60;
+    maxX = 120;
     time = 0;
     timeInterval = 0.02;
 
     name = "Rezistance";
-    unit = "Ω";
+    unit = "kΩ";
     isAnalysable = false;
 }
 
@@ -34,8 +34,8 @@ QGraphicsScene* SensorResistance::getSceneGraph() {
  */
 void SensorResistance::transmitData(float data) {
     if (this->validateData(data)) {
-        emit haveData(data);
-        emit haveDataToSave(ID, data);
+        emit haveData(data/1000);
+        emit haveDataToSave(ID, data/1000);
     } else {
         emit haveData(minY+((maxY-minY)/2));
         emit haveDataToSave(ID, minY+((maxY-minY)/2));

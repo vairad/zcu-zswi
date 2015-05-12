@@ -7,7 +7,7 @@ SensorConductance::SensorConductance() {
     minY = 0;
     maxY = 10;
     minX = 0;
-    maxX = 60;
+    maxX = 120;
     time = 0;
     timeInterval = 0.02;
 
