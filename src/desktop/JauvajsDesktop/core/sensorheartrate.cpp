@@ -10,7 +10,7 @@ SensorHeartRate::SensorHeartRate() {
     minX = 0;
     maxX = 120;
     time = 0;
-    timeInterval = 0.04;
+    timeInterval = 0.02;
 
     name = "Puls";
     unit = "PPM";
