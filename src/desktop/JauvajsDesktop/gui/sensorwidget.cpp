@@ -177,9 +177,9 @@ void SensorWidget::repaintGraph() {
         int height = graphicsView->viewport()->height() - BOTTOM_OFFSET;
         int x, y;
         delete path;
+        bool isFirst = true;
         path = new QPainterPath(QPoint(LEFT_OFFSET, 0));
-        x = (time / (double) width) * (graphicsView->viewport()->width() - LEFT_OFFSET) + LEFT_OFFSET;
-        QPainterPath path2(QPoint(x, 0));
+        QPainterPath path2(QPoint(0, 0));
 
         int i = 0;
         foreach (double value, values) {
@@ -190,7 +190,10 @@ void SensorWidget::repaintGraph() {
                 path->lineTo(x, y); //  pridani dalsi hodnoty do path
             }
             else {
-                path2.lineTo(x, y); //  pridani dalsi hodnoty do path2
+                if (isFirst) path2.moveTo(x, y);
+                else path2.lineTo(x, y); //  pridani dalsi hodnoty do path2
+                isFirst = false;
+
             }
             sensor->time += sensor->timeInterval; // pricteni casu pro dalsi hodnotu
             i++;
