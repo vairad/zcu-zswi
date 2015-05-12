@@ -61,7 +61,7 @@ private slots:
     void openFileChooser();
     void portChoosed();
     void on_indicatorChanged(QString status, QString color);
-    void on_indicatorDataChanged(QString status, QString color);
+   // void on_indicatorDataChanged(QString status, QString color);
     void on_checkPort();
     void refeshComboBox();
     void userPanelContextMenu(const QPoint &pos);
@@ -88,8 +88,6 @@ private:
     QLabel *heightL;
     /** Indikator stavu spojeni */
     QLabel *labelStatConn;
-    /** stav prichozich dat */
-    QLabel *labelArduData;
     /** Checkbox pro nastaveni ukladani metadat */
     QCheckBox *saveCB;
     /** widget pro vypis ulozenych dat v pravem sloupci */

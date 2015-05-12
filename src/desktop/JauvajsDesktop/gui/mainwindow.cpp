@@ -34,7 +34,7 @@ MainWindow::MainWindow(DataManager *manager, QWidget *parent) : QMainWindow(pare
     arduinoMiner = manager->arduino;
     //connectionWindow = new ConnectionWindow(arduinoMiner, this);
     connect(arduinoMiner, SIGNAL(statusChanged(QString, QString)), this, SLOT(on_indicatorChanged(QString, QString)));
-    connect(manager, SIGNAL(dataStatusChanged(QString, QString)), this, SLOT(on_indicatorDataChanged(QString, QString)));
+    //connect(manager, SIGNAL(dataStatusChanged(QString, QString)), this, SLOT(on_indicatorDataChanged(QString, QString)));
     connect(manager, SIGNAL(checkPort()), this, SLOT(on_checkPort()));
 
     // Vytvoreni senzoru
@@ -166,14 +166,42 @@ void MainWindow::createMenuBar() {
 void MainWindow::createToolBar() {
     QToolBar *toolbar = addToolBar("main toolbar");
 
+    QWidget* spacer = new QWidget();
+    spacer->setFixedWidth(5);
+    toolbar->addWidget(spacer);
+
+    // akce pro obnoveni portu
+    QAction *refreshNow = new QAction(this);
+    refreshNow->setObjectName(QStringLiteral("action"));
+    refreshNow->setText("Obnovit dostupné porty");
+    QPixmap refre("images/refresh.png");
+    refreshNow->setIcon(QIcon(refre));
+    connect(refreshNow, SIGNAL(triggered()), this, SLOT(refeshComboBox()));
+    toolbar->addAction(refreshNow);
+
+    QWidget* spacer5 = new QWidget();
+    spacer5->setFixedWidth(5);
+    toolbar->addWidget(spacer5);
+
+    // combo box na vyber portu
+    comboBox = new QComboBox();
+    comboBox->setMaximumWidth(200);
+    this->refeshComboBox();
+    toolbar->addWidget(comboBox);
+
+     QWidget* spacer2 = new QWidget();
+     spacer2->setFixedWidth(10);
+     toolbar->addWidget(spacer2);
+
     // akce pro zahajeni snimani
     QAction *startA = new QAction(this);
     startA->setObjectName(QStringLiteral("action"));
     startA->setText("Zahájit snímání");
     QPixmap start("images/start.png");
     startA->setIcon(QIcon(start));
-    connect(startA, SIGNAL(triggered()), this, SLOT(startScanning()));
+    connect(startA, SIGNAL(triggered()), this, SLOT(portChoosed()));
     toolbar->addAction(startA);
+
 
     // akce pro ukonceni snimani
     QAction *stopA = new QAction(this);
@@ -193,34 +221,21 @@ void MainWindow::createToolBar() {
     connect(cleanAllA, SIGNAL(triggered()), this, SLOT(cleanAll()));
     toolbar->addAction(cleanAllA);
 
+    QWidget* spacer3 = new QWidget();
+    spacer3->setFixedWidth(10);
+    toolbar->addWidget(spacer3);
+
     toolbar->addSeparator();
+
+    QWidget* spacer4 = new QWidget();
+    spacer4->setFixedWidth(5);
+    toolbar->addWidget(spacer4);
 
     saveCB = new QCheckBox("Ukládat data");
     toolbar->addWidget(saveCB);
 
     toolbar->addSeparator();
 
-    // akce pro obnoveni portu
-    QAction *refreshNow = new QAction(this);
-    refreshNow->setObjectName(QStringLiteral("action"));
-    refreshNow->setText("Obnovit dostupné porty");
-    QPixmap refre("refresh.png");
-    refreshNow->setIcon(QIcon(refre));
-    connect(refreshNow, SIGNAL(triggered()), this, SLOT(refeshComboBox()));
-    toolbar->addAction(refreshNow);
-
-    // combo box na vyber portu
-    comboBox = new QComboBox();
-    comboBox->setMaximumWidth(200);
-    this->refeshComboBox();
-    toolbar->addWidget(comboBox);
-
-    // tlacitko pro potvzeni vybraneho portu
-    QPushButton *choosePort = new QPushButton(this);
-    choosePort->setText("Zvolit port");
-    connect(choosePort, SIGNAL(clicked()), this, SLOT(portChoosed()));
-    toolbar->addWidget(choosePort);
-    this->addToolBar(toolbar);
 
     QLabel *labelStatusDevice = new QLabel();
     labelStatusDevice->setText("Stav zařízení: ");
@@ -234,17 +249,7 @@ void MainWindow::createToolBar() {
     labelStatConn->setStyleSheet("QLabel { color: red; font-size: 15px;}");
     toolbar->addWidget(labelStatConn);
 
-    QLabel *labelDataStatus = new QLabel();
-    labelDataStatus->setText("Stav příchozích dat: ");
-    labelDataStatus->setStyleSheet("QLabel {margin-left:10px; color: gray; font-size: 15px;}");
-    toolbar->addWidget(labelDataStatus);
-
-    // label znazornujici stav prichozich dat
-    labelArduData = new QLabel();
-    labelArduData->setText("Žádná data");
-    labelArduData->setMargin(10);
-    labelArduData->setStyleSheet("QLabel { color: red; font-size: 15px;}");
-    toolbar->addWidget(labelArduData);
+    toolbar->addSeparator();
 }
 
 /**
@@ -253,7 +258,7 @@ void MainWindow::createToolBar() {
  */
 void MainWindow::refeshComboBox() {
     comboBox->clear();
-    comboBox->addItem("-- Zvolte port --");
+    comboBox->addItem("- - - Zvolte port - - -");
     QStandardItemModel* model = qobject_cast<QStandardItemModel*>(comboBox->model());
     QModelIndex firstIndex = model->index(0, comboBox->modelColumn(), comboBox->rootModelIndex());
     QStandardItem* firstItem = model->itemFromIndex(firstIndex);
@@ -623,14 +628,7 @@ void MainWindow::on_indicatorChanged(QString status, QString color) {
     this->refeshComboBox();
 }
 
-/**
- * Indikator zobrazujici stav prichozich dat
- * @brief MainWindow::on_portChoosed
- */
-void MainWindow::on_indicatorDataChanged(QString status, QString color) {
-    labelArduData->setStyleSheet("QLabel { color : "+color+"; font-size: 15px;}");
-    labelArduData->setText(status);
-}
+
 
 /**
  * Volani arduinomineru pro kontrolu komunikacniho oprtu
