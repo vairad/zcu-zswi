@@ -60,7 +60,7 @@ void FileSaver::createFileForData(QString username) {
  */
 void FileSaver::saveData(float data[]) {
     if (file->isOpen()) {
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 7; i++) {
             file->write(QString::number(data[i]).toUtf8().constData());
             file->write(";");
         }

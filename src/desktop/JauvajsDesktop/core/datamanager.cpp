@@ -195,6 +195,7 @@ void DataManager::connectSensorToSaver() {
         connect(listenAirFlow, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int, float)));
         connect(listenOxy, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int, float)));
         connect(listenResistance, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int, float)));
+        connect(listenConductance, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int,float)));
         connect(listenHeartRate, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int, float)));
 
         saver->createFileForData(username);
@@ -230,6 +231,7 @@ void DataManager::disconnectSensorToSaver() {
         disconnect(listenAirFlow, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int,float)));
         disconnect(listenOxy, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int,float)));
         disconnect(listenResistance, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int,float)));
+        disconnect(listenConductance, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int,float)));
         disconnect(listenHeartRate, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int,float)));
 
         saver->closeFileForData();
@@ -438,7 +440,8 @@ void DataManager::loadDataFromFile(QString filename, bool isPath) {
             listenOxy->transmitData(listOfData[2].toFloat());
             listenAirFlow->transmitData(listOfData[3].toFloat());
             listenResistance->transmitData(listOfData[4].toFloat());
-            listenHeartRate->transmitData(listOfData[5].toFloat());
+            listenConductance->transmitData(listOfData[5].toFloat());
+            listenHeartRate->transmitData(listOfData[6].toFloat());
         }else{
            // qDebug() << "false";
         }
@@ -480,8 +483,9 @@ void DataManager::run() {
                     listenEKG->transmitData(data.toFloat());
                     listenTemp->transmitData(data.toFloat());
                     listenOxy->transmitData(data.toFloat());
-                    listenPosition->transmitData(data.toFloat());
-                    listenGSR->transmitData(data.toFloat());
+                    listenAirFlow->transmitData(data.toFloat());
+                    listenResistance->transmitData(data.toFloat());
+                    listenConductance->transmitData(data.toFloat());
                     listenHeartRate->transmitData(data.toFloat());
                 }
                 else {
