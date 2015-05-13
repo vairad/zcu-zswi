@@ -435,6 +435,7 @@ void DataManager::loadDataFromFile(QString filename, bool isPath) {
         listOfData = data.split(';');
 
         if(CSV_COLUMN_COUNT < listOfData.size() && validateLineCSV(data)) {
+               qDebug() << data;
             listenEKG->transmitData(listOfData[0].toFloat());
             listenTemp->transmitData(listOfData[1].toFloat());
             listenOxy->transmitData(listOfData[2].toFloat());

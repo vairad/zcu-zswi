@@ -124,12 +124,12 @@ private:
 
 //Privátní konstanty
     /** počet sloupců očekávaných v souboru .csv*/
-    const int CSV_COLUMN_COUNT = 6;
+    const int CSV_COLUMN_COUNT = 7;
     /** regulární výraz popisující řádek csv. souboru
      *  krajní vzhled akceptované řádky:
      *  d.dddddd;ddd;d.dddddd;ddd.dddddd;d.dddddd;ddd
      */
-    const QString CSV_REG_EXP = "^\\d[.]{0,1}[\\d]{0,6};[\\d]{1,3};\\d[.]{0,1}[\\d]{0,6};\\d{1,3}[.]{0,1}[\\d]{0,6};\\d[.]{0,1}[\\d]{0,6};[\\d]{1,3}";
+    const QString CSV_REG_EXP = "^\\d[.]{0,1}[\\d]{0,6};\\d{1,3}[.]{0,1}[\\d]{0,6};\\d{1,3}[.]{0,1}[\\d]{0,6};\\d{1,3}[.]{0,1}[\\d]{0,6};\\d{1,3}[.]{0,1}[\\d]{0,6};\\d{1,3}[.]{0,1}[\\d]{0,6}";
     /**
      * Regulární výraz, který akceptuje zprávy z arduina dle specifikace
      * [X.XXXXXX]\n [X.XXXXXX\tA####]\n
