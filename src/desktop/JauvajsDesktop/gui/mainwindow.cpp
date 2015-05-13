@@ -535,6 +535,10 @@ void MainWindow::openFileChooser() {
     QString file = QFileDialog::getOpenFileName(this, tr("Otevřít soubor"), QDir::homePath());
     //dataManager->loadFile(file);
 
+    if (!QString::compare(file, "")) {
+        return;
+    }
+
     for (int i = 0; i < NUMBER_OF_SENSORS; i++) {
        sensors[i]->prepareToLoadData();
     }
