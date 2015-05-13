@@ -12,7 +12,7 @@
 #include <PinChangeInt.h>
 #include <eHealth.h>
 
-#define BT
+//#define BT
 //#define PRINT_TIMESTAMPS
 
 // sensor indexes
