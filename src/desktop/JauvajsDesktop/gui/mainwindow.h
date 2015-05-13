@@ -102,6 +102,8 @@ private:
     QAction *actionUserSettings;
     /** polozka menu - Nastaveni > Zmena uzivatele*/
     QAction *actionChangeUser;
+    /** poseldni vybrane zarizeni*/
+    QString lastDevice;
 
 };
 

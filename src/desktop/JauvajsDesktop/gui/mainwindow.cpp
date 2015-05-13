@@ -258,17 +258,25 @@ void MainWindow::createToolBar() {
  */
 void MainWindow::refeshComboBox() {
     comboBox->clear();
-    comboBox->addItem("- - - Zvolte port - - -");
+    comboBox->addItem("   - - - Zvolte port - - -   ");
     QStandardItemModel* model = qobject_cast<QStandardItemModel*>(comboBox->model());
     QModelIndex firstIndex = model->index(0, comboBox->modelColumn(), comboBox->rootModelIndex());
     QStandardItem* firstItem = model->itemFromIndex(firstIndex);
     firstItem->setSelectable(false);
 
     QList<QSerialPortInfo> listOfPorts = QSerialPortInfo::availablePorts();
+    int index = 1, selectedIndex = 0;
     foreach (QSerialPortInfo port, listOfPorts) {
         // nazev portu + nazev pripojeneho zarizeni
-        comboBox->addItem(port.portName()+ " ["+port.description()+"] ");
+        QString labelText = port.portName()+ " ["+port.description()+"] ";
+        comboBox->addItem(labelText);
+        if(labelText == lastDevice) {
+            selectedIndex = index;
+            qDebug() << "_"+labelText+"_" << "==" << "_"+lastDevice+"_";
+        }
+        index++;
     }
+    comboBox->setCurrentIndex(selectedIndex);
 }
 
 /**
@@ -600,7 +608,7 @@ void MainWindow::userPanelContextMenu(const QPoint &pos) {
  */
 void MainWindow::portChoosed() {
     qDebug() << "Vybral jsi port";
-
+    lastDevice = comboBox->currentText();
     this->choosedPort = comboBox->currentText();
     QStringList portInfo = this->choosedPort.split(' ');
     QString portNumber = portInfo[0];
