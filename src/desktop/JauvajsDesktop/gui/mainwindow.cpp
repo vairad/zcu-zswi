@@ -590,7 +590,7 @@ void MainWindow::openHelp() {
  */
 void MainWindow::aboutApplication() {
     QMessageBox::about(this, tr("O aplikaci"),
-             tr("Aplikace pro vizualizaci signálů z E-health. <br> Projekt Šejdrem Arduino"));
+             tr("Aplikace pro vizualizaci signálů z E-health. <br> Verze 1.0.2 <br> Projekt Šejdrem Arduino"));
 }
 
 /**
