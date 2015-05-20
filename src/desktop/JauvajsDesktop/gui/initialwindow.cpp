@@ -67,6 +67,15 @@ void InitialWindow::createTitle() {
     connect(selectBT, SIGNAL(clicked()), this, SLOT(changeWorkspace()));
 
     verticalLayout->addWidget(widgetWS, 0, Qt::AlignTop);
+
+    // napis upozornujici na chybnou cestu
+    errorLabel = new QLabel(this);
+    errorLabel->setStyleSheet("QLabel { color : rgb(255, 65, 65); }");
+    errorLabel->setHidden(true);
+    errorLabel->setContentsMargins(10, 0, 0, 0);
+    verticalLayout->addWidget(errorLabel);
+
+    verifyIsWritable(pathInfo.absoluteFilePath());
 }
 
 /**
@@ -221,10 +230,33 @@ void InitialWindow::changeWorkspace() {
     dataManager->FOLDER_NAME = dir;
     workspacePathE->setText(dir);
 
+    verifyIsWritable(dir);
+
     // odebrani starych labelu
     deleteLabels();
     listsOfNames();
     listsOfNamesAlphabetically();
+}
+
+/**
+ * Overi, zda je mozno v danem umisteni zapisovat
+ * @brief InitialWindow::verifyIsWritable
+ */
+void InitialWindow::verifyIsWritable(QString dir) {
+    QDir dir2(dir);
+    QString testFolder = "sejdremTest";
+    bool isWritable = dir2.mkdir(testFolder);
+
+    if (isWritable) {
+        dir2.rmdir(testFolder);
+        workspacePathE->setStyleSheet("QLineEdit {background: rgb(255, 255, 255);}");
+        errorLabel->setHidden(true);
+    }
+    else {
+        workspacePathE->setStyleSheet("QLineEdit {background: rgb(255, 65, 65);}");
+        errorLabel->setHidden(false);
+        errorLabel->setText("Toto umístění nepovoluje zápis!");
+    }
 }
 
 /**

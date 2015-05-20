@@ -67,6 +67,7 @@ public:
     void deleteLabels();
     //bool compareUserLabels(QWidget *left, QWidget *right);
     void addToUserLabels(UserLabel *label);
+    void verifyIsWritable(QString dir);
     void closeEvent(QCloseEvent *);
     void showEvent(QShowEvent *);
 
@@ -94,6 +95,8 @@ private:
     QLineEdit *workspacePathE;
     /** list pro zobrazeni uzivatelu abecedne */
     QListWidget *listWidget;
+    /** label upozornujici na chybnou cestu */
+    QLabel *errorLabel;
 };
 
 #endif // INITIALWINDOW_H
