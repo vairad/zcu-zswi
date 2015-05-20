@@ -65,7 +65,6 @@ public:
     void listsOfNamesAlphabetically();
     void createButtons();
     void deleteLabels();
-    //bool compareUserLabels(QWidget *left, QWidget *right);
     void addToUserLabels(UserLabel *label);
     void verifyIsWritable(QString dir);
     void closeEvent(QCloseEvent *);

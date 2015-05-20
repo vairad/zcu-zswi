@@ -8,6 +8,7 @@
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 #include <QTime>
+#include <QMessageBox>
 
 #include <QDebug>
 
@@ -434,8 +435,7 @@ void DataManager::loadDataFromFile(QString filename, bool isPath) {
     while (data != NULL) {
         listOfData = data.split(';');
 
-        if(CSV_COLUMN_COUNT < listOfData.size() && validateLineCSV(data)) {
-               qDebug() << data;
+        if (CSV_COLUMN_COUNT < listOfData.size() && validateLineCSV(data)) {
             listenEKG->transmitData(listOfData[0].toFloat());
             listenTemp->transmitData(listOfData[1].toFloat());
             listenOxy->transmitData(listOfData[2].toFloat());
@@ -443,8 +443,10 @@ void DataManager::loadDataFromFile(QString filename, bool isPath) {
             listenResistance->transmitData(listOfData[4].toFloat());
             listenConductance->transmitData(listOfData[5].toFloat());
             listenHeartRate->transmitData(listOfData[6].toFloat());
-        }else{
-           // qDebug() << "false";
+        } else {
+            QMessageBox messageBox;
+            messageBox.critical(0, "Chyba", "Načítaný soubor je v nepovoleném formátu!");
+            break;
         }
         data = fileMiner->getLastIncoming();
     }
@@ -508,32 +510,32 @@ void DataManager::run() {
 
 bool DataManager::validateLineCSV(QString &line){
     QRegularExpressionMatch match = CSV_COMPARER.match(line);
-    if(match.hasMatch()) {
+    if (match.hasMatch()) {
         return true;
-    }else{
+    } else {
         return false;
     }
 }
 
 bool DataManager::validateLineArduino(QString &line){
     QRegularExpressionMatch match = ARDUINO_COMPARER.match(line);
-    if(match.hasMatch()) {
+    if (match.hasMatch()) {
         return true;
-    }else{
+    } else {
         return false;
     }
 }
 
 DataManager::~DataManager() {
     //qDebug() << "destructor od DataManager";
-    if(fileMiner != NULL) {
+    if (fileMiner != NULL) {
         delete fileMiner;
         fileMiner = NULL;
     }
-    if(saver != NULL) {
+    if (saver != NULL) {
         delete saver;
     }
-    if(metadataReader != NULL) {
+    if (metadataReader != NULL) {
         delete metadataReader;
     }
 
