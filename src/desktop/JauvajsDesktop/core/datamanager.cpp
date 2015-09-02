@@ -17,6 +17,14 @@
 #include "filesaver.h"
 #include "idisplayable.h"
 
+#include "core/sensorekg.h"
+#include "core/sensortemp.h"
+#include "core/sensorairflow.h"
+#include "core/sensoroxy.h"
+#include "core/sensorresistance.h"
+#include "core/sensorconductance.h"
+#include "core/sensorheartrate.h"
+
 DataManager::DataManager() {    
     FOLDER_NAME = "data";
     FILE_METADATA_NAME = "metadata.txt";
@@ -199,7 +207,17 @@ void DataManager::connectSensorToSaver() {
         connect(listenConductance, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int,float)));
         connect(listenHeartRate, SIGNAL(haveDataToSave(int, float)), this, SLOT(transmitDataToSaver(int, float)));
 
-        saver->createFileForData(username);
+        /* jmena sloupcu v csv */
+        QList<QString> header;
+        header.push_back(((SensorEKG *)listenEKG)->getName());
+        header.push_back(((SensorTemp *)listenTemp)->getName());
+        header.push_back(((SensorAirFlow *)listenAirFlow)->getName());
+        header.push_back(((SensorOxy *)listenOxy)->getName());
+        header.push_back(((SensorResistance *)listenResistance)->getName());
+        header.push_back(((SensorConductance *)listenConductance)->getName());
+        header.push_back(((SensorHeartRate *)listenHeartRate)->getName());
+
+        saver->createFileForData(username, header);
         numberOfData = 0;
     }
 }
@@ -429,6 +447,7 @@ void DataManager::loadDataFromFile(QString filename, bool isPath) {
         loadFile(FOLDER_NAME + "/" + username + "/" + filename);
     }
 
+    fileMiner->getLastIncoming(); // radek s hlavickou
     QString data = fileMiner->getLastIncoming();
     QStringList listOfData;
 

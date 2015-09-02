@@ -2,6 +2,7 @@
 #include <QTextStream>
 #include <QDir>
 #include <QDateTime>
+#include <QTextCodec>
 #include <QDebug>
 
 #include "filesaver.h"
@@ -48,9 +49,19 @@ void FileSaver::saveMetadata(QString folderName, QList<QString> data) {
  * @brief FileSaver::createFileForData
  * @param username uzivatelske jmeno (slozka)
  */
-void FileSaver::createFileForData(QString username) {
+void FileSaver::createFileForData(QString username, QList<QString> header) {
     file = new QFile(FOLDER_NAME + "/" + username + "/" + QDateTime::currentDateTime().toString("yyyyMMddhhmmss") + ".csv");
     file->open(QIODevice::WriteOnly);
+
+    for (int i = 0; i < 7; i++) {
+
+        QTextCodec *codec = QTextCodec::codecForName("Windows-1250");
+        QByteArray encodedString = codec->fromUnicode(header[i]);
+
+        file->write(encodedString);
+        file->write(";");
+    }
+    file->write("\n");
 }
 
 /**

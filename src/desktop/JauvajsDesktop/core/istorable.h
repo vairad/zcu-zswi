@@ -30,7 +30,7 @@ public:
      * @brief createFileForData
      * @param username uzivatelske jmeno (slozka)
      */
-    virtual void createFileForData(QString username) = 0;
+    virtual void createFileForData(QString username, QList<QString> header) = 0;
     /**
      * Zavre soubor pro ukladani dat ze senzoru
      * @brief closeFileForData
