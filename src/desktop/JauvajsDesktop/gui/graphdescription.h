@@ -58,6 +58,11 @@ protected:
     QList<QGraphicsLineItem*> lineList;
     /** pomer k sirce sceny (z duvodu rozsireni oken pri nacteni ze souboru) */
     double ratioOfTheWith;
+
+    /** popis hodnoty X */
+    QGraphicsTextItem *textX;
+    /** list popisu osy X */
+    QList<QGraphicsTextItem*> textList;
 };
 
 #endif // GRAPHDESCRIPTION_H

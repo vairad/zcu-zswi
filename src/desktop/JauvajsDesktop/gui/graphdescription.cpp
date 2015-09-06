@@ -10,19 +10,17 @@ GraphDescription::GraphDescription() {
  * @brief SensorWidget::drawNumbers
  */
 void GraphDescription::drawNumbers() {
+    // odebrani starych hodnot
+    foreach (QGraphicsTextItem *item, textList) {
+        scene->removeItem(item);
+        delete item;
+    }
+    textList.clear();
+
     if (itemsExist) {
-        // odebrani starych hodnot
-        scene->removeItem(textMaxY);
-        scene->removeItem(textMinY);
-        scene->removeItem(textMaxX);
-        scene->removeItem(textMinX);
         scene->removeItem(horizontalLine);
         scene->removeItem(verticalLine);
 
-        delete textMaxY;
-        delete textMinY;
-        delete textMaxX;
-        delete textMinX;
         delete horizontalLine;
         delete verticalLine;
     }
@@ -35,23 +33,41 @@ void GraphDescription::drawNumbers() {
     textMaxY = scene->addText(QString::number(sensor->maxY) + " " + sensor->unit, font);
     textMaxY->setPos(0,0);
     textMaxY->setDefaultTextColor(Qt::white);
+    textList.push_back(textMaxY);
 
     // popis nejmensi hodnoty Y
     textMinY = scene->addText(QString::number(sensor->minY), font);
     textMinY->setPos(0, graphicsView->viewport()->height() - textMinY->boundingRect().height() - BOTTOM_OFFSET);
     textMinY->setDefaultTextColor(Qt::white);
+    textList.push_back(textMinY);
 
     // popis nejvyssi hodnoty X
     textMaxX = scene->addText(QString::number(sensor->maxX) + " s [time]", font);
     textMaxX->setPos(graphicsView->viewport()->width() - textMaxX->boundingRect().width(), graphicsView->viewport()->height() - textMaxX->boundingRect().height());
     textMaxX->setDefaultTextColor(Qt::white);
+    textList.push_back(textMaxX);
 
     // popis nejmensi hodnoty X
     textMinX = scene->addText(QString::number(sensor->minX), font);
     textMinX->setPos(LEFT_OFFSET, graphicsView->viewport()->height() - textMinY->boundingRect().height());
     textMinX->setDefaultTextColor(Qt::white);
+    textList.push_back(textMinX);
 
     itemsExist = true;
+
+    int width = sensor->maxX - sensor->minX; // skutecna sirka (v jednotkach)
+    double numberOfLines = width / (double) verticalLinesInterval;
+    double interval = (graphicsView->viewport()->width() - LEFT_OFFSET) / numberOfLines; // interval v px
+
+    for (int i = 1; i <= numberOfLines * ratioOfTheWith; i++) {
+        if (i != 0)
+        if (i % verticalLinesBoldInterval == 0) {
+            textX = scene->addText(QString::number(sensor->minX + i), font);
+            textX->setPos(LEFT_OFFSET + i*interval - textX->boundingRect().width(), graphicsView->viewport()->height() - textX->boundingRect().height());
+            textX->setDefaultTextColor(Qt::white);
+            textList.push_back(textX);
+        }
+    }
 }
 
 /**
