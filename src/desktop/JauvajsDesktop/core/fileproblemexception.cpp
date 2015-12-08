@@ -24,7 +24,7 @@ QString FileOpenProblemException::getMessage(){
     return message;
 }
 
-FileOpenProblemException::~FileOpenProblemException() {
+FileOpenProblemException::~FileOpenProblemException() throw() {
     //delete &message;
 }
 

@@ -14,7 +14,7 @@ class FileOpenProblemException : public QException{
 
         FileOpenProblemException();
         FileOpenProblemException(QString fileName);
-        ~FileOpenProblemException();
+        ~FileOpenProblemException() throw();
 };
 
 #endif // FILENOTFOUNDEXCEPTION_H
