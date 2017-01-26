@@ -23,14 +23,15 @@ public:
      * @brief saveData
      * @param data radek
      */
-    virtual void saveData(float data[]) = 0;
+    virtual void saveData(float data[], int data_count) = 0;
     /**
      * Vytvori soubor pro ukladani dat ze senzoru
      * Nazev je vytvoren z aktualniho data a casu
      * @brief createFileForData
      * @param username uzivatelske jmeno (slozka)
      */
-    virtual void createFileForData(QString username, QList<QString> header) = 0;
+    virtual void createFileForData(QString username, QList<QString> header, int data_count) = 0;
+
     /**
      * Zavre soubor pro ukladani dat ze senzoru
      * @brief closeFileForData

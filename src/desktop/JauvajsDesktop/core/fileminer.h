@@ -21,7 +21,7 @@ public:
     FileMiner(QString fileName);
 
     /** Destructor close opened file */
-    ~FileMiner();
+    virtual ~FileMiner();
 
     /**
      * DO NOTHING ... ONLY READ FILE

@@ -20,7 +20,10 @@
  * @brief MainWindow::MainWindow
  * @param parent
  */
-MainWindow::MainWindow(DataManager *manager, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), dataManager(manager) {
+MainWindow::MainWindow(DataManager *manager, QWidget *parent) : QMainWindow(parent)
+  , dataManager(manager)
+  , ui(new Ui::MainWindow)
+{
     ui->setupUi(this);
     ui->verticalLayout_3->setAlignment(Qt::AlignTop);
     this->showMaximized();

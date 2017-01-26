@@ -217,7 +217,7 @@ void DataManager::connectSensorToSaver() {
         header.push_back(((SensorConductance *)listenConductance)->getName());
         header.push_back(((SensorHeartRate *)listenHeartRate)->getName());
 
-        saver->createFileForData(username, header);
+        saver->createFileForData(username, header, header.size());
         numberOfData = 0;
     }
 }
@@ -233,7 +233,7 @@ void DataManager::transmitDataToSaver(int id, float data) {
         listToFile[id] = data;
 
         if (numberOfData == NUMBER_OF_SENSORS) {
-            saver->saveData(listToFile);
+            saver->saveData(listToFile, numberOfData);
             numberOfData = 0;
         }
     }

@@ -14,8 +14,8 @@ public:
     FileSaver(QString fileName);
     ~FileSaver();
     void saveMetadata(QString folderName, QList<QString> data);
-    void createFileForData(QString username, QList<QString> header);
-    void saveData(float data[]);
+    void createFileForData(QString username, QList<QString> header, int data_count);
+    void saveData(float data[], int data_count);
     void closeFileForData();
     /** nazev slozky pro ukladani dat */
     QString FOLDER_NAME;
